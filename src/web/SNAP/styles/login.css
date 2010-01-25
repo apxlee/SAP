@@ -1,0 +1,37 @@
+@import url(access2.css);
+
+#login {
+	z-index:2;
+	float:left;
+	width:45%;
+	margin-top:1em;
+}
+
+#login h2 {
+	text-align:center;
+}
+
+#login div.fields {
+	width:240px;
+	margin:auto;
+	padding-top:1em;
+	text-align:left;
+	margin-bottom:1em;
+}
+
+#login p {
+	margin-top:0;
+	margin-bottom:1em;
+	margin-left:1em;
+}
+
+#login label {
+	display:block;
+	float:left;
+	height:12px;
+	text-align:right;
+	width:9em;
+	padding-right:1em;
+	clear:both;
+	padding-top:.2em;
+}

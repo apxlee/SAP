@@ -1,0 +1,46 @@
+.cal {
+	font-size:xx-small;
+	color:#000000;
+	background-color:#FFFFFF;
+}
+
+.cal-cleardate {
+
+}
+
+.cal-dayheader {
+	background-color:orange;
+}
+
+.cal-gototoday {
+	background-color:lightgoldenrodyellow;
+}
+
+.cal-holiday {
+
+}
+
+.cal-monthheader {
+	background-color:yellow;
+}
+
+.cal-offmonth {
+	color:gray;
+	background-color:antiquewhite;
+}
+
+.cal-selecteddate {
+	background-color:yellow;
+}
+
+.cal-today {
+
+}
+
+.cal-weekday {
+
+}
+
+.cal-weekend {
+	background-color:lightgray;
+}
