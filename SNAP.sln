@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apollo.AIM.SNAP.Test", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apollo.AIM.SNAP.CA", "src\shared\CA\Apollo.AIM.SNAP.CA\Apollo.AIM.SNAP.CA.csproj", "{6F4A3CB1-6A8B-4B22-8E23-695E359962BB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apollo.AIM.SNAP", "src\lib\Apollo.AIM.SNAP\Apollo.AIM.SNAP.csproj", "{A6931297-7CC1-4554-84A4-898009598139}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{6F4A3CB1-6A8B-4B22-8E23-695E359962BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F4A3CB1-6A8B-4B22-8E23-695E359962BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F4A3CB1-6A8B-4B22-8E23-695E359962BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6931297-7CC1-4554-84A4-898009598139}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6931297-7CC1-4554-84A4-898009598139}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6931297-7CC1-4554-84A4-898009598139}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6931297-7CC1-4554-84A4-898009598139}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
