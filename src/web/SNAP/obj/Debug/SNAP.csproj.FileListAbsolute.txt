@@ -1,0 +1,5 @@
+D:\temp\snap\trunk\src\web\SNAP\bin\SNAP.dll
+D:\temp\snap\trunk\src\web\SNAP\bin\SNAP.pdb
+D:\temp\snap\trunk\src\web\SNAP\obj\Debug\ResolveAssemblyReference.cache
+D:\temp\snap\trunk\src\web\SNAP\obj\Debug\SNAP.dll
+D:\temp\snap\trunk\src\web\SNAP\obj\Debug\SNAP.pdb

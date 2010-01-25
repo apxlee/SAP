@@ -1,0 +1,52 @@
+CAP Directory Structure per my understanding:
+
+CAP has this directory structure:
+\Config
+\db
+\doc
+\lib
+\release
+\src
+sloution.sln <--- solution file must reside at top level. We can have multiple of them here
+build.bat
+
+
+High level description of each directory:
+\config: contain configuration file
+\db: contain db script file
+\doc:
+\lib: contain third party dlls
+\release: contain build files
+\src: contain project web application, class library
+
+
+Detail description of src directory where all of the VS 2008 projects reside
+\src\database
+\src\lib\Apollo.AIM.ProjectClassLibrary1
+\src\lib\Apollo.AIM.ProjectClassLibrary2
+\src\rule
+\src\shared\Apollo.LowLevelLib1
+\src\Shared\Apollo.LowLevelLib2
+\src\test\unit\lib\Apollo.AIM.ProjectClassLibrary1.Test
+\src\test\unit\lib\Apollo.AIM.ProjectClassLibrary2.Test
+\src\test\unit\web\Project1.Test
+\src\test\unit\web\Project2.Test
+\src\test\integration
+\src\web\Project1
+\src\web\Project2
+
+
+So, To create a solution:
+1) create an directory structure. Use Vs 2008 File\New\Project....
+2) Select blank solution by selecting project template: Other Project Types\Visual studio Solution\
+   blank solution
+3) Since VS 2008 will automatically create a directory for solution, we will need to copy the sln
+   file to top level and remove the auto created solution folder
+4) Now we are in VS 2008 environment, we can add web application project and make sure we point the
+   file path to \src\web directory. Also, we don't want to use Apollo.AIM.X.Y.Z naming convention here
+   for project namme
+5) Now we can add class library project. Make sure we point the file path to \src\lib. Here we
+   want to use Apollo.AIM.X.Y.Z namespace convention for project name
+6) We should also add NUnit Test lib project and point the file path to \src\test\unit\.
+   We should use Apollo.AIM.X.Y.Z namespace convention for project name
+   
