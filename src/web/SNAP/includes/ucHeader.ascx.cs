@@ -1,4 +1,4 @@
-namespace OOSPA.includes
+namespace SNAP.includes
 {
 	using System;
 	using System.Data;

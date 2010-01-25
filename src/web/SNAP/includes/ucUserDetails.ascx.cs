@@ -5,7 +5,7 @@ using Apollo.Ultimus.CAP.Model;
 using Apollo.Ultimus.CAP;
 //using ComputerAccessProcess.Controls.Search;
 
-namespace OOSPA.includes
+namespace SNAP.includes
 {
     public partial class ucUserDetails : System.Web.UI.UserControl
     {

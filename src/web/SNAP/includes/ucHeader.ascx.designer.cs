@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace OOSPA.includes {
+namespace SNAP.includes {
     
     
     public partial class ucHeader {

@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Text;
 using Apollo.Ultimus.CAP.Model;
 
-namespace OOSPA.includes
+namespace SNAP.includes
 {
 	using System;
 	using System.Configuration;
