@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SNAP", "src\web\SNAP\SNAP.csproj", "{5AB65A15-CF1E-40AE-B0B7-6000B447EA8C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apollo.AIM.SNAP.Test", "src\test\unit\Apollo.AIM.SNAP.Test\Apollo.AIM.SNAP.Test.csproj", "{7F2F8A86-B2AA-4B21-BCED-B368A05E4A60}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{5AB65A15-CF1E-40AE-B0B7-6000B447EA8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AB65A15-CF1E-40AE-B0B7-6000B447EA8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5AB65A15-CF1E-40AE-B0B7-6000B447EA8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F2F8A86-B2AA-4B21-BCED-B368A05E4A60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F2F8A86-B2AA-4B21-BCED-B368A05E4A60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F2F8A86-B2AA-4B21-BCED-B368A05E4A60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F2F8A86-B2AA-4B21-BCED-B368A05E4A60}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
