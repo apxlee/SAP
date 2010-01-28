@@ -106,9 +106,11 @@
     <Content Include="Index.aspx" />
     <Content Include="scripts\jquery-1.3.2-vsdoc.js" />
     <Content Include="scripts\jquery-1.3.2.js" />
+    <Content Include="scripts\user.js" />
     <Content Include="styles\access2.css" />
     <Content Include="styles\calendar.css" />
     <Content Include="styles\login.css" />
+    <Content Include="User.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -156,6 +158,13 @@
     <Compile Include="PersonTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UltimusTools.cs" />
+    <Compile Include="User.aspx.cs">
+      <DependentUpon>User.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="User.aspx.designer.cs">
+      <DependentUpon>User.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

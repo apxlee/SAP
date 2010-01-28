@@ -12,6 +12,12 @@
     <script src="/scripts/jquery-1.3.2-vsdoc.js"  type="text/javascript"></script> 
     <% } %>
 
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            $('h3').css("border", "3px solod red");
+        });
+        
+    </script>
     <title></title>
 </head>
 <body>
