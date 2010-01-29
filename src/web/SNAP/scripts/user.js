@@ -22,6 +22,9 @@ function HandleNameSelectionChange() { $('select[id$=nameSelection]').change(Use
 function HandleManagerSelectionChange() { $('select[id$=mgrSelection]').change(ManagerNameSelected) }
 function GetUserNames() {
 
+    GetNames($("input[id$='userName']").val(), $('select[id$=nameSelection]'), ToggleNameSelection);
+    
+    /*
     var postData = "{'name':'" +  $("input[id$='userName']").val() + "'}";
 
     $.ajax({
@@ -50,23 +53,25 @@ function GetUserNames() {
 
         }
     });
-
+    */
 }
 
 function UserNameSelected() {
+/*
     $("input[id$='userName']").val($('select[id$=nameSelection] option:selected').text());
     ToggleNameSelection();
-    var userInfo = $('body').data('userInfo');
-    for (var key in userInfo) {
-        if (userInfo[key].Name == $("input[id$='userName']").val()) {
-            $("input[id$='mgrName']").val(userInfo[key].ManagerName);
-            break;
-        }
-    }
+*/
+    AssignSelectedName( $("input[id$='userName']"),
+                        $('select[id$=nameSelection] option:selected').text(),
+                        ToggleNameSelection);
+    FillManagerName();
 }
 
 function GetManagerNames() {
 
+    GetNames($("input[id$='mgrName']").val(), $('select[id$=mgrSelection]'), ToggleManagerSelection);
+
+ /*
     var postData = "{'name':'" + $("input[id$='mgrName']").val() + "'}";
 
     $.ajax({
@@ -95,13 +100,47 @@ function GetManagerNames() {
 
         }
     });
-
+*/
 }
 
+function GetNames(name, selection, toggleSelection) {
+    var postData = "{'name':'" + name + "'}";
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json; character=utf-8",
+        url: "/User.aspx/GetNames",
+        data: postData,
+        dataType: "json",
+        success: function(msg) {
+            var names = msg.d;
+            $('body').data('userInfo', names);
+
+            if (names.length > 0) {
+                var listItems = [];
+                for (var key in names) {
+                    listItems.push('<option value="' + key + '">' + names[key].Name + '</option>');
+                }
+                toggleSelection();
+                selection.empty();
+                selection.append(listItems.join(''));
+            }
+        }
+    });
+
+}
 function ManagerNameSelected() {
-    $("input[id$='mgrName']").val($('select[id$=mgrSelection] option:selected').text());
-    ToggleManagerSelection();
-    /*
+    AssignSelectedName( $("input[id$='mgrName']"),
+                        $('select[id$=mgrSelection] option:selected').text(), 
+                        ToggleManagerSelection);
+}
+
+function AssignSelectedName(nameElement, selectedName, toggleSelection) {
+    nameElement.val(selectedName);
+    toggleSelection();
+}
+
+function FillManagerName() {
     var userInfo = $('body').data('userInfo');
     for (var key in userInfo) {
         if (userInfo[key].Name == $("input[id$='userName']").val()) {
@@ -109,5 +148,5 @@ function ManagerNameSelected() {
             break;
         }
     }
-    */
+
 }
