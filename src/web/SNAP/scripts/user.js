@@ -5,15 +5,7 @@
 
 function DocReady() {
     BorderMyh3();
-    userManager.Setup();
-    /*
-    ToggleNameSelection();
-    ToggleManagerSelection();
-    HandleGetUserNames();
-    HandleGetManagerNames();
-    HandleNameSelectionChange();
-    HandleManagerSelectionChange();
-    */
+    userManager.Ready();
 }
 
 var userManager = {
@@ -26,9 +18,8 @@ var userManager = {
     mgrNameCheck: $("button[id$='mgrCheck']"),
     */
 
-    ToggleNameSelection: function() { $('select[id$=nameSelection]').toggle(); },
-    ToggleManagerSelection: function() { $('select[id$=mgrSelection]').toggle(); },
-    GetNames: function(name, selection, toggleSelection) {
+    ToggleSelecction: function() {$('select[id$=nameSelection]').toggle(); $('select[id$=mgrSelection]').toggle();},
+    GetNames: function(name, selection) {
         var postData = "{'name':'" + name + "'}";
 
         $.ajax({
@@ -46,7 +37,7 @@ var userManager = {
                     for (var key in names) {
                         listItems.push('<option value="' + key + '">' + names[key].Name + '</option>');
                     }
-                    toggleSelection();
+                    selection.toggle();
                     selection.empty();
                     selection.append(listItems.join(''));
                 }
@@ -55,18 +46,18 @@ var userManager = {
 
     },
     HandleGetUserNames: function() {
-            $("button[id$='userCheck']").click(function() {
+        $("button[id$='userCheck']").click(function() {
             // this is ref to the button not usermanager, hence to call usermanager function I need to ref to qualify user manager
-            userManager.GetNames($("input[id$='userName']").val(), $('select[id$=nameSelection]'), userManager.ToggleNameSelection);
+            userManager.GetNames($("input[id$='userName']").val(), $('select[id$=nameSelection]'));
         })
     },
     HandleGetManagerNames: function() {
-            $("button[id$='mgrCheck']").click(function() {
+        $("button[id$='mgrCheck']").click(function() {
             // this is ref to the button not usermanager, hence to call usermanager function I need to ref to qualify user manager
-            userManager.GetNames($("input[id$='mgrName']").val(), $('select[id$=mgrSelection]'), userManager.ToggleManagerSelection);
+            userManager.GetNames($("input[id$='mgrName']").val(), $('select[id$=mgrSelection]'));
         })
     },
-    
+
     HandleNameSelectionChange: function() { $('select[id$=nameSelection]').change(userManager.UserNameSelected) },
     HandleManagerSelectionChange: function() { $('select[id$=mgrSelection]').change(userManager.ManagerNameSelected) },
 
@@ -74,19 +65,19 @@ var userManager = {
     UserNameSelected: function() {
         userManager.AssignSelectedName($("input[id$='userName']"),
                             $('select[id$=nameSelection] option:selected').text(),
-                            userManager.ToggleNameSelection);
+                            $('select[id$=nameSelection]'));
         userManager.FillManagerName();
     },
 
     ManagerNameSelected: function() {
         userManager.AssignSelectedName($("input[id$='mgrName']"),
                             $('select[id$=mgrSelection] option:selected').text(),
-                            userManager.ToggleManagerSelection);
+                            $('select[id$=mgrSelection]'));
     },
 
-    AssignSelectedName: function(nameElement, selectedName, toggleSelection) {
+    AssignSelectedName: function(nameElement, selectedName, selection) {
         nameElement.val(selectedName);
-        toggleSelection();
+        selection.toggle();
     },
 
     FillManagerName: function() {
@@ -99,10 +90,9 @@ var userManager = {
         }
     },
 
-    Setup: function() {
+    Ready: function() {
         // this: userManager object
-        this.ToggleManagerSelection();
-        this.ToggleNameSelection();
+        this.ToggleSelecction();
         this.HandleGetUserNames();
         this.HandleGetManagerNames();
         this.HandleNameSelectionChange();
