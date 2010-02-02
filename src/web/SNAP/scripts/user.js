@@ -18,7 +18,10 @@ var userManager = {
     mgrNameCheck: $("button[id$='mgrCheck']"),
     */
 
-    ToggleSelecction: function() {$('select[id$=nameSelection]').toggle(); $('select[id$=mgrSelection]').toggle();},
+    ToggleSelecction: function() {
+        $('select[id$=nameSelection]').toggle();
+        $('select[id$=mgrSelection]').toggle();
+    },
     GetNames: function(name, selection) {
         var postData = "{'name':'" + name + "'}";
 
@@ -66,6 +69,7 @@ var userManager = {
         userManager.AssignSelectedName($("input[id$='userName']"),
                             $('select[id$=nameSelection] option:selected').text(),
                             $('select[id$=nameSelection]'));
+        userManager.FillUserLoginId();
         userManager.FillManagerName();
     },
 
@@ -73,6 +77,8 @@ var userManager = {
         userManager.AssignSelectedName($("input[id$='mgrName']"),
                             $('select[id$=mgrSelection] option:selected').text(),
                             $('select[id$=mgrSelection]'));
+        userManager.FillManagerLoginId();
+
     },
 
     AssignSelectedName: function(nameElement, selectedName, selection) {
@@ -85,6 +91,30 @@ var userManager = {
         for (var key in userInfo) {
             if (userInfo[key].Name == $("input[id$='userName']").val()) {
                 $("input[id$='mgrName']").val(userInfo[key].ManagerName);
+                $("input[id$='mgrLoginId']").empty();
+                $("input[id$='mgrLoginId']").val(userInfo[key].ManagerLoginId);
+                break;
+            }
+        }
+    },
+
+    FillUserLoginId: function() {
+        var userInfo = $('body').data('userInfo');
+        for (var key in userInfo) {
+            if (userInfo[key].Name == $("input[id$='userName']").val()) {
+                $("input[id$='userLoginId']").empty();
+                $("input[id$='userLoginId']").val(userInfo[key].LoginId);
+                break;
+            }
+        }
+    },
+
+    FillManagerLoginId: function() {
+        var userInfo = $('body').data('userInfo');
+        for (var key in userInfo) {
+            if (userInfo[key].Name == $("input[id$='mgrName']").val()) {
+                $("input[id$='mgrLoginId']").empty();
+                $("input[id$='mgrLoginId']").val(userInfo[key].LoginId);
                 break;
             }
         }

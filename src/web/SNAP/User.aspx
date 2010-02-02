@@ -19,10 +19,17 @@
       $(document).ready(DocReady);
     </script>
      
+    <style type="text/css">
+        .style1 {
+            width: 100%;
+        }
+    </style>
+     
 </head>
 <body>
     <form id="form1" runat="server">
       <h3>Test!</h3>
+      <!--
       Name: <input type="text" name="userName" id='userName'/>
       <button type='button' id='userCheck'>check</button>
       <br />
@@ -33,7 +40,53 @@
       <button type='button' id='mgrCheck'>check</button>
       <br />
       <select size="3" name="mgrSelection" id="mgrSelection">
-      </select>      
+      </select><br />
+      <br />
+      -->
+      <table class="style1">
+          <tr>
+              <td>
+                  Name:
+              </td>
+              <td>
+                  <asp:TextBox ID="userName" runat="server"></asp:TextBox>
+                  <button type='button' id='userCheck'>check</button>
+              </td>
+              <td>
+                  <asp:TextBox ID="userLoginId" runat="server" style="display:none" ></asp:TextBox>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  &nbsp;</td>
+              <td>
+                  <select size="3" name="nameSelection" id="nameSelection"></select></td>
+              <td>
+                  &nbsp;</td>
+          </tr>
+          <tr>
+              <td>
+                  Manager:
+              </td>
+              <td>
+                  <asp:TextBox ID="mgrName" runat="server"></asp:TextBox>
+                  <button type='button' id='mgrCheck'>check</button>
+              </td>
+              <td>
+                  <asp:TextBox ID="mgrLoginId" runat="server" style="display:none"></asp:TextBox>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  &nbsp;</td>
+              <td>
+                  <select size="3" name="mgrSelection" id="mgrSelection"></select></td>
+              <td>
+                  &nbsp;</td>
+          </tr>
+      </table>
+&nbsp;<asp:Button ID="Button1" runat="server" onclick="Button1_Click" Text="Button" />
+      <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
       <div id='result'></div>
     </form>
 </body>

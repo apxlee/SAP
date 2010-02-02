@@ -39,6 +39,11 @@ namespace SNAP
             return result;
         }
 
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+            this.Label1.Text = this.userLoginId.Text + "-" + this.mgrLoginId.Text;
+        }
+
     }
 
     public class UserManagerInfo
