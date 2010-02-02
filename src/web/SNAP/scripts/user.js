@@ -9,18 +9,20 @@ function DocReady() {
 }
 
 var userManager = {
-    /*
-    userName: $("input[id$='userName']"),
-    userSelection: $('select[id$=nameSelection]'),
-    mgrName: $("input[id$='mgrName']"),
-    mgrSelection: $('select[id$=mgrSelection]'),
-    userNameCheck: $("button[id$='userCheck']"),
-    mgrNameCheck: $("button[id$='mgrCheck']"),
-    */
+    Setup: function() {
+        this.userName = $("input[id$='userName']");
+        this.userSelection = $('select[id$=nameSelection]');
+        this.mgrName = $("input[id$='mgrName']");
+        this.mgrSelection = $('select[id$=mgrSelection]');
+        this.userNameCheck = $("button[id$='userCheck']");
+        this.mgrNameCheck = $("button[id$='mgrCheck']");
+        this.userLoginId = $("input[id$='userLoginId']");
+        this.mgrLoginId = $("input[id$='mgrLoginId']");
+    },
 
     ToggleSelecction: function() {
-        $('select[id$=nameSelection]').toggle();
-        $('select[id$=mgrSelection]').toggle();
+        this.userSelection.toggle();
+        this.mgrSelection.toggle();
     },
     GetNames: function(name, selection) {
         var postData = "{'name':'" + name + "'}";
@@ -49,34 +51,34 @@ var userManager = {
 
     },
     HandleGetUserNames: function() {
-        $("button[id$='userCheck']").click(function() {
+        userManager.userNameCheck.click(function() {
             // this is ref to the button not usermanager, hence to call usermanager function I need to ref to qualify user manager
-            userManager.GetNames($("input[id$='userName']").val(), $('select[id$=nameSelection]'));
+            userManager.GetNames(userManager.userName.val(), userManager.userSelection);
         })
     },
     HandleGetManagerNames: function() {
-        $("button[id$='mgrCheck']").click(function() {
+        userManager.mgrNameCheck.click(function() {
             // this is ref to the button not usermanager, hence to call usermanager function I need to ref to qualify user manager
-            userManager.GetNames($("input[id$='mgrName']").val(), $('select[id$=mgrSelection]'));
+            userManager.GetNames(userManager.mgrName.val(), userManager.mgrSelection);
         })
     },
 
-    HandleNameSelectionChange: function() { $('select[id$=nameSelection]').change(userManager.UserNameSelected) },
-    HandleManagerSelectionChange: function() { $('select[id$=mgrSelection]').change(userManager.ManagerNameSelected) },
+    HandleNameSelectionChange: function() { userManager.userSelection.change(userManager.UserNameSelected) },
+    HandleManagerSelectionChange: function() { userManager.mgrSelection.change(userManager.ManagerNameSelected) },
 
 
     UserNameSelected: function() {
-        userManager.AssignSelectedName($("input[id$='userName']"),
+        userManager.AssignSelectedName(userManager.userName,
                             $('select[id$=nameSelection] option:selected').text(),
-                            $('select[id$=nameSelection]'));
+                            userManager.userSelection);
         userManager.FillUserLoginId();
         userManager.FillManagerName();
     },
 
     ManagerNameSelected: function() {
-        userManager.AssignSelectedName($("input[id$='mgrName']"),
+        userManager.AssignSelectedName(userManager.mgrName,
                             $('select[id$=mgrSelection] option:selected').text(),
-                            $('select[id$=mgrSelection]'));
+                            userManager.mgrSelection);
         userManager.FillManagerLoginId();
 
     },
@@ -89,11 +91,11 @@ var userManager = {
     FillManagerName: function() {
         var userInfo = $('body').data('userInfo');
         for (var key in userInfo) {
-            if (userInfo[key].Name == $("input[id$='userName']").val()) {
-                $("input[id$='mgrName']").val(userInfo[key].ManagerName);
-                $("input[id$='mgrLoginId']").empty();
-                $("input[id$='mgrLoginId']").val(userInfo[key].ManagerLoginId);
-                break;
+            if (userInfo[key].Name == userManager.userName.val()) {
+               userManager.mgrName.val(userInfo[key].ManagerName);
+               userManager.mgrLoginId.empty();
+               userManager.mgrLoginId.val(userInfo[key].ManagerLoginId);
+               break;
             }
         }
     },
@@ -101,9 +103,9 @@ var userManager = {
     FillUserLoginId: function() {
         var userInfo = $('body').data('userInfo');
         for (var key in userInfo) {
-            if (userInfo[key].Name == $("input[id$='userName']").val()) {
-                $("input[id$='userLoginId']").empty();
-                $("input[id$='userLoginId']").val(userInfo[key].LoginId);
+            if (userInfo[key].Name == userManager.userName.val()) {
+                userManager.userLoginId.empty();
+                userManager.userLoginId.val(userInfo[key].LoginId);
                 break;
             }
         }
@@ -112,9 +114,9 @@ var userManager = {
     FillManagerLoginId: function() {
         var userInfo = $('body').data('userInfo');
         for (var key in userInfo) {
-            if (userInfo[key].Name == $("input[id$='mgrName']").val()) {
-                $("input[id$='mgrLoginId']").empty();
-                $("input[id$='mgrLoginId']").val(userInfo[key].LoginId);
+            if (userInfo[key].Name == userManager.mgrName.val()) {
+                userManager.mgrLoginId.empty();
+                userManager.mgrLoginId.val(userInfo[key].LoginId);
                 break;
             }
         }
@@ -122,6 +124,7 @@ var userManager = {
 
     Ready: function() {
         // this: userManager object
+        this.Setup();
         this.ToggleSelecction();
         this.HandleGetUserNames();
         this.HandleGetManagerNames();
