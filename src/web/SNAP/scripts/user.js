@@ -37,10 +37,12 @@ var userManager = {
                 var names = msg.d;
                 $('body').data('userInfo', names);
 
+                // direct match
                 if (names.length == 1) {
                     userManager.FillAllFields(name, names);
                 }
 
+                // match list of names
                 if (names.length > 1) {
                     var listItems = [];
                     for (var key in names) {
@@ -75,7 +77,7 @@ var userManager = {
         userManager.AssignSelectedName(userManager.userName,
                             $('select[id$=nameSelection] option:selected').text(),
                             userManager.userSelection);
-        userManager.FillUserLoginId();
+        userManager.FillLoginId(userManager.userName.val(), userManager.userLoginId);
         userManager.FillManagerName();
     },
 
@@ -83,7 +85,7 @@ var userManager = {
         userManager.AssignSelectedName(userManager.mgrName,
                             $('select[id$=mgrSelection] option:selected').text(),
                             userManager.mgrSelection);
-        userManager.FillManagerLoginId();
+        userManager.FillLoginId(userManager.mgrName.val(), userManager.mgrLoginId);
 
     },
 
@@ -104,36 +106,25 @@ var userManager = {
         }
     },
 
-    FillUserLoginId: function() {
+    FillLoginId: function(name, loginId) {
         var userInfo = $('body').data('userInfo');
         for (var key in userInfo) {
-            if (userInfo[key].Name == userManager.userName.val()) {
-                userManager.userLoginId.empty();
-                userManager.userLoginId.val(userInfo[key].LoginId);
-                break;
-            }
-        }
-    },
-
-    FillManagerLoginId: function() {
-        var userInfo = $('body').data('userInfo');
-        for (var key in userInfo) {
-            if (userInfo[key].Name == userManager.mgrName.val()) {
-                userManager.mgrLoginId.empty();
-                userManager.mgrLoginId.val(userInfo[key].LoginId);
+            if (userInfo[key].Name == name) {
+                loginId.empty();
+                loginId.val(userInfo[key].LoginId);
                 break;
             }
         }
     },
 
     FillAllFields: function(name, names) {
-    
+
         if (name.attr('id').indexOf("mgr") > -1) {
             userManager.mgrLoginId.val(names[0].LoginId);
-            userManager.mgrName.val(names[0].Name); 
+            userManager.mgrName.val(names[0].Name);
         } else {
-        
-            userManager.userName.val(names[0].Name); 
+
+            userManager.userName.val(names[0].Name);
             userManager.userLoginId.val(names[0].LoginId);
             userManager.mgrName.val(names[0].ManagerName);
             userManager.mgrLoginId.val(names[0].ManagerLoginId);
