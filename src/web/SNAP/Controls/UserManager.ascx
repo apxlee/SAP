@@ -1,6 +1,13 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="UserManager.ascx.cs" Inherits="SNAP.Controls.UserManager" %>
 
-<script src='/scripts/user.js' type="text/javascript" ></script>
+<!--<script src='/scripts/user.js' type="text/javascript" ></script>-->
+
+
+<script type="text/javascript">
+    if (typeof userManager == 'undefined') {
+        document.write("<script src=\"/scripts/user.js\" type=\"text/javascript\"></" + "script>");
+    }
+</script>
 
   <table>
       <tr>
