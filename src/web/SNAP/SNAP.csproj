@@ -97,6 +97,7 @@
     <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Controls\UserManager.ascx" />
     <Content Include="Default.aspx" />
     <Content Include="images\accessTop.jpg" />
     <Content Include="images\onBack.jpg" />
@@ -119,6 +120,13 @@
     </Compile>
     <Compile Include="CapSession.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Controls\UserManager.ascx.cs">
+      <DependentUpon>UserManager.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\UserManager.ascx.designer.cs">
+      <DependentUpon>UserManager.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

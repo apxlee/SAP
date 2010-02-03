@@ -43,7 +43,7 @@ namespace SNAP
 
         protected void Button1_Click(object sender, EventArgs e)
         {
-            this.Label1.Text = this.userLoginId.Text + "-" + this.mgrLoginId.Text;
+            this.Label1.Text = UserManager1.UserName+"(" + UserManager1.UserLoginId + ") - " + UserManager1.ManagerName + "(" + UserManager1.ManagerLoginId + ")";
         }
 
     }

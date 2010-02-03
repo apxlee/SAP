@@ -30,7 +30,7 @@ var userManager = {
         $.ajax({
             type: "POST",
             contentType: "application/json; character=utf-8",
-            url: "/User.aspx/GetNames",
+            url: "/Default.aspx/GetNames",
             data: postData,
             dataType: "json",
             success: function(msg) {

@@ -33,6 +33,33 @@ namespace SNAP
             Response.Redirect("Index.aspx");
         }
 
+        [WebMethod]
+        public static List<UserManagerInfo> GetNames(string name)
+        {
+            var result = new List<UserManagerInfo>
+                             {
+                                 
+                                 new UserManagerInfo()
+                                     {
+                                         LoginId = "pxlee1",
+                                         ManagerLoginId = "mgr1",
+                                         ManagerName = "Manager 1",
+                                         Name = "Pong 1"
+                                     },
+                                 
+                                     new UserManagerInfo()
+                                     {
+                                         LoginId = "pxlee2",
+                                         ManagerLoginId = "mgr2",
+                                         ManagerName = "Manager 2",
+                                         Name = "Pong 2"
+
+                                     }
+                               
+                           };
+            return result;
+        }
+
     }
 
 }
