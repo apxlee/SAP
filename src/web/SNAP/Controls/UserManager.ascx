@@ -9,7 +9,7 @@
           </td>
           <td>
               <asp:TextBox ID="userName" runat="server"></asp:TextBox>
-              <button type='button' id='userCheck'>check</button>
+              <button type='button' id='userCheck'>Check</button>
           </td>
           <td>
               <asp:TextBox ID="userLoginId" runat="server" style="display:none" ></asp:TextBox>
@@ -29,7 +29,7 @@
           </td>
           <td>
               <asp:TextBox ID="mgrName" runat="server"></asp:TextBox>
-              <button type='button' id='mgrCheck'>check</button>
+              <button type='button' id='mgrCheck'>Change</button>
           </td>
           <td>
               <asp:TextBox ID="mgrLoginId" runat="server" style="display:none"></asp:TextBox>
