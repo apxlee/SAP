@@ -19,6 +19,7 @@ namespace SNAP
         {
             var result = new List<UserManagerInfo>
                              {
+                                 /*
                                  new UserManagerInfo()
                                      {
                                          LoginId = "pxlee1",
@@ -26,6 +27,7 @@ namespace SNAP
                                          ManagerName = "Manager 1",
                                          Name = "Pong 1"
                                      },
+                                  */
                                      new UserManagerInfo()
                                      {
                                          LoginId = "pxlee2",

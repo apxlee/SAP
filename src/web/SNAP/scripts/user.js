@@ -25,7 +25,7 @@ var userManager = {
         this.mgrSelection.toggle();
     },
     GetNames: function(name, selection) {
-        var postData = "{'name':'" + name + "'}";
+        var postData = "{'name':'" + name.val() + "'}";
 
         $.ajax({
             type: "POST",
@@ -37,7 +37,11 @@ var userManager = {
                 var names = msg.d;
                 $('body').data('userInfo', names);
 
-                if (names.length > 0) {
+                if (names.length == 1) {
+                    userManager.FillAllFields(name, names);
+                }
+
+                if (names.length > 1) {
                     var listItems = [];
                     for (var key in names) {
                         listItems.push('<option value="' + key + '">' + names[key].Name + '</option>');
@@ -53,13 +57,13 @@ var userManager = {
     HandleGetUserNames: function() {
         userManager.userNameCheck.click(function() {
             // this is ref to the button not usermanager, hence to call usermanager function I need to ref to qualify user manager
-            userManager.GetNames(userManager.userName.val(), userManager.userSelection);
+            userManager.GetNames(userManager.userName, userManager.userSelection);
         })
     },
     HandleGetManagerNames: function() {
         userManager.mgrNameCheck.click(function() {
             // this is ref to the button not usermanager, hence to call usermanager function I need to ref to qualify user manager
-            userManager.GetNames(userManager.mgrName.val(), userManager.mgrSelection);
+            userManager.GetNames(userManager.mgrName, userManager.mgrSelection);
         })
     },
 
@@ -92,10 +96,10 @@ var userManager = {
         var userInfo = $('body').data('userInfo');
         for (var key in userInfo) {
             if (userInfo[key].Name == userManager.userName.val()) {
-               userManager.mgrName.val(userInfo[key].ManagerName);
-               userManager.mgrLoginId.empty();
-               userManager.mgrLoginId.val(userInfo[key].ManagerLoginId);
-               break;
+                userManager.mgrName.val(userInfo[key].ManagerName);
+                userManager.mgrLoginId.empty();
+                userManager.mgrLoginId.val(userInfo[key].ManagerLoginId);
+                break;
             }
         }
     },
@@ -122,6 +126,19 @@ var userManager = {
         }
     },
 
+    FillAllFields: function(name, names) {
+    
+        if (name.attr('id').indexOf("mgr") > -1) {
+            userManager.mgrLoginId.val(names[0].LoginId);
+            userManager.mgrName.val(names[0].Name); 
+        } else {
+        
+            userManager.userName.val(names[0].Name); 
+            userManager.userLoginId.val(names[0].LoginId);
+            userManager.mgrName.val(names[0].ManagerName);
+            userManager.mgrLoginId.val(names[0].ManagerLoginId);
+        }
+    },
     Ready: function() {
         // this: userManager object
         this.Setup();
@@ -134,76 +151,3 @@ var userManager = {
 }
 
 function BorderMyh3() { $("h3").css("border", "3px solid red"); }
-
-/*
-function ToggleNameSelection() { $('select[id$=nameSelection]').toggle(); }
-function ToggleManagerSelection() { $('select[id$=mgrSelection]').toggle(); }
-function HandleGetUserNames() { $("button[id$='userCheck']").click(GetUserNames) }
-function HandleGetManagerNames() { $("button[id$='mgrCheck']").click(GetManagerNames) }
-function HandleNameSelectionChange() { $('select[id$=nameSelection]').change(UserNameSelected) }
-function HandleManagerSelectionChange() { $('select[id$=mgrSelection]').change(ManagerNameSelected) }
-
-function GetUserNames() {
-    GetNames($("input[id$='userName']").val(), $('select[id$=nameSelection]'), ToggleNameSelection);
-}
-
-function UserNameSelected() {
-    AssignSelectedName( $("input[id$='userName']"),
-                        $('select[id$=nameSelection] option:selected').text(),
-                        ToggleNameSelection);
-    FillManagerName();
-}
-
-function GetManagerNames() {
-    GetNames($("input[id$='mgrName']").val(), $('select[id$=mgrSelection]'), ToggleManagerSelection);
-}
-
-
-function GetNames(name, selection, toggleSelection) {
-    var postData = "{'name':'" + name + "'}";
-
-    $.ajax({
-        type: "POST",
-        contentType: "application/json; character=utf-8",
-        url: "/User.aspx/GetNames",
-        data: postData,
-        dataType: "json",
-        success: function(msg) {
-            var names = msg.d;
-            $('body').data('userInfo', names);
-
-            if (names.length > 0) {
-                var listItems = [];
-                for (var key in names) {
-                    listItems.push('<option value="' + key + '">' + names[key].Name + '</option>');
-                }
-                toggleSelection();
-                selection.empty();
-                selection.append(listItems.join(''));
-            }
-        }
-    });
-}
-
-function ManagerNameSelected() {
-    AssignSelectedName( $("input[id$='mgrName']"),
-                        $('select[id$=mgrSelection] option:selected').text(), 
-                        ToggleManagerSelection);
-}
-
-function AssignSelectedName(nameElement, selectedName, toggleSelection) {
-    nameElement.val(selectedName);
-    toggleSelection();
-}
-
-function FillManagerName() {
-    var userInfo = $('body').data('userInfo');
-    for (var key in userInfo) {
-        if (userInfo[key].Name == $("input[id$='userName']").val()) {
-            $("input[id$='mgrName']").val(userInfo[key].ManagerName);
-            break;
-        }
-    }
-}
-
-*/
