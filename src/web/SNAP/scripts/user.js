@@ -51,6 +51,7 @@ var userManager = {
                     selection.toggle();
                     selection.empty();
                     selection.append(listItems.join(''));
+                    selection.attr('size',names.length);
                 }
             }
         });

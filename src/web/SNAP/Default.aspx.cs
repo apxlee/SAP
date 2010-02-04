@@ -47,14 +47,35 @@ namespace SNAP
                                          Name = "Pong 1"
                                      },
                                  
-                                     new UserManagerInfo()
-                                     {
-                                         LoginId = "pxlee2",
-                                         ManagerLoginId = "mgr2",
-                                         ManagerName = "Manager 2",
-                                         Name = "Pong 2"
+                                 new UserManagerInfo()
+                                 {
+                                     LoginId = "pxlee2",
+                                     ManagerLoginId = "mgr2",
+                                     ManagerName = "Manager 2",
+                                     Name = "Pong 2"
 
-                                     }
+                                 },
+
+                                                                  
+                                 new UserManagerInfo()
+                                 {
+                                     LoginId = "pxlee3",
+                                     ManagerLoginId = "mgr3",
+                                     ManagerName = "Manager 3",
+                                     Name = "Pong 3"
+
+                                 },
+
+                                 new UserManagerInfo()
+                                 {
+                                     LoginId = "pxlee4",
+                                     ManagerLoginId = "mgr4",
+                                     ManagerName = "Manager 4",
+                                     Name = "Pong 4, Pong 4, Pong 4"
+
+                                 }
+
+
                                
                            };
             return result;
