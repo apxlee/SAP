@@ -10,7 +10,7 @@ using Apollo.Ultimus.CAP;
 using Apollo.Ultimus.CAP.Model;
 using Apollo.Ultimus.Web;
 
-namespace SNAP
+namespace Apollo.AIM.SNAP.Web
 {
   /// <summary>
   /// Summary description for index.

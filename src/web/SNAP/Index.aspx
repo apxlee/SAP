@@ -1,5 +1,5 @@
 <%@ Register TagPrefix="uc1" TagName="ucFooter" Src="includes/ucFooter.ascx" %>
-<%@ Page CodeBehind="Index.aspx.cs" Language="c#" AutoEventWireup="True" Inherits="SNAP.Index2"  %>
+<%@ Page CodeBehind="Index.aspx.cs" Language="c#" AutoEventWireup="True" Inherits="Apollo.AIM.SNAP.Web.Index2"  %>
 <%@ Register TagPrefix="uc1" TagName="ucHeader" Src="includes/ucHeader.ascx" %>
 <html>
 <head>

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SNAP {
+namespace Apollo.AIM.SNAP.Web {
     
     
     public partial class Index2 {

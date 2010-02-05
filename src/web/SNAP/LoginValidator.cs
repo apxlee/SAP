@@ -6,7 +6,7 @@ using System.Web.SessionState;
 using System.Collections;
 using Apollo.Ultimus.CAP.Model;
 
-namespace SNAP
+namespace Apollo.AIM.SNAP.Web
 {
 	/// <summary>
 	/// Summary description for LoginValidator.
