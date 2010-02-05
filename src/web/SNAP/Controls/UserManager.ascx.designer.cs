@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SNAP.Controls {
+namespace Apollo.AIM.SNAP.Web.Controls {
     
     
     public partial class UserManager {

@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace SNAP.Controls
+namespace Apollo.AIM.SNAP.Web.Controls
 {
     public partial class UserManager : System.Web.UI.UserControl
     {

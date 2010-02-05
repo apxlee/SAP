@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="UserManager.ascx.cs" Inherits="SNAP.Controls.UserManager" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="UserManager.ascx.cs" Inherits="Apollo.AIM.SNAP.Web.Controls.UserManager" %>
 
 <!--<script src='/scripts/user.js' type="text/javascript" ></script>-->
 
