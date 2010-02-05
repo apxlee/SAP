@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{5AB65A15-CF1E-40AE-B0B7-6000B447EA8C}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
@@ -97,9 +97,9 @@
     <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Controls\SNAPLoginForm.ascx" />
     <Content Include="Controls\UserManager.ascx" />
     <Content Include="Default.aspx" />
-    <Content Include="SNAPHome.aspx" />
     <Content Include="images\accessTop.jpg" />
     <Content Include="images\onBack.jpg" />
     <Content Include="includes\ucFooter.ascx" />
@@ -128,6 +128,13 @@
     <Compile Include="CapSession.cs" />
     <Compile Include="Common\WebUtilities.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Controls\SNAPLoginForm.ascx.cs">
+      <DependentUpon>SNAPLoginForm.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\SNAPLoginForm.ascx.designer.cs">
+      <DependentUpon>SNAPLoginForm.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Controls\UserManager.ascx.cs">
       <DependentUpon>UserManager.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -141,13 +148,6 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="SNAPHome.aspx.cs">
-      <DependentUpon>SNAPHome.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="SNAPHome.aspx.designer.cs">
-      <DependentUpon>SNAPHome.aspx</DependentUpon>
     </Compile>
     <Compile Include="includes\ucFooter.ascx.cs">
       <DependentUpon>ucFooter.ascx</DependentUpon>
@@ -233,9 +233,6 @@
           <IISUrl>
           </IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
