@@ -38,7 +38,7 @@ namespace Apollo.AIM.SNAP.Web {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Apollo.AIM.SNAP.Web.SNAPDefaultIncludes _includes;
+        protected global::Apollo.AIM.SNAP.Web.Controls.SNAPDefaultIncludes _includes;
         
         /// <summary>
         /// _contentContainer control.
@@ -74,7 +74,7 @@ namespace Apollo.AIM.SNAP.Web {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Apollo.AIM.SNAP.Web.SNAPRequestForm _requestFormControl;
+        protected global::Apollo.AIM.SNAP.Web.Controls.SNAPRequestForm _requestFormControl;
         
         /// <summary>
         /// _footer control.
@@ -83,6 +83,6 @@ namespace Apollo.AIM.SNAP.Web {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Apollo.AIM.SNAP.Web.SNAPFooter _footer;
+        protected global::Apollo.AIM.SNAP.Web.Controls.SNAPFooter _footer;
     }
 }
