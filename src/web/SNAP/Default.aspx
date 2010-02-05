@@ -14,7 +14,6 @@
 
     <script type="text/javascript" >
         $(document).ready(function() {
-            $('h3').css("border", "3px solod red");
         });
         
     </script>
