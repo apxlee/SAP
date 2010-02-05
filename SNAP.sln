@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SNAP", "src\web\SNAP\SNAP.csproj", "{5AB65A15-CF1E-40AE-B0B7-6000B447EA8C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apollo.AIM.SNAP.Web", "src\web\SNAP\Apollo.AIM.SNAP.Web.csproj", "{5AB65A15-CF1E-40AE-B0B7-6000B447EA8C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apollo.AIM.SNAP.Test", "src\test\unit\Apollo.AIM.SNAP.Test\Apollo.AIM.SNAP.Test.csproj", "{7F2F8A86-B2AA-4B21-BCED-B368A05E4A60}"
 EndProject
