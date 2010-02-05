@@ -1,4 +1,4 @@
-namespace SNAP
+namespace Apollo.AIM.SNAP.Web
 {
   public static class QueryStringConstants
   {
