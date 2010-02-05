@@ -15,7 +15,7 @@ namespace Apollo.AIM.SNAP.Web
   /// <summary>
   /// Summary description for index.
   /// </summary>
-  public partial class Index2 : Page
+  public partial class Index : Page
   {
 
     protected void Page_Load(object sender, EventArgs e)

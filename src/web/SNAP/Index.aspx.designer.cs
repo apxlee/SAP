@@ -11,7 +11,43 @@
 namespace Apollo.AIM.SNAP.Web {
     
     
-    public partial class Index2 {
+    public partial class Index {
+        
+        /// <summary>
+        /// _head control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlHead _head;
+        
+        /// <summary>
+        /// _defaultForm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlForm _defaultForm;
+        
+        /// <summary>
+        /// _includes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Apollo.AIM.SNAP.Web.Controls.SNAPDefaultIncludes _includes;
+        
+        /// <summary>
+        /// _contentContainer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel _contentContainer;
         
         /// <summary>
         /// ErrorMsg control.
@@ -50,12 +86,12 @@ namespace Apollo.AIM.SNAP.Web {
         protected global::System.Web.UI.WebControls.Button btnLogin;
         
         /// <summary>
-        /// UcFooter1 control.
+        /// _footer control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::SNAP.includes.ucFooter UcFooter1;
+        protected global::Apollo.AIM.SNAP.Web.Controls.SNAPFooter _footer;
     }
 }
