@@ -1,0 +1,241 @@
+﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5AB65A15-CF1E-40AE-B0B7-6000B447EA8C}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Apollo.AIM.SNAP.Web</RootNamespace>
+    <AssemblyName>Apollo.AIM.SNAP.Web</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Apollo.AIM.Ultimus, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Apollo.AIM.Ultimus.dll</HintPath>
+    </Reference>
+    <Reference Include="Apollo.CA, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Apollo.CA.dll</HintPath>
+    </Reference>
+    <Reference Include="Apollo.CA.Workflow.Task, Version=1.0.3660.19787, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Apollo.CA.Workflow.Task.dll</HintPath>
+    </Reference>
+    <Reference Include="Apollo.ServiceDesk, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Apollo.ServiceDesk.dll</HintPath>
+    </Reference>
+    <Reference Include="Apollo.Ultimus, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Apollo.Ultimus.dll</HintPath>
+    </Reference>
+    <Reference Include="Apollo.Ultimus.Audit, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Apollo.Ultimus.Audit.dll</HintPath>
+    </Reference>
+    <Reference Include="Apollo.Ultimus.CAP, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Apollo.Ultimus.CAP.dll</HintPath>
+    </Reference>
+    <Reference Include="Apollo.Ultimus.Web, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Apollo.Ultimus.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="ConnectionFactory, Version=1.0.2104.35800, Culture=neutral, PublicKeyToken=ed764f3a913449c3">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\ConnectionFactory.dll</HintPath>
+    </Reference>
+    <Reference Include="Neo, Version=1.4.0.17536, Culture=neutral, PublicKeyToken=36a32b8e5c75024d">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Neo.dll</HintPath>
+    </Reference>
+    <Reference Include="Neo.OracleClient, Version=1.4.0.17537, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Neo.OracleClient.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Extensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Controls\UserManager.ascx" />
+    <Content Include="Default.aspx" />
+    <Content Include="SNAPHome.aspx" />
+    <Content Include="images\accessTop.jpg" />
+    <Content Include="images\onBack.jpg" />
+    <Content Include="includes\ucFooter.ascx" />
+    <Content Include="includes\ucHeader.ascx" />
+    <Content Include="includes\ucUserDetails.ascx" />
+    <Content Include="Index.aspx" />
+    <Content Include="scripts\jquery-1.3.2-vsdoc.js" />
+    <Content Include="scripts\jquery-1.3.2.js" />
+    <Content Include="scripts\user.js" />
+    <Content Include="SNAPDefaultIncludes.ascx" />
+    <Content Include="SNAPFooter.ascx" />
+    <Content Include="SNAPRequestForm.ascx" />
+    <Content Include="styles\access2.css" />
+    <Content Include="styles\calendar.css" />
+    <Content Include="styles\Csm_Grid976.css" />
+    <Content Include="styles\Csm_Reset.css" />
+    <Content Include="styles\Csm_Template_v1.css" />
+    <Content Include="styles\login.css" />
+    <Content Include="User.aspx" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CapPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CapSession.cs" />
+    <Compile Include="Common\WebUtilities.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Controls\UserManager.ascx.cs">
+      <DependentUpon>UserManager.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\UserManager.ascx.designer.cs">
+      <DependentUpon>UserManager.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SNAPHome.aspx.cs">
+      <DependentUpon>SNAPHome.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SNAPHome.aspx.designer.cs">
+      <DependentUpon>SNAPHome.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="includes\ucFooter.ascx.cs">
+      <DependentUpon>ucFooter.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="includes\ucFooter.ascx.designer.cs">
+      <DependentUpon>ucFooter.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="includes\ucHeader.ascx.cs">
+      <DependentUpon>ucHeader.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="includes\ucHeader.ascx.designer.cs">
+      <DependentUpon>ucHeader.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="includes\ucUserDetails.ascx.cs">
+      <DependentUpon>ucUserDetails.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="includes\ucUserDetails.ascx.designer.cs">
+      <DependentUpon>ucUserDetails.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Index.aspx.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Index.aspx.designer.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="LoginValidator.cs" />
+    <Compile Include="PersonTools.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SNAPDefaultIncludes.ascx.cs">
+      <DependentUpon>SNAPDefaultIncludes.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SNAPDefaultIncludes.ascx.designer.cs">
+      <DependentUpon>SNAPDefaultIncludes.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SNAPFooter.ascx.cs">
+      <DependentUpon>SNAPFooter.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SNAPFooter.ascx.designer.cs">
+      <DependentUpon>SNAPFooter.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SNAPRequestForm.ascx.cs">
+      <DependentUpon>SNAPRequestForm.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SNAPRequestForm.ascx.designer.cs">
+      <DependentUpon>SNAPRequestForm.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UltimusTools.cs" />
+    <Compile Include="User.aspx.cs">
+      <DependentUpon>User.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="User.aspx.designer.cs">
+      <DependentUpon>User.aspx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>31582</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
