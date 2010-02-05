@@ -50,40 +50,49 @@ namespace Apollo.AIM.SNAP.Web {
         protected global::System.Web.UI.WebControls.Panel _contentContainer;
         
         /// <summary>
-        /// ErrorMsg control.
+        /// _csmMultiView control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ErrorMsg;
+        protected global::System.Web.UI.WebControls.MultiView _csmMultiView;
         
         /// <summary>
-        /// txtLogin control.
+        /// _loginFormView control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtLogin;
+        protected global::System.Web.UI.WebControls.View _loginFormView;
         
         /// <summary>
-        /// txtPassword control.
+        /// _loginFormControl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPassword;
+        protected global::Apollo.AIM.SNAP.Web.Controls.SNAPLoginForm _loginFormControl;
         
         /// <summary>
-        /// btnLogin control.
+        /// _requestFormView control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnLogin;
+        protected global::System.Web.UI.WebControls.View _requestFormView;
+        
+        /// <summary>
+        /// _requestFormControl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Apollo.AIM.SNAP.Web.Controls.SNAPRequestForm _requestFormControl;
         
         /// <summary>
         /// _footer control.

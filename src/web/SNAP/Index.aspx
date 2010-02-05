@@ -1,16 +1,16 @@
 <%@ Page CodeBehind="Index.aspx.cs" Language="c#" AutoEventWireup="True" Inherits="Apollo.AIM.SNAP.Web.Index"  %>
 <%@ Register src="~/Controls/SNAPDefaultIncludes.ascx" tagname="SNAPIncludes" tagprefix="uc" %>
 <%@ Register src="~/Controls/SNAPFooter.ascx" tagname="SNAPFooter" tagprefix="uc" %>
+<%@ Register src="~/Controls/SNAPRequestForm.ascx" tagname="RequestForm" tagprefix="uc" %>
+<%@ Register src="~/Controls/SNAPLoginForm.ascx" tagname="LoginForm" tagprefix="uc" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head id="_head" runat="server">
     <title>Out-Of-Scope Privileged Access</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-	<meta name="Topaz Monitor" content="OOSPA - Login Page">    
 </head>
-<body onLoad="document.getElementById('txtLogin').focus();">
+<body> 
 	<form runat="server" id="_defaultForm">
 	
 	<uc:SNAPIncludes id="_includes" runat="server" />
@@ -21,34 +21,25 @@
 		<!-- BEGIN CONTENT AREA -->
 		<asp:Panel ID="_contentContainer" CssClass="csm_container_16 csm_500" runat="server">
 			
-			<p id="ErrorMsg" runat="server" />
-			<h2>LOGIN</h2>
-			<div>
-				<p><label for="txtLogin">Network&nbsp;Login</label><asp:textbox Runat="server" name="loginID" type="text" id="txtLogin" size="20" maxlength="30"/></p>
-				<p><label for="txtPassword">Password</label><asp:TextBox runat="server" id="txtPassword" type="password" size="20" maxlength="30" TextMode="Password"/></p>
-			</div>
-			<asp:Button id="btnLogin" runat="server" Text="Submit" class="button"/>
+			<!-- BEGIN MULTIVIEW CONTROL -->
+			<asp:MultiView ID="_csmMultiView" runat="server" ActiveViewIndex="0" >
+
+				<!-- NOTE: If using the _csmTabbedMenu, the View items 'ID' (below) must match the 'Value' of the associated MenuItem. -->
+				<!-- NOTE: Default Behavior: When page initially loads, view item in ordinal position '0' loads as default,
+					so make sure that your 'home' page View is first in-line (either programatically or static). -->
 				
-			<div>
-				<p>This application allows employees of Apollo Group, Inc., University of Phoenix, 
-                    Institute for Professional Development, Western International University, and 
-                    College for Financial Planning to request access to applications such as Campus 
-                    Tracking, OSIRIS, PeopleSoft, and Remote Access. In addition, this application 
-                    is used to create access accounts for new users who require Outlook (email) and 
-                    network access.</p>
-	 
-				<p><a href="<%=Request.ApplicationPath %>/Help/ApplicationList.htm" class="" target="_blank">
-                    Click here</a> for a list of company applications. Instructions are provided to 
-                    request access for non-CAP applications.</p>
-			
-				<p>What's new in CAP?  <a href="<%=Request.ApplicationPath %>/Help/WhatsNew.htm" class="" target="_blank">
-                    Click here</a> to review recent changes to CAP.</p>
+				<asp:View ID="_loginFormView" runat="server">
+					<uc:LoginForm id="_loginFormControl" runat="server" />
+				</asp:View>
 				
-				<div>
-					<h2>Questions and Technical Support</h2>
-					<p>Campus employees should contact their local Campus Technician for assistance. All 
-						other users should contact <br/>Apollo Tech Support at (480) 929-4100.</p>
-				</div>						
+				<asp:View ID="_requestFormView" runat="server">
+					<uc:RequestForm id="_requestFormControl" runat="server" />
+				</asp:View>				
+				
+			</asp:MultiView>
+
+			<div class="csm_clear">&nbsp;</div>
+			<!-- END MUTLIVIEW CONTROL -->				
 		
 		</asp:Panel>
 		<div class="csm_clear">&nbsp;</div>
