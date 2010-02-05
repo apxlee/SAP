@@ -17,6 +17,10 @@
 
 	<!-- BEGIN MASTER CONTAINER -->
 	<div class="csm_container_100 csm_template_1">
+	
+		<asp:PlaceHolder ID="_topNavigation" runat="server">
+			<p>TODO: TOP NAVIGATION (on PreRender?)</p>
+		</asp:PlaceHolder>
 
 		<!-- BEGIN CONTENT AREA -->
 		<asp:Panel ID="_contentContainer" CssClass="csm_container_16 csm_500" runat="server">
@@ -34,7 +38,23 @@
 				
 				<asp:View ID="_requestFormView" runat="server">
 					<uc:RequestForm id="_requestFormControl" runat="server" />
-				</asp:View>				
+				</asp:View>
+				
+				<asp:View ID="_userView" runat="server">
+					<p>TODO: USER VIEW</p>
+				</asp:View>
+				
+				<asp:View ID="_approvingManagerView" runat="server">
+					<p>TODO: APPROVING MANAGER VIEW</p>
+				</asp:View>
+				
+				<asp:View ID="_accessTeamView" runat="server">
+					<p>TODO: ACCESS TEAM VIEW</p>
+				</asp:View>
+				
+				<asp:View ID="_searchFormView" runat="server">
+					<p>TODO: SEARCH FORM VIEW</p>
+				</asp:View>
 				
 			</asp:MultiView>
 

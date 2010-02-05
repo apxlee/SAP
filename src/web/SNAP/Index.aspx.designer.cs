@@ -41,6 +41,15 @@ namespace Apollo.AIM.SNAP.Web {
         protected global::Apollo.AIM.SNAP.Web.Controls.SNAPDefaultIncludes _includes;
         
         /// <summary>
+        /// _topNavigation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder _topNavigation;
+        
+        /// <summary>
         /// _contentContainer control.
         /// </summary>
         /// <remarks>
@@ -93,6 +102,42 @@ namespace Apollo.AIM.SNAP.Web {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Apollo.AIM.SNAP.Web.Controls.SNAPRequestForm _requestFormControl;
+        
+        /// <summary>
+        /// _userView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.View _userView;
+        
+        /// <summary>
+        /// _approvingManagerView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.View _approvingManagerView;
+        
+        /// <summary>
+        /// _accessTeamView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.View _accessTeamView;
+        
+        /// <summary>
+        /// _searchFormView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.View _searchFormView;
         
         /// <summary>
         /// _footer control.
