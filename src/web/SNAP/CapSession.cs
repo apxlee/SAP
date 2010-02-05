@@ -12,7 +12,7 @@ using Apollo.Ultimus.UltimusIncidents;
 using Apollo.AIM.Ultimus.Workflows;
 //using ComputerAccessProcess.Controls.Search;
 
-namespace SNAP
+namespace Apollo.AIM.SNAP.Web
 {
   internal class CapSession
   {

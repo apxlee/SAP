@@ -1,7 +1,7 @@
 using System;
 using System.Web.UI;
 
-namespace SNAP
+namespace Apollo.AIM.SNAP.Web
 {
     
     public class CapPage: Page
