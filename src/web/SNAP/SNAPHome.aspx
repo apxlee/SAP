@@ -1,8 +1,8 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SNAPHome.aspx.cs" Inherits="Apollo.AIM.SNAP.Web.SNAPHome" %>
 
-<%@ Register src="~/SNAPDefaultIncludes.ascx" tagname="SNAPIncludes" tagprefix="uc" %>
-<%@ Register src="~/SNAPFooter.ascx" tagname="SNAPFooter" tagprefix="uc" %>
-<%@ Register src="~/SNAPRequestForm.ascx" tagname="RequestForm" tagprefix="uc" %>
+<%@ Register src="~/Controls/SNAPDefaultIncludes.ascx" tagname="SNAPIncludes" tagprefix="uc" %>
+<%@ Register src="~/Controls/SNAPFooter.ascx" tagname="SNAPFooter" tagprefix="uc" %>
+<%@ Register src="~/Controls/SNAPRequestForm.ascx" tagname="RequestForm" tagprefix="uc" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
