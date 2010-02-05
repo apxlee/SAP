@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="SNAP._Default" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="Apollo.AIM.SNAP.Web._Default" %>
 <%@ Register TagPrefix="uc1" TagName="ucUserDetails" Src="includes/ucUserDetails.ascx" %>
 
 

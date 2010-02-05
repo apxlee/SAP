@@ -9,7 +9,7 @@ using System.Web.UI.WebControls;
 
 using Apollo.Ultimus.CAP.Model;
 
-namespace SNAP
+namespace Apollo.AIM.SNAP.Web
 {
     public partial class _Default : CapPage
     {

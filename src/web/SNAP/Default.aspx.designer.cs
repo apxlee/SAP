@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SNAP {
+namespace Apollo.AIM.SNAP.Web {
     
     
     public partial class _Default {
@@ -56,6 +56,6 @@ namespace SNAP {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::SNAP.includes.ucUserDetails userDetail;
+        protected global::Apollo.AIM.SNAP.Web.includes.ucUserDetails userDetail;
     }
 }
