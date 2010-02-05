@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SNAP {
+namespace Apollo.AIM.SNAP.Web {
     
     
     public partial class User {
@@ -29,7 +29,7 @@ namespace SNAP {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::SNAP.Controls.UserManager UserManager1;
+        protected global::Apollo.AIM.SNAP.Web.Controls.UserManager UserManager1;
         
         /// <summary>
         /// Button1 control.

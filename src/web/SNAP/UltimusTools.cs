@@ -10,7 +10,7 @@ using Apollo.Ultimus.UltimusIncidents;
 using Apollo.Ultimus.Web;
 using TaskStatuses=Apollo.Ultimus.TaskStatuses;
 
-namespace SNAP
+namespace Apollo.AIM.SNAP.Web
 {
 	/// <summary>
 	/// Summary description for UltimusTools.

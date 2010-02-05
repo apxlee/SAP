@@ -6,7 +6,7 @@ using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace SNAP
+namespace Apollo.AIM.SNAP.Web
 {
     public partial class User : System.Web.UI.Page
     {
