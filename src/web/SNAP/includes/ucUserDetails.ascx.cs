@@ -1,11 +1,12 @@
 using System;
 using System.Web.UI.WebControls;
 //using ComputerAccessProcess;
+using Apollo.AIM.SNAP.Web;
 using Apollo.Ultimus.CAP.Model;
 using Apollo.Ultimus.CAP;
 //using ComputerAccessProcess.Controls.Search;
 
-namespace SNAP.includes
+namespace Apollo.AIM.SNAP.Web.includes
 {
     public partial class ucUserDetails : System.Web.UI.UserControl
     {

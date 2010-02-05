@@ -50,12 +50,12 @@ namespace Apollo.AIM.SNAP.Web {
         protected global::System.Web.UI.WebControls.TextBox txtGroupInfo;
         
         /// <summary>
-        /// userDetail control.
+        /// ucUserDetails1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Apollo.AIM.SNAP.Web.includes.ucUserDetails userDetail;
+        protected global::Apollo.AIM.SNAP.Web.includes.ucUserDetails ucUserDetails1;
     }
 }

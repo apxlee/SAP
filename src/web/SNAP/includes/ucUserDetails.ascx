@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ucUserDetails.ascx.cs" Inherits="SNAP.includes.ucUserDetails" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ucUserDetails.ascx.cs" Inherits="Apollo.AIM.SNAP.Web.includes.ucUserDetails" %>
 
 <script type="text/javascript" language="javascript">
     function DoIDSearch(txtEmpID, oid, url)

@@ -24,7 +24,7 @@ namespace Apollo.AIM.SNAP.Web
             }
             txtUsrInfo.Text = "Manager: " + p.ManagerLink.userId + "\n" + "User Info: " + p.ToStringAllProperties();
             txtGroupInfo.Text = groupInfo;
-            userDetail.init(p.Oid.ToString());
+            this.ucUserDetails1.init(p.Oid.ToString());
         }
 
         protected void LogoutButton_Click(object sender, EventArgs e)
