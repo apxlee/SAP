@@ -76,7 +76,8 @@ var userManager = {
 
     UserNameSelected: function() {
         userManager.AssignSelectedName(userManager.userName,
-                            $('select[id$=nameSelection] option:selected').text(),
+                            //$('select[id$=nameSelection] option:selected').text(),
+                            $('#' + userManager.userSelection.attr('id') + ' option:selected').text(),
                             userManager.userSelection);
         userManager.FillLoginId(userManager.userName.val(), userManager.userLoginId);
         userManager.FillManagerName();
@@ -84,7 +85,8 @@ var userManager = {
 
     ManagerNameSelected: function() {
         userManager.AssignSelectedName(userManager.mgrName,
-                            $('select[id$=mgrSelection] option:selected').text(),
+                            //$('select[id$=mgrSelection] option:selected').text(),
+                            $('#' + userManager.mgrSelection.attr('id') +  ' :selected').text(),
                             userManager.mgrSelection);
         userManager.FillLoginId(userManager.mgrName.val(), userManager.mgrLoginId);
 
