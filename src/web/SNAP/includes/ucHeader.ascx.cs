@@ -1,4 +1,4 @@
-namespace SNAP.includes
+namespace Apollo.AIM.SNAP.Web.includes
 {
 	using System;
 	using System.Data;

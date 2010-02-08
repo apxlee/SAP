@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SNAP.includes {
+namespace Apollo.AIM.SNAP.Web.includes{
     
     
     public partial class ucFooter {
