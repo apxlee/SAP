@@ -1,0 +1,82 @@
+	<!--
+	This script will build the Computer Acces Process web project
+-->
+
+<project name="SAMP Web"  xmlns="http://nant.sf.net/release/0.85-rc4/nant.xsd" default="build">
+  <description>SNAP Web Project</description>
+
+  <include buildfile="common.build"/>
+  
+  <property name="build.snap.dir" value="${build.src.dir}\web\SNAP" dynamic="true"/>
+  <property name="sln.file" value="SNAP.sln" />
+  <property name="package.snap.dir" value="${package.dir}\snap" dynamic="true"/>
+  <property name="deploy.snap.dir" value="${deploy.web.dir}\snap" dynamic="true"/>
+  <property name="vd.name" value="" readonly="false"/>
+
+  <fileset id="asmfolders">
+    <include name="${build.lib}" />
+    <!--<include name="${build.lib}\Neo1.4.0" />-->
+    <include name="${build.lib}\nunit2.4.6-net20" />
+    <!--<include name="${build.lib}\Ultimus7.0" />-->
+    <!--<include name="${build.lib}\AJAX" />-->
+  </fileset>
+
+  <target name="build" description="Builds SNAP according to the set build.dir" depends="init">
+    <call target="common.build.msbuild"/>
+  </target>
+
+  <target name="package" description="This target will package the snap web app">
+  
+  	<echo>package.base.dir = ${package.base.dir} </echo>
+	<echo>package.dir = ${package.dir} </echo>
+
+		<delete dir="${package.snap.dir}" if="${directory::exists(package.snap.dir)}"/>
+		<mkdir dir="${package.snap.dir}" failonerror="true"/>
+    <echo>Copying from ${build.snap.dir} to ${package.snap.dir}</echo>
+    
+    <copy todir="${package.snap.dir}" verbose="true" overwrite="true">
+      <fileset basedir="${build.snap.dir}">
+        <include name="**/*.dll" />
+        <include name="**/*.pdb" if="${configuration=='debug'}" />
+        
+        <include name="**/*.asax" />
+        <include name="**/*.ascx" />
+        <include name="**/*.aspx" />
+        <include name="**/*.asmx" />
+
+        <include name="**/*.css" />
+        <include name="**/*.htm" />
+        <include name="**/*.html" />
+        <include name="**/*.js" />
+        <include name="**/*.master" />
+        <include name="**/*.xml" />
+        <include name="**/*.xslt" />
+
+        <include name="**/*.gif" />
+        <include name="**/*.jpg" />
+        <include name="**/*.swf" />
+
+        <exclude name="**/obj"/>
+        <exclude name="**/obj/**"/>
+      </fileset>
+    </copy>
+    
+  </target>
+
+  <target name="createvd" description="Creates a virtual directory for the web project." depends="getsvnpath">
+    <echo>
+      You need to have nantcontrib installed for this task to work.
+    </echo>
+    <echo>Creating virtual directory ${vd.name} for ${base.path}src\web\cap</echo>
+    <mkiisdir dirpath="${base.path}src\web\cap" vdirname="${vd.name}"/>
+  </target>
+
+  <target name="deploy" description="Deploys the packaged files to QA." depends="package">
+    <echo>Copying from ${package.snap.dir} to ${deploy.snap.dir}</echo>
+    <copy todir="${deploy.snap.dir}" verbose="true" overwrite="true">
+      <fileset basedir="${package.snap.dir}">
+        <include name="**/*"/>
+      </fileset>
+    </copy>
+  </target>
+</project>

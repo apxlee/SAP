@@ -1,0 +1,460 @@
+<?xml version="1.0"?>
+<project xmlns="http://nant.sf.net/release/0.85-rc4/nant.xsd">
+
+  <property name="nant.settings.currentframework" value="net-2.0"/>
+  <property name="fresh.build" value="false" overwrite="false"/>
+  <property name="base.path" value="" dynamic="true"/>
+  <property name="build.local.dir" value="${project::get-base-directory()}\..\..\" readonly="true" overwrite="false"/>
+  <property name="build.checkout.dir" value="${project::get-base-directory()}\..\build\" readonly="true" overwrite="false"/>
+  <property name="build.dir" value="${build.local.dir}" dynamic="true" overwrite="false"/>
+  <property name="build.lib" value="${build.dir}lib" dynamic="true"/>
+  <property name="build.output.dir" value="${build.dir}output" dynamic="true"/>
+  <property name="build.src.dir" value="${build.dir}src\" dynamic="true"/>
+  <!--<property name="build.src.dir" value="${build.dir}src" dynamic="true"/> -->
+  <property name="configuration" value="release" overwrite="false"/>
+  <property name="svn.repo" value="http://svn.apollogrp.edu/idm/cap" dynamic="true"/>
+  <property name="svn.path" value="" dynamic="true"/>
+  <property name="svn.revision" value="HEAD" overwrite="false"/>
+  <property name="svn.tag" value="" overwrite="false"/>
+  <property name="need.checkout" value="true" overwrite="false"/>
+  <property name="version.default" value="0.0.0" dynamic="true"/>
+  <property name="package.base.dir" value="..\package" dynamic="true"/>
+  <property name="package.dir" value="${package.base.dir}\${configuration}" dynamic="true"/>
+  <property name="package.bak.dir" value="..\package.bak\${configuration}" dynamic="true"/>
+  <property name="deploy.dir" value="\\awhpst11.apollogrp.edu" dynamic="true"/>
+  <property name="deploy.web.dir" value="${deploy.dir}\qacap8_2" dynamic="true"/>
+  <!--<tstamp property="timestamp" pattern="yyyyMMddhhmmss" unless="${property::exists('timestamp')}"/>-->
+  <property name="typemock.tasks.path" value="C:\Program Files\Typemock\Isolator\5.0\TypeMock.NAntBuild.dll"/>
+  <property name="nunit.console.path" value="C:\Program Files\NUnit 2.4.6\bin\nunit-console.exe"/>
+  <property name="ncover.console.path" value="C:\Program Files\NCover\NCover.Console.exe"/>
+  <property name="ncoverexplorer.console.path" value="C:\Program Files\NCover\NCoverExplorer.Console.exe"/>
+  <property name="test.output.dir" value="${build.output.dir}\tests\" dynamic="true"/>
+  <property name="test.results.file" value="${test.output.dir}results.xml" dynamic="true"/>
+  <property name="coverage.output.dir" value="${build.output.dir}\coverage\" dynamic="true"/>
+  <property name="class.coverage.output.dir" value="${build.output.dir}\coverage\class\" dynamic="true"/>
+  <property name="coverage.results.file" value="${coverage.output.dir}results.xml" dynamic="true"/>
+  <property name="build.unit.test.dir" value="${build.src.dir}test\unit\" dynamic="true"/>
+  <!--<property name="build.unit.test.dir" value="${build.src.dir}\test\unit\" dynamic="true"/>-->
+  <property name="simian.results.file" value="${build.output.dir}\simian.xml" dynamic="true"/>
+  <property name="simian.path" value="C:\Program Files\simian\bin\simian-2.2.24.exe"/>
+  <property name="exclude.test.categories" value="db,integration"/>
+
+  <target name="help" description="Provides available options for building the project">
+    <echo>
+      PROPERTIES
+
+      configuration: The build configuration to use. Either 'debug' or 'release'.
+      svn.revision: The revision to checkout.
+      svn.path: The path from which to checkout the project code.
+      svn.tag: The tag name to checkout. Will automatically set the path to use. *Not Implemented*
+      version: The version to assign to all assemblies. If not specified, the default value will be used.
+    </echo>
+  </target>
+
+  <target name="clean.build" description="Delete all build folders">
+    <echo message="Cleaning out build dir... ${build.dir}" />
+    <delete if="${build.dir != build.local.dir and directory::exists(build.dir)}">
+      <fileset>
+        <include name="${build.dir}**"/>
+      </fileset>
+    </delete>
+  </target>
+
+  <target name="clean.all.packages" description="Delete all packages">
+    <delete dir="${package.base.dir}" if="${directory::exists(package.base.dir)}"/>
+  </target>
+
+  <target name="clean.packages" description="Delete configuration package dirs">
+    <delete dir="${package.dir}" if="${directory::exists(package.dir)}"/>
+  </target>
+
+  <target name="init" description="Initializes the environment for building.">
+  	<echo>build.base.dir = ${project::get-base-directory()}</echo>
+   	<echo>build.dir = ${build.dir} </echo>
+  	<echo>build.lib = ${build.lib} </echo>
+  	<echo>build.output.dir = ${build.output.dir} </echo>
+    <property name="build.dir" value="${build.checkout.dir}" if="${fresh.build}"/>
+    <if test="${fresh.build and need.checkout}">
+      <echo>Project will be built from a fresh source code checkout.</echo>
+      <call target="checkout"/>
+      <property name="need.checkout" value="false"/>
+    </if>
+    <call target="setversion"/>
+    <echo>Build dir: ${build.dir}</echo>
+    <echo if="${build.dir == build.local.dir}">Building: Local</echo>
+    <echo if="${build.dir == build.checkout.dir}">Building: Checkout</echo>
+  </target>
+
+  <target name="build.svn" description="Builds all projects using a fresh checkout from the source repository.">
+    <property name="fresh.build" value="true"/>
+    <call target="build"/>
+  </target>
+
+  <target name="common.build.sln" description="Generic solution building">
+    <echo>
+      Building SLN...
+      Solution: ${sln.file}
+      Configuration: ${configuration}
+    </echo>
+    <property name="nant.settings.currentframework" value="net-1.1"/>
+    <solution solutionfile="${build.dir}${sln.file}" configuration="${configuration}" includevsfolders="false">
+      <assemblyfolders refid="asmfolders"/>
+    </solution>
+  </target>
+
+  <target name="common.build.msbuild" description="Generic build using MSBuild">
+    <echo>
+      Building MSBuild SLN...
+      Solution: ${sln.file}
+      Configuration: ${configuration}
+    </echo>
+    <property name="nant.settings.currentframework" value="net-3.5"/>
+    <msbuild project="${build.dir}${sln.file}">
+      <property name="Configuration" value="${configuration}"/>
+    </msbuild>
+  </target>
+
+  <target name="checkout" description="checkout the source from the SVN repository." depends="clean.build, getsvnpath" >
+    <mkdir dir="${build.dir}" failonerror="true"/>
+    <echo/>
+    <echo>
+      Checking out...
+      Revision: ${svn.revision}
+      From:     ${svn.path}
+      To:       ${build.dir}
+    </echo>
+    <echo/>
+    <echo>Make sure you have disabled your McAfee On Access Scan or this process will take a good deal longer than you probably want it to.</echo>
+    <exec program="svn">
+      <arg line="export"/>
+      <arg line="--force"/>
+      <arg line="--username svc_citcheckout"/>
+      <arg line="--password Ret7Gyas"/>
+      <arg line="${svn.path}"/>
+      <arg line="${build.dir}"/>
+    </exec>
+  </target>
+
+  <target name="getsvnpath">
+    <script language="C#">
+      <code>
+        <![CDATA[
+    public static void ScriptMain(Project project) {
+      string projPath = project.BaseDirectory.ToLower().Replace(@"release\buildfiles", "");
+      string info = getSvnInfo(projPath);
+      string[] lines = info.Split('\n');
+      project.Properties["base.path"] = projPath;
+      project.Properties["svn.path"] = lines[1].Replace("URL: ", "").Trim();     
+    }
+      
+    private static string getSvnInfo(string projPath) {      
+      System.Diagnostics.ProcessStartInfo si = new System.Diagnostics.ProcessStartInfo("svn", @"info " + projPath);
+      si.RedirectStandardOutput = true;
+      si.UseShellExecute = false;
+      System.Diagnostics.Process p = new System.Diagnostics.Process();
+      p.StartInfo = si;
+      p.Start();
+      return p.StandardOutput.ReadToEnd();
+    } 
+  ]]>
+      </code>
+    </script>
+  </target>
+
+  <target name="setversion" description="Sets up the CommonAssemblyInfo.cs file" depends="getversion">
+    <if unless="true" test="${property::exists('version')}">
+      <property name="version" value="${version.default}" />
+    </if>
+
+    <asminfo output="${build.dir}src\CommonAssemblyInfo.cs" language="CSharp">
+      <imports>
+        <import namespace="System"/>
+        <import namespace="System.Reflection" />
+      </imports>
+      <attributes>
+        <attribute type="AssemblyVersionAttribute" value="${version}" />
+        <attribute type="AssemblyCopyrightAttribute" value="Copyright 2006 Apollo Group Inc." />
+        <attribute type="AssemblyCompanyAttribute" value="Apollo Group Inc." />
+        <attribute type="AssemblyProductAttribute" value="Computer Access Process" />
+      </attributes>
+    </asminfo>
+
+    <echo message="Version set to ${version}" />
+    <echo/>
+  </target>
+
+  <target name="getversion" description="Attempts to get a version number from the svn path, if 'version' is not already specified." unless="${property::exists('version')}">
+    <call target="getsvnpath" if="${svn.path == ''}" cascade="false"/>
+    <!--Needs to be implemented to try to get a working version number from the branch name-->
+  </target>
+
+  <target name="common.deploy" description="Generic deployment task">
+    <echo>Removing existing files from deployment destination.</echo>
+    <delete>
+      <fileset basedir="${deploy.to.dir}">
+        <include name="*"/>
+      </fileset>
+    </delete>
+
+    <echo>Deploying from ${deploy.from.dir} to ${deploy.to.dir}</echo>
+    <copy todir="${deploy.to.dir}" verbose="true" overwrite="true">
+      <fileset basedir="${deploy.from.dir}/">
+        <include name="**/*" />
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="common.backup" description="Generic deployment backup task"/>
+
+  <target name="test" description="Runs tests">
+    <call target="getFullTestPaths"/>
+    <echo message="Found test paths: ${test.paths}"/>
+    <!--
+    <loadtasks assembly="${typemock.tasks.path}"/>
+
+    <typemockstart target="2.0" loglevel="0"/>
+    -->
+    <trycatch>
+      <try>
+        <exec program="${nunit.console.path}" workingdir="${build.unit.test.dir}">
+          <arg line="${test.paths}"/>
+          <arg line="/exclude=${exclude.test.categories}"/>
+          <arg value="/nologo"/>
+        </exec>
+      </try>
+      <finally>
+        <!-- <typemockstop/> -->
+        <delete file="${build.unit.test.dir}\TestResult.xml" failonerror="false"/>
+      </finally>
+    </trycatch>
+  </target>
+
+  <target name="test.coverage" description="Runs tests and checks the coverage level of the code">
+    <!--remove the existing output dir-->
+    <delete dir="${build.output.dir}" failonerror="false"/>
+
+    <!-- create output dirs-->
+    <mkdir dir="${build.output.dir}" failonerror="true"/>
+    <mkdir dir="${test.output.dir}" failonerror="false"/>
+    <mkdir dir="${coverage.output.dir}" failonerror="false"/>
+
+    <call target="getTestPaths"/>
+    <echo message="Found test paths: ${test.paths}"/>
+
+    <property name="fail.assembly" value="" />
+    <property name="test.failed" value="false"/>
+    <property name="fail.message" value=""/>
+    <!--<loadtasks assembly="${typemock.tasks.path}"/>-->
+
+    <!-- Each test assembly must be run individually to eliminate coverage crossover that skews the results. -->
+    <foreach item="String" in="${test.paths}" delim=";" property="test.path">
+      <echo message="Running unit tests for ${test.path}..."/>
+      <call target="setTestAssembly"/>
+
+      <trycatch>
+        <try>
+          <!--<typemockstart target="2.0" link="NCover2.0"/>-->
+          <ncover program="${ncover.console.path}"
+            commandLineExe="${nunit.console.path}"
+            commandLineArgs="${test.assembly}.test.dll /nologo /exclude=${exclude.test.categories} /xml=&quot;${test.output.dir}${test.assembly}.test.xml&quot;"
+            workingDirectory="${build.unit.test.dir}\${test.path}\bin\Debug"
+            assemblyList="${test.assembly}"
+            coverageFile="${coverage.output.dir}${test.assembly}.coverage.xml"
+            logFile="${coverage.output.dir}${test.assembly}.log"
+            registerProfiler="false"
+            fileExclusionPatterns=".*schema\.cs;.*Reference\.cs;.*Settings.Designer\.cs"
+            excludeAttributes="CoverageExcludeAttribute"
+            />
+          <!--<typemockstop/>-->
+        </try>
+        <catch property="failure">
+          <echo message="At least one test failed when under code coverage for ${test.assembly}: ${failure}"/>
+          <property name="fail.assembly" value="${test.assembly}"/>
+          <property name="fail.message" value="${failure}"/>
+          <property name="test.failed" value="true"/>
+        </catch>
+      </trycatch>
+
+    </foreach>
+
+    <fail if="${test.failed}" message="At least one test failed when under code coverage for ${fail.assembly}: ${fail.message}"/>
+    <call target="analyze.coverage"/>
+  </target>
+
+  <target name="getFullTestPaths" description="Finds the paths of the unit tests directories">
+    <script language="C#">
+      <code>
+        <![CDATA[
+  public static void ScriptMain(Project project) {
+    string projPath = project.BaseDirectory.ToLower().Replace(@"release\buildfiles", "");
+    string basePath = project.Properties["build.unit.test.dir"];
+    string[] testPaths = Directory.GetDirectories(basePath, "*.test", SearchOption.AllDirectories);
+    
+    if (testPaths.Length == 0) return;
+    
+    for (int i = 0; i < testPaths.Length; i++) {
+      int idx = testPaths[i].LastIndexOf(@"\") + 1;
+      string name = testPaths[i].Substring(idx);
+      string path = testPaths[i].Replace(basePath, "");
+      testPaths[i] = String.Format(@"{0}\bin\Debug\{1}.dll", path, name);
+    }
+    
+    project.Properties["test.paths"] = String.Join(" ", testPaths);
+  }
+        ]]>
+      </code>
+    </script>
+  </target>
+
+  <target name="getTestPaths" description="Finds the paths of the unit tests directories">
+    <script language="C#">
+      <code>
+        <![CDATA[
+  public static void ScriptMain(Project project) {
+    string projPath = project.BaseDirectory.ToLower().Replace(@"release\buildfiles", "");
+    string basePath = Path.Combine(projPath, @"src\test\unit\");
+    string[] testPaths = Directory.GetDirectories(basePath, "*.test", SearchOption.AllDirectories);
+    
+    if (testPaths.Length == 0) return;
+    
+    for (int i = 0; i < testPaths.Length; i++) {
+      testPaths[i] = testPaths[i].Replace(basePath, "");
+    }
+    
+    project.Properties["test.paths"] = String.Join(";", testPaths);
+  }
+        ]]>
+      </code>
+    </script>
+  </target>
+
+  <target name="setTestAssembly" description="Breaks apart the current 'test.path' property into the assembly name">
+    <script language="C#">
+      <code>
+        <![CDATA[
+  public static void ScriptMain(Project project) {
+    Match m = Regex.Match(project.Properties["test.path"], @"\\([\w\.]*?)\.test$", RegexOptions.IgnoreCase);
+    project.Properties["test.assembly"] = m.Groups[1].Value;
+  }
+        ]]>
+      </code>
+    </script>
+  </target>
+
+  <target name="analyze.coverage" description="Analyzes the code coverage results">
+    <echo message="Analyzing code coverage..."/>
+    <mkdir dir="${class.coverage.output.dir}" failonerror="false"/>
+    <ncoverexplorer program="${ncoverexplorer.console.path}"
+      projectName="AIM-SNAP"
+      outputDir="${class.coverage.output.dir}"
+      xmlReportName="analysis.xml"
+      htmlReportName="analysis.html"
+      mergeFileName="coverage.xml"
+      reportType="ModuleClassSummary"
+      satisfactoryCoverage="80"
+    >
+      <fileset>
+        <include name="${coverage.output.dir}*.coverage.xml"/>
+      </fileset>
+    </ncoverexplorer>
+
+    <mkdir dir="${coverage.output.dir}\method" failonerror="false"/>
+    <ncoverexplorer program="${ncoverexplorer.console.path}"
+      projectName="AIM-SNAP"
+      outputDir="${coverage.output.dir}\method"
+      xmlReportName="analysis.xml"
+      htmlReportName="analysis.html"
+      mergeFileName="coverage.xml"
+      reportType="ModuleMethodSummary"
+      satisfactoryCoverage="80"
+    >
+      <fileset>
+        <include name="${coverage.output.dir}*.coverage.xml"/>
+      </fileset>
+    </ncoverexplorer>
+
+    <mkdir dir="${coverage.output.dir}\full" failonerror="false"/>
+    <ncoverexplorer program="${ncoverexplorer.console.path}"
+      projectName="AIM-SNAP"
+      outputDir="${coverage.output.dir}\full"
+      xmlReportName="analysis.xml"
+      htmlReportName="analysis.html"
+      mergeFileName="coverage.xml"
+      reportType="FullCoverageReport"
+      satisfactoryCoverage="80"
+    >
+      <fileset>
+        <include name="${coverage.output.dir}*.coverage.xml"/>
+      </fileset>
+    </ncoverexplorer>
+  </target>
+
+  <target name="verify.coverage" description="Verifies that code coverage has increased since the last build">
+    <property name="current.coverage" value=""/>
+    <property name="previous.coverage" value=""/>
+
+    <xmlpeek file="${class.coverage.output.dir}\analysis.xml" property="current.coverage" failonerror="false"
+      xpath="/coverageReport2/project/@coverage"/>
+    <echo message="${current.coverage}"/>
+
+    <trycatch>
+      <try>
+        <xmlpeek file="${CCNetArtifactDirectory}\report.xml" property="previous.coverage"
+          xpath="/statistics/integration[@status='Success'][last()]/statistic[@name='code_coverage']"/>
+      </try>
+      <catch>
+        <!-- don't want to actually fail, just serve as a warning -->
+        <fail message="No previous coverage percentage could be found." failonerror="false"/>
+      </catch>
+    </trycatch>
+    <echo message="${previous.coverage}"/>
+
+    <!-- has to be successful with no prior coverage value-->
+    <if test="${previous.coverage != ''}">
+      <fail if="${double::parse(current.coverage) &lt; double::parse(previous.coverage)}"
+        message="Code coverage has decreased from ${previous.coverage}% to ${current.coverage}%"/>
+    </if>
+  </target>
+
+  <target name="analyze.similarity" description="Checks for similarity in the code base.">
+    <echo message="Analyzing similarity in: ${build.dir}"/>
+    <exec program="${simian.path}" workingdir="${build.dir}" verbose="true">
+      <arg value="-formatter=xml:${simian.results.file}"/>
+      <arg value="-failOnDuplication-"/>
+      <arg value="-ignoreCurlyBraces+"/>
+      <arg value="-excludes=**\*schema.cs"/>
+      <arg value="-excludes=**\Reference.cs"/>
+      <arg value="-excludes=src\test\**\*"/>
+      <arg value="**\*.cs"/>
+    </exec>
+  </target>
+
+  <target name="verify.similarity" description="Verifies code duplication does not increase">
+    <echo message="Verifying duplicate block count"/>
+    <property name="current.block.count" value=""/>
+    <property name="previous.block.count" value=""/>
+
+    <xmlpeek file="${simian.results.file}" property="current.block.count" failonerror="false"
+      xpath="/simian/check/summary/@duplicateBlockCount"/>
+    <echo message="${current.block.count}"/>
+
+    <trycatch>
+      <try>
+        <xmlpeek file="${CCNetArtifactDirectory}\report.xml" property="previous.block.count"
+          xpath="/statistics/integration[@status='Success'][last()]/statistic[@name='duplicate_blocks']"/>
+      </try>
+      <catch>
+        <!-- don't want to actually fail, just serve as a warning -->
+        <fail message="No previous block count could be found." failonerror="false"/>
+      </catch>
+    </trycatch>
+
+    <echo message="${previous.block.count}"/>
+
+    <!-- has to be successful with no prior duplication value-->
+    <if test="${previous.block.count != ''}">
+      <fail if="${int::parse(current.block.count) &gt; int::parse(previous.block.count)}"
+        message="Duplicate block count has increased from ${previous.block.count} to ${current.block.count}"/>
+    </if>
+  </target>
+</project>
