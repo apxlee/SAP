@@ -32,9 +32,7 @@
 				<!-- NOTE: Default Behavior: When page initially loads, view item in ordinal position '0' loads as default,
 					so make sure that your 'home' page View is first in-line (either programatically or static). -->
 				
-				<asp:View ID="_loginFormView" runat="server">
-					<uc:LoginForm id="_loginFormControl" runat="server" />
-				</asp:View>
+				<!-- TODO: ADD LOGIN FORM VIEW -->
 				
 				<asp:View ID="_requestFormView" runat="server">
 					<uc:RequestForm id="_requestFormControl" runat="server" />
