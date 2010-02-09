@@ -1,6 +1,6 @@
 <%@ Page CodeBehind="Index.aspx.cs" Language="c#" AutoEventWireup="True" Inherits="Apollo.AIM.SNAP.Web.Index"  %>
 <%@ Register src="~/Controls/DefaultIncludes.ascx" tagname="SNAPIncludes" tagprefix="uc" %>
-<%@ Register src="~/Controls/Footer.ascx" tagname="Footer" tagprefix="uc" %>
+<%@ Register src="~/Controls/Footer.ascx" tagname="SNAPFooter" tagprefix="uc" %>
 <%@ Register src="~/Controls/RequestForm.ascx" tagname="RequestForm" tagprefix="uc" %>
 <%@ Register src="~/Controls/LoginForm.ascx" tagname="LoginForm" tagprefix="uc" %>
 <%@ Register src="~/Controls/UserView.ascx" tagname="UserView" tagprefix="uc" %>
@@ -27,28 +27,20 @@
 		<asp:Panel ID="_contentContainer" CssClass="csm_container_16 csm_500" runat="server">
 			
 			<!-- BEGIN MULTIVIEW CONTROL -->
-			<asp:MultiView ID="_csmMultiView" runat="server" ActiveViewIndex="0" >
+			<asp:MultiView ID="_csmMultiView" runat="server" ActiveViewIndex="1" >
 
 				<!-- NOTE: If using the _csmTabbedMenu, the View items 'ID' (below) must match the 'Value' of the associated MenuItem. -->
 				<!-- NOTE: Default Behavior: When page initially loads, view item in ordinal position '0' loads as default,
 					so make sure that your 'home' page View is first in-line (either programatically or static). -->
 				
 				<!-- TODO: ADD LOGIN FORM VIEW -->
-				
+
 				<asp:View ID="_requestFormView" runat="server">
 					<uc:RequestForm id="_requestFormControl" runat="server" />
 				</asp:View>
 				
 				<asp:View ID="_userView" runat="server">
-					<uc:RequestForm id="_userViewControl" runat="server" />
-				</asp:View>
-				
-				<asp:View ID="_approvingManagerView" runat="server">
-					<p>TODO: APPROVING MANAGER VIEW</p>
-				</asp:View>
-				
-				<asp:View ID="_accessTeamView" runat="server">
-					<p>TODO: ACCESS TEAM VIEW</p>
+					<uc:UserView id="_userViewControl" runat="server" />
 				</asp:View>
 				
 				<asp:View ID="_searchFormView" runat="server">
