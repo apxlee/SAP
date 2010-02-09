@@ -3,12 +3,23 @@
 	<asp:Panel ID="_workflowBladeContainer" runat="server" CssClass="csm_data_row csm_alternating_bg"><!-- TODO: replace alternating_bg style as needed -->
         <table border="0" cellpadding="0" cellspacing="0">
             <tr>
-                <td style="width:250px;"><asp:Label ID="_workflowActor" runat="server">Access & Identity Management</asp:Label></td>
-                <td style="width:150px;"><asp:Label ID="_workflowStatus" runat="server"> Acknowledged</asp:Label></td>
-                <td style="width:120px;"><asp:Label ID="_workflowDueDate" runat="server">Jan. 13, 2010</asp:Label> </td>
+                <td style="width:250px;"><asp:Label ID="_workflowActorName" runat="server"></asp:Label></td>
+                <td style="width:150px;"><asp:Label ID="_workflowStatus" runat="server"></asp:Label></td>
+                <td style="width:120px;"><asp:Label ID="_workflowDueDate" runat="server"></asp:Label> </td>
                 <td style="width:120px;"><asp:Label ID="_workflowCompletedDate" runat="server"></asp:Label></td>
             </tr>
         </table>
+     </asp:Panel>
+     <asp:Panel ID="_workflowBladeCommentsContainer" runat="server" CssClass="csm_text_container_nodrop">
+		<!--
+		Replace with Literal Control(s) conforming to the following formatting:
+		
+		<p><u>%Action% by %WorkflowActorName%</u><br />Due Date:&nbsp;%LongDate%&nbsp;|&nbsp;Completed Date:&nbsp;%LongDate%</p>
+		
+		-OR-
+		
+		<p><u>%Action% by %WorkflowActorName%</u><br />%Comments%</p>
+		-->
      </asp:Panel>
 </div>
 <div class="csm_clear">&nbsp;</div>

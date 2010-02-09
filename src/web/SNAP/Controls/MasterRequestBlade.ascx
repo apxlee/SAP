@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="MasterRequestBlade.ascx.cs" Inherits="Apollo.AIM.SNAP.Web.Controls.MasterRequestBlade" %>
-	<!-- BEGIN REQUEST ROW -->
+	<!-- BEGIN REQUEST BLADE ------------------------------------------------------------------------------->
 	<div class="csm_content_container">
 		<!-- BEGIN FLOATING HEADING -->
 		<div class="csm_divided_heading">
@@ -12,18 +12,17 @@
 			            <td style="width:115px;">REQUEST ID</td>
 			        </tr>
 			        <tr class="csm_stacked_heading_label">
-			            <td>Chris Schwimmer</td>
-			            <td>Open</td>
-			            <td>Jan. 12, 2010</td>
-			            <td>1015</td>
+			            <td><asp:Label ID="_affectedEndUserName" runat="server"></asp:Label></td>
+			            <td><asp:Label ID="_overallRequestStatus" runat="server"></asp:Label></td>
+			            <td><asp:Label ID="_lastUpdatedDate" runat="server"></asp:Label></td>
+			            <td><asp:Label ID="_requestId" runat="server"></asp:Label></td>
 			        </tr>
 			    </table>
 			</div>
 			<div class="csm_float_right">
-				<!-- add additional text/icons here using divs and spans, requires custom Css (remember float:right rules!) -->
 				<div class="csm_toggle_container" onclick="csmToggle(this, 'ppnn');">
 					<span>Toggle</span>
-					<div class="csm_toggle_icon_up"></div>
+					<asp:Panel ID="_toggleIconContainer" runat="server" CssClass="csm_toggle_icon_up"></asp:Panel>
 				</div>
 			</div>
 		</div>
@@ -31,7 +30,7 @@
 		<!-- END FLOATING HEADING -->
 		
 		<!-- TOGGLED CONTENT AREA -->
-		<div style="display:block;"><!-- TODO: programatically set display attrib / icon -->
+		<asp:Panel ID="_toggledContentContainer" runat="server" CssClass="csm_displayed_block">
 		    
 		    <!-- REQUEST DETAILS SECTION -->
 		    <asp:PlaceHolder ID="_readOnlyRequestView" runat="server"></asp:PlaceHolder>
@@ -45,8 +44,8 @@
             <!-- REQUEST TRACKING SECTION -->
             <asp:PlaceHolder ID="_requestTrackingView" runat="server"></asp:PlaceHolder>
 	      
-		</div>
+		</asp:Panel>
 	</div>
 	<div class="csm_clear">&nbsp;</div>
-	<!-- END REQUEST ROW ------------------------------------------------------------------------------->
+	<!-- END REQUEST BLADE ------------------------------------------------------------------------------->
 	

@@ -14,6 +14,60 @@ namespace Apollo.AIM.SNAP.Web.Controls {
     public partial class MasterRequestBlade {
         
         /// <summary>
+        /// _affectedEndUserName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label _affectedEndUserName;
+        
+        /// <summary>
+        /// _overallRequestStatus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label _overallRequestStatus;
+        
+        /// <summary>
+        /// _lastUpdatedDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label _lastUpdatedDate;
+        
+        /// <summary>
+        /// _requestId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label _requestId;
+        
+        /// <summary>
+        /// _toggleIconContainer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel _toggleIconContainer;
+        
+        /// <summary>
+        /// _toggledContentContainer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel _toggledContentContainer;
+        
+        /// <summary>
         /// _readOnlyRequestView control.
         /// </summary>
         /// <remarks>
