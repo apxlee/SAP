@@ -51,6 +51,14 @@ Revised: 1/14/2010  J.Steele
 .csm_template_1 .csm_alternating_bg {
 	background-color: #eaeaea !important;
 	}
+	
+.csm_template_1 .csm_hidden_block {
+	display: none;
+	}
+
+.csm_template_1 .csm_displayed_block {
+	display: block;
+	}
 
 
 /* Single Row Text Container
