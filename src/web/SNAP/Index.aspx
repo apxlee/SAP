@@ -1,6 +1,6 @@
 <%@ Page CodeBehind="Index.aspx.cs" Language="c#" AutoEventWireup="True" Inherits="Apollo.AIM.SNAP.Web.Index"  %>
-<%@ Register src="~/Controls/DefaultIncludes.ascx" tagname="SNAPIncludes" tagprefix="uc" %>
-<%@ Register src="~/Controls/Footer.ascx" tagname="SNAPFooter" tagprefix="uc" %>
+<%@ Register src="~/Controls/DefaultIncludes.ascx" tagname="DefaultIncludes" tagprefix="uc" %>
+<%@ Register src="~/Controls/Footer.ascx" tagname="Footer" tagprefix="uc" %>
 <%@ Register src="~/Controls/RequestForm.ascx" tagname="RequestForm" tagprefix="uc" %>
 <%@ Register src="~/Controls/LoginForm.ascx" tagname="LoginForm" tagprefix="uc" %>
 <%@ Register src="~/Controls/UserView.ascx" tagname="UserView" tagprefix="uc" %>
@@ -14,7 +14,7 @@
 <body> 
 	<form runat="server" id="_defaultForm">
 	
-	<uc:SNAPIncludes id="_includes" runat="server" />
+	<uc:DefaultIncludes id="_includes" runat="server" />
 
 	<!-- BEGIN MASTER CONTAINER -->
 	<div class="csm_container_100 csm_template_1">
@@ -25,14 +25,11 @@
 
 		<!-- BEGIN CONTENT AREA -->
 		<asp:Panel ID="_contentContainer" CssClass="csm_container_16 csm_500" runat="server">
+		<!-- TODO: do we really need this container server-side? -->
 			
 			<!-- BEGIN MULTIVIEW CONTROL -->
 			<asp:MultiView ID="_csmMultiView" runat="server" ActiveViewIndex="1" >
 
-				<!-- NOTE: If using the _csmTabbedMenu, the View items 'ID' (below) must match the 'Value' of the associated MenuItem. -->
-				<!-- NOTE: Default Behavior: When page initially loads, view item in ordinal position '0' loads as default,
-					so make sure that your 'home' page View is first in-line (either programatically or static). -->
-				
 				<!-- TODO: ADD LOGIN FORM VIEW -->
 
 				<asp:View ID="_requestFormView" runat="server">
