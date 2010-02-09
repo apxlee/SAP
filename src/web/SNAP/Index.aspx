@@ -3,6 +3,7 @@
 <%@ Register src="~/Controls/SNAPFooter.ascx" tagname="SNAPFooter" tagprefix="uc" %>
 <%@ Register src="~/Controls/SNAPRequestForm.ascx" tagname="RequestForm" tagprefix="uc" %>
 <%@ Register src="~/Controls/SNAPLoginForm.ascx" tagname="LoginForm" tagprefix="uc" %>
+<%@ Register src="~/Controls/SNAPUserView.ascx" tagname="UserView" tagprefix="uc" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -39,7 +40,7 @@
 				</asp:View>
 				
 				<asp:View ID="_userView" runat="server">
-					<p>TODO: USER VIEW</p>
+					<uc:RequestForm id="_userViewControl" runat="server" />
 				</asp:View>
 				
 				<asp:View ID="_approvingManagerView" runat="server">
