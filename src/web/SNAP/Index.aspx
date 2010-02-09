@@ -3,7 +3,7 @@
 <%@ Register src="~/Controls/Footer.ascx" tagname="Footer" tagprefix="uc" %>
 <%@ Register src="~/Controls/RequestForm.ascx" tagname="RequestForm" tagprefix="uc" %>
 <%@ Register src="~/Controls/LoginForm.ascx" tagname="LoginForm" tagprefix="uc" %>
-<%@ Register src="~/Controls/SNAPUserView.ascx" tagname="UserView" tagprefix="uc" %>
+<%@ Register src="~/Controls/UserView.ascx" tagname="UserView" tagprefix="uc" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 

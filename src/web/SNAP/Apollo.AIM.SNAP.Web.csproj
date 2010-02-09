@@ -101,6 +101,7 @@
     <Content Include="Controls\RequestFormField.ascx" />
     <Content Include="Controls\RequestFormSection.ascx" />
     <Content Include="Controls\UserManager.ascx" />
+    <Content Include="Controls\UserView.ascx" />
     <Content Include="Default.aspx" />
     <Content Include="images\accessTop.jpg" />
     <Content Include="images\onBack.jpg" />
@@ -157,6 +158,13 @@
     </Compile>
     <Compile Include="Controls\UserManager.ascx.designer.cs">
       <DependentUpon>UserManager.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UserView.ascx.cs">
+      <DependentUpon>UserView.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\UserView.ascx.designer.cs">
+      <DependentUpon>UserView.ascx</DependentUpon>
     </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
