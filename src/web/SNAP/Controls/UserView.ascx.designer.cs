@@ -11,6 +11,6 @@
 namespace Apollo.AIM.SNAP.Web.Controls {
     
     
-    public partial class SNAPUserView {
+    public partial class UserView {
     }
 }
