@@ -31,10 +31,16 @@
 		<!-- END FLOATING HEADING -->
 		
 		<!-- TOGGLED CONTENT AREA -->
-		<div style="display:block;">
+		<div style="display:block;"><!-- TODO: programatically set display attrib / icon -->
 		    
 		    <!-- REQUEST DETAILS SECTION -->
 		    <asp:PlaceHolder ID="_readOnlyRequestView" runat="server"></asp:PlaceHolder>
+		    
+		    <!-- MANAGER APPROVAL SECTION -->
+		    <!-- TODO -->
+		    
+		    <!-- ACCESS TEAM SECTION -->
+		    <!-- TODO -->
 
             <!-- REQUEST TRACKING SECTION -->
             <asp:PlaceHolder ID="_requestTrackingView" runat="server"></asp:PlaceHolder>
