@@ -14,6 +14,15 @@ namespace Apollo.AIM.SNAP.Web.Controls {
     public partial class RequestFormField {
         
         /// <summary>
+        /// LabelContainer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelContainer;
+        
+        /// <summary>
         /// InnerLabel control.
         /// </summary>
         /// <remarks>

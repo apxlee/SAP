@@ -38,8 +38,6 @@
 			        <asp:Button ID="_editManagerName" runat="server" CssClass="csm_html_button" Text="Edit" />
 				</td>
 			</tr>
-			
-			<!-- TODO: replace the following with a repeater -->
 
 			<asp:PlaceHolder ID="phrRequestFormSection" runat="server" ></asp:PlaceHolder>		
 				

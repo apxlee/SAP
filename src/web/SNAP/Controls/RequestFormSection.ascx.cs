@@ -94,8 +94,8 @@ namespace Apollo.AIM.SNAP.Web.Controls
             table.Columns.Add("isRequired", typeof(bool));
 
             table.Rows.Add(2, 1, "Windows Servers", "<p>Enter the <strong>exact</strong> servers you need access to...</p>", true, true);
-            table.Rows.Add(3, 1, "Linux/Unix Servers", "Enter the exact...", true, true);
-            table.Rows.Add(4, 1, "Network Shares", "Enter the exact...", true, true);
+            table.Rows.Add(3, 1, "Linux/Unix Servers", "<p>Enter the exact...</p>", true, true);
+            table.Rows.Add(4, 1, "Network Shares", "<p>Enter the exact...</p>", true, true);
             return table;
         }
     }

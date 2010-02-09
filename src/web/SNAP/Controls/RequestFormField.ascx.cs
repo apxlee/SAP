@@ -35,6 +35,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
             set
             {
                 Access_Details_FormId.ID = value;
+                LabelContainer.AssociatedControlID = Access_Details_FormId.ID;
             }
         }
     }
