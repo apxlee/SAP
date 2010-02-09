@@ -1,8 +1,8 @@
 <%@ Page CodeBehind="Index.aspx.cs" Language="c#" AutoEventWireup="True" Inherits="Apollo.AIM.SNAP.Web.Index"  %>
-<%@ Register src="~/Controls/SNAPDefaultIncludes.ascx" tagname="SNAPIncludes" tagprefix="uc" %>
-<%@ Register src="~/Controls/SNAPFooter.ascx" tagname="SNAPFooter" tagprefix="uc" %>
-<%@ Register src="~/Controls/SNAPRequestForm.ascx" tagname="RequestForm" tagprefix="uc" %>
-<%@ Register src="~/Controls/SNAPLoginForm.ascx" tagname="LoginForm" tagprefix="uc" %>
+<%@ Register src="~/Controls/DefaultIncludes.ascx" tagname="SNAPIncludes" tagprefix="uc" %>
+<%@ Register src="~/Controls/Footer.ascx" tagname="Footer" tagprefix="uc" %>
+<%@ Register src="~/Controls/RequestForm.ascx" tagname="RequestForm" tagprefix="uc" %>
+<%@ Register src="~/Controls/LoginForm.ascx" tagname="LoginForm" tagprefix="uc" %>
 <%@ Register src="~/Controls/SNAPUserView.ascx" tagname="UserView" tagprefix="uc" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -64,7 +64,7 @@
 		<div class="csm_clear">&nbsp;</div>
 		<!-- END CONTENT AREA -->
 
-		<uc:SNAPFooter id="_footer" runat="server" />
+		<uc:Footer id="_footer" runat="server" />
 	
 	</div>
 	<!-- END MASTER CONTAINER -->

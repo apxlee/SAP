@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{5AB65A15-CF1E-40AE-B0B7-6000B447EA8C}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
@@ -97,7 +97,9 @@
     <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Controls\SNAPLoginForm.ascx" />
+    <Content Include="Controls\LoginForm.ascx" />
+    <Content Include="Controls\RequestFormField.ascx" />
+    <Content Include="Controls\RequestFormSection.ascx" />
     <Content Include="Controls\UserManager.ascx" />
     <Content Include="Default.aspx" />
     <Content Include="images\accessTop.jpg" />
@@ -109,9 +111,9 @@
     <Content Include="scripts\jquery-1.3.2-vsdoc.js" />
     <Content Include="scripts\jquery-1.3.2.js" />
     <Content Include="scripts\user.js" />
-    <Content Include="Controls\SNAPDefaultIncludes.ascx" />
-    <Content Include="Controls\SNAPFooter.ascx" />
-    <Content Include="Controls\SNAPRequestForm.ascx" />
+    <Content Include="Controls\DefaultIncludes.ascx" />
+    <Content Include="Controls\Footer.ascx" />
+    <Content Include="Controls\RequestForm.ascx" />
     <Content Include="styles\access2.css" />
     <Content Include="styles\calendar.css" />
     <Content Include="styles\Csm_Grid976.css" />
@@ -128,12 +130,26 @@
     <Compile Include="CapSession.cs" />
     <Compile Include="Common\WebUtilities.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="Controls\SNAPLoginForm.ascx.cs">
-      <DependentUpon>SNAPLoginForm.ascx</DependentUpon>
+    <Compile Include="Controls\LoginForm.ascx.cs">
+      <DependentUpon>LoginForm.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Controls\SNAPLoginForm.ascx.designer.cs">
-      <DependentUpon>SNAPLoginForm.ascx</DependentUpon>
+    <Compile Include="Controls\LoginForm.ascx.designer.cs">
+      <DependentUpon>LoginForm.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\RequestFormField.ascx.cs">
+      <DependentUpon>RequestFormField.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\RequestFormField.ascx.designer.cs">
+      <DependentUpon>RequestFormField.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\RequestFormSection.ascx.cs">
+      <DependentUpon>RequestFormSection.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\RequestFormSection.ascx.designer.cs">
+      <DependentUpon>RequestFormSection.ascx</DependentUpon>
     </Compile>
     <Compile Include="Controls\UserManager.ascx.cs">
       <DependentUpon>UserManager.ascx</DependentUpon>
@@ -180,26 +196,26 @@
     <Compile Include="LoginValidator.cs" />
     <Compile Include="PersonTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Controls\SNAPDefaultIncludes.ascx.cs">
-      <DependentUpon>SNAPDefaultIncludes.ascx</DependentUpon>
+    <Compile Include="Controls\DefaultIncludes.ascx.cs">
+      <DependentUpon>DefaultIncludes.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Controls\SNAPDefaultIncludes.ascx.designer.cs">
-      <DependentUpon>SNAPDefaultIncludes.ascx</DependentUpon>
+    <Compile Include="Controls\DefaultIncludes.ascx.designer.cs">
+      <DependentUpon>DefaultIncludes.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Controls\SNAPFooter.ascx.cs">
-      <DependentUpon>SNAPFooter.ascx</DependentUpon>
+    <Compile Include="Controls\Footer.ascx.cs">
+      <DependentUpon>Footer.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Controls\SNAPFooter.ascx.designer.cs">
-      <DependentUpon>SNAPFooter.ascx</DependentUpon>
+    <Compile Include="Controls\Footer.ascx.designer.cs">
+      <DependentUpon>Footer.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Controls\SNAPRequestForm.ascx.cs">
-      <DependentUpon>SNAPRequestForm.ascx</DependentUpon>
+    <Compile Include="Controls\RequestForm.ascx.cs">
+      <DependentUpon>RequestForm.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Controls\SNAPRequestForm.ascx.designer.cs">
-      <DependentUpon>SNAPRequestForm.ascx</DependentUpon>
+    <Compile Include="Controls\RequestForm.ascx.designer.cs">
+      <DependentUpon>RequestForm.ascx</DependentUpon>
     </Compile>
     <Compile Include="UltimusTools.cs" />
     <Compile Include="User.aspx.cs">
@@ -233,6 +249,9 @@
           <IISUrl>
           </IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
