@@ -49,18 +49,7 @@ var userManager = {
 
                 // match list of names
                 if (names.length > 1) {
-                    userManager.FillSelection(selection, names);
-                    /*
-                    var listItems = [];
-                    for (var key in names) {
-                    listItems.push('<option value="' + key + '">' + names[key].Name + '</option>');
-                    }
-                    selection.toggle();
-                    selection.empty();
-                    selection.append(listItems.join(''));
-                    selection.attr('size', names.length);
-                    */
-                }
+                    userManager.FillSelection(selection, names);                }
             }
         });
 
