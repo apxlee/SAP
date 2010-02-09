@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Text;
+
+using Apollo.AIM.SNAP.CA;
 using Apollo.CA;
 using NUnit.Framework;
 
 using Apollo.CA.Logging;
 using Apollo.ServiceDesk;
+using DirectoryServices=Apollo.CA.DirectoryServices;
 
 namespace Apollo.AIM.SNAP.Test
 {
@@ -100,6 +103,29 @@ namespace Apollo.AIM.SNAP.Test
         {
             Emailer.Send("pong.lee@apollogrp.edu", "Pong.Lee@apollogrp.edu", "", "Test", "<h1>Test From Apollo.CA.Emailer</h1>",true);
         }
-       
+
+        [Test]
+        public void ShouldReturnUserDetailsByLoginName()
+        {
+            ADUserDetail detail = Apollo.AIM.SNAP.CA.DirectoryServices.GetUserByLoginName("pxlee");
+            Assert.IsNotNull(detail);
+            CA.DirectoryServices.DisplayDetails(detail);
+        }
+
+        [Test]
+        public void ShouldReturnUserDetailsByLoginFullName()
+        {
+            ADUserDetail detail = Apollo.AIM.SNAP.CA.DirectoryServices.GetUserByFullName("pong lee");
+            Assert.IsNotNull(detail);
+            CA.DirectoryServices.DisplayDetails(detail);
+        }
+
+        [Test]
+        public void ShoudReturnMuiltpleUsers()
+        {
+            List<string> users = CA.DirectoryServices.GetAllUserByFullName("jason");
+            Assert.IsTrue(users.Count > 1);
+            //users.ForEach(s => Console.WriteLine(s));
+        }
     }
 }

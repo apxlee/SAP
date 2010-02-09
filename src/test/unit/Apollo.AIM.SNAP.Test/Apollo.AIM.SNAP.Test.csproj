@@ -64,6 +64,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\shared\CA\Apollo.AIM.SNAP.CA\Apollo.AIM.SNAP.CA.csproj">
+      <Project>{6F4A3CB1-6A8B-4B22-8E23-695E359962BB}</Project>
+      <Name>Apollo.AIM.SNAP.CA</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

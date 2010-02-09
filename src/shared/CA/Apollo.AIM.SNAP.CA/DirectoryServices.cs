@@ -9,7 +9,7 @@ using System.Configuration;
 
 using Apollo.CA;
 
-namespace Apollo.AIM.OOSPA.CA
+namespace Apollo.AIM.SNAP.CA
 {
     //http://www.dotnetspark.com/kb/1217-all-operations-on-windows-active-directory.aspx
     public class DirectoryServices
@@ -117,17 +117,17 @@ namespace Apollo.AIM.OOSPA.CA
             users.ForEach(delegate(string x)
                               {
                                   var u = DirectoryServices.GetUserByFullName(x);
-                                  displayDetail(u);
+                                  DisplayDetails(u);
                               });
             
             ADUserDetail detail = DirectoryServices.GetUserByLoginName("pxlee");
-            displayDetail(detail);
+            DisplayDetails(detail);
             detail = DirectoryServices.GetUserByLoginName("gjbelang");
-            displayDetail(detail);
+            DisplayDetails(detail);
             Console.ReadLine();
         }
 
-        private static void displayDetail(ADUserDetail detail)
+        public static void DisplayDetails(ADUserDetail detail)
         {
             Console.WriteLine("Name: " + detail.LoginNameWithDomain);
             var t = detail.EmailAddress ?? "unknown";
