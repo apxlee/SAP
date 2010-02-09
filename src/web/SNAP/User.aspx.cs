@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Apollo.AIM.SNAP.CA;
+using Apollo.AIM.SNAP.Model;
 
 namespace Apollo.AIM.SNAP.Web
 {
@@ -48,11 +50,4 @@ namespace Apollo.AIM.SNAP.Web
 
     }
 
-    public class UserManagerInfo
-    {
-        public string Name { get; set; }
-        public string LoginId { get; set; }
-        public string ManagerName { get; set; }
-        public string ManagerLoginId { get; set; }
-    }
 }

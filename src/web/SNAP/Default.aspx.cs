@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
+using Apollo.AIM.SNAP.Model;
 using Apollo.Ultimus.CAP.Model;
 
 namespace Apollo.AIM.SNAP.Web
@@ -75,8 +75,6 @@ namespace Apollo.AIM.SNAP.Web
 
                                  }
 
-
-                               
                            };
             return result;
         }

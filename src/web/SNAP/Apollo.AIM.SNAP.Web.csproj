@@ -256,6 +256,16 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\lib\Apollo.AIM.SNAP\Apollo.AIM.SNAP.csproj">
+      <Project>{A6931297-7CC1-4554-84A4-898009598139}</Project>
+      <Name>Apollo.AIM.SNAP</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\shared\CA\Apollo.AIM.SNAP.CA\Apollo.AIM.SNAP.CA.csproj">
+      <Project>{6F4A3CB1-6A8B-4B22-8E23-695E359962BB}</Project>
+      <Name>Apollo.AIM.SNAP.CA</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="App_Data\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

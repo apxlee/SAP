@@ -6,7 +6,7 @@ using System.Text;
 
 using System.DirectoryServices;
 using System.Configuration;
-
+using Apollo.AIM.SNAP.Model;
 using Apollo.CA;
 
 namespace Apollo.AIM.SNAP.CA
@@ -110,6 +110,12 @@ namespace Apollo.AIM.SNAP.CA
                 return null;
             }
         }
+
+        public static List<UserManagerInfo> GetUserManagerInfo(string fullName)
+        {
+            return null;
+        }
+
         public static void Main()
         {
             
