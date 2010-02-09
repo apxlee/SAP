@@ -113,7 +113,19 @@ namespace Apollo.AIM.SNAP.CA
 
         public static List<UserManagerInfo> GetUserManagerInfo(string fullName)
         {
-            return null;
+            var result = new List<UserManagerInfo>();
+            var users = GetAllUserByFullName(fullName);
+            users.ForEach(delegate(string x)
+            {
+                var u = GetUserByFullName(x);
+                result.Add( new UserManagerInfo {LoginId = u.LoginName, 
+                    ManagerLoginId = u.Manager != null ? u.Manager.LoginName : "unknown", 
+                    ManagerName = u.ManagerName ?? "unknown", 
+                    Name = x});
+                //DisplayDetails(u);
+            });
+
+            return result;
         }
 
         public static void Main()

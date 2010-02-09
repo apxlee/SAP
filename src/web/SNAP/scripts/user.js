@@ -37,6 +37,11 @@ var userManager = {
                 var names = msg.d;
                 $('body').data('userInfo', names);
 
+                // no match
+                if (names.length == 0) {
+                    userManager.FillErrorFields(name);
+                }
+
                 // direct match
                 if (names.length == 1) {
                     userManager.FillAllFields(name, names);
@@ -44,14 +49,17 @@ var userManager = {
 
                 // match list of names
                 if (names.length > 1) {
+                    userManager.FillSelection(selection, names);
+                    /*
                     var listItems = [];
                     for (var key in names) {
-                        listItems.push('<option value="' + key + '">' + names[key].Name + '</option>');
+                    listItems.push('<option value="' + key + '">' + names[key].Name + '</option>');
                     }
                     selection.toggle();
                     selection.empty();
                     selection.append(listItems.join(''));
-                    selection.attr('size',names.length);
+                    selection.attr('size', names.length);
+                    */
                 }
             }
         });
@@ -76,7 +84,7 @@ var userManager = {
 
     UserNameSelected: function() {
         userManager.AssignSelectedName(userManager.userName,
-                            //$('select[id$=nameSelection] option:selected').text(),
+        //$('select[id$=nameSelection] option:selected').text(),
                             $('#' + userManager.userSelection.attr('id') + ' option:selected').text(),
                             userManager.userSelection);
         userManager.FillLoginId(userManager.userName.val(), userManager.userLoginId);
@@ -85,8 +93,8 @@ var userManager = {
 
     ManagerNameSelected: function() {
         userManager.AssignSelectedName(userManager.mgrName,
-                            //$('select[id$=mgrSelection] option:selected').text(),
-                            $('#' + userManager.mgrSelection.attr('id') +  ' :selected').text(),
+        //$('select[id$=mgrSelection] option:selected').text(),
+                            $('#' + userManager.mgrSelection.attr('id') + ' :selected').text(),
                             userManager.mgrSelection);
         userManager.FillLoginId(userManager.mgrName.val(), userManager.mgrLoginId);
 
@@ -133,6 +141,29 @@ var userManager = {
             userManager.mgrLoginId.val(names[0].ManagerLoginId);
         }
     },
+
+    FillErrorFields: function(name) {
+        if (name.attr('id').indexOf("mgr") > -1) {
+            userManager.mgrName.val("No such name! Try again");
+            userManager.mgrLoginId.val("unknown");
+        }
+        else {
+            userManager.userName.val("No such name! Try again");
+            userManager.userLoginId.val("unknown");
+        }
+    },
+
+    FillSelection: function(selection, names) {
+        var listItems = [];
+        for (var key in names) {
+            listItems.push('<option value="' + key + '">' + names[key].Name + '</option>');
+        }
+        selection.toggle();
+        selection.empty();
+        selection.append(listItems.join(''));
+        selection.attr('size', names.length);
+    },
+
     Ready: function() {
         // this: userManager object
         this.Setup();

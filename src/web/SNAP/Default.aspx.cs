@@ -36,6 +36,7 @@ namespace Apollo.AIM.SNAP.Web
         [WebMethod]
         public static List<UserManagerInfo> GetNames(string name)
         {
+            return CA.DirectoryServices.GetUserManagerInfo(name);
             var result = new List<UserManagerInfo>
                              {
                                  

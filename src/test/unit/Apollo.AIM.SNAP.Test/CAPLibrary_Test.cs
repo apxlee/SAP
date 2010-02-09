@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 
 using Apollo.AIM.SNAP.CA;
+using Apollo.AIM.SNAP.Model;
 using Apollo.CA;
 using NUnit.Framework;
 
@@ -126,6 +127,13 @@ namespace Apollo.AIM.SNAP.Test
             List<string> users = CA.DirectoryServices.GetAllUserByFullName("jason");
             Assert.IsTrue(users.Count > 1);
             //users.ForEach(s => Console.WriteLine(s));
+        }
+
+        [Test]
+        public void ShouldReturnUserManagerInfo()
+        {
+            List<UserManagerInfo> result = CA.DirectoryServices.GetUserManagerInfo("pong lee");
+            Assert.IsTrue(result.Count >= 1);
         }
     }
 }
