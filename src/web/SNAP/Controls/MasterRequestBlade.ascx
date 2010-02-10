@@ -33,16 +33,16 @@
 		<asp:Panel ID="_toggledContentContainer" runat="server" CssClass="csm_displayed_block">
 		    
 		    <!-- REQUEST DETAILS SECTION -->
-		    <asp:PlaceHolder ID="_readOnlyRequestView" runat="server"></asp:PlaceHolder>
+		    <asp:PlaceHolder ID="_readOnlyRequestViewContainer" runat="server"></asp:PlaceHolder>
 		    
 		    <!-- MANAGER APPROVAL SECTION -->
-		    <asp:PlaceHolder ID="_approvingManagerView" runat="server"></asp:PlaceHolder>
+		    <asp:PlaceHolder ID="_approvingManagerViewContainer" runat="server"></asp:PlaceHolder>
 		    
 		    <!-- ACCESS TEAM SECTION -->
-		    <asp:PlaceHolder ID="_accessTeamView" runat="server"></asp:PlaceHolder>
+		    <asp:PlaceHolder ID="_accessTeamViewContainer" runat="server"></asp:PlaceHolder>
 
             <!-- REQUEST TRACKING SECTION -->
-            <asp:PlaceHolder ID="_requestTrackingView" runat="server"></asp:PlaceHolder>
+            <asp:PlaceHolder ID="_requestTrackingViewContainer" runat="server"></asp:PlaceHolder>
 	      
 		</asp:Panel>
 	</div>

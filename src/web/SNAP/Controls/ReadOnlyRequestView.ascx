@@ -2,7 +2,8 @@
 <div class="csm_text_container csm_top5">
 	<div class="csm_icon_heading_container oospa_request_details">
 		<h2>Request Details</h2>
-	</div>               
+	</div>
+	<!-- TODO: style this table with Css -->              
 	<table style="font-size:.85em;margin-left:10px;" cellpadding="0" cellspacing="0" width="100%">
 		<asp:Repeater ID="_readOnlyRequestDetails" runat="server">
 			<ItemTemplate>
