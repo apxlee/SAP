@@ -77,6 +77,24 @@ namespace Apollo.AIM.SNAP.Web.Controls {
         protected global::System.Web.UI.WebControls.PlaceHolder _readOnlyRequestView;
         
         /// <summary>
+        /// _approvingManagerView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder _approvingManagerView;
+        
+        /// <summary>
+        /// _accessTeamView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder _accessTeamView;
+        
+        /// <summary>
         /// _requestTrackingView control.
         /// </summary>
         /// <remarks>

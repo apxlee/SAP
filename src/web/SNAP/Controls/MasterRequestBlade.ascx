@@ -36,10 +36,10 @@
 		    <asp:PlaceHolder ID="_readOnlyRequestView" runat="server"></asp:PlaceHolder>
 		    
 		    <!-- MANAGER APPROVAL SECTION -->
-		    <!-- TODO -->
+		    <asp:PlaceHolder ID="_approvingManagerView" runat="server"></asp:PlaceHolder>
 		    
 		    <!-- ACCESS TEAM SECTION -->
-		    <!-- TODO -->
+		    <asp:PlaceHolder ID="_accessTeamView" runat="server"></asp:PlaceHolder>
 
             <!-- REQUEST TRACKING SECTION -->
             <asp:PlaceHolder ID="_requestTrackingView" runat="server"></asp:PlaceHolder>
