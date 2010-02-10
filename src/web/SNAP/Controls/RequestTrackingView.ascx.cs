@@ -40,7 +40,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 				Panel workflowBladeCommentsContainer = (Panel)WebUtilities.FindControlRecursive(workflowBlade, "_workflowBladeCommentsContainer");
 				workflowBladeCommentsContainer.Visible = false;
 				
-				this.Controls.Add(workflowBlade);			
+				this._workflowBladeContainer.Controls.Add(workflowBlade);
 			}
 		}
 
