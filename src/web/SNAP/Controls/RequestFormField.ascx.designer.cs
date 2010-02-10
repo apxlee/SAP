@@ -14,39 +14,39 @@ namespace Apollo.AIM.SNAP.Web.Controls {
     public partial class RequestFormField {
         
         /// <summary>
-        /// LabelContainer control.
+        /// _labelContainer control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LabelContainer;
+        protected global::System.Web.UI.WebControls.Label _labelContainer;
         
         /// <summary>
-        /// InnerLabel control.
+        /// _innerLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label InnerLabel;
+        protected global::System.Web.UI.WebControls.Label _innerLabel;
         
         /// <summary>
-        /// InnerDescription control.
+        /// _innerDescription control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label InnerDescription;
+        protected global::System.Web.UI.WebControls.Label _innerDescription;
         
         /// <summary>
-        /// Access_Details_FormId control.
+        /// _accessDetailsFormId control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Access_Details_FormId;
+        protected global::System.Web.UI.WebControls.TextBox _accessDetailsFormId;
     }
 }

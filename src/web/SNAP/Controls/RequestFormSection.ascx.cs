@@ -28,13 +28,13 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
             foreach (DataRow row in testData.Rows)
             {
-                if (row["parentId"].ToString() == ParentId.Text)
+                if (row["parentId"].ToString() == _parentId.Text)
                 {
                     srff = LoadControl(@"/Controls/RequestFormField.ascx") as Apollo.AIM.SNAP.Web.Controls.RequestFormField;
                     srff.FieldLabel = row["label"].ToString();
                     srff.FieldDescription = row["description"].ToString();
                     srff.FieldId = row["pkId"].ToString();
-                    this.phrRequestFormField.Controls.Add(srff);
+                    this._requestFormField.Controls.Add(srff);
                     rowCount = rowCount + 1;
                 }
             }
@@ -43,11 +43,11 @@ namespace Apollo.AIM.SNAP.Web.Controls
             {
                 //<asp:TextBox ID="Access_Details_FormId" runat="server" TextMode="MultiLine" Rows="10" CssClass="csm_text_input"></asp:TextBox>
                 TextBox parentTextbox = new TextBox();
-                parentTextbox.ID = "textbox_" + ParentId.Text;
+                parentTextbox.ID = "textbox_" + _parentId.Text;
                 parentTextbox.TextMode = TextBoxMode.MultiLine;
                 parentTextbox.Rows = 10;
                 parentTextbox.CssClass = "csm_text_input";
-                this.phrRequestFormField.Controls.Add(parentTextbox);
+                this._requestFormField.Controls.Add(parentTextbox);
             }
         }
 
@@ -55,7 +55,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
         {
             set
             {
-                OuterLabel.Text = value;
+                _outerLabel.Text = value;
             }
         }
 
@@ -63,7 +63,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
         {
             set
             {
-                LabelContainer.Attributes.Add("class", value);
+                _labelContainer.Attributes.Add("class", value);
             }
         }
 
@@ -71,7 +71,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
         {
             set
             {
-                OuterDescription.Text = value;
+                _outerDescription.Text = value;
             }
         }
 
@@ -79,7 +79,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
         {
             set
             {
-                ParentId.Text = value;
+                _parentId.Text = value;
             }
         }
 

@@ -14,48 +14,48 @@ namespace Apollo.AIM.SNAP.Web.Controls {
     public partial class RequestFormSection {
         
         /// <summary>
-        /// LabelContainer control.
+        /// _labelContainer control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl LabelContainer;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl _labelContainer;
         
         /// <summary>
-        /// OuterLabel control.
+        /// _outerLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label OuterLabel;
+        protected global::System.Web.UI.WebControls.Label _outerLabel;
         
         /// <summary>
-        /// OuterDescription control.
+        /// _outerDescription control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label OuterDescription;
+        protected global::System.Web.UI.WebControls.Label _outerDescription;
         
         /// <summary>
-        /// ParentId control.
+        /// _parentId control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label ParentId;
+        protected global::System.Web.UI.WebControls.Label _parentId;
         
         /// <summary>
-        /// phrRequestFormField control.
+        /// _requestFormField control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder phrRequestFormField;
+        protected global::System.Web.UI.WebControls.PlaceHolder _requestFormField;
     }
 }

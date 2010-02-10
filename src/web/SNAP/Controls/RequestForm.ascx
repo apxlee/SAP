@@ -39,7 +39,7 @@
 				</td>
 			</tr>
 
-			<asp:PlaceHolder ID="phrRequestFormSection" runat="server" ></asp:PlaceHolder>		
+			<asp:PlaceHolder ID="_requestFormSection" runat="server" ></asp:PlaceHolder>		
 				
 		</table>
 		

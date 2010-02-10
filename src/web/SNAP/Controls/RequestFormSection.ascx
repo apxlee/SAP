@@ -2,14 +2,14 @@
 <tr>
     <td colspan="2" class="csm_input_spanning_column">
 	    <div class="csm_input_form_label_container">
-		    <label id="LabelContainer" runat="server">
-		        <asp:Label ID="OuterLabel" runat="server"/>
+		    <label id="_labelContainer" runat="server">
+		        <asp:Label ID="_outerLabel" runat="server"/>
 		    </label>
-		    <asp:Label ID="OuterDescription" runat="server"/>	
-		    <asp:Label Visible="false" ID="ParentId" runat="server"/>				
+		    <asp:Label ID="_outerDescription" runat="server"/>	
+		    <asp:Label Visible="false" ID="_parentId" runat="server"/>				
 	    </div>
 	    <div class="csm_input_form_control_container">
-	        <asp:PlaceHolder ID="phrRequestFormField" runat="server" ></asp:PlaceHolder>
+	        <asp:PlaceHolder ID="_requestFormField" runat="server" ></asp:PlaceHolder>
 	    </div>						
     </td>
 </tr>

@@ -36,7 +36,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
                 {
                     srfs.LabelContainerCSS = "csm_input_required_field";
                 }
-                this.phrRequestFormSection.Controls.Add(srfs);
+                this._requestFormSection.Controls.Add(srfs);
             }
         }
 

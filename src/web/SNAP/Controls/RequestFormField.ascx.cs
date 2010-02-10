@@ -18,7 +18,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
         {
             set
             {
-                InnerLabel.Text = value;
+                _innerLabel.Text = value;
             }
         }
 
@@ -26,7 +26,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
         {
             set
             {
-                InnerDescription.Text = value;
+                _innerDescription.Text = value;
             }
         }
 
@@ -34,8 +34,8 @@ namespace Apollo.AIM.SNAP.Web.Controls
         {
             set
             {
-                Access_Details_FormId.ID = value;
-                LabelContainer.AssociatedControlID = Access_Details_FormId.ID;
+                _accessDetailsFormId.ID = value;
+                _labelContainer.AssociatedControlID = _accessDetailsFormId.ID;
             }
         }
     }
