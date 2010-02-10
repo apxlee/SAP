@@ -95,13 +95,14 @@ namespace Apollo.AIM.SNAP.CA
                     var names = new List<string>();
                     foreach (SearchResult result in results)
                     {
+                        // parse different paths in the result to return user name 
                         string[] x = result.Path.Split(new string[] { "CN=" }, StringSplitOptions.RemoveEmptyEntries);
-
-                        // part different path in the result to return user name 
+                        
                         //names.Add(x[1].Split(',')[0].Replace("\\", ""));
                         var tmp = x[1].Split(new string[] {",OU="}, StringSplitOptions.RemoveEmptyEntries)[0].Replace("\\", "");
-                        // remove traing ,
-                        if (tmp[tmp.Length - 1] == ',')
+
+                        // remove traing , for result.path = LDAP://CN=Administrator,CN=Users,DC=devapollogrp,DC=edu (i.e. 'Administrator,')
+                         if (tmp[tmp.Length - 1] == ',')
                             tmp = tmp.Substring(0, tmp.Length - 1);
                         names.Add(tmp);
                     }
