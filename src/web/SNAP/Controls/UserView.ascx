@@ -10,5 +10,6 @@
 	3) expand requestId blade if ID is available (from url)
 	
 	-->
+	<asp:PlaceHolder ID="_requestFilter" runat="server"></asp:PlaceHolder>
 
 </div>
