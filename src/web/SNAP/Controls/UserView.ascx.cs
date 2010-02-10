@@ -11,7 +11,8 @@ namespace Apollo.AIM.SNAP.Web.Controls
 	{
 		protected void Page_Load(object sender, EventArgs e)
 		{
-
+			// assume that user is supposed to have this view
+			
 		}
 	}
 }
