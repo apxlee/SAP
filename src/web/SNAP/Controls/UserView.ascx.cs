@@ -22,7 +22,6 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			foreach (DataRow userInfo in masterBladeTestTable.Rows)
 			{
 				MasterRequestBlade requestBlade;
-
 				requestBlade = LoadControl(@"/Controls/MasterRequestBlade.ascx") as MasterRequestBlade;
 				
 				Label affectedEndUserName = (Label)WebUtilities.FindControlRecursive(requestBlade, "_affectedEndUserName");

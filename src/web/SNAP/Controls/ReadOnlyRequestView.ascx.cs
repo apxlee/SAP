@@ -14,7 +14,6 @@ namespace Apollo.AIM.SNAP.Web.Controls
 	
 		protected void Page_Load(object sender, EventArgs e)
 		{
-			jtest.Text = RequestId.ToString();
 		}
 	}
 }

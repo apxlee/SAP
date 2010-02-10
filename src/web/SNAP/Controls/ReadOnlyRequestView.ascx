@@ -2,7 +2,6 @@
 <div class="csm_text_container csm_top5">
 	<div class="csm_icon_heading_container oospa_request_details">
 		<h2>Request Details</h2>
-		<asp:Label ID="jtest" runat="server">BLANK</asp:Label>
 	</div>
 	<!-- TODO: style this table with Css -->              
 	<table style="font-size:.85em;margin-left:10px;" cellpadding="0" cellspacing="0" width="100%">
