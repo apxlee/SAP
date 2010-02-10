@@ -47,6 +47,8 @@ namespace Apollo.AIM.SNAP.Web.Controls
 				readOnlyRequestViewContainer = (PlaceHolder)WebUtilities.FindControlRecursive(requestBlade, "_readOnlyRequestViewContainer");
 				readOnlyRequestViewContainer.Controls.Add(readOnlyRequestView);
 				
+				// TODO: if role = access team, then laod AccessTeamView into placeholder
+				
 				RequestTrackingView requestTrackingView;
 				PlaceHolder requestTrackingViewContainer;
 				
@@ -54,6 +56,8 @@ namespace Apollo.AIM.SNAP.Web.Controls
 				requestTrackingView.RequestId = userInfo["request_id"].ToString();
 				requestTrackingViewContainer = (PlaceHolder)WebUtilities.FindControlRecursive(requestBlade, "_requestTrackingViewContainer");
 				requestTrackingViewContainer.Controls.Add(requestTrackingView);
+				
+				// TODO: If role = approving manager, then load ApprovingManagerView into placeholder
 				
 				this.Controls.Add(requestBlade);	
 			}	
