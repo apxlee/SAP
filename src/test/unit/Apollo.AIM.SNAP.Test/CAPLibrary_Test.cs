@@ -122,9 +122,19 @@ namespace Apollo.AIM.SNAP.Test
         }
 
         [Test]
+        public void ShouldReturnUserDetailsByLoginFullName2()
+        {
+            ADUserDetail detail = Apollo.AIM.SNAP.CA.DirectoryServices.GetUserByFullName("John Smith, Jr.");
+            Assert.IsNotNull(detail);
+            CA.DirectoryServices.DisplayDetails(detail);
+        }
+
+        [Test]
         public void ShoudReturnMuiltpleUsers()
         {
+
             List<string> users = CA.DirectoryServices.GetAllUserByFullName("jason");
+            //List<string> users = CA.DirectoryServices.GetAllUserByFullName("Guest");
             Assert.IsTrue(users.Count > 1);
             //users.ForEach(s => Console.WriteLine(s));
         }
@@ -135,5 +145,26 @@ namespace Apollo.AIM.SNAP.Test
             List<UserManagerInfo> result = CA.DirectoryServices.GetUserManagerInfo("pong lee");
             Assert.IsTrue(result.Count >= 1);
         }
+
+        [Test]
+        public void ShoudMatchGetByFullNameAndGetUserManagerInfo()
+        {
+            List<string> users = CA.DirectoryServices.GetAllUserByFullName("john smith");
+            Assert.IsTrue(users.Count > 1);
+            List<UserManagerInfo> result = CA.DirectoryServices.GetUserManagerInfo("john smith");
+            Assert.IsTrue(result.Count ==  users.Count);
+        }
+
+        [Test]
+        public void ShoudMatchAllGetByFullNameAndGetUserManagerInfo()
+        {
+            List<string> users = CA.DirectoryServices.GetAllUserByFullName("");
+            Assert.IsTrue(users.Count > 1);
+            Console.WriteLine("All users(by full name): " + users.Count);
+            List<UserManagerInfo> result = CA.DirectoryServices.GetUserManagerInfo("");
+            Console.WriteLine("All users(by user manager info): " + result.Count);
+            Assert.IsTrue(result.Count == users.Count);
+        }
+
     }
 }

@@ -50,8 +50,14 @@ var userManager = {
                 // match list of names
                 if (names.length > 1) {
                     userManager.FillSelection(selection, names);                }
+            },
+            
+            error:  function(XMLHttpRequest, textStatus, errorThrown) {
+                alert("GetNames Error: " + XMLHttpRequest);
+                alert("GetNames Error: " + textStatus);
+                alert("GetNames Error: " + errorThrown); 
             }
-        });
+           })
 
     },
     HandleGetUserNames: function() {

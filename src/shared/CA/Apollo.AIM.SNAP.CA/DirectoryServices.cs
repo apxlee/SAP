@@ -91,12 +91,19 @@ namespace Apollo.AIM.SNAP.CA
                 if (results != null)
                 {
                     // result.path is in this format - LDAP://CN=John Smith (Enrollment Counselor),OU=Users,OU=UOP-PA-Pittsburgh2,OU=C-UOP-Pittsburgh,OU=UOP,OU=Sites,DC=devapollogrp,DC=edu
+                    // result.path can be LDAP://CN=Administrator,CN=Users,DC=devapollogrp,DC=edu
                     var names = new List<string>();
                     foreach (SearchResult result in results)
                     {
                         string[] x = result.Path.Split(new string[] { "CN=" }, StringSplitOptions.RemoveEmptyEntries);
 
-                        names.Add(x[1].Split(',')[0].Replace("\\", ""));
+                        // part different path in the result to return user name 
+                        //names.Add(x[1].Split(',')[0].Replace("\\", ""));
+                        var tmp = x[1].Split(new string[] {",OU="}, StringSplitOptions.RemoveEmptyEntries)[0].Replace("\\", "");
+                        // remove traing ,
+                        if (tmp[tmp.Length - 1] == ',')
+                            tmp = tmp.Substring(0, tmp.Length - 1);
+                        names.Add(tmp);
                     }
                     return names;
                 }
@@ -114,17 +121,33 @@ namespace Apollo.AIM.SNAP.CA
         public static List<UserManagerInfo> GetUserManagerInfo(string fullName)
         {
             var result = new List<UserManagerInfo>();
-            var users = GetAllUserByFullName(fullName);
-            users.ForEach(delegate(string x)
-            {
-                var u = GetUserByFullName(x);
-                result.Add( new UserManagerInfo {LoginId = u.LoginName, 
-                    ManagerLoginId = u.Manager != null ? u.Manager.LoginName : "unknown", 
-                    ManagerName = u.ManagerName ?? "unknown", 
-                    Name = x});
-                //DisplayDetails(u);
-            });
+            //if (fullName != string.Empty)
+            //{
+                var users = GetAllUserByFullName(fullName);
+                users.ForEach(delegate(string x)
+                                  {
+                                      Console.WriteLine(x);
+                                      var u = GetUserByFullName(x);
+                                      if (u != null)
+                                      {
+                                          Console.WriteLine(">>>" + u.LoginName);
+                                          result.Add(new UserManagerInfo
+                                                         {
+                                                             LoginId = u.LoginName ?? "unknown",
+                                                             ManagerLoginId = u.Manager != null ? u.Manager.LoginName : "unknown",
+                                                             ManagerName = u.ManagerName ?? "unknown",
+                                                             Name = x
+                                                         });
+                                          //DisplayDetails(u);
+                                      }
+                                      else
+                                      {
+                                          Console.WriteLine("*** Can't find: " + x);
+                                      }
+                                  });
 
+
+            //}
             return result;
         }
 
