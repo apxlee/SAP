@@ -97,6 +97,8 @@
     <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Controls\AccessTeamView.ascx" />
+    <Content Include="Controls\ApprovingManagerView.ascx" />
     <Content Include="Controls\DefaultIncludes.ascx" />
     <Content Include="Controls\Footer.ascx" />
     <Content Include="Controls\LoginForm.ascx" />
@@ -147,6 +149,7 @@
     <Content Include="styles\Csm_Grid976.css" />
     <Content Include="styles\Csm_Reset.css" />
     <Content Include="styles\Csm_Template_v1.css" />
+    <Content Include="styles\jquery-ui-1.7.2.custom.css" />
     <Content Include="styles\login.css" />
     <Content Include="User.aspx" />
     <Content Include="Web.config" />
@@ -158,6 +161,20 @@
     <Compile Include="CapSession.cs" />
     <Compile Include="Common\WebUtilities.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Controls\AccessTeamView.ascx.cs">
+      <DependentUpon>AccessTeamView.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\AccessTeamView.ascx.designer.cs">
+      <DependentUpon>AccessTeamView.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ApprovingManagerView.ascx.cs">
+      <DependentUpon>ApprovingManagerView.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ApprovingManagerView.ascx.designer.cs">
+      <DependentUpon>ApprovingManagerView.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Controls\DefaultIncludes.ascx.cs">
       <DependentUpon>DefaultIncludes.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
