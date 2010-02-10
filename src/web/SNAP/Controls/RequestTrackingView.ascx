@@ -16,5 +16,5 @@
             <td style="width:120px;">COMPLETED DATE</td>
         </tr>
     </table>
-    <asp:PlaceHolder ID="_workflowBlade" runat="server"></asp:PlaceHolder>
+    <asp:PlaceHolder ID="_workflowBladeContainer" runat="server"></asp:PlaceHolder>
 </div>

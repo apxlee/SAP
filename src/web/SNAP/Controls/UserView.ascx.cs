@@ -37,15 +37,23 @@ namespace Apollo.AIM.SNAP.Web.Controls
 				Label requestId = (Label)WebUtilities.FindControlRecursive(requestBlade, "_requestId");
 				requestId.Text = userInfo["request_id"].ToString();
 				
-				// find readonlyrequestview placeholder, load rorv into it
-				// populate repeater (add access team notes to repeater as needed)
+				// pass reqId into RORV, populate repeater (add access team notes to repeater as needed, read role from session?)
 				// 
 				ReadOnlyRequestView readOnlyRequestView; 
 				PlaceHolder readOnlyRequestViewContainer;
 
 				readOnlyRequestView = LoadControl(@"/Controls/ReadOnlyRequestView.ascx") as ReadOnlyRequestView;
-				readOnlyRequestViewContainer = (PlaceHolder)WebUtilities.FindControlRecursive(requestBlade, "_readOnlyRequestView");
+				readOnlyRequestView.RequestId = userInfo["request_id"].ToString();
+				readOnlyRequestViewContainer = (PlaceHolder)WebUtilities.FindControlRecursive(requestBlade, "_readOnlyRequestViewContainer");
 				readOnlyRequestViewContainer.Controls.Add(readOnlyRequestView);
+				
+				RequestTrackingView requestTrackingView;
+				PlaceHolder requestTrackingViewContainer;
+				
+				requestTrackingView = LoadControl(@"/Controls/RequestTrackingView.ascx") as RequestTrackingView;
+				requestTrackingView.RequestId = userInfo["request_id"].ToString();
+				requestTrackingViewContainer = (PlaceHolder)WebUtilities.FindControlRecursive(requestBlade, "_requestTrackingViewContainer");
+				requestTrackingViewContainer.Controls.Add(requestTrackingView);
 				
 				this.Controls.Add(requestBlade);	
 			}	
