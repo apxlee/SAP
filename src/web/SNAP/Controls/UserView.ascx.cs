@@ -16,6 +16,8 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			// select case of user who should be viewing to determine headings
 			// build dataset of all master blade rows
 			// build master blades
+			// expand blade if specific requestId in url
+			// Request Type Headings: OPEN, CLOSED, FILTERED
 
 			DataTable requestTestTable = GetRequests();
 
