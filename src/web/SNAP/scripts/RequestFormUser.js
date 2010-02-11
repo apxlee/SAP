@@ -8,6 +8,7 @@ function DocReady() {
     userManager.Ready();
 }
 
+
 var userManager = {
     Setup: function() {
 
@@ -19,6 +20,8 @@ var userManager = {
         this.mgrNameCheck = $("button[id$='_checkManagerName']");
         this.userLoginId = $("input[id$='_requestorLoginId']");
         this.mgrLoginId = $("input[id$='_managerLoginId']");
+        this.userSelectionDiv = $("#_nameSelectionDiv");
+        this.mgrSelectionDiv = $("#_managerSelectionDiv");
 
         this.mgrEdit = $("button[id$='_editManagerName']");
         this.ajaxIndicator = $("div[id$='_notification']");
@@ -28,7 +31,6 @@ var userManager = {
 
         this.clearButton = $("input[id$='_clearForm']");
         this.clearButtonLower = $("input[id$='_clearForm_lower']");
-        //this.SetupToggleManagerName();
     },
 
     ToggleSelecction: function() {
@@ -37,15 +39,7 @@ var userManager = {
         this.mgrName.attr("disabled", true)
     },
 
-    /*
-    SetupToggleManagerName: function() {
-    this.mgrName.toggle(
-    function() { userManager.mgrName.attr("disabled", true); },
-    function() { userManager.mgrName.removeAttr("disabled"); }
-    )
-    },
-    */
-    GetNames: function(name, selection) {
+    GetNames: function(name, selection, dialogDiv) {
         var postData = "{'name':'" + name.val() + "'}";
         userManager.ajaxIndicator.show();
 
@@ -59,7 +53,6 @@ var userManager = {
                 userManager.ajaxIndicator.hide();
 
                 var names = msg.d;
-                //$('body').data('userInfo', names);
 
                 // no match
                 if (names.length == 0) {
@@ -73,7 +66,7 @@ var userManager = {
 
                 // match list of names
                 if (names.length > 1) {
-                    userManager.FillSelection(selection, names);
+                    userManager.FillSelection(selection, names, dialogDiv);
                 }
             },
 
@@ -104,9 +97,9 @@ var userManager = {
 
             error: function(XMLHttpRequest, textStatus, errorThrown) {
                 userManager.ajaxIndicator.hide();
-                alert("GetNames Error: " + XMLHttpRequest);
-                alert("GetNames Error: " + textStatus);
-                alert("GetNames Error: " + errorThrown);
+                alert("GetUserManagerInfo Error: " + XMLHttpRequest);
+                alert("GetUserManagerInfo Error: " + textStatus);
+                alert("GetUserManagerInfo Error: " + errorThrown);
             }
         });
     },
@@ -122,7 +115,7 @@ var userManager = {
     HandleSubmitButtonClick: function() {
         userManager.submitButton.click(function() {
             userManager.SubmitHack();
-            return true;
+            return false;
         })
     },
 
@@ -160,13 +153,15 @@ var userManager = {
     HandleGetUserNames: function() {
         userManager.userNameCheck.click(function() {
             // this is ref to the button not usermanager, hence to call usermanager function I need to ref to qualify user manager
-            userManager.GetNames(userManager.userName, userManager.userSelection);
+        userManager.GetNames(userManager.userName, userManager.userSelection, userManager.userSelectionDiv);
+            //userManager.userSelectionDiv.dialog('open');
         })
     },
     HandleGetManagerNames: function() {
         userManager.mgrNameCheck.click(function() {
             // this is ref to the button not usermanager, hence to call usermanager function I need to ref to qualify user manager
-            userManager.GetNames(userManager.mgrName, userManager.mgrSelection);
+        userManager.GetNames(userManager.mgrName, userManager.mgrSelection, userManager.mgrSelectionDiv);
+            //userManager.managerSelectionDiv.dialog('open');
         })
     },
 
@@ -185,7 +180,7 @@ var userManager = {
                             $('#' + userManager.userSelection.attr('id') + ' option:selected').text(),
                             userManager.userSelection);
         userManager.GetUserManagerInfo("user", userManager.userName);
-        userManager.userNameCheck.removeAttr("disabled");
+        userManager.userSelectionDiv.dialog('close');
     },
 
     ManagerNameSelected: function() {
@@ -194,12 +189,11 @@ var userManager = {
                             $('#' + userManager.mgrSelection.attr('id') + ' :selected').text(),
                             userManager.mgrSelection);
         userManager.GetUserManagerInfo("manager", userManager.mgrName);
-        userManager.mgrNameCheck.removeAttr("disabled");
+        userManager.mgrSelectionDiv.dialog('close');
     },
 
     AssignSelectedName: function(nameElement, selectedName, selection) {
         nameElement.val(selectedName);
-        selection.toggle();
     },
 
     AssignManagerName: function(name) {
@@ -233,21 +227,21 @@ var userManager = {
         }
     },
 
-    FillSelection: function(selection, names) {
+    FillSelection: function(selection, names, dialogDiv) {
         var listItems = [];
         for (var key in names) {
             listItems.push('<option value="' + key + '">' + names[key].Name + '</option>');
         }
-        selection.toggle();
         selection.empty();
         selection.append(listItems.join(''));
-        selection.attr('size', names.length);
+        
+        // don't over expand the dialog box
+        if (names.length >= 10)
+            selection.attr('size', 10);
+         else
+             selection.attr('size', names.length);
 
-        if (selection.attr('id').indexOf('manager') > -1) {
-            userManager.mgrNameCheck.attr('disabled', true);
-        }
-        else
-            userManager.userNameCheck.attr('disabled', true);
+        dialogDiv.dialog('open');
     },
 
 
@@ -277,10 +271,44 @@ var userManager = {
         userManager.mgrLoginId.val(userManagerInfo.LoginId)
     },
 
+
+    ConvertToDialog: function(obj) {
+        obj.dialog({
+            title: 'Selection',
+            bgiframe: true,
+            resizable: false,
+            draggable: false,
+            height: 500,
+            width: 500,
+            modal: true,
+            overlay: {
+                backgroundColor: '#ff0000', opacity: 0.5
+
+            },
+            buttons: {
+                'Acknowledge': function() {
+                    alert('This would submit the form and take you to the View Page');
+                    $(this).dialog('close');
+                },
+                Cancel: function() {
+                    $(this).dialog('close');
+                }
+            }
+        });
+
+        obj.dialog('close');
+    },
+
+
+    BuildDialog: function() {
+        userManager.ConvertToDialog(userManager.userSelectionDiv);
+        userManager.ConvertToDialog(userManager.mgrSelectionDiv);
+    },
+
     Ready: function() {
         // this: userManager object
         this.Setup();
-        this.ToggleSelecction();
+        this.BuildDialog();
         this.HandleGetUserNames();
         this.HandleGetManagerNames();
         this.HandleNameSelectionChange();

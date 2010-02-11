@@ -33,7 +33,7 @@
 				</td>
   	            <td>
                     <div id="_notification" style="display: none;">
-                        <img alt='loading...' src="/images/ajax_indicator.gif" width="16" height="16" />&nbsp;Working...
+                        <img alt='loading...' src="/images/ajax_indicator.gif" width="16" height="16" />
                     </div>
                 </td>
                 <td>
@@ -41,18 +41,6 @@
                 </td>
 
 			</tr>
-			<tr>
-                  <td>
-                      &nbsp;</td>
-                  <td>
-                      <select size="3" name="nameSelection" id="_nameSelection"></select></td>
-                  <td>
-                      &nbsp;
-                  </td>
-                  <td>
-                      &nbsp;
-                  </td>
-            </tr>
 
 			<tr>
 				<td class="csm_input_form_label_column">
@@ -65,19 +53,12 @@
 			        <button type='button' id='_checkManagerName' class="csm_html_button">Check</button>
 			        <button type='button' id="_editManagerName" class="csm_html_button">Edit</button>
 				</td>
+				<td>&nbsp;</td>
 	            <td>
-                  <asp:TextBox ID="_managerLoginId" runat="server" style="display:none"></asp:TextBox>
+                  <asp:TextBox ID="_managerLoginId" runat="server" style="display:none" ></asp:TextBox>
                 </td>
+                
 			</tr>
-	      <tr>
-              <td>
-                  &nbsp;</td>
-              <td>
-                  <select size="3" name="managerSelection" id="_managerSelection"></select></td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-          </tr>
-
 
 			<asp:PlaceHolder ID="_requestForm" runat="server" ></asp:PlaceHolder>		
 				
@@ -91,6 +72,15 @@
 		</fieldset>
 	</div>
 </div>
+
+      <div id='_managerSelectionDiv' style="display:none"; >
+          <p />
+          <select size="3" name="managerSelection" id="_managerSelection"></select>
+      </div>
+      <div id='_nameSelectionDiv' style="display:none"; >
+           <p />
+          <select size="3" name="nameSelection" id="_nameSelection"></select>
+      </div>
 
      <div id="dialog" class="" style="display:none;">
         <p>As an individual whose position requires Privileged Administrative Access with any or all of Apollo Group, Inc. administrative 
