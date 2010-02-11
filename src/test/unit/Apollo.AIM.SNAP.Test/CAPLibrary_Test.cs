@@ -82,6 +82,7 @@ namespace Apollo.AIM.SNAP.Test
             Assert.IsTrue(changeRequest.Number != string.Empty);
         }
 
+
         [Test] public void ShouldQueryActiveDirectory()
         {
             var ldap = new LDAPConnection();
@@ -166,5 +167,50 @@ namespace Apollo.AIM.SNAP.Test
             Assert.IsTrue(result.Count == users.Count);
         }
 
+        [Test]
+        public void ShouldGetUserManagerInfo()
+        {
+            UserManagerInfo u = CA.DirectoryServices.GetUserManagerInfoByFullName("Pong Lee");
+            Assert.IsTrue(u.Name != "unknown");
+            Assert.IsTrue(u.LoginId != "unknown");
+        }
+
+        [Test]
+        public void ShouldGetUnknownUserManagerInfo()
+        {
+            UserManagerInfo u = CA.DirectoryServices.GetUserManagerInfoByFullName("XYZABC");
+            Assert.IsTrue(u.Name == "unknown");
+        }
+
+        [Test]
+        public void ShouldGetAListOfUser()
+        {
+            UserManagerInfo u = CA.DirectoryServices.GetUserManagerInfoByFullName("XYZABC");
+            Assert.IsTrue(u.Name == "unknown");
+        }
+
+        [Test]
+        public void ShouldGetSimplifiedNameMultipleMatch()
+        {
+            List<UserManagerInfo> u = CA.DirectoryServices.GetSimplifiedUserManagerInfo("Pong Lee");
+            Assert.IsTrue(u.Count > 1);
+            Assert.IsTrue(u[0].Name != "unknown");
+            Assert.IsTrue(u[0].ManagerName == "unknown");
+            Assert.IsTrue(u[0].LoginId == "unknown");
+            Assert.IsTrue(u[0].ManagerLoginId == "unknown");
+        }
+
+        [Test]
+        public void ShouldGetSimplifiedNameDirectMatch()
+        {
+            List<UserManagerInfo> u = CA.DirectoryServices.GetSimplifiedUserManagerInfo("Pong Lee (Admin)");
+            Assert.IsTrue(u.Count == 1);
+            Assert.IsTrue(u[0].Name == "Pong Lee (Admin)");
+            //Assert.IsTrue(u[0].ManagerName == "unknown");
+            Assert.IsTrue(u[0].LoginId != "unknown");
+            //Assert.IsTrue(u[0].ManagerLoginId == "unknown");
+        }
+
+        //Pong Lee (Admin)
     }
 }

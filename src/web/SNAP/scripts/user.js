@@ -10,14 +10,17 @@ function DocReady() {
 
 var userManager = {
     Setup: function() {
-        this.userName = $("input[id$='userName']");
-        this.userSelection = $('select[id$=nameSelection]');
-        this.mgrName = $("input[id$='mgrName']");
+
+        this.userName = $("input[id$='_requestorId']");
+        this.userSelection = $('select[id$=_nameSelection]');
+        this.mgrName = $("input[id$='_managerName']");
         this.mgrSelection = $('select[id$=mgrSelection]');
-        this.userNameCheck = $("button[id$='userCheck']");
-        this.mgrNameCheck = $("button[id$='mgrCheck']");
-        this.userLoginId = $("input[id$='userLoginId']");
-        this.mgrLoginId = $("input[id$='mgrLoginId']");
+        this.userNameCheck = $("button[id$='_checkRequestorId']");
+        this.mgrNameCheck = $("button[id$='_checkManagerName']");
+        this.userLoginId = $("input[id$='_requestorLoginId']");
+        this.mgrLoginId = $("input[id$='_managerLoginId']");
+
+        this.ajaxIndicator = $("div[id$='_notification']");
     },
 
     ToggleSelecction: function() {
@@ -26,6 +29,7 @@ var userManager = {
     },
     GetNames: function(name, selection) {
         var postData = "{'name':'" + name.val() + "'}";
+        userManager.ajaxIndicator.show();
 
         $.ajax({
             type: "POST",
@@ -34,6 +38,8 @@ var userManager = {
             data: postData,
             dataType: "json",
             success: function(msg) {
+                userManager.ajaxIndicator.hide();
+
                 var names = msg.d;
                 $('body').data('userInfo', names);
 
@@ -49,17 +55,44 @@ var userManager = {
 
                 // match list of names
                 if (names.length > 1) {
-                    userManager.FillSelection(selection, names);                }
+                    userManager.FillSelection(selection, names);
+                }
             },
-            
-            error:  function(XMLHttpRequest, textStatus, errorThrown) {
+
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                userManager.ajaxIndicator.hide();
                 alert("GetNames Error: " + XMLHttpRequest);
                 alert("GetNames Error: " + textStatus);
-                alert("GetNames Error: " + errorThrown); 
+                alert("GetNames Error: " + errorThrown);
             }
-           })
-
+        });
     },
+
+    GetUserManagerInfo: function(flag, fullName) {
+        var postData = "{'fullName':'" + fullName.val() + "'}";
+        userManager.ajaxIndicator.show();
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; character=utf-8",
+            url: "/Default.aspx/GetUserManagerInfoByFullName",
+            data: postData,
+            dataType: "json",
+            success: function(msg) {
+                userManager.ajaxIndicator.hide();
+                var userInfo = msg.d;
+                userManager.FillUserManagerInfo(flag, userInfo);
+            },
+
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                userManager.ajaxIndicator.hide();
+                alert("GetNames Error: " + XMLHttpRequest);
+                alert("GetNames Error: " + textStatus);
+                alert("GetNames Error: " + errorThrown);
+            }
+        });
+    },
+
     HandleGetUserNames: function() {
         userManager.userNameCheck.click(function() {
             // this is ref to the button not usermanager, hence to call usermanager function I need to ref to qualify user manager
@@ -76,14 +109,13 @@ var userManager = {
     HandleNameSelectionChange: function() { userManager.userSelection.change(userManager.UserNameSelected) },
     HandleManagerSelectionChange: function() { userManager.mgrSelection.change(userManager.ManagerNameSelected) },
 
-
     UserNameSelected: function() {
         userManager.AssignSelectedName(userManager.userName,
         //$('select[id$=nameSelection] option:selected').text(),
                             $('#' + userManager.userSelection.attr('id') + ' option:selected').text(),
                             userManager.userSelection);
-        userManager.FillLoginId(userManager.userName.val(), userManager.userLoginId);
-        userManager.FillManagerName();
+        userManager.GetUserManagerInfo("user", userManager.userName);
+
     },
 
     ManagerNameSelected: function() {
@@ -91,7 +123,7 @@ var userManager = {
         //$('select[id$=mgrSelection] option:selected').text(),
                             $('#' + userManager.mgrSelection.attr('id') + ' :selected').text(),
                             userManager.mgrSelection);
-        userManager.FillLoginId(userManager.mgrName.val(), userManager.mgrLoginId);
+        userManager.GetUserManagerInfo("manager", userManager.mgrName);
 
     },
 
@@ -100,32 +132,9 @@ var userManager = {
         selection.toggle();
     },
 
-    FillManagerName: function() {
-        var userInfo = $('body').data('userInfo');
-        for (var key in userInfo) {
-            if (userInfo[key].Name == userManager.userName.val()) {
-                userManager.mgrName.val(userInfo[key].ManagerName);
-                userManager.mgrLoginId.empty();
-                userManager.mgrLoginId.val(userInfo[key].ManagerLoginId);
-                break;
-            }
-        }
-    },
-
-    FillLoginId: function(name, loginId) {
-        var userInfo = $('body').data('userInfo');
-        for (var key in userInfo) {
-            if (userInfo[key].Name == name) {
-                loginId.empty();
-                loginId.val(userInfo[key].LoginId);
-                break;
-            }
-        }
-    },
-
     FillAllFields: function(name, names) {
 
-        if (name.attr('id').indexOf("mgr") > -1) {
+        if (name.attr('id').indexOf("manager") > -1) {
             userManager.mgrLoginId.val(names[0].LoginId);
             userManager.mgrName.val(names[0].Name);
         } else {
@@ -135,10 +144,11 @@ var userManager = {
             userManager.mgrName.val(names[0].ManagerName);
             userManager.mgrLoginId.val(names[0].ManagerLoginId);
         }
+
     },
 
     FillErrorFields: function(name) {
-        if (name.attr('id').indexOf("mgr") > -1) {
+        if (name.attr('id').indexOf("manager") > -1) {
             userManager.mgrName.val("No such name! Try again");
             userManager.mgrLoginId.val("unknown");
         }
@@ -157,6 +167,33 @@ var userManager = {
         selection.empty();
         selection.append(listItems.join(''));
         selection.attr('size', names.length);
+    },
+
+
+    FillUserManagerInfo: function(flag, userManagerInfo) {
+        if (flag == 'user') {
+            userManager.FillUserInfo(userManagerInfo);
+            userManager.FillManagerInfoFromUserSelection(userManagerInfo);
+        }
+        else {
+            userManager.FillManagerInfoFromManagerSelection(userManagerInfo);
+        }
+    },
+
+    FillUserInfo: function(userManagerInfo) {
+        userManager.userName.val(userManagerInfo.Name);
+        userManager.userLoginId.val(userManagerInfo.LoginId);
+    },
+
+    FillManagerInfoFromUserSelection: function(userManagerInfo) {
+
+        userManager.mgrName.val(userManagerInfo.ManagerName);
+        userManager.mgrLoginId.val(userManagerInfo.ManagerLoginId)
+    },
+
+    FillManagerInfoFromManagerSelection: function(userManagerInfo) {
+        userManager.mgrName.val(userManagerInfo.Name);
+        userManager.mgrLoginId.val(userManagerInfo.LoginId)
     },
 
     Ready: function() {

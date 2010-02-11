@@ -122,9 +122,10 @@ namespace Apollo.AIM.SNAP.CA
         public static List<UserManagerInfo> GetUserManagerInfo(string fullName)
         {
             var result = new List<UserManagerInfo>();
-            //if (fullName != string.Empty)
-            //{
+            if (fullName != string.Empty)
+            {
                 var users = GetAllUserByFullName(fullName);
+                
                 users.ForEach(delegate(string x)
                                   {
                                       Console.WriteLine(x);
@@ -147,8 +148,75 @@ namespace Apollo.AIM.SNAP.CA
                                       }
                                   });
 
+            }
+            return result;
+        }
 
-            //}
+        public static List<UserManagerInfo> GetSimplifiedUserManagerInfo(string fullName)
+        {
+            var result = new List<UserManagerInfo>();
+            if (fullName != string.Empty)
+            {
+                var users = GetAllUserByFullName(fullName);
+
+                // direct match
+                if (users.Count == 1)
+                {
+                      var u = GetUserByFullName(users[0]);
+                      if (u != null)
+                      {
+                          result.Add(new UserManagerInfo
+                                         {
+                                             LoginId = u.LoginName ?? "unknown",
+                                             ManagerLoginId = u.Manager != null ? u.Manager.LoginName : "unknown",
+                                             ManagerName = u.ManagerName ?? "unknown",
+                                             Name = users[0]
+                                         });
+                      }
+                      else
+                      {
+                          Console.WriteLine("*** Can't find: " + users[0]);
+                      }
+                }
+                else // match list of users, just return the name
+                {
+                    users.ForEach(s =>   result.Add(new UserManagerInfo
+                                         {
+                                             LoginId = "unknown",
+                                             ManagerLoginId = "unknown",
+                                             ManagerName = "unknown",
+                                             Name = s
+                                         }));
+                }
+
+            }
+            return result;
+        }
+
+        public static UserManagerInfo GetUserManagerInfoByFullName(string fullName)
+        {
+            var result = new UserManagerInfo();
+            var u = GetUserByFullName(fullName);
+            if (u != null)
+            {
+                result = new UserManagerInfo
+                {
+                    LoginId = u.LoginName ?? "unknown",
+                    ManagerLoginId = u.Manager != null ? u.Manager.LoginName : "unknown",
+                    ManagerName = u.ManagerName ?? "unknown",
+                    Name = fullName
+                };
+            }
+            else
+            {
+                result = new UserManagerInfo
+                             {
+                                 LoginId = "unknown",
+                                 ManagerLoginId = "unknown",
+                                 ManagerName = "unknown",
+                                 Name = "unknown"
+                             };
+            }
             return result;
         }
 

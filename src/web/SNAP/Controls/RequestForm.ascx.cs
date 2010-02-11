@@ -54,6 +54,28 @@ namespace Apollo.AIM.SNAP.Web.Controls
             table.Rows.Add(5, 0, "Justification", "Enter the reason for requesting...", true, true);
             return table;
         }
+
+        public string UserName
+        {
+            
+            get { return this._requestorId.Text; }
+        }
+
+        public string UserLoginId
+        {
+            get { return this._requestorLoginId.Text; }
+        }
+
+        public string ManagerName
+        {
+            get { return this._managerName.Text; }
+        }
+
+        public string ManagerLoginId
+        {
+            get { return this._managerLoginId.Text; }
+        }
+
     }
 
 }

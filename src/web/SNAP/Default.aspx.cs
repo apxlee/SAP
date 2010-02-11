@@ -36,48 +36,24 @@ namespace Apollo.AIM.SNAP.Web
         [WebMethod]
         public static List<UserManagerInfo> GetNames(string name)
         {
-            return CA.DirectoryServices.GetUserManagerInfo(name);
-            var result = new List<UserManagerInfo>
-                             {
-                                 
-                                 new UserManagerInfo()
-                                     {
-                                         LoginId = "pxlee1",
-                                         ManagerLoginId = "mgr1",
-                                         ManagerName = "Manager 1",
-                                         Name = "Pong 1"
-                                     },
-                                 
-                                 new UserManagerInfo()
-                                 {
-                                     LoginId = "pxlee2",
-                                     ManagerLoginId = "mgr2",
-                                     ManagerName = "Manager 2",
-                                     Name = "Pong 2"
+            //System.Threading.Thread.Sleep(3000);
+            //return CA.DirectoryServices.GetUserManagerInfo(name);
+            return CA.DirectoryServices.GetSimplifiedUserManagerInfo(name);
+        }
 
-                                 },
+        /*
+        [WebMethod]
+        public static List<string> GetUserNames(string name)
+        {
+            //System.Threading.Thread.Sleep(3000);
+            return CA.DirectoryServices.GetAllUserByFullName(name);
+        }
+         */
 
-                                                                  
-                                 new UserManagerInfo()
-                                 {
-                                     LoginId = "pxlee3",
-                                     ManagerLoginId = "mgr3",
-                                     ManagerName = "Manager 3",
-                                     Name = "Pong 3"
-
-                                 },
-
-                                 new UserManagerInfo()
-                                 {
-                                     LoginId = "pxlee4",
-                                     ManagerLoginId = "mgr4",
-                                     ManagerName = "Manager 4",
-                                     Name = "Pong 4, Pong 4, Pong 4"
-
-                                 }
-
-                           };
-            return result;
+        [WebMethod]
+        public static UserManagerInfo GetUserManagerInfoByFullName(string fullName)
+        {
+            return CA.DirectoryServices.GetUserManagerInfoByFullName(fullName);
         }
 
     }

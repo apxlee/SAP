@@ -1,4 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="RequestForm.ascx.cs" Inherits="Apollo.AIM.SNAP.Web.Controls.RequestForm" %>
+
+<script src='/scripts/user.js' type="text/javascript" ></script>
+
 <div class="csm_container_center_700">
     
 	<h1>Request Form</h1>
@@ -23,10 +26,33 @@
 				</td>
 				<td class="csm_input_form_control_column">
 					<asp:TextBox ID="_requestorId" runat="server" CssClass="csm_text_input_short" ></asp:TextBox>
-					<asp:Button ID="_checkRequestorId" runat="server" CssClass="csm_html_button" Text="Check" />
-			        <p><em>Example: axuser -or- apollogroup\axuser</em></p>
+					<!--<Button ID="_checkRequestorId" Class="csm_html_button" Text="Check" />-->
+					<button type='button' id='_checkRequestorId' class="csm_html_button">Check</button>
+			        <p><em>Example: axuser (domain name is not needed)</em></p>
 				</td>
+  	            <td>
+                    <div id="_notification" style="display: none;">
+                        <img alt='loading...' src="/images/ajax_indicator.gif" width="16" height="16" />&nbsp;Working...
+                    </div>
+                </td>
+                <td>
+                    <asp:TextBox ID="_requestorLoginId" runat="server" style="display:block" ></asp:TextBox>
+                </td>
+
 			</tr>
+			<tr>
+                  <td>
+                      &nbsp;</td>
+                  <td>
+                      <select size="3" name="nameSelection" id="_nameSelection"></select></td>
+                  <td>
+                      &nbsp;
+                  </td>
+                  <td>
+                      &nbsp;
+                  </td>
+            </tr>
+
 			<tr>
 				<td class="csm_input_form_label_column">
 					<label for="_requestFormControl__managerName">Manager Name</label>
@@ -34,10 +60,23 @@
 				</td>
 				<td class="csm_input_form_control_column">
 					<asp:TextBox ID="_managerName" runat="server" CssClass="csm_text_input_short"></asp:TextBox>
-			        <asp:Button ID="_checkManagerName" runat="server" CssClass="csm_html_button" Text="Check" />
-			        <asp:Button ID="_editManagerName" runat="server" CssClass="csm_html_button" Text="Edit" />
+			        <!--<asp:Button ID="_checkManagerName" runat="server" CssClass="csm_html_button" Text="Check" /> -->
+			        <button type='button' id='_checkManagerName' class="csm_html_button">Check</button>
+			        <button type='button' id="_editManagerName" class="csm_html_button">Edit</button>
 				</td>
+	            <td>
+                  <asp:TextBox ID="_managerLoginId" runat="server" style="display:block"></asp:TextBox>
+                </td>
 			</tr>
+	      <tr>
+              <td>
+                  &nbsp;</td>
+              <td>
+                  <select size="3" name="mgrSelection" id="mgrSelection"></select></td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+          </tr>
+
 
 			<asp:PlaceHolder ID="_requestFormSection" runat="server" ></asp:PlaceHolder>		
 				

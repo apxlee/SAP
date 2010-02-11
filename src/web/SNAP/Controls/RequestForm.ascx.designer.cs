@@ -41,13 +41,13 @@ namespace Apollo.AIM.SNAP.Web.Controls {
         protected global::System.Web.UI.WebControls.TextBox _requestorId;
         
         /// <summary>
-        /// _checkRequestorId control.
+        /// _requestorLoginId control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button _checkRequestorId;
+        protected global::System.Web.UI.WebControls.TextBox _requestorLoginId;
         
         /// <summary>
         /// _managerName control.
@@ -68,13 +68,13 @@ namespace Apollo.AIM.SNAP.Web.Controls {
         protected global::System.Web.UI.WebControls.Button _checkManagerName;
         
         /// <summary>
-        /// _editManagerName control.
+        /// _managerLoginId control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button _editManagerName;
+        protected global::System.Web.UI.WebControls.TextBox _managerLoginId;
         
         /// <summary>
         /// _requestFormSection control.

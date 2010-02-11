@@ -16,36 +16,37 @@ namespace Apollo.AIM.SNAP.Web
         {
 
         }
-        [WebMethod]
-        public static List<UserManagerInfo> GetNames(string name)
-        {
-            var result = new List<UserManagerInfo>
-                             {
-                                 /*
-                                 new UserManagerInfo()
-                                     {
-                                         LoginId = "pxlee1",
-                                         ManagerLoginId = "mgr1",
-                                         ManagerName = "Manager 1",
-                                         Name = "Pong 1"
-                                     },
-                                  */
-                                     new UserManagerInfo()
-                                     {
-                                         LoginId = "pxlee2",
-                                         ManagerLoginId = "mgr2",
-                                         ManagerName = "Manager 2",
-                                         Name = "Pong 2"
+        
+        //[WebMethod]
+        //public static List<UserManagerInfo> GetNames(string name)
+        //{
+        //    var result = new List<UserManagerInfo>
+        //                     {
+        //                         /*
+        //                         new UserManagerInfo()
+        //                             {
+        //                                 LoginId = "pxlee1",
+        //                                 ManagerLoginId = "mgr1",
+        //                                 ManagerName = "Manager 1",
+        //                                 Name = "Pong 1"
+        //                             },
+        //                          */
+        //                             new UserManagerInfo()
+        //                             {
+        //                                 LoginId = "pxlee2",
+        //                                 ManagerLoginId = "mgr2",
+        //                                 ManagerName = "Manager 2",
+        //                                 Name = "Pong 2"
 
-                                     }
+        //                             }
                                
-                           };
-            return result;
-        }
+        //                   };
+        //    return result;
+        //}
 
         protected void Button1_Click(object sender, EventArgs e)
         {
-            this.Label1.Text = UserManager1.UserName+"(" + UserManager1.UserLoginId + ") - " + UserManager1.ManagerName + "(" + UserManager1.ManagerLoginId + ")";
+            this.Label1.Text = RequestForm1.UserName + "{" + RequestForm1.UserLoginId + "} - " + RequestForm1.ManagerName + "{" + RequestForm1.ManagerLoginId + "}";
         }
 
     }
