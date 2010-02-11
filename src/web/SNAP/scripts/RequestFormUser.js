@@ -22,10 +22,12 @@ var userManager = {
 
         this.mgrEdit = $("button[id$='_editManagerName']");
         this.ajaxIndicator = $("div[id$='_notification']");
-        
+
         this.submitButton = $("input[id$='__submitForm']");
         this.submitButtonLower = $("input[id$='_submitForm_lower']");
 
+        this.clearButton = $("input[id$='_clearForm']");
+        this.clearButtonLower = $("input[id$='_clearForm_lower']");
         //this.SetupToggleManagerName();
     },
 
@@ -109,20 +111,50 @@ var userManager = {
         });
     },
 
-    // !!! since we disable the mgrName text box when we fill the manager name there, we will not be able to read the value when post back to the server due to security 
+
+    // !!! since we disable the mgrName text box when we fill the manager name there, we will not be able to read the value when post back to the server due to security
     // !!! Due to server does not process read-only text box, we need to remove the disabled attr when we click the submit button so that the mgrName field is available to the server
+
+    SubmitHack: function() {
+        userManager.mgrName.removeAttr("disabled");
+    },
+
     HandleSubmitButtonClick: function() {
         userManager.submitButton.click(function() {
-            userManager.mgrName.removeAttr("disabled");
+            userManager.SubmitHack();
             return true;
         })
     },
 
     HandleSubmitButtonLowerClick: function() {
-    userManager.submitButtonLower.click(function() {
-            userManager.mgrName.removeAttr("disabled");
+        userManager.submitButtonLower.click(function() {
+            userManager.SubmitHack();
             return true;
         })
+    },
+
+    HandleSubmitClick: function() {
+        userManager.HandleSubmitButtonClick();
+        userManager.HandleSubmitButtonLowerClick();
+    },
+
+
+    Clear: function() {
+        $("input[type='text']").val(''); $("textarea").val("")
+    },
+
+
+    HandleClearButtonClick: function() {
+        userManager.clearButton.click(function() { userManager.Clear(); })
+    },
+
+    HandleClearButtonLowerClick: function() {
+        userManager.clearButtonLower.click(function() { userManager.Clear(); })
+    },
+
+    HandleClearClick: function() {
+        userManager.HandleClearButtonClick();
+        userManager.HandleClearButtonLowerClick();
     },
 
     HandleGetUserNames: function() {
@@ -254,8 +286,8 @@ var userManager = {
         this.HandleNameSelectionChange();
         this.HandleManagerSelectionChange();
         this.HandleEditManagerName();
-        this.HandleSubmitButtonClick();
-        this.HandleSubmitButtonLowerClick();
+        this.HandleClearClick();
+        this.HandleSubmitClick();
     }
 }
 

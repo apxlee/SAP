@@ -14,7 +14,7 @@
 		<fieldset><!-- use fieldset for standards & compliance -->
 		
 		<div class="csm_input_buttons_container">
-			<input type="button" value="Clear Form" class="csm_html_button" />
+			<input type="button" value="Clear Form" class="csm_html_button" id='_clearForm'/>
 			<asp:Button ID="_submitForm" Text="Submit" CssClass="csm_html_button" 
                 runat="server" onclick="_submitForm_Click" />
 		</div>				
@@ -84,7 +84,7 @@
 		</table>
 		
 		<div class="csm_input_buttons_container">
-			<input type="button" value="Clear Form" class="csm_html_button" />
+			<input type="button" value="Clear Form" class="csm_html_button" id='_clearForm_lower'/>
 			<asp:Button ID="_submitForm_lower" Text="Submit" CssClass="csm_html_button" runat="server" onclick="_submitForm_Click" />
 		</div>				
 		
