@@ -15,15 +15,29 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		public string AffectedEndUserName { get; set; }
 		public string OverallRequestStatus { get; set; }
 		public string LastUpdatedDate { get; set; }
+		
+		// TODO: read role from session
+		private Role _userRole = Role.User;
 	
 		protected void Page_Load(object sender, EventArgs e)
 		{
 			PopulateUserInfo();
 			LoadReadOnlyRequestView();
 			LoadRequestTrackingView();
-
-			// TODO: if role = access team, then load AccessTeamView into placeholder
-			// TODO: If role = approving manager, then load ApprovingManagerView into placeholder					
+			
+			switch (_userRole)
+			{
+				case Role.ApprovingManager :
+					LoadApprovingManagerView();
+					break;
+					
+				case Role.AccessTeam :
+					LoadAccessTeamView();
+					break;
+					
+				default :
+					break;
+			}
 		}
 		
 		private void PopulateUserInfo()
@@ -51,5 +65,9 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			requestTrackingView.RequestId = RequestId.ToString();
 			_requestTrackingViewContainer.Controls.Add(requestTrackingView);		
 		}
+		
+		private void LoadAccessTeamView() {}
+		
+		private void LoadApprovingManagerView() {}
 	}
 }
