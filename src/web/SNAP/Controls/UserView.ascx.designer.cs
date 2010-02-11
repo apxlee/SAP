@@ -14,12 +14,21 @@ namespace Apollo.AIM.SNAP.Web.Controls {
     public partial class UserView {
         
         /// <summary>
-        /// _requestFilter control.
+        /// _openRequestsContainer control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder _requestFilter;
+        protected global::System.Web.UI.WebControls.PlaceHolder _openRequestsContainer;
+        
+        /// <summary>
+        /// _closedRequestsContainer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder _closedRequestsContainer;
     }
 }
