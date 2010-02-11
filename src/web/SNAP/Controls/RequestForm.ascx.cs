@@ -68,12 +68,20 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
         public string ManagerName
         {
-            get { return this._managerName.Text; }
+            get
+            {
+                return this._managerName.Text;
+            }
         }
 
         public string ManagerLoginId
         {
             get { return this._managerLoginId.Text; }
+        }
+
+        protected void _submitForm_Click(object sender, EventArgs e)
+        {
+
         }
 
     }

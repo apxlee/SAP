@@ -38,17 +38,15 @@ namespace Apollo.AIM.SNAP.Web
         {
             //System.Threading.Thread.Sleep(3000);
             //return CA.DirectoryServices.GetUserManagerInfo(name);
+
+            if (name == string.Empty)
+            {
+                return new List<UserManagerInfo>();
+            }
+
             return CA.DirectoryServices.GetSimplifiedUserManagerInfo(name);
         }
 
-        /*
-        [WebMethod]
-        public static List<string> GetUserNames(string name)
-        {
-            //System.Threading.Thread.Sleep(3000);
-            return CA.DirectoryServices.GetAllUserByFullName(name);
-        }
-         */
 
         [WebMethod]
         public static UserManagerInfo GetUserManagerInfoByFullName(string fullName)

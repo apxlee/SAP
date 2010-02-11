@@ -15,7 +15,8 @@
 		
 		<div class="csm_input_buttons_container">
 			<input type="button" value="Clear Form" class="csm_html_button" />
-			<asp:Button ID="_submitForm" Text="Submit" CssClass="csm_html_button" runat="server" />
+			<asp:Button ID="_submitForm" Text="Submit" CssClass="csm_html_button" 
+                runat="server" onclick="_submitForm_Click" />
 		</div>				
 		
 		<table border="0" cellpadding="0" cellspacing="0" class="csm_input_form_container">
@@ -36,7 +37,7 @@
                     </div>
                 </td>
                 <td>
-                    <asp:TextBox ID="_requestorLoginId" runat="server" style="display:block" ></asp:TextBox>
+                    <asp:TextBox ID="_requestorLoginId" runat="server" style="display:none" ></asp:TextBox>
                 </td>
 
 			</tr>
@@ -59,20 +60,20 @@
 					<p>Please verify your manager name</p>
 				</td>
 				<td class="csm_input_form_control_column">
-					<asp:TextBox ID="_managerName" runat="server" CssClass="csm_text_input_short"></asp:TextBox>
+					<asp:TextBox ID="_managerName" runat="server" CssClass="csm_text_input_short" ></asp:TextBox>
 			        <!--<asp:Button ID="_checkManagerName" runat="server" CssClass="csm_html_button" Text="Check" /> -->
 			        <button type='button' id='_checkManagerName' class="csm_html_button">Check</button>
 			        <button type='button' id="_editManagerName" class="csm_html_button">Edit</button>
 				</td>
 	            <td>
-                  <asp:TextBox ID="_managerLoginId" runat="server" style="display:block"></asp:TextBox>
+                  <asp:TextBox ID="_managerLoginId" runat="server" style="display:none"></asp:TextBox>
                 </td>
 			</tr>
 	      <tr>
               <td>
                   &nbsp;</td>
               <td>
-                  <select size="3" name="mgrSelection" id="mgrSelection"></select></td>
+                  <select size="3" name="managerSelection" id="_managerSelection"></select></td>
               <td>&nbsp;</td>
               <td>&nbsp;</td>
           </tr>
@@ -84,7 +85,7 @@
 		
 		<div class="csm_input_buttons_container">
 			<input type="button" value="Clear Form" class="csm_html_button" />
-			<asp:Button ID="_submitForm_lower" Text="Submit" CssClass="csm_html_button" runat="server" />
+			<asp:Button ID="_submitForm_lower" Text="Submit" CssClass="csm_html_button" runat="server" onclick="_submitForm_Click" />
 		</div>				
 		
 		</fieldset>

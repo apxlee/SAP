@@ -122,8 +122,8 @@ namespace Apollo.AIM.SNAP.CA
         public static List<UserManagerInfo> GetUserManagerInfo(string fullName)
         {
             var result = new List<UserManagerInfo>();
-            if (fullName != string.Empty)
-            {
+            //if (fullName != string.Empty)
+            //{
                 var users = GetAllUserByFullName(fullName);
                 
                 users.ForEach(delegate(string x)
@@ -148,7 +148,7 @@ namespace Apollo.AIM.SNAP.CA
                                       }
                                   });
 
-            }
+            //}
             return result;
         }
 
@@ -159,7 +159,7 @@ namespace Apollo.AIM.SNAP.CA
             {
                 var users = GetAllUserByFullName(fullName);
 
-                // direct match
+                // direct match, retrieve user and manager info
                 if (users.Count == 1)
                 {
                       var u = GetUserByFullName(users[0]);
@@ -178,8 +178,11 @@ namespace Apollo.AIM.SNAP.CA
                           Console.WriteLine("*** Can't find: " + users[0]);
                       }
                 }
-                else // match list of users, just return the name
+                else 
                 {
+                    // match list of users, just return the name. will get detail user_manager info from another call. This is improve the performance. avoid call get usermanager
+                    // info for list of users
+
                     users.ForEach(s =>   result.Add(new UserManagerInfo
                                          {
                                              LoginId = "unknown",
