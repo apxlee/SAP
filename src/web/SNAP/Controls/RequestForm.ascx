@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="RequestForm.ascx.cs" Inherits="Apollo.AIM.SNAP.Web.Controls.RequestForm" %>
 
-<script src='/scripts/user.js' type="text/javascript" ></script>
+<script src='/scripts/RequestFormUser.js' type="text/javascript" ></script>
 
 <div class="csm_container_center_700">
     
