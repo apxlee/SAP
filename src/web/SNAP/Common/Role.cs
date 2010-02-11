@@ -9,6 +9,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 	{
 		User,
 		ApprovingManager,
-		AccessTeam
+		AccessTeam,
+		SuperUser
 	}
 }
