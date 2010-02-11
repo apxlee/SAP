@@ -33,13 +33,13 @@ namespace Apollo.AIM.SNAP.Web.Controls
 						break;
 
 					case Role.AccessTeam:
-						LoadAccessTeamFilter();
-						LoadUserHeadings();
+						//LoadAccessTeamFilter();
+						//LoadUserHeadings();
 						break;
 
 					case Role.SuperUser:
-						LoadApprovingManagerView();
-						LoadAccessTeamView();
+						//LoadApprovingManagerView();
+						//LoadAccessTeamView();
 						break;
 
 					default:
