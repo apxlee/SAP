@@ -38,6 +38,8 @@ namespace Apollo.AIM.SNAP.Web.Controls
                     accessDetailsFormId.Rows = 10;
                     accessDetailsFormId.CssClass = "csm_text_input";
 
+                    innerLabel.AssociatedControlID = accessDetailsFormId.ID;
+
                     this._requestFormField.Controls.Add(requestFormField);
                     rowCount = rowCount + 1;
                 }
