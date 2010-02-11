@@ -15,9 +15,6 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		public string AffectedEndUserName { get; set; }
 		public string OverallRequestStatus { get; set; }
 		public string LastUpdatedDate { get; set; }
-		
-		// TODO: read role from session
-		private Role _userRole = Role.User;
 	
 		protected void Page_Load(object sender, EventArgs e)
 		{
@@ -25,19 +22,32 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			LoadReadOnlyRequestView();
 			LoadRequestTrackingView();
 			
-			switch (_userRole)
+			try 
 			{
-				case Role.ApprovingManager :
-					LoadApprovingManagerView();
-					break;
-					
-				case Role.AccessTeam :
-					LoadAccessTeamView();
-					break;
-					
-				default :
-					break;
+				switch ((Role)Page.Session["SNAPUserRole"])
+				{
+					case Role.ApprovingManager:
+						LoadApprovingManagerView();
+						break;
+
+					case Role.AccessTeam:
+						LoadAccessTeamView();
+						break;
+
+					case Role.SuperUser:
+						LoadApprovingManagerView();
+						LoadAccessTeamView();
+						break;
+
+					default:
+						break;
+				}
+			} 
+			catch (Exception ex)
+			{
+				// TODO: if session not set, redirect to login?  throw message to user?  set role to user?
 			}
+
 		}
 		
 		private void PopulateUserInfo()
