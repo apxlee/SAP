@@ -68,39 +68,39 @@ namespace Apollo.AIM.SNAP.Web.Controls {
         protected global::System.Web.UI.WebControls.Panel _toggledContentContainer;
         
         /// <summary>
-        /// _readOnlyRequestViewContainer control.
+        /// _readOnlyRequestPanelContainer control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder _readOnlyRequestViewContainer;
+        protected global::System.Web.UI.WebControls.PlaceHolder _readOnlyRequestPanelContainer;
         
         /// <summary>
-        /// _approvingManagerViewContainer control.
+        /// _approvingManagerPanelContainer control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder _approvingManagerViewContainer;
+        protected global::System.Web.UI.WebControls.PlaceHolder _approvingManagerPanelContainer;
         
         /// <summary>
-        /// _accessTeamViewContainer control.
+        /// _accessTeamPanelContainer control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder _accessTeamViewContainer;
+        protected global::System.Web.UI.WebControls.PlaceHolder _accessTeamPanelContainer;
         
         /// <summary>
-        /// _requestTrackingViewContainer control.
+        /// _requestTrackingPanelContainer control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder _requestTrackingViewContainer;
+        protected global::System.Web.UI.WebControls.PlaceHolder _requestTrackingPanelContainer;
     }
 }

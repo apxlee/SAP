@@ -19,8 +19,8 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		protected void Page_Load(object sender, EventArgs e)
 		{
 			PopulateUserInfo();
-			LoadReadOnlyRequestView();
-			LoadRequestTrackingView();
+			LoadReadOnlyRequestPanel();
+			LoadRequestTrackingPanel();
 			
 			try 
 			{
@@ -58,22 +58,22 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			_requestId.Text = RequestId;
 		}
 		
-		private void LoadReadOnlyRequestView()
+		private void LoadReadOnlyRequestPanel()
 		{
-			ReadOnlyRequestView readOnlyRequestView;
+			ReadOnlyRequestPanel readOnlyRequestPanel;
 
-			readOnlyRequestView = LoadControl(@"/Controls/ReadOnlyRequestView.ascx") as ReadOnlyRequestView;
-			readOnlyRequestView.RequestId = RequestId.ToString();
-			_readOnlyRequestViewContainer.Controls.Add(readOnlyRequestView);		
+			readOnlyRequestPanel = LoadControl(@"/Controls/ReadOnlyRequestPanel.ascx") as ReadOnlyRequestPanel;
+			readOnlyRequestPanel.RequestId = RequestId.ToString();
+			_readOnlyRequestPanelContainer.Controls.Add(readOnlyRequestPanel);		
 		}
 		
-		private void LoadRequestTrackingView()
+		private void LoadRequestTrackingPanel()
 		{
-			RequestTrackingView requestTrackingView;
+			RequestTrackingPanel requestTrackingPanel;
 
-			requestTrackingView = LoadControl(@"/Controls/RequestTrackingView.ascx") as RequestTrackingView;
-			requestTrackingView.RequestId = RequestId.ToString();
-			_requestTrackingViewContainer.Controls.Add(requestTrackingView);		
+			requestTrackingPanel = LoadControl(@"/Controls/RequestTrackingPanel.ascx") as RequestTrackingPanel;
+			requestTrackingPanel.RequestId = RequestId.ToString();
+			_requestTrackingPanelContainer.Controls.Add(requestTrackingPanel);		
 		}
 		
 		private void LoadAccessTeamView() {}
