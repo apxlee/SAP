@@ -22,6 +22,11 @@ namespace Apollo.AIM.SNAP.Web.Controls
 				WorkflowBlade workflowBlade;
 				workflowBlade = LoadControl(@"/Controls/WorkflowBlade.ascx") as WorkflowBlade;
 
+				Panel workflowBladeContainer;
+				workflowBladeContainer = (Panel)WebUtilities.FindControlRecursive(workflowBlade, "_workflowBladeContainer");
+				// TODO: test for access team and append csm_alternating_bg
+				workflowBladeContainer.CssClass = workflowBladeContainer.CssClass + " csm_alternating_bg"; 
+
 				Label workflowActorName = (Label)WebUtilities.FindControlRecursive(workflowBlade, "_workflowActorName");
 				workflowActorName.Text = workflowRow["workflow_actor_name"].ToString();
 				

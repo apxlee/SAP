@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="WorkflowBlade.ascx.cs" Inherits="Apollo.AIM.SNAP.Web.Controls.WorkflowBlade" %>
 <div class="csm_padded_windowshade">
-	<asp:Panel ID="_workflowBladeContainer" runat="server" CssClass="csm_data_row csm_alternating_bg"><!-- TODO: replace alternating_bg style as needed -->
+	<asp:Panel ID="_workflowBladeContainer" runat="server" CssClass="csm_data_row">
         <table border="0" cellpadding="0" cellspacing="0">
             <tr>
                 <td style="width:250px;"><asp:Label ID="_workflowActorName" runat="server"></asp:Label></td>
