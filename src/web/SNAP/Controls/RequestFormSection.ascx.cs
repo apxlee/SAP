@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections;
-using System.Configuration;
 using System.Data;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Security;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Xml.Linq;
+using Apollo.AIM.SNAP.Web.Common;
 
 namespace Apollo.AIM.SNAP.Web.Controls
 {
@@ -17,24 +13,32 @@ namespace Apollo.AIM.SNAP.Web.Controls
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            loadFields();
-        }
-
-        private void loadFields()
-        {
-            RequestFormField srff;
+            RequestFormField requestFormField;
             int rowCount = 0;
             DataTable testData = GetTable();
 
             foreach (DataRow row in testData.Rows)
             {
-                if (row["parentId"].ToString() == _parentId.Text)
+                if (row["parentId"].ToString() == ParentID)
                 {
-                    srff = LoadControl(@"/Controls/RequestFormField.ascx") as Apollo.AIM.SNAP.Web.Controls.RequestFormField;
-                    srff.FieldLabel = row["label"].ToString();
-                    srff.FieldDescription = row["description"].ToString();
-                    srff.FieldId = row["pkId"].ToString();
-                    this._requestFormField.Controls.Add(srff);
+                    requestFormField = LoadControl(@"/Controls/RequestFormField.ascx") as RequestFormField;
+
+                    Label innerLabel;
+                    innerLabel = (Label)WebUtilities.FindControlRecursive(requestFormField, "_innerLabel");
+                    innerLabel.Text = row["label"].ToString();
+
+                    Label innerDescription;
+                    innerDescription = (Label)WebUtilities.FindControlRecursive(requestFormField, "_innerDescription");
+                    innerDescription.Text = row["description"].ToString();
+
+                    TextBox accessDetailsFormId;
+                    accessDetailsFormId = (TextBox)WebUtilities.FindControlRecursive(requestFormField, "_accessDetailsFormId");
+                    accessDetailsFormId.ID = "textbox_" + row["pkId"].ToString();
+                    accessDetailsFormId.TextMode = TextBoxMode.MultiLine;
+                    accessDetailsFormId.Rows = 10;
+                    accessDetailsFormId.CssClass = "csm_text_input";
+
+                    this._requestFormField.Controls.Add(requestFormField);
                     rowCount = rowCount + 1;
                 }
             }
@@ -43,7 +47,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
             {
                 //<asp:TextBox ID="Access_Details_FormId" runat="server" TextMode="MultiLine" Rows="10" CssClass="csm_text_input"></asp:TextBox>
                 TextBox parentTextbox = new TextBox();
-                parentTextbox.ID = "textbox_" + _parentId.Text;
+                parentTextbox.ID = "textbox_" + ParentID;
                 parentTextbox.TextMode = TextBoxMode.MultiLine;
                 parentTextbox.Rows = 10;
                 parentTextbox.CssClass = "csm_text_input";
@@ -51,37 +55,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
             }
         }
 
-        public string FieldLabel
-        {
-            set
-            {
-                _outerLabel.Text = value;
-            }
-        }
-
-        public string LabelContainerCSS
-        {
-            set
-            {
-                _labelContainer.Attributes.Add("class", value);
-            }
-        }
-
-        public string FieldDescription
-        {
-            set
-            {
-                _outerDescription.Text = value;
-            }
-        }
-
-        public string FieldId
-        {
-            set
-            {
-                _parentId.Text = value;
-            }
-        }
+        public string ParentID { get; set; }
 
         static DataTable GetTable()
         {

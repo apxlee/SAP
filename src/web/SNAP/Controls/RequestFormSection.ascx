@@ -5,8 +5,7 @@
 		    <label id="_labelContainer" runat="server">
 		        <asp:Label ID="_outerLabel" runat="server"/>
 		    </label>
-		    <asp:Label ID="_outerDescription" runat="server"/>	
-		    <asp:Label Visible="false" ID="_parentId" runat="server"/>				
+		    <asp:Label ID="_outerDescription" runat="server"/>			
 	    </div>
 	    <div class="csm_input_form_control_container">
 	        <asp:PlaceHolder ID="_requestFormField" runat="server" ></asp:PlaceHolder>

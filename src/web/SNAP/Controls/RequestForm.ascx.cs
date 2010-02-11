@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections;
-using System.Configuration;
 using System.Data;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Security;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Xml.Linq;
+using System.Web.UI.HtmlControls;
+using Apollo.AIM.SNAP.Web.Common;
 
 namespace Apollo.AIM.SNAP.Web.Controls
 {
@@ -17,26 +14,32 @@ namespace Apollo.AIM.SNAP.Web.Controls
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            loadSection();
-        }
-
-        private void loadSection()
-        {
-            RequestFormSection srfs;
+            RequestFormSection requestFormSection;
 
             DataTable testData = GetTable();
 
             foreach (DataRow row in testData.Rows)
             {
-                srfs = LoadControl(@"/Controls/RequestFormSection.ascx") as Apollo.AIM.SNAP.Web.Controls.RequestFormSection;
-                srfs.FieldLabel = row["label"].ToString();
-                srfs.FieldDescription = row["description"].ToString();
-                srfs.FieldId = row["pkId"].ToString();
+                requestFormSection = LoadControl(@"/Controls/RequestFormSection.ascx") as RequestFormSection;
+
+                requestFormSection.ParentID = row["pkId"].ToString();
+
+                Label outerLabel;
+                outerLabel = (Label)WebUtilities.FindControlRecursive(requestFormSection, "_outerLabel");
+                outerLabel.Text = row["label"].ToString();
+
+                Label outerDescription;
+                outerDescription = (Label)WebUtilities.FindControlRecursive(requestFormSection, "_outerDescription");
+                outerDescription.Text = row["description"].ToString();
+
                 if ((bool)row["isActive"] == true)
                 {
-                    srfs.LabelContainerCSS = "csm_input_required_field";
+                    HtmlControl labelContainer;
+                    labelContainer = (HtmlControl)WebUtilities.FindControlRecursive(requestFormSection, "_labelContainer");
+                    labelContainer.Attributes.Add("class","csm_input_required_field");
                 }
-                this._requestFormSection.Controls.Add(srfs);
+
+                this._requestForm.Controls.Add(requestFormSection);
             }
         }
 

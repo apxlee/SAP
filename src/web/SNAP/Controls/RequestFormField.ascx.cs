@@ -13,30 +13,5 @@ namespace Apollo.AIM.SNAP.Web.Controls
         {
 
         }
-
-        public string FieldLabel
-        {
-            set
-            {
-                _innerLabel.Text = value;
-            }
-        }
-
-        public string FieldDescription
-        {
-            set
-            {
-                _innerDescription.Text = value;
-            }
-        }
-
-        public string FieldId
-        {
-            set
-            {
-                _accessDetailsFormId.ID = value;
-                _labelContainer.AssociatedControlID = _accessDetailsFormId.ID;
-            }
-        }
     }
 }

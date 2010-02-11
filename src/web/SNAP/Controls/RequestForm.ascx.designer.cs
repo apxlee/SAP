@@ -77,13 +77,13 @@ namespace Apollo.AIM.SNAP.Web.Controls {
         protected global::System.Web.UI.WebControls.TextBox _managerLoginId;
         
         /// <summary>
-        /// _requestFormSection control.
+        /// _requestForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder _requestFormSection;
+        protected global::System.Web.UI.WebControls.PlaceHolder _requestForm;
         
         /// <summary>
         /// _submitForm_lower control.

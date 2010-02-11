@@ -41,15 +41,6 @@ namespace Apollo.AIM.SNAP.Web.Controls {
         protected global::System.Web.UI.WebControls.Label _outerDescription;
         
         /// <summary>
-        /// _parentId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label _parentId;
-        
-        /// <summary>
         /// _requestFormField control.
         /// </summary>
         /// <remarks>

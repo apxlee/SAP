@@ -5,7 +5,7 @@
 		        <div class="csm_icon_heading_container oospa_aim_acknowledgement">
 		            <h2>Access & Identity Management - Acknowledgement</h2>
 		        </div>
-		        
+		        <!-- Access Team Acknowledgement -->
 				<fieldset><!-- use fieldset for standards & compliance -->
 				
 				<table border="0" cellpadding="0" cellspacing="0" class="csm_input_form_container">
