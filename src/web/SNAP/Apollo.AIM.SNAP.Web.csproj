@@ -97,17 +97,20 @@
     <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Controls\AccessCommentsPanel.ascx" />
     <Content Include="Controls\AccessTeamView.ascx" />
+    <Content Include="Controls\AcknowledgementPanel.ascx" />
+    <Content Include="Controls\ApprovingManagerPanel.ascx" />
     <Content Include="Controls\ApprovingManagerView.ascx" />
     <Content Include="Controls\DefaultIncludes.ascx" />
     <Content Include="Controls\Footer.ascx" />
     <Content Include="Controls\LoginForm.ascx" />
     <Content Include="Controls\MasterRequestBlade.ascx" />
-    <Content Include="Controls\ReadOnlyRequestView.ascx" />
+    <Content Include="Controls\ReadOnlyRequestPanel.ascx" />
     <Content Include="Controls\RequestForm.ascx" />
     <Content Include="Controls\RequestFormField.ascx" />
     <Content Include="Controls\RequestFormSection.ascx" />
-    <Content Include="Controls\RequestTrackingView.ascx" />
+    <Content Include="Controls\RequestTrackingPanel.ascx" />
     <Content Include="Controls\UserManager.ascx" />
     <Content Include="Controls\UserView.ascx" />
     <Content Include="Controls\WorkflowBlade.ascx" />
@@ -151,7 +154,6 @@
     <Content Include="styles\Csm_Template_v1.css" />
     <Content Include="styles\jquery-ui-1.7.2.custom.css" />
     <Content Include="styles\login.css" />
-    <Content Include="User.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -159,14 +161,36 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CapSession.cs" />
+    <Compile Include="Common\Enumerations.cs" />
     <Compile Include="Common\WebUtilities.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Controls\AccessCommentsPanel.ascx.cs">
+      <DependentUpon>AccessCommentsPanel.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\AccessCommentsPanel.ascx.designer.cs">
+      <DependentUpon>AccessCommentsPanel.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Controls\AccessTeamView.ascx.cs">
       <DependentUpon>AccessTeamView.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Controls\AccessTeamView.ascx.designer.cs">
       <DependentUpon>AccessTeamView.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\AcknowledgementPanel.ascx.cs">
+      <DependentUpon>AcknowledgementPanel.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\AcknowledgementPanel.ascx.designer.cs">
+      <DependentUpon>AcknowledgementPanel.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ApprovingManagerPanel.ascx.cs">
+      <DependentUpon>ApprovingManagerPanel.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ApprovingManagerPanel.ascx.designer.cs">
+      <DependentUpon>ApprovingManagerPanel.ascx</DependentUpon>
     </Compile>
     <Compile Include="Controls\ApprovingManagerView.ascx.cs">
       <DependentUpon>ApprovingManagerView.ascx</DependentUpon>
@@ -203,12 +227,12 @@
     <Compile Include="Controls\MasterRequestBlade.ascx.designer.cs">
       <DependentUpon>MasterRequestBlade.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ReadOnlyRequestView.ascx.cs">
-      <DependentUpon>ReadOnlyRequestView.ascx</DependentUpon>
+    <Compile Include="Controls\ReadOnlyRequestPanel.ascx.cs">
+      <DependentUpon>ReadOnlyRequestPanel.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Controls\ReadOnlyRequestView.ascx.designer.cs">
-      <DependentUpon>ReadOnlyRequestView.ascx</DependentUpon>
+    <Compile Include="Controls\ReadOnlyRequestPanel.ascx.designer.cs">
+      <DependentUpon>ReadOnlyRequestPanel.ascx</DependentUpon>
     </Compile>
     <Compile Include="Controls\RequestForm.ascx.cs">
       <DependentUpon>RequestForm.ascx</DependentUpon>
@@ -231,12 +255,12 @@
     <Compile Include="Controls\RequestFormSection.ascx.designer.cs">
       <DependentUpon>RequestFormSection.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Controls\RequestTrackingView.ascx.cs">
-      <DependentUpon>RequestTrackingView.ascx</DependentUpon>
+    <Compile Include="Controls\RequestTrackingPanel.ascx.cs">
+      <DependentUpon>RequestTrackingPanel.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Controls\RequestTrackingView.ascx.designer.cs">
-      <DependentUpon>RequestTrackingView.ascx</DependentUpon>
+    <Compile Include="Controls\RequestTrackingPanel.ascx.designer.cs">
+      <DependentUpon>RequestTrackingPanel.ascx</DependentUpon>
     </Compile>
     <Compile Include="Controls\UserManager.ascx.cs">
       <DependentUpon>UserManager.ascx</DependentUpon>
@@ -298,13 +322,6 @@
     <Compile Include="PersonTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UltimusTools.cs" />
-    <Compile Include="User.aspx.cs">
-      <DependentUpon>User.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="User.aspx.designer.cs">
-      <DependentUpon>User.aspx</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\lib\Apollo.AIM.SNAP\Apollo.AIM.SNAP.csproj">
