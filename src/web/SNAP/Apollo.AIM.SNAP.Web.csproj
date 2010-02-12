@@ -113,7 +113,9 @@
     <Content Include="Controls\RequestTrackingPanel.ascx" />
     <Content Include="Controls\UserManager.ascx" />
     <Content Include="Controls\UserView.ascx" />
+    <Content Include="Controls\WorkflowApprover.ascx" />
     <Content Include="Controls\WorkflowBlade.ascx" />
+    <Content Include="Controls\WorkflowBuilderPanel.ascx" />
     <Content Include="Default.aspx" />
     <Content Include="images\accessTop.jpg" />
     <Content Include="images\AIM.png" />
@@ -276,12 +278,26 @@
     <Compile Include="Controls\UserView.ascx.designer.cs">
       <DependentUpon>UserView.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Controls\WorkflowApprover.ascx.cs">
+      <DependentUpon>WorkflowApprover.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\WorkflowApprover.ascx.designer.cs">
+      <DependentUpon>WorkflowApprover.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Controls\WorkflowBlade.ascx.cs">
       <DependentUpon>WorkflowBlade.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Controls\WorkflowBlade.ascx.designer.cs">
       <DependentUpon>WorkflowBlade.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\WorkflowBuilderPanel.ascx.cs">
+      <DependentUpon>WorkflowBuilderPanel.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\WorkflowBuilderPanel.ascx.designer.cs">
+      <DependentUpon>WorkflowBuilderPanel.ascx</DependentUpon>
     </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
