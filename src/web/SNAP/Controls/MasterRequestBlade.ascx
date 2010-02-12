@@ -22,7 +22,7 @@
 			<div class="csm_float_right">
 				<div class="csm_toggle_container" onclick="csmToggle(this, 'ppnn');">
 					<span>Toggle</span>
-					<asp:Panel ID="_toggleIconContainer" runat="server" CssClass="csm_toggle_icon_up"></asp:Panel>
+					<asp:Panel ID="_toggleIconContainer" runat="server" CssClass="csm_toggle_icon_down"></asp:Panel>
 				</div>
 			</div>
 		</div>
@@ -30,7 +30,7 @@
 		<!-- END FLOATING HEADING -->
 		
 		<!-- TOGGLED CONTENT AREA -->
-		<asp:Panel ID="_toggledContentContainer" runat="server" CssClass="csm_displayed_block">
+		<asp:Panel ID="_toggledContentContainer" runat="server" CssClass="csm_hidden_block">
 		    
 		    <!-- REQUEST DETAILS SECTION -->
 		    <asp:PlaceHolder ID="_readOnlyRequestPanelContainer" runat="server"></asp:PlaceHolder>

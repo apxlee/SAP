@@ -3,8 +3,18 @@
 	
 	<h1>Open Requests</h1>
 	<asp:PlaceHolder ID="_openRequestsContainer" runat="server"></asp:PlaceHolder>
+	<asp:Panel ID="_nullDataMessage_OpenRequests" runat="server" CssClass="csm_content_container" Visible="false">
+		<div class="csm_text_container">
+			<p>There are no Open Requests at this time.</p>
+		</div>
+	</asp:Panel>
 	
 	<h1>Closed Requests</h1>
 	<asp:PlaceHolder ID="_closedRequestsContainer" runat="server"></asp:PlaceHolder>
+	<asp:Panel ID="_nullDataMessage_ClosedRequests" runat="server" CssClass="csm_content_container" Visible="false">
+		<div class="csm_text_container">
+			<p>There are no Closed Requests at this time.</p>
+		</div>
+	</asp:Panel>	
 
 </div>

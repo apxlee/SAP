@@ -15,6 +15,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		public string AffectedEndUserName { get; set; }
 		public string OverallRequestStatus { get; set; }
 		public string LastUpdatedDate { get; set; }
+		public bool IsSelectedRequest { get; set; }
 	
 		protected void Page_Load(object sender, EventArgs e)
 		{
@@ -22,31 +23,31 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			LoadReadOnlyRequestPanel();
 			LoadRequestTrackingPanel();
 			
-			try 
-			{
-				switch ((Role)Page.Session["SNAPUserRole"])
-				{
-					case Role.ApprovingManager:
-						LoadApprovingManagerView();
-						break;
+			//try 
+			//{
+			//    switch ((Role)Page.Session["SNAPUserRole"])
+			//    {
+			//        case Role.ApprovingManager:
+			//            LoadApprovingManagerView();
+			//            break;
 
-					case Role.AccessTeam:
-						LoadAccessTeamView();
-						break;
+			//        case Role.AccessTeam:
+			//            LoadAccessTeamView();
+			//            break;
 
-					case Role.SuperUser:
-						LoadApprovingManagerView();
-						LoadAccessTeamView();
-						break;
+			//        case Role.SuperUser:
+			//            LoadApprovingManagerView();
+			//            LoadAccessTeamView();
+			//            break;
 
-					default:
-						break;
-				}
-			} 
-			catch (Exception ex)
-			{
-				// TODO: if session not set, redirect to login?  throw message to user?  set role to user?
-			}
+			//        default:
+			//            break;
+			//    }
+			//} 
+			//catch (Exception ex)
+			//{
+			//    // TODO: if session not set, redirect to login?  throw message to user?  set role to user?
+			//}
 
 		}
 		
@@ -56,6 +57,12 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			_overallRequestStatus.Text = OverallRequestStatus;
 			_lastUpdatedDate.Text = LastUpdatedDate;
 			_requestId.Text = RequestId;
+			
+			if (IsSelectedRequest)
+			{
+				_toggleIconContainer.CssClass = "csm_toggle_icon_up";
+				_toggledContentContainer.CssClass = "csm_displayed_block";
+			}
 		}
 		
 		private void LoadReadOnlyRequestPanel()
