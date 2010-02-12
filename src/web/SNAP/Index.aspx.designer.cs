@@ -113,13 +113,13 @@ namespace Apollo.AIM.SNAP.Web {
         protected global::System.Web.UI.WebControls.View _approvingManagerView;
         
         /// <summary>
-        /// _appro control.
+        /// _approvingManagerViewControl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Apollo.AIM.SNAP.Web.Controls.UserView _appro;
+        protected global::Apollo.AIM.SNAP.Web.Controls.ApprovingManagerView _approvingManagerViewControl;
         
         /// <summary>
         /// _accessTeamView control.
