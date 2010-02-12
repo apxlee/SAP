@@ -156,6 +156,7 @@
     <Content Include="styles\Csm_Template_v1.css" />
     <Content Include="styles\jquery-ui-1.7.2.custom.css" />
     <Content Include="styles\login.css" />
+    <Content Include="User.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -338,6 +339,13 @@
     <Compile Include="PersonTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UltimusTools.cs" />
+    <Compile Include="User.aspx.cs">
+      <DependentUpon>User.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="User.aspx.designer.cs">
+      <DependentUpon>User.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\lib\Apollo.AIM.SNAP\Apollo.AIM.SNAP.csproj">
