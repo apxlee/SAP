@@ -31,4 +31,16 @@ namespace Apollo.AIM.SNAP.Web.Common
 		Pending_Workflow,
 		Workflow_Created
 	}
+	
+	public enum CommentsType
+	{
+		Denied = 1,
+		Cancelled = 2,
+		Requested_Change = 3,
+		Email_Reminder = 4,
+		Access_Notes_User = 5,
+		Access_Notes_ApprovingManager = 6,
+		Access_Notes_AccessTeam = 7,		
+		Access_Notes_SuperUser = 9
+	}
 }
