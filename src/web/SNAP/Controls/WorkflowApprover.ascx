@@ -1,24 +1,18 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="WorkflowApprover.ascx.cs" Inherits="Apollo.AIM.SNAP.Web.Controls.WorkflowApprover" %>
+<table border="0" cellpadding="0" cellspacing="0" width="100%" class="oospa_workflow_builder_row">
+    <tr>
+        <td width="22"><input type="checkbox" id="_approverCheck" runat="server" class="csm_input_checkradio" /></td>
+        <td width="386"><span class="csm_inline" ID="_approverTitle" runat="server" /></td>
+        <td width="20" class="oospa_delete_icon" id="_deleteApprover" runat="server">&nbsp;</td>
+        <td width="20" class="oospa_edit_icon" id="_editApprover" runat="server">&nbsp;</td>
+    </tr>
+    <tr>
+        <td colspan="4"><span class="group_description" ID="_approverDescription" runat="server" /></td>
+    </tr>
+	
+   <asp:PlaceHolder ID="_defaultApprover" runat="server" />
 
-<td class="csm_input_form_label_column">
-    <label ID="_approverLabel" runat="server" /></label>
-</td>
-<td class="csm_input_form_control_column">
-    <table border="0" cellpadding="0" cellspacing="0" width="100%" class="oospa_workflow_builder_row">
-	    <tr>
-		    <td width="22"><input type="checkbox" id="_approverCheck" runat="server" class="csm_input_checkradio" /></td>
-		    <td width="386"><span class="csm_inline" ID="_approverTitle" runat="server" /></td>
-		    <td width="20" class="">&nbsp;</td>
-		    <td width="20" class="oospa_delete_icon" id="_deleteApprover" runat="server">&nbsp;</td>
-		    <td width="20" class="oospa_edit_icon" id="_editApprover" runat="server">&nbsp;</td>
-	    </tr>
-	     <tr>
-		    <td colspan="4"><span class="group_description" ID="_approverDescription" runat="server" /></td>
-	    </tr>
-	    <asp:PlaceHolder ID="_defaultApprover" runat="server" />
-    </table>							
-</td>
-
+</table>							
 
 <%--<td class="csm_input_form_label_column">
     <label>Required Approver</label>

@@ -12,19 +12,28 @@
 	        <td class="csm_input_form_label_column">
                 <label>Required Approver</label>
             </td>
-		    <asp:PlaceHolder ID="_requiredApprover" runat="server" />
+            <td class="csm_input_form_control_column">
+		        <asp:PlaceHolder ID="_requiredApprover" runat="server" />
+		    </td>
 	    </tr>
 	    <tr>
 	        <td class="csm_input_form_label_column">
                 <label>Team Approver</label>
             </td>
-		    <asp:PlaceHolder ID="_teamApprover" runat="server" />
+            <td class="csm_input_form_control_column">
+		        <asp:PlaceHolder ID="_teamApprover" runat="server" />
+		    </td>
+		    <asp:PlaceHolder ID="_teamButton" runat="server" />
 	    </tr>
 	    <tr>
 	        <td class="csm_input_form_label_column">
                 <label>Technical Approver</label>
             </td>
-		    <asp:PlaceHolder ID="_technicalApprover" runat="server" />																				
+            <td class="csm_input_form_control_column">
+		        <asp:PlaceHolder ID="_technicalApprover" runat="server" />
+		    </td>
+            <asp:PlaceHolder ID="_technicalButton" runat="server" />
+		</tr>																			
     </table>
 
     <div class="csm_input_buttons_container">

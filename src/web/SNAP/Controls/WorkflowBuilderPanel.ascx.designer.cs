@@ -32,6 +32,15 @@ namespace Apollo.AIM.SNAP.Web.Controls {
         protected global::System.Web.UI.WebControls.PlaceHolder _teamApprover;
         
         /// <summary>
+        /// _teamButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder _teamButton;
+        
+        /// <summary>
         /// _technicalApprover control.
         /// </summary>
         /// <remarks>
@@ -39,5 +48,14 @@ namespace Apollo.AIM.SNAP.Web.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder _technicalApprover;
+        
+        /// <summary>
+        /// _technicalButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder _technicalButton;
     }
 }
