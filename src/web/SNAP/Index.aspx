@@ -4,6 +4,7 @@
 <%@ Register src="~/Controls/RequestForm.ascx" tagname="RequestForm" tagprefix="uc" %>
 <%@ Register src="~/Controls/LoginForm.ascx" tagname="LoginForm" tagprefix="uc" %>
 <%@ Register src="~/Controls/UserView.ascx" tagname="UserView" tagprefix="uc" %>
+<%@ Register src="~/Controls/ApprovingManagerView.ascx" tagname="UserView" tagprefix="uc" %>
 <%@ Register src="~/Controls/AccessTeamView.ascx" tagname="AccessTeamView" tagprefix="uc" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -21,7 +22,7 @@
 	<div class="csm_container_100 csm_template_1">
 	
 		<asp:PlaceHolder ID="_topNavigation" runat="server">
-			<p>TODO: TOP NAVIGATION (on PreRender?)</p>
+			<p>TODO: TOP NAVIGATION</p>
 		</asp:PlaceHolder>
 
 		<!-- BEGIN CONTENT AREA -->
@@ -29,7 +30,7 @@
 		<!-- TODO: do we really need this container server-side? -->
 			
 			<!-- BEGIN MULTIVIEW CONTROL -->
-			<asp:MultiView ID="_csmMultiView" runat="server" ActiveViewIndex="0" >
+			<asp:MultiView ID="_csmMultiView" runat="server" ActiveViewIndex="1" >
 
 				<!-- TODO: ADD LOGIN FORM VIEW -->
 
@@ -39,6 +40,10 @@
 				
 				<asp:View ID="_userView" runat="server">
 					<uc:UserView id="_userViewControl" runat="server" />
+				</asp:View>
+
+				<asp:View ID="_approvingManagerView" runat="server">
+					<uc:ApprovingManagerView id="_approvingManagerViewControl" runat="server" />
 				</asp:View>
 				
 				<asp:View ID="_accessTeamView" runat="server">
