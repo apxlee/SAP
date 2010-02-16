@@ -34,8 +34,6 @@ namespace Apollo.AIM.SNAP.Web.Controls
 					requestBlade.OverallRequestStatus = request["overall_request_status"].ToString();
 					requestBlade.LastUpdatedDate = request["last_updated_date"].ToString();
 					requestBlade.IsSelectedRequest = (bool)request["is_selected"];
-					
-					// TODO: expand blade if specific requestId in url
 
 					BladeContainer.Controls.Add(requestBlade);
 				}
