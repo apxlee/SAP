@@ -63,7 +63,7 @@
 		<div class="csm_clear">&nbsp;</div>
 		<!-- END CONTENT AREA -->
 
-		<uc:Footer id="_footer" runat="server" />
+		<!-- TODO: FOOTER CONTROL -->
 	
 	</div>
 	<!-- END MASTER CONTAINER -->
