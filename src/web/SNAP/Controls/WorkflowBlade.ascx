@@ -18,7 +18,11 @@
 		
 		-OR-
 		
-		<p><u>%Action% by %WorkflowActorName%</u><br />%Comments%</p>
+		<p><u>%Action% by %WorkflowActorName% on %LongDate%</u><br />%Comments%</p>
+		
+		-OR-
+		
+		<p><u>%LongDate%</u><br />%Comments%</p>
 		-->
      </asp:Panel>
 </div>
