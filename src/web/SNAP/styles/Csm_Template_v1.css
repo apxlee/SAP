@@ -202,14 +202,15 @@ Revised: 1/14/2010  J.Steele
 	margin: 10px 0px;
 	padding: 5px;
 	background: url('../images/h1_slice.png') repeat-x;	
-	border: 1px solid #b7b7b7;
-	border-bottom: 2px solid #b7b7b7;
+	/*border: 1px solid #b7b7b7;*/
+	border-bottom: 2px solid #771111;
 	height: 16px;
 	line-height: 16px;
 	letter-spacing: normal;
 	font-size: 1.4em;
 	font-family: Arial;
 	font-weight: bold;
+	color: #771111;
 	}	
 		
 .csm_template_1 h2 {
