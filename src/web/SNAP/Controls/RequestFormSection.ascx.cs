@@ -33,7 +33,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
                     TextBox accessDetailsFormId;
                     accessDetailsFormId = (TextBox)WebUtilities.FindControlRecursive(requestFormField, "_accessDetailsFormId");
-                    accessDetailsFormId.ID = "textbox_" + row["pkId"].ToString();
+                    accessDetailsFormId.ID = row["pkId"].ToString();
                     accessDetailsFormId.TextMode = TextBoxMode.MultiLine;
                     accessDetailsFormId.Rows = 10;
                     accessDetailsFormId.CssClass = "csm_text_input";

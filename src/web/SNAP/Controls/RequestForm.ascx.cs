@@ -7,6 +7,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using Apollo.AIM.SNAP.Web.Common;
+using Apollo.AIM.SNAP.Model;
 
 namespace Apollo.AIM.SNAP.Web.Controls
 {
@@ -84,8 +85,32 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
         protected void _submitForm_Click(object sender, EventArgs e)
         {
-
+            List<RequestData> newRequestList = RequestFormRequestData(_requestForm);
+            string xmlInput = RequestData.ToXml(newRequestList);
         }
+
+        public List<RequestData> RequestFormRequestData(Control controlRoot)
+        {
+            List<RequestData> newRequestList = new List<RequestData>();
+
+            if (!controlRoot.HasControls()) { return null; }
+
+            foreach (Control childControl in controlRoot.Controls)
+            {
+                if (childControl.HasControls()) { newRequestList.AddRange(RequestFormRequestData(childControl)); }
+
+                if (childControl is TextBox)
+                {
+                    TextBox textControl = (TextBox)WebUtilities.FindControlRecursive(controlRoot, (string)childControl.ID);
+                    RequestData newRequest = new RequestData();
+                    newRequest.FormId = textControl.ID;
+                    newRequest.UserText = textControl.Text;
+                    newRequestList.Add(newRequest);
+                }
+            }
+            return newRequestList;
+        }
+
 
     }
 
