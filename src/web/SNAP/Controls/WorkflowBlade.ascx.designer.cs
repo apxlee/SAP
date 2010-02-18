@@ -14,13 +14,13 @@ namespace Apollo.AIM.SNAP.Web.Controls {
     public partial class WorkflowBlade {
         
         /// <summary>
-        /// _workflowBladeContainer control.
+        /// _workflowBladeData control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel _workflowBladeContainer;
+        protected global::System.Web.UI.WebControls.Panel _workflowBladeData;
         
         /// <summary>
         /// _workflowActorName control.

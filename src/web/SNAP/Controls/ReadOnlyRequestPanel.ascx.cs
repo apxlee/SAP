@@ -21,35 +21,21 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			_readOnlyRequestDetails.DataSource = requestTestTable;
 			_readOnlyRequestDetails.DataBind();
 			
-			BuildAccessComments(Role.User);
+			BuildAccessComments(Role.Requestor);
 		}
 		
 		private void BuildAccessComments(Role UserRole)
 		{
-			DataTable accessCommentsTable = GetAccessComments( (Role)Page.Session["SNAPUserRole"] );
+			DataTable accessCommentsTable = GetAccessComments(UserRole);
 			StringBuilder accessComments = new StringBuilder();
 			
 			foreach (DataRow comment in accessCommentsTable.Rows)
 			{
-				switch ((Role)comment["audience"])
-				{
-					case Role.AccessTeam:
-					case Role.SuperUser:
-						// can see everything
-						break;
-					
-					case Role.ApprovingManager :
-						// can see user + approving mgr
-						break;
-					
-					case Role.User :
-					default :
-						break;
-				}
-				
+				// TODO: move string to config file?
 				accessComments.AppendFormat("<p><u>{0}&nbsp;for&nbsp;{1}</u><br />{2}</p>"
 					, comment["comment_date"].ToString()
-					, comment["comment"].ToString() );
+					, comment["audience"].ToString()
+					, comment["comment"].ToString());
 			}
 
 			_accessNotes.Text = accessComments.ToString();
@@ -76,16 +62,46 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		
 		static DataTable GetAccessComments(Role UserRole)
 		{
+			// NOTE: data request returns 'friendly' name for the audience, not the type
+			//
 			DataTable table = new DataTable();
-			table.Columns.Add("audience", typeof(CommentsType));
+			table.Columns.Add("audience", typeof(string));
 			table.Columns.Add("comment_date", typeof(string));
 			table.Columns.Add("comment", typeof(string));
-			
-			table.Rows.Add(CommentsType.Access_Notes_User, "Feb. 16, 2010", "Comments one and this could be html.");
-			table.Rows.Add(CommentsType.Access_Notes_User, "Feb. 12, 2010", "More comments about something.");
-			table.Rows.Add(CommentsType.Access_Notes_User, "Feb. 11, 2010", "I have alot of comments to make about this subject.");
-			table.Rows.Add(CommentsType.Access_Notes_ApprovingManager, "Feb. 16, 2010", "Approving manager only.");
-			
+
+		
+				
+			switch (UserRole)
+			{
+				case Role.AccessTeam:
+				case Role.SuperUser:
+					// where (no filter, can see everything)
+					//
+					table.Rows.Add("Requestor", "Feb. 16, 2010", "Comments one and this could be html.");
+					table.Rows.Add("Requestor", "Feb. 12, 2010", "More comments about something.");
+					table.Rows.Add("Access Team", "Feb. 11, 2010", "I have alot of comments to make about this subject.");
+					table.Rows.Add("Approving Manager", "Feb. 16, 2010", "Approving manager only.");
+					break;
+				
+				case Role.ApprovingManager :
+					// where (UserRole == Role.Requestor || UserRole == Role.ApprovingManager)
+					//
+					table.Rows.Add("Requestor", "Feb. 16, 2010", "Comments one and this could be html.");
+					table.Rows.Add("Requestor", "Feb. 12, 2010", "More comments about something.");
+					table.Rows.Add("Requestor", "Feb. 11, 2010", "I have alot of comments to make about this subject.");
+					table.Rows.Add("Approving Manager", "Feb. 16, 2010", "Approving manager only.");
+					break;
+				
+				case Role.Requestor :
+				default :
+					// where (UserRole == Role.Requestor)
+					//
+					table.Rows.Add("Requestor", "Feb. 16, 2010", "Comments one and this could be html.");
+					table.Rows.Add("Requestor", "Feb. 12, 2010", "More comments about something.");
+					table.Rows.Add("Requestor", "Feb. 11, 2010", "I have alot of comments to make about this subject.");
+					break;
+			}		
+
 			return table;
 		}
 
