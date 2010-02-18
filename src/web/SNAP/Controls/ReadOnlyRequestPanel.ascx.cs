@@ -13,10 +13,15 @@ namespace Apollo.AIM.SNAP.Web.Controls
 	public partial class ReadOnlyRequestPanel : System.Web.UI.UserControl
 	{
 		// TODO: if no reqId, will raise error when attempting to 'get'
+		//
 		public string RequestId { get; set; }
 			
 		protected void Page_Load(object sender, EventArgs e)
 		{
+			// build details section
+			//
+			// TODO: make 'AD Manager Name' red, add seperator between heading info and details
+			//
 			DataTable requestTestTable = GetDetails();
 			_readOnlyRequestDetails.DataSource = requestTestTable;
 			_readOnlyRequestDetails.DataBind();
@@ -32,6 +37,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			foreach (DataRow comment in accessCommentsTable.Rows)
 			{
 				// TODO: move string to config file?
+				//
 				accessComments.AppendFormat("<p><u>{0}&nbsp;for&nbsp;{1}</u><br />{2}</p>"
 					, comment["comment_date"].ToString()
 					, comment["audience"].ToString()
