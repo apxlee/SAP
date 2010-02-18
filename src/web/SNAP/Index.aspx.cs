@@ -10,7 +10,10 @@ using Apollo.CA.Logging;
 using Apollo.Ultimus.CAP;
 using Apollo.Ultimus.CAP.Model;
 using Apollo.Ultimus.Web;
-using Apollo.AIM.SNAP.Web.Common;
+
+// need to alias namespace because CAP had 'Role' class also
+//
+using SNAPCommon = Apollo.AIM.SNAP.Web.Common;
 
 namespace Apollo.AIM.SNAP.Web
 {
@@ -19,7 +22,7 @@ namespace Apollo.AIM.SNAP.Web
 		protected void Page_Load(object sender, EventArgs e)	
 		{
 			// TODO: utility to find AD group and/or look into DB for existence of pending approvals to determine role
-			Page.Session["SNAPUserRole"] = Role.Requestor;
+			Page.Session["SNAPUserRole"] = SNAPCommon.Role.Requestor;
 		}
 	}
 }
