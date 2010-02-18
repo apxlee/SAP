@@ -13,16 +13,7 @@
      <asp:Panel ID="_workflowBladeCommentsContainer" runat="server" CssClass="csm_text_container_nodrop">
 		<!--
 		Replace with Literal Control(s) conforming to the following formatting:
-		
-		<p><u>%Action% by %WorkflowActorName%</u><br />Due Date:&nbsp;%LongDate%&nbsp;|&nbsp;Completed Date:&nbsp;%LongDate%</p>
-		
-		-OR-
-		
 		<p><u>%Action% by %WorkflowActorName% on %LongDate%</u><br />%Comments%</p>
-		
-		-OR-
-		
-		<p><u>%LongDate%</u><br />%Comments%</p>
 		-->
      </asp:Panel>
 </div>

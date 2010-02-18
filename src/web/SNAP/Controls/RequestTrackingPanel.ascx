@@ -2,12 +2,12 @@
 <div class="csm_text_container csm_top5">
     
     <div class="csm_icon_heading_container oospa_request_status">
-        <h2>Request Status</h2>
+        <h2>Request Tracking</h2>
     </div>
 
-    <p class="csm_prefix_bump3">This section shows the status of all the people and groups that are involved in the approval process for your
-    request. In most cases, persons higher on the list need to take action before the downstream people have the
-    ability to take action.  Due Dates do not include weekends or holidays.</p>
+    <p class="csm_prefix_bump3">This section tracks the status of your request and includes all the people and groups 
+    that are involved in the approval process.  Status "Inactive" indicates the person or team will be notified after prerequisite approvals
+    have been made.  Due Dates do not include weekends or holidays.</p>
     <table class="csm_top15" border="0" cellpadding="0" cellspacing="0" style="margin-left:12px;"><!-- width 654 -->
         <tr class="csm_stacked_heading_title">
             <td style="width:248px;">TEAM / APPROVER</td>
