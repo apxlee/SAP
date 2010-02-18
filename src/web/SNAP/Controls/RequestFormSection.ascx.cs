@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Apollo.AIM.SNAP.Model;
 using Apollo.AIM.SNAP.Web.Common;
 
 namespace Apollo.AIM.SNAP.Web.Controls
@@ -13,10 +14,14 @@ namespace Apollo.AIM.SNAP.Web.Controls
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            var data = loadDetailRequestFormData();
+
+            //ParentID = "1";
             RequestFormField requestFormField;
             int rowCount = 0;
-            DataTable testData = GetTable();
+            //DataTable testData = GetTable();
 
+            /*
             foreach (DataRow row in testData.Rows)
             {
                 if (row["parentId"].ToString() == ParentID)
@@ -34,6 +39,35 @@ namespace Apollo.AIM.SNAP.Web.Controls
                     TextBox accessDetailsFormId;
                     accessDetailsFormId = (TextBox)WebUtilities.FindControlRecursive(requestFormField, "_accessDetailsFormId");
                     accessDetailsFormId.ID = row["pkId"].ToString();
+                    accessDetailsFormId.TextMode = TextBoxMode.MultiLine;
+                    accessDetailsFormId.Rows = 10;
+                    accessDetailsFormId.CssClass = "csm_text_input";
+
+                    innerLabel.AssociatedControlID = accessDetailsFormId.ID;
+
+                    this._requestFormField.Controls.Add(requestFormField);
+                    rowCount = rowCount + 1;
+                }
+            }
+            */
+
+            foreach (var access in data)
+            {
+                if (access.parentId.ToString() == ParentID)
+                {
+                    requestFormField = LoadControl(@"/Controls/RequestFormField.ascx") as RequestFormField;
+
+                    Label innerLabel;
+                    innerLabel = (Label)WebUtilities.FindControlRecursive(requestFormField, "_innerLabel");
+                    innerLabel.Text = access.label;
+
+                    Label innerDescription;
+                    innerDescription = (Label)WebUtilities.FindControlRecursive(requestFormField, "_innerDescription");
+                    innerDescription.Text = access.description;
+
+                    TextBox accessDetailsFormId;
+                    accessDetailsFormId = (TextBox)WebUtilities.FindControlRecursive(requestFormField, "_accessDetailsFormId");
+                    accessDetailsFormId.ID = access.pkId.ToString();
                     accessDetailsFormId.TextMode = TextBoxMode.MultiLine;
                     accessDetailsFormId.Rows = 10;
                     accessDetailsFormId.CssClass = "csm_text_input";
@@ -73,6 +107,16 @@ namespace Apollo.AIM.SNAP.Web.Controls
             table.Rows.Add(3, 1, "Linux/Unix Servers", "<p>Enter the exact...</p>", true, true);
             table.Rows.Add(4, 1, "Network Shares", "<p>Enter the exact...</p>", true, true);
             return table;
+        }
+
+        private IEnumerable<SNAP_Access_Details_Form> loadDetailRequestFormData()
+        {
+            var db = new SNAPDatabaseDataContext();
+            var formDetails = from form in db.SNAP_Access_Details_Forms
+                              where (form.parentId == 1) && (form.isActive == true)
+                              select form;
+            return formDetails;
+
         }
     }
 }

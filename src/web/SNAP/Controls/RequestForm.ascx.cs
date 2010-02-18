@@ -17,8 +17,11 @@ namespace Apollo.AIM.SNAP.Web.Controls
         {
             RequestFormSection requestFormSection;
 
-            DataTable testData = GetTable();
+            var data = loadRequestFormData();
 
+            //DataTable testData = GetTable();
+
+            /*
             foreach (DataRow row in testData.Rows)
             {
                 requestFormSection = LoadControl(@"/Controls/RequestFormSection.ascx") as RequestFormSection;
@@ -42,6 +45,32 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
                 this._requestForm.Controls.Add(requestFormSection);
             }
+             */
+
+            foreach (var access in data)
+            {
+                requestFormSection = LoadControl(@"/Controls/RequestFormSection.ascx") as RequestFormSection;
+
+                requestFormSection.ParentID = access.pkId.ToString();
+
+                Label outerLabel;
+                outerLabel = (Label)WebUtilities.FindControlRecursive(requestFormSection, "_outerLabel");
+                outerLabel.Text = access.label;
+
+                Label outerDescription;
+                outerDescription = (Label)WebUtilities.FindControlRecursive(requestFormSection, "_outerDescription");
+                outerDescription.Text = access.description;
+
+                if (access.isActive == true)
+                {
+                    HtmlControl labelContainer;
+                    labelContainer = (HtmlControl)WebUtilities.FindControlRecursive(requestFormSection, "_labelContainer");
+                    labelContainer.Attributes.Add("class", "csm_input_required_field");
+                }
+
+                this._requestForm.Controls.Add(requestFormSection);
+            }
+
         }
 
         static DataTable GetTable()
@@ -112,6 +141,15 @@ namespace Apollo.AIM.SNAP.Web.Controls
         }
 
 
+        private IEnumerable<SNAP_Access_Details_Form> loadRequestFormData()
+        {
+            var db = new SNAPDatabaseDataContext();
+            var formDetails = from form in db.SNAP_Access_Details_Forms
+                              where (form.parentId == 0) && (form.isActive == true)
+                              select form;
+            return formDetails;
+
+        }
     }
 
 }

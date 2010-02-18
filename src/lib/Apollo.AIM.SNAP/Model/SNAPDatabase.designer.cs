@@ -187,20 +187,6 @@ namespace Apollo.AIM.SNAP.Model
 				return this.GetTable<SNAP_Workflow_State>();
 			}
 		}
-		
-		[Function(Name="dbo.usp_build_request_form")]
-		public int usp_build_request_form()
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
-			return ((int)(result.ReturnValue));
-		}
-		
-		[Function(Name="dbo.usp_build_status_tracking")]
-		public int usp_build_status_tracking()
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
-			return ((int)(result.ReturnValue));
-		}
 	}
 	
 	[Table(Name="dbo.SNAP_Access_Details_Form")]
@@ -211,13 +197,11 @@ namespace Apollo.AIM.SNAP.Model
 		
 		private int _pkId;
 		
+		private System.Nullable<byte> _parentId;
+		
 		private string _label;
 		
 		private string _description;
-		
-		private System.Nullable<byte> _parentId;
-		
-		private System.Nullable<byte> _childId;
 		
 		private System.Nullable<bool> _isActive;
 		
@@ -229,14 +213,12 @@ namespace Apollo.AIM.SNAP.Model
     partial void OnCreated();
     partial void OnpkIdChanging(int value);
     partial void OnpkIdChanged();
+    partial void OnparentIdChanging(System.Nullable<byte> value);
+    partial void OnparentIdChanged();
     partial void OnlabelChanging(string value);
     partial void OnlabelChanged();
     partial void OndescriptionChanging(string value);
     partial void OndescriptionChanged();
-    partial void OnparentIdChanging(System.Nullable<byte> value);
-    partial void OnparentIdChanged();
-    partial void OnchildIdChanging(System.Nullable<byte> value);
-    partial void OnchildIdChanged();
     partial void OnisActiveChanging(System.Nullable<bool> value);
     partial void OnisActiveChanged();
     partial void OnisRequiredChanging(System.Nullable<bool> value);
@@ -264,6 +246,26 @@ namespace Apollo.AIM.SNAP.Model
 					this._pkId = value;
 					this.SendPropertyChanged("pkId");
 					this.OnpkIdChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_parentId", DbType="TinyInt")]
+		public System.Nullable<byte> parentId
+		{
+			get
+			{
+				return this._parentId;
+			}
+			set
+			{
+				if ((this._parentId != value))
+				{
+					this.OnparentIdChanging(value);
+					this.SendPropertyChanging();
+					this._parentId = value;
+					this.SendPropertyChanged("parentId");
+					this.OnparentIdChanged();
 				}
 			}
 		}
@@ -304,46 +306,6 @@ namespace Apollo.AIM.SNAP.Model
 					this._description = value;
 					this.SendPropertyChanged("description");
 					this.OndescriptionChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_parentId", DbType="TinyInt")]
-		public System.Nullable<byte> parentId
-		{
-			get
-			{
-				return this._parentId;
-			}
-			set
-			{
-				if ((this._parentId != value))
-				{
-					this.OnparentIdChanging(value);
-					this.SendPropertyChanging();
-					this._parentId = value;
-					this.SendPropertyChanged("parentId");
-					this.OnparentIdChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_childId", DbType="TinyInt")]
-		public System.Nullable<byte> childId
-		{
-			get
-			{
-				return this._childId;
-			}
-			set
-			{
-				if ((this._childId != value))
-				{
-					this.OnchildIdChanging(value);
-					this.SendPropertyChanging();
-					this._childId = value;
-					this.SendPropertyChanged("childId");
-					this.OnchildIdChanged();
 				}
 			}
 		}
@@ -1533,7 +1495,7 @@ namespace Apollo.AIM.SNAP.Model
 			OnCreated();
 		}
 		
-		[Column(Storage="_pkId", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[Column(Storage="_pkId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int pkId
 		{
 			get
@@ -1573,7 +1535,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Column(Storage="_userId", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		[Column(Storage="_userId", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
 		public string userId
 		{
 			get
@@ -2023,7 +1985,7 @@ namespace Apollo.AIM.SNAP.Model
 		
 		private System.DateTime _dueDate;
 		
-		private System.DateTime _completedDate;
+		private System.Nullable<System.DateTime> _completedDate;
 		
 		private EntityRef<SNAP_Workflow> _SNAP_Workflow;
 		
@@ -2041,7 +2003,7 @@ namespace Apollo.AIM.SNAP.Model
     partial void OnnotifyDateChanged();
     partial void OndueDateChanging(System.DateTime value);
     partial void OndueDateChanged();
-    partial void OncompletedDateChanging(System.DateTime value);
+    partial void OncompletedDateChanging(System.Nullable<System.DateTime> value);
     partial void OncompletedDateChanged();
     #endregion
 		
@@ -2155,8 +2117,8 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Column(Storage="_completedDate", DbType="SmallDateTime NOT NULL")]
-		public System.DateTime completedDate
+		[Column(Storage="_completedDate", DbType="SmallDateTime")]
+		public System.Nullable<System.DateTime> completedDate
 		{
 			get
 			{
