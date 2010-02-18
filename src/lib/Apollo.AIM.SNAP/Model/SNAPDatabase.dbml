@@ -117,4 +117,12 @@
       <Association Name="SNAP_Workflow_SNAP_Workflow_State" Member="SNAP_Workflow" ThisKey="workflowId" OtherKey="pkId" Type="SNAP_Workflow" IsForeignKey="true" />
     </Type>
   </Table>
+  <Function Name="dbo.usp_insert_request_xml" Method="usp_insert_request_xml">
+    <Parameter Name="request_data" Type="System.Xml.Linq.XElement" DbType="Xml" />
+    <Parameter Name="submittedBy" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="userId" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="userDisplayName" Type="System.String" DbType="NVarChar(100)" />
+    <Parameter Name="userTitle" Type="System.String" DbType="NVarChar(100)" />
+    <Return Type="System.Int32" />
+  </Function>
 </Database>

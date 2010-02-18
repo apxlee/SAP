@@ -19,34 +19,6 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
             var data = loadRequestFormData();
 
-            //DataTable testData = GetTable();
-
-            /*
-            foreach (DataRow row in testData.Rows)
-            {
-                requestFormSection = LoadControl(@"/Controls/RequestFormSection.ascx") as RequestFormSection;
-
-                requestFormSection.ParentID = row["pkId"].ToString();
-
-                Label outerLabel;
-                outerLabel = (Label)WebUtilities.FindControlRecursive(requestFormSection, "_outerLabel");
-                outerLabel.Text = row["label"].ToString();
-
-                Label outerDescription;
-                outerDescription = (Label)WebUtilities.FindControlRecursive(requestFormSection, "_outerDescription");
-                outerDescription.Text = row["description"].ToString();
-
-                if ((bool)row["isActive"] == true)
-                {
-                    HtmlControl labelContainer;
-                    labelContainer = (HtmlControl)WebUtilities.FindControlRecursive(requestFormSection, "_labelContainer");
-                    labelContainer.Attributes.Add("class","csm_input_required_field");
-                }
-
-                this._requestForm.Controls.Add(requestFormSection);
-            }
-             */
-
             foreach (var access in data)
             {
                 requestFormSection = LoadControl(@"/Controls/RequestFormSection.ascx") as RequestFormSection;
@@ -73,6 +45,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
         }
 
+        /*
         static DataTable GetTable()
         {
             DataTable table = new DataTable();
@@ -87,6 +60,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
             table.Rows.Add(5, 0, "Justification", "Enter the reason for requesting...", true, true);
             return table;
         }
+        */
 
         public string UserName
         {
@@ -115,10 +89,14 @@ namespace Apollo.AIM.SNAP.Web.Controls
         protected void _submitForm_Click(object sender, EventArgs e)
         {
             List<RequestData> newRequestList = RequestFormRequestData(_requestForm);
-            string xmlInput = RequestData.ToXml(newRequestList);
+            var xmlInput = RequestData.ToXml(newRequestList);
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                db.usp_insert_request_xml(xmlInput, "Pong Lee", UserLoginId, UserName, "");
+            }
         }
 
-        public List<RequestData> RequestFormRequestData(Control controlRoot)
+        private List<RequestData> RequestFormRequestData(Control controlRoot)
         {
             List<RequestData> newRequestList = new List<RequestData>();
 
@@ -145,10 +123,10 @@ namespace Apollo.AIM.SNAP.Web.Controls
         {
             var db = new SNAPDatabaseDataContext();
             var formDetails = from form in db.SNAP_Access_Details_Forms
-                              where (form.parentId == 0) && (form.isActive == true)
-                              select form;
+                                  where (form.parentId == 0) && (form.isActive == true)
+                                  select form;
             return formDetails;
-
+            
         }
     }
 

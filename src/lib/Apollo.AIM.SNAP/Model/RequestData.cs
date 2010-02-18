@@ -10,7 +10,7 @@ namespace Apollo.AIM.SNAP.Model
     {
         public string FormId { get; set; } 
         public string UserText { get; set; }
-        public static string ToXml(List<RequestData> data)
+        public static XElement ToXml(List<RequestData> data)
         {
             var root = new XElement("ROOT");
             foreach (var list in data)
@@ -19,7 +19,7 @@ namespace Apollo.AIM.SNAP.Model
                 root.Add(requestData);
             }
 
-            return root.ToString();
+            return root;
         }
     }
 }

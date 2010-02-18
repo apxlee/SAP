@@ -29,13 +29,14 @@
 					<asp:TextBox ID="_requestorId" runat="server" CssClass="csm_text_input_short" ></asp:TextBox>
 					<!--<Button ID="_checkRequestorId" Class="csm_html_button" Text="Check" />-->
 					<button type='button' id='_checkRequestorId' class="csm_html_button">Check</button>
+
 			        <p><em>Example: axuser (domain name is not needed)</em></p>
 				</td>
-  	            <td>
-                    <div id="_notification" style="display: none;">
+				<td style="vertical-align: top">
+                    <div id="_notification" style="display:none;">
                         <img alt='loading...' src="/images/ajax_indicator.gif" width="16" height="16" />
                     </div>
-                </td>
+				</td>
                 <td>
                     <asp:TextBox ID="_requestorLoginId" runat="server" style="display:none" ></asp:TextBox>
                 </td>
@@ -53,7 +54,7 @@
 			        <button type='button' id='_checkManagerName' class="csm_html_button">Check</button>
 			        <button type='button' id="_editManagerName" class="csm_html_button">Edit</button>
 				</td>
-				<td>&nbsp;</td>
+				<td>&nbsp</td>
 	            <td>
                   <asp:TextBox ID="_managerLoginId" runat="server" style="display:none" ></asp:TextBox>
                 </td>

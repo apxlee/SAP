@@ -187,6 +187,13 @@ namespace Apollo.AIM.SNAP.Model
 				return this.GetTable<SNAP_Workflow_State>();
 			}
 		}
+		
+		[Function(Name="dbo.usp_insert_request_xml")]
+		public int usp_insert_request_xml([Parameter(DbType="Xml")] System.Xml.Linq.XElement request_data, [Parameter(DbType="NVarChar(10)")] string submittedBy, [Parameter(DbType="NVarChar(10)")] string userId, [Parameter(DbType="NVarChar(100)")] string userDisplayName, [Parameter(DbType="NVarChar(100)")] string userTitle)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), request_data, submittedBy, userId, userDisplayName, userTitle);
+			return ((int)(result.ReturnValue));
+		}
 	}
 	
 	[Table(Name="dbo.SNAP_Access_Details_Form")]

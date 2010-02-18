@@ -26,7 +26,7 @@ var userManager = {
         this.mgrEdit = $("button[id$='_editManagerName']");
         this.ajaxIndicator = $("div[id$='_notification']");
 
-        this.submitButton = $("input[id$='__submitForm']");
+        this.submitButton = $("input[id$='_submitForm']");
         this.submitButtonLower = $("input[id$='_submitForm_lower']");
 
         this.clearButton = $("input[id$='_clearForm']");
@@ -115,7 +115,7 @@ var userManager = {
     HandleSubmitButtonClick: function() {
         userManager.submitButton.click(function() {
             userManager.SubmitHack();
-            return false;
+            return true;
         })
     },
 
@@ -153,14 +153,14 @@ var userManager = {
     HandleGetUserNames: function() {
         userManager.userNameCheck.click(function() {
             // this is ref to the button not usermanager, hence to call usermanager function I need to ref to qualify user manager
-        userManager.GetNames(userManager.userName, userManager.userSelection, userManager.userSelectionDiv);
+            userManager.GetNames(userManager.userName, userManager.userSelection, userManager.userSelectionDiv);
             //userManager.userSelectionDiv.dialog('open');
         })
     },
     HandleGetManagerNames: function() {
         userManager.mgrNameCheck.click(function() {
             // this is ref to the button not usermanager, hence to call usermanager function I need to ref to qualify user manager
-        userManager.GetNames(userManager.mgrName, userManager.mgrSelection, userManager.mgrSelectionDiv);
+            userManager.GetNames(userManager.mgrName, userManager.mgrSelection, userManager.mgrSelectionDiv);
             //userManager.managerSelectionDiv.dialog('open');
         })
     },
@@ -234,12 +234,12 @@ var userManager = {
         }
         selection.empty();
         selection.append(listItems.join(''));
-        
+
         // don't over expand the dialog box
         if (names.length >= 10)
             selection.attr('size', 10);
-         else
-             selection.attr('size', names.length);
+        else
+            selection.attr('size', names.length);
 
         dialogDiv.dialog('open');
     },
