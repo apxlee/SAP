@@ -12,5 +12,41 @@ namespace Apollo.AIM.SNAP.Web.Controls {
     
     
     public partial class WorkflowApprover {
+        
+        /// <summary>
+        /// _approverSectionName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label _approverSectionName;
+        
+        /// <summary>
+        /// _approverGroupName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label _approverGroupName;
+        
+        /// <summary>
+        /// _approverGroupDescription control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label _approverGroupDescription;
+        
+        /// <summary>
+        /// _workflowApproverMembers control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater _workflowApproverMembers;
     }
 }

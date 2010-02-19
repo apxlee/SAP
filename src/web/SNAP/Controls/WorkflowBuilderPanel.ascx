@@ -1,46 +1,42 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="WorkflowBuilderPanel.ascx.cs" Inherits="Apollo.AIM.SNAP.Web.Controls.WorkflowBuilderPanel" %>
 
+<!-- WORKFLOW BUILDER SECTION -->
 <div class="csm_text_container csm_top5">
 
     <div class="csm_icon_heading_container oospa_aim_builder">
         <h2>Access & Identity Management - Workflow Builder</h2>
     </div>
-
-    <fieldset>	
-    <table border="0" cellpadding="0" cellspacing="0" class="csm_input_form_container">
-	    <tr>
-	        <td class="csm_input_form_label_column">
-                <label>Required Approver</label>
-            </td>
-            <td class="csm_input_form_control_column">
-		        <asp:PlaceHolder ID="_requiredApprover" runat="server" />
-		    </td>
-	    </tr>
-	    <tr>
-	        <td class="csm_input_form_label_column">
-                <label>Team Approver</label>
-            </td>
-            <td class="csm_input_form_control_column">
-		        <asp:PlaceHolder ID="_teamApprover" runat="server" />
-		    </td>
-		    <asp:PlaceHolder ID="_teamButton" runat="server" />
-	    </tr>
-	    <tr>
-	        <td class="csm_input_form_label_column">
-                <label>Technical Approver</label>
-            </td>
-            <td class="csm_input_form_control_column">
-		        <asp:PlaceHolder ID="_technicalApprover" runat="server" />
-		    </td>
-            <asp:PlaceHolder ID="_technicalButton" runat="server" />
-		</tr>																			
-    </table>
-
-    <div class="csm_input_buttons_container">
-	    <input type="button" value="Pause" class="csm_html_button"/>
-	    <input type="button" value="Build It | Continue" class="csm_html_button"/>
-    </div>			
-
-    </fieldset>		        
-
-    </div>
+	
+	<fieldset>	
+	<table border="0" cellpadding="0" cellspacing="0" class="csm_input_form_container">
+		<tr>
+			<td class="csm_input_form_label_column">
+				<label>Required Approver</label>
+			</td>
+			<td class="csm_input_form_control_column">
+				<table border="0" cellpadding="0" cellspacing="0" width="100%" class="oospa_workflow_builder_row">
+					<tr>
+						<td width="22"><input type="checkbox" checked="checked" disabled="disabled" class="csm_input_checkradio" /></td>
+						<td width="386"><asp:Label ID="_requiredApproverFullName" runat="server" CssClass="csm_inline"></asp:Label></td>
+						<td width="20" class="">&nbsp;</td>
+						<td width="20" class="oospa_edit_icon" onclick="">&nbsp;</td><!-- TODO: onclick trigger ajax? -->
+					</tr>
+				</table>							
+			</td>
+		</tr>
+		<tr>
+			<!-- APPROVERS SECTION -->
+			<asp:PlaceHolder ID="_dynamicApproversContainer" runat="server"></asp:PlaceHolder>
+		</tr>																				
+	</table>
+	
+	<div class="csm_input_buttons_container">
+		<input type="button" value="Close Completed" class="csm_html_button"/>
+		<input type="button" value="Create Ticket" class="csm_html_button"/>
+		<input type="button" value="Edit Workflow" class="csm_html_button"/>
+		<input type="button" value="Build Workflow | Continue" class="csm_html_button"/>
+	</div>			
+	
+	</fieldset>		        
+    
+</div>	

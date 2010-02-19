@@ -10,11 +10,6 @@ namespace Apollo.AIM.SNAP.Web.Controls
 	{
 		protected void Page_Load(object sender, EventArgs e)
 		{
-			// TODO: move to index, utility to find AD group, look into DB for approving rows to determine role
-			Page.Session["SNAPUserRole"] = Role.Requestor;
-		
-			// build dataset of all master blade rows
-			
 			BuildRequests(RequestState.Open, _openRequestsContainer, false);
 			BuildRequests(RequestState.Closed, _closedRequestsContainer, true);
 		}

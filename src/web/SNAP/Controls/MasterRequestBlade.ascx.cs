@@ -16,38 +16,40 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		public string OverallRequestStatus { get; set; }
 		public string LastUpdatedDate { get; set; }
 		public bool IsSelectedRequest { get; set; }
+		
+		private Role _testRole = Role.AccessTeam;
 	
 		protected void Page_Load(object sender, EventArgs e)
 		{
 			PopulateUserInfo();
 			LoadReadOnlyRequestPanel();
 			LoadRequestTrackingPanel();
-			
-			//try 
-			//{
-			//    switch ((Role)Page.Session["SNAPUserRole"])
-			//    {
-			//        case Role.ApprovingManager:
-			//            LoadApprovingManagerView();
-			//            break;
 
-			//        case Role.AccessTeam:
-			//            LoadAccessTeamView();
-			//            break;
+			try
+			{
+				switch (_testRole)
+				{
+					case Role.ApprovingManager:
+						LoadApprovingManagerPanel();
+						break;
 
-			//        case Role.SuperUser:
-			//            LoadApprovingManagerView();
-			//            LoadAccessTeamView();
-			//            break;
+					case Role.AccessTeam:
+						LoadAccessTeamPanels();
+						break;
 
-			//        default:
-			//            break;
-			//    }
-			//} 
-			//catch (Exception ex)
-			//{
-			//    // TODO: if session not set, redirect to login?  throw message to user?  set role to user?
-			//}
+					case Role.SuperUser:
+						LoadApprovingManagerPanel();
+						LoadAccessTeamPanels();
+						break;
+
+					default:
+						break;
+				}
+			}
+			catch (Exception ex)
+			{
+				// TODO: if session not set, redirect to login?  throw message to user?  set role to user?
+			}
 
 		}
 		
@@ -83,8 +85,18 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			_requestTrackingPanelContainer.Controls.Add(requestTrackingPanel);		
 		}
 		
-		private void LoadAccessTeamView() {}
+		private void LoadAccessTeamPanels() 
+		{
+			AcknowledgementPanel acknowledgementPanel;
+			WorkflowBuilderPanel workflowBuilderPanel;
+			AccessCommentsPanel accessCommentsPanel;
+			
+			workflowBuilderPanel = LoadControl(@"/Controls/WorkflowBuilderPanel.ascx") as WorkflowBuilderPanel;
+			workflowBuilderPanel.RequestId = RequestId.ToString();
+			_accessTeamPanelContainer.Controls.Add(workflowBuilderPanel);
+			
+		}
 		
-		private void LoadApprovingManagerView() {}
+		private void LoadApprovingManagerPanel() {}
 	}
 }
