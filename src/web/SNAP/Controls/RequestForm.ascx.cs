@@ -90,9 +90,13 @@ namespace Apollo.AIM.SNAP.Web.Controls
         {
             List<RequestData> newRequestList = RequestFormRequestData(_requestForm);
             var xmlInput = RequestData.ToXml(newRequestList);
+
+            // To-do: Should use CAP login user object here
+            var submitBy = Request.ServerVariables["AUTH_USER"].Split('\\')[1]; // remove domain name
+            
             using (var db = new SNAPDatabaseDataContext())
             {
-                db.usp_insert_request_xml(xmlInput, "Pong Lee", UserLoginId, UserName, "");
+                db.usp_insert_request_xml(xmlInput, submitBy, UserLoginId, UserName, "");
             }
         }
 
