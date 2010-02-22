@@ -77,15 +77,6 @@ namespace Apollo.AIM.SNAP.Web {
         protected global::System.Web.UI.WebControls.View _requestFormView;
         
         /// <summary>
-        /// _requestFormControl control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Apollo.AIM.SNAP.Web.Controls.RequestForm _requestFormControl;
-        
-        /// <summary>
         /// _userView control.
         /// </summary>
         /// <remarks>
@@ -147,5 +138,14 @@ namespace Apollo.AIM.SNAP.Web {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.View _searchFormView;
+        
+        /// <summary>
+        /// _footerControl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Apollo.AIM.SNAP.Web.Controls.Footer _footerControl;
     }
 }
