@@ -5,16 +5,14 @@ Revised: 1/14/2010  J.Steele
 
 */
 
-
-
-
 /* Template Defaults
 ----------------------------------------------------------------------------------------------------*/
 .csm_template_1 {
 	font-family: Verdana, Arial, Helvetica, Sans-Serif;
 	font-size: .80em;
 	line-height: 1.5em;
-	background-color: #ffffff;	/* NOTE: Also change .csm_static_selected_style bg-color */
+	background-color: #000;	/* NOTE: Also change .csm_static_selected_style bg-color */
+	background: transparent url('../images/tlrSHDER.png') top repeat-y;
 	}
 	
 .csm_template_1 a {color: Blue;text-decoration: inherit;}
@@ -672,17 +670,14 @@ Revised: 1/14/2010  J.Steele
 	margin-top: 30px;
 	padding-bottom: 10px;
 	min-height: 150px;
-	border-top: 2px solid #b7b7b7;
-	border-right: 1px solid #b7b7b7;
-	border-left: 1px solid #b7b7b7;
-	/*background-color: #f0f0f0;*/
-	background: transparent url('../images/footer_slice.png') repeat-x;
+	/*background: transparent url('../images/tlrFOOTER.png') repeat-x;*/
+	color: #e5e5e5;
 	}
 	
 .csm_template_1 .csm_footer_logo {
-	/*background: transparent url('csmdev_logo3.png') no-repeat;*/
-	background-position: 20px 20px;
-	height: 120px;
+	background: url('../images/logoFOOTER.png') bottom no-repeat;
+	background-position: 6px 0px;
+	height: 149px;
 	}	
 
 .csm_template_1 .csm_footer h1 {
