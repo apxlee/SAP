@@ -23,28 +23,6 @@ namespace Apollo.AIM.SNAP.Test
         {
         }
 
-        [Test] public void Test()
-        {
-            using (var db = new SNAPDatabaseDataContext())
-            {
-                var data = from userText in db.SNAP_Access_User_Texts
-                           where (userText.requestId == 1009)
-                           group userText by userText.access_details_formId into g
-                           let latest = g.Max(t => t.modifiedDate)
-                           select new { newUserText = g.Where(t => t.modifiedDate == latest) };
-
-
-                foreach (var x in data)
-                {
-                    foreach (var y in x.newUserText)
-                    {
-                        Console.WriteLine(y.access_details_formId + "," + y.userText +',' + y.modifiedDate);    
-                    }
-                    
-                }
-            }
-
-        }
         [Test]
         public void ShouldReadConfigFile()
         {
