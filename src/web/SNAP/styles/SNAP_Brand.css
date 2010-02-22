@@ -1,0 +1,27 @@
+﻿.csm_template_1 .snap_brand_header
+{
+	background-color: #000;
+	color: #fff;
+	background: url('../images/tlrHEADER.jpg') top repeat-x;
+}
+
+.csm_template_1 .snap_brand_footer
+{
+	background: url('../images/tlrFOOTER3.png') top repeat-x;
+}
+
+
+.csm_template_1 .logo_itservices
+{
+	background: url('../images/logoITS.png') no-repeat;
+	background-position: 83px 1px;
+	height: 58px;
+}
+
+.csm_template_1 .logo_oospa
+{
+	background: url('../images/logoOUTTASCP.png')  no-repeat;
+	background-position: 210px 27px;
+	height: 58px;
+}
+
