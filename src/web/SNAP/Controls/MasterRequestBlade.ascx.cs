@@ -27,7 +27,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
 			try
 			{
-				switch (_testRole)
+				switch ((Role)Page.Session["SNAPUserRole"])
 				{
 					case Role.ApprovingManager:
 						LoadApprovingManagerPanel();
