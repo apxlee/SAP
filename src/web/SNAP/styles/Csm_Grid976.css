@@ -32,7 +32,9 @@
    	margin-left: auto;
 	margin-right: auto;
 	width: 700px;
-    }    
+    }
+    
+    
 
 /* Grid >> Global
 ----------------------------------------------------------------------------------------------------*/
@@ -155,3 +157,9 @@
 * html .csm_clearfix {height: 1%;}
 
 .csm_clearfix {display: block;}
+
+
+.csm_container_center {
+	margin-left: auto;
+	margin-right: auto;
+	}
