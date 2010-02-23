@@ -6,8 +6,10 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
+using Apollo.AIM.SNAP.CA;
 using Apollo.AIM.SNAP.Web.Common;
 using Apollo.AIM.SNAP.Model;
+using Apollo.CA.Logging;
 
 namespace Apollo.AIM.SNAP.Web.Controls
 {
@@ -88,15 +90,24 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
         protected void _submitForm_Click(object sender, EventArgs e)
         {
-            List<RequestData> newRequestList = RequestFormRequestData(_requestForm);
-            var xmlInput = RequestData.ToXml(newRequestList);
-
-            // To-do: Should use CAP login user object here
-            var submitBy = Request.ServerVariables["AUTH_USER"].Split('\\')[1]; // remove domain name
-            
-            using (var db = new SNAPDatabaseDataContext())
+            try
             {
-                db.usp_insert_request_xml(xmlInput, submitBy, UserLoginId, UserName, "");
+                List<RequestData> newRequestList = RequestFormRequestData(_requestForm);
+                var xmlInput = RequestData.ToXml(newRequestList);
+
+                // To-do: Should use CAP login user object here
+                var submitBy = Request.ServerVariables["AUTH_USER"].Split('\\')[1]; // remove domain name
+
+                ADUserDetail detail = Apollo.AIM.SNAP.CA.DirectoryServices.GetUserByLoginName(UserLoginId);
+
+                using (var db = new SNAPDatabaseDataContext())
+                {
+                    db.usp_insert_request_xml(xmlInput, submitBy, UserLoginId, UserName, detail.Title);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Fatal("SNAP Submit failure", ex);
             }
         }
 

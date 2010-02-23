@@ -31,6 +31,9 @@ var userManager = {
 
         this.clearButton = $("input[id$='_clearForm']");
         this.clearButtonLower = $("input[id$='_clearForm_lower']");
+
+        this.inputFields = $("input[type='text'][id*='RequestForm']");
+        this.textAreas = $("textarea[id*='RequestForm']");
     },
 
     ToggleSelecction: function() {
@@ -109,21 +112,29 @@ var userManager = {
     // !!! Due to server does not process read-only text box, we need to remove the disabled attr when we click the submit button so that the mgrName field is available to the server
 
     SubmitHack: function() {
-        userManager.mgrName.removeAttr("disabled");
+        if (userManager.InputChange()) {
+            userManager.mgrName.removeAttr("disabled");
+            return true;
+        }
+        return false;
     },
 
     HandleSubmitButtonClick: function() {
         userManager.submitButton.click(function() {
-            userManager.SubmitHack();
-            return true;
+            if (userManager.SubmitHack())
+                return true;
+            else
+                return false;
         })
     },
 
     HandleSubmitButtonLowerClick: function() {
         userManager.submitButtonLower.click(function() {
-            userManager.SubmitHack();
-            return true;
-        })
+            if (userManager.SubmitHack())
+                return true;
+            else
+                return false;
+            })
     },
 
     HandleSubmitClick: function() {
@@ -133,9 +144,60 @@ var userManager = {
 
 
     Clear: function() {
-        $("input[type='text']").val(''); $("textarea").val("")
+        userManager.textAreas.val('');
+        userManager.inputFields.val('');
     },
 
+    InputChange: function() {
+        /*
+        if ($("textarea[id*='RequestForm']:empty").length > 0)
+        alert("Text Area empty!");
+
+        if ($("input[type='text'][id*='RequestForm']:empty").length > 0)
+        alert("input empty!");
+
+        */
+
+        var status = true;
+
+        userManager.textAreas.each(function() {
+            if ($(this).val() == '') {
+                userManager.MissingData($(this));
+                status = false;
+                return status;
+            }
+        });
+
+
+        if (status) {
+            userManager.inputFields.each(function() {
+                if ($(this).val() == '') {
+                    userManager.MissingData($(this));
+                    status = false;
+                    return status;
+                }
+            });
+        }
+
+        if (userManager.mgrName.attr("disabled") == false) {
+            alert("Please check manager name");
+            status = false;
+        }
+
+        return status;
+        //if (enable) userManager.EnableSubmitButton();
+    },
+
+    /*
+    HandleInputChange: function() {
+    userManager.inputFields.change(function() {
+    userManager.InputChange();
+    });
+    userManager.textAreas.change(function() {
+    userManager.InputChange();
+    });
+    },
+    */
 
     HandleClearButtonClick: function() {
         userManager.clearButton.click(function() { userManager.Clear(); })
@@ -219,11 +281,11 @@ var userManager = {
     FillErrorFields: function(name) {
         if (name.attr('id').indexOf("manager") > -1) {
             userManager.mgrName.val("No such name! Try again");
-            userManager.mgrLoginId.val("unknown");
+            userManager.mgrLoginId.val("");
         }
         else {
             userManager.userName.val("No such name! Try again");
-            userManager.userLoginId.val("unknown");
+            userManager.userLoginId.val("");
         }
     },
 
@@ -305,6 +367,22 @@ var userManager = {
         userManager.ConvertToDialog(userManager.mgrSelectionDiv);
     },
 
+    /*
+    DisableSubmitButton: function() {
+    userManager.submitButton.attr("disabled", "disabled");
+    userManager.submitButtonLower.attr("disabled", "disabled");
+    },
+    EnableSubmitButton: function() {
+    userManager.submitButton.removeAttr("disabled");
+    userManager.submitButtonLower.removeAttr("disabled"); ;
+    },
+    */
+
+    MissingData: function(element) {
+        alert("Missing Data");
+        element.focus();
+        //element.css("border", "3px solid red");
+    },
     Ready: function() {
         // this: userManager object
         this.Setup();
@@ -316,7 +394,31 @@ var userManager = {
         this.HandleEditManagerName();
         this.HandleClearClick();
         this.HandleSubmitClick();
+        userManager.mgrName.attr("disabled", true);
     }
 }
 
 function BorderMyh3() { $("h3").css("border", "3px solid red"); }
+
+/*
+
+http://stackoverflow.com/questions/1342676/to-disable-a-send-button-if-fields-empty-by-jquery
+
+# // When DOM loads, init the page.
+# $( InitPage );
+#  
+# // Init the page.
+# function InitPage(){
+# var jInput = $( ":input" );
+#  
+# // Bind the onchange event of the inputs to flag
+# // the inputs as being "dirty".
+# jInput.change(
+# function( objEvent ){
+# // Add dirtry flag to the input in
+# // question (whose value has changed).
+# $( this ).addClass( "dirty" );
+# }
+# );
+# }
+*/
