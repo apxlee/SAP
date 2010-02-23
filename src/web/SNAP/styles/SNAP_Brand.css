@@ -73,7 +73,7 @@ ul#csm_ribbon_container_inner li a {
 #my_approvals_button {width: 134px;}
 #access_team_button {width: 129px;}
 #search_button {width: 47px;}
-#support_button {width: 56px;}	
+#support_button {width: 56px;}
 
 #request_form_button
 , #my_requests_button
@@ -87,18 +87,35 @@ ul#csm_ribbon_container_inner li a {
 	*/
 	}
 
+#request_form_button a:hover
+, #my_requests_button a:hover
+, #my_approvals_button a:hover
+, #access_team_button a:hover
+, #search_button a:hover
+, #support_button a:hover {background: url('../images/linksShade3.png') no-repeat;}
+
+#request_form_button {background-position: -34px -100px;}
+#my_requests_button a:hover {background-position: -239px -100px;}
+#my_approvals_button a:hover {background-position: -416px -100px;}
+#access_team_button a:hover {background-position: -618px -100px;}
+#search_button a:hover {background-position: -859px -100px;}
+#support_button a:hover {background-position: -1055px -100px;}
+	
+
 /* YOU ARE HERE */
 
 #request_form_button {background-position: -34px 0px;}
 #my_requests_button {background-position: -239px 0px;}
 #my_approvals_button {background-position: -416px 0px;}
 #access_team_button {background-position: -618px 0px;}
-#search_button {background-position: -859.5px 0px;}
+#search_button {background-position: -859px 0px;}
 #support_button {background-position: -1055px 0px;}
 
 div.request_form #request_form_button {background-position: -34px -50px;}
 div.my_requests #my_requests_button {background-position: -239px -50px;}
 div.my_approvals #my_approvals_button {background-position: -416px -50px;}
 div.access_team #access_team_button {background-position: -618px -50px;}
-div.search #search_button {background-position: -859.5px -50px;}
+div.search #search_button {background-position: -859px -50px;}
 div.support #support_button {background-position: -1055px -50px;}
+
+	
