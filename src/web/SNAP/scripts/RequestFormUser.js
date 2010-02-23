@@ -32,8 +32,8 @@ var userManager = {
         this.clearButton = $("input[id$='_clearForm']");
         this.clearButtonLower = $("input[id$='_clearForm_lower']");
 
-        this.inputFields = $("input[type='text'][id*='RequestForm']");
-        this.textAreas = $("textarea[id*='RequestForm']");
+        this.inputFields = $("input[type='text'][id*='requestFormControl']");
+        this.textAreas = $("textarea[id*='requestFormControl']");
     },
 
     ToggleSelecction: function() {
@@ -134,7 +134,7 @@ var userManager = {
                 return true;
             else
                 return false;
-            })
+        })
     },
 
     HandleSubmitClick: function() {
@@ -159,15 +159,23 @@ var userManager = {
         */
 
         var status = true;
-
+        var cnt = 0;
+        var element;
+        
         userManager.textAreas.each(function() {
-            if ($(this).val() == '') {
-                userManager.MissingData($(this));
-                status = false;
-                return status;
+            if ($(this).val() != '') {
+                cnt++;
+            }
+            else {
+                if (element == undefined)
+                    element = $(this);
             }
         });
 
+        if (cnt == 0) {
+            status = false;
+            userManager.MissingData(element);
+        }
 
         if (status) {
             userManager.inputFields.each(function() {
@@ -179,13 +187,12 @@ var userManager = {
             });
         }
 
-        if (userManager.mgrName.attr("disabled") == false) {
+        if (status && userManager.mgrName.attr("disabled") == false) {
             alert("Please check manager name");
             status = false;
         }
 
         return status;
-        //if (enable) userManager.EnableSubmitButton();
     },
 
     /*

@@ -24,7 +24,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
-      <uc2:RequestForm ID="RequestForm1" runat="server" /> 
+      <uc2:RequestForm ID="_requestFormControl" runat="server" /> 
       <br />
       <asp:Button ID="Button1" runat="server" onclick="Button1_Click" Text="Button" />
       <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>     

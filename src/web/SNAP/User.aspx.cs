@@ -46,7 +46,7 @@ namespace Apollo.AIM.SNAP.Web
 
         protected void Button1_Click(object sender, EventArgs e)
         {
-            this.Label1.Text = RequestForm1.UserName + "{" + RequestForm1.UserLoginId + "} - " + RequestForm1.ManagerName + "{" + RequestForm1.ManagerLoginId + "}";
+            this.Label1.Text = _requestFormControl.UserName + "{" + _requestFormControl.UserLoginId + "} - " + _requestFormControl.ManagerName + "{" + _requestFormControl.ManagerLoginId + "}";
         }
 
     }
