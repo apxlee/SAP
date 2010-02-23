@@ -12,6 +12,8 @@ namespace Apollo.AIM.SNAP.Web.Controls
 {
     public partial class RequestFormSection : System.Web.UI.UserControl
     {
+        public List<usp_open_request_tabResult> RequestData;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             var data = loadDetailRequestFormData();
@@ -36,6 +38,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
                     TextBox accessDetailsFormId;
                     accessDetailsFormId = (TextBox)WebUtilities.FindControlRecursive(requestFormField, "_accessDetailsFormId");
                     accessDetailsFormId.ID = access.pkId.ToString();
+                    accessDetailsFormId.Text = requestDataField(access.pkId);
                     accessDetailsFormId.TextMode = TextBoxMode.MultiLine;
                     accessDetailsFormId.Rows = 10;
                     accessDetailsFormId.CssClass = "csm_text_input";
@@ -55,6 +58,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
                 parentTextbox.ID = ParentID;
                 parentTextbox.TextMode = TextBoxMode.MultiLine;
                 parentTextbox.Rows = 10;
+                parentTextbox.Text = requestDataField(System.Convert.ToInt16(ParentID));
                 parentTextbox.CssClass = "csm_text_input";
                 this._requestFormField.Controls.Add(parentTextbox);
             }
@@ -89,6 +93,21 @@ namespace Apollo.AIM.SNAP.Web.Controls
                                   select form;
                 
             return formDetails;
+        }
+
+
+        private string requestDataField(int fieldId)
+        {
+            if (RequestData == null)
+                return "";
+
+            if (RequestData.Count() > 0)
+            {
+                var item = RequestData.Single(x => x.fieldId == fieldId);
+                return item.fieldText;
+            }
+
+            return "";
         }
     }
 }

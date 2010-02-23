@@ -194,6 +194,13 @@ namespace Apollo.AIM.SNAP.Model
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), request_data, submittedBy, userId, userDisplayName, userTitle);
 			return ((int)(result.ReturnValue));
 		}
+		
+		[Function(Name="dbo.usp_open_request_tab")]
+		public ISingleResult<usp_open_request_tabResult> usp_open_request_tab([Parameter(DbType="NVarChar(10)")] string userId, [Parameter(DbType="Int")] System.Nullable<int> requestId)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId, requestId);
+			return ((ISingleResult<usp_open_request_tabResult>)(result.ReturnValue));
+		}
 	}
 	
 	[Table(Name="dbo.SNAP_Access_Details_Form")]
@@ -2195,6 +2202,212 @@ namespace Apollo.AIM.SNAP.Model
 			if ((this.PropertyChanged != null))
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	public partial class usp_open_request_tabResult
+	{
+		
+		private int _requestId;
+		
+		private string _submittedBy;
+		
+		private string _userId;
+		
+		private string _userDisplayName;
+		
+		private int _fieldId;
+		
+		private string _fieldLabel;
+		
+		private string _fieldText;
+		
+		private System.Nullable<int> _ticketNumber;
+		
+		private bool _isChanged;
+		
+		private byte _statusEnum;
+		
+		private System.DateTime _createdDate;
+		
+		public usp_open_request_tabResult()
+		{
+		}
+		
+		[Column(Storage="_requestId", DbType="Int NOT NULL")]
+		public int requestId
+		{
+			get
+			{
+				return this._requestId;
+			}
+			set
+			{
+				if ((this._requestId != value))
+				{
+					this._requestId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_submittedBy", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
+		public string submittedBy
+		{
+			get
+			{
+				return this._submittedBy;
+			}
+			set
+			{
+				if ((this._submittedBy != value))
+				{
+					this._submittedBy = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_userId", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
+		public string userId
+		{
+			get
+			{
+				return this._userId;
+			}
+			set
+			{
+				if ((this._userId != value))
+				{
+					this._userId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_userDisplayName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string userDisplayName
+		{
+			get
+			{
+				return this._userDisplayName;
+			}
+			set
+			{
+				if ((this._userDisplayName != value))
+				{
+					this._userDisplayName = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_fieldId", DbType="Int NOT NULL")]
+		public int fieldId
+		{
+			get
+			{
+				return this._fieldId;
+			}
+			set
+			{
+				if ((this._fieldId != value))
+				{
+					this._fieldId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_fieldLabel", DbType="NVarChar(50)")]
+		public string fieldLabel
+		{
+			get
+			{
+				return this._fieldLabel;
+			}
+			set
+			{
+				if ((this._fieldLabel != value))
+				{
+					this._fieldLabel = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_fieldText", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		public string fieldText
+		{
+			get
+			{
+				return this._fieldText;
+			}
+			set
+			{
+				if ((this._fieldText != value))
+				{
+					this._fieldText = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_ticketNumber", DbType="Int")]
+		public System.Nullable<int> ticketNumber
+		{
+			get
+			{
+				return this._ticketNumber;
+			}
+			set
+			{
+				if ((this._ticketNumber != value))
+				{
+					this._ticketNumber = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_isChanged", DbType="Bit NOT NULL")]
+		public bool isChanged
+		{
+			get
+			{
+				return this._isChanged;
+			}
+			set
+			{
+				if ((this._isChanged != value))
+				{
+					this._isChanged = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_statusEnum", DbType="TinyInt NOT NULL")]
+		public byte statusEnum
+		{
+			get
+			{
+				return this._statusEnum;
+			}
+			set
+			{
+				if ((this._statusEnum != value))
+				{
+					this._statusEnum = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_createdDate", DbType="SmallDateTime NOT NULL")]
+		public System.DateTime createdDate
+		{
+			get
+			{
+				return this._createdDate;
+			}
+			set
+			{
+				if ((this._createdDate != value))
+				{
+					this._createdDate = value;
+				}
 			}
 		}
 	}

@@ -74,49 +74,49 @@
         <elementListCompartment Id="5a3fa296-10c5-4cf9-bc03-144b7833acfe" absoluteBounds="6.265, 5.46, 1.9700000000000002, 1.19354248046875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(2.75 : 7.25134787883113); (3.125 : 6.87634787883113); (3.125 : 1.71242390950521); (3.19791666666667 : 1.71242390950521 : JumpStart); (3.36458333333333 : 1.71242390950521 : JumpEnd); (3.5 : 1.71242390950521)]" fixedFrom="NotFixed" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(2.75 : 7.25134787883113); (3.125 : 6.87634787883113); (3.125 : 1.71242390950521); (3.19791666666667 : 1.71242390950521 : JumpStart); (3.36458333333333 : 1.71242390950521 : JumpEnd); (3.5 : 1.71242390950521)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/SNAPDatabaseDataContext/SNAP_Access_Details_Form/SNAP_Access_Details_Form_SNAP_Access_User_Text" />
       <nodes>
         <classShapeMoniker Id="e00ce68a-7e0d-4ba0-8e9c-f67a00919a77" />
         <classShapeMoniker Id="41985655-4bb5-4b0f-b494-829a06554b60" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(3.28125 : 10); (3.28125 : 1.1999594547526); (2.75 : 1.1999594547526)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(3.28125 : 10); (3.28125 : 1.1999594547526); (2.75 : 1.1999594547526)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/SNAPDatabaseDataContext/SNAP_Actor_Group/SNAP_Actor_Group_SNAP_Actor" />
       <nodes>
         <classShapeMoniker Id="4791f659-c00b-47b9-b5fc-de7e12e43f1b" />
         <classShapeMoniker Id="f26df6d2-19be-4ddc-b8ed-b64c4250692a" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 3.68653746153846); (3.06607443490112 : 3.37046302663734 : JumpStart); (3.18392556509888 : 3.25261189643958 : JumpEnd); (3.1875 : 3.24903746153846); (3.1875 : 2.09988786425781); (3.19791666666667 : 2.09988786425781 : JumpStart); (3.36458333333333 : 2.09988786425781 : JumpEnd); (3.5 : 2.09988786425781)]" fixedFrom="NotFixed" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(2.75 : 3.68653746153846); (3.1875 : 3.24903746153846); (3.1875 : 2.09988786425781); (3.19791666666667 : 2.09988786425781 : JumpStart); (3.36458333333333 : 2.09988786425781 : JumpEnd); (3.5 : 2.09988786425781)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/SNAPDatabaseDataContext/SNAP_Request/SNAP_Request_SNAP_Access_User_Text" />
       <nodes>
         <classShapeMoniker Id="f0354341-90ad-47dc-94d1-7e406ad67264" />
         <classShapeMoniker Id="41985655-4bb5-4b0f-b494-829a06554b60" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(4.5 : 4.125); (4.5 : 3.3749995); (6.25 : 3.3749995)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(4.5 : 4.125); (4.5 : 3.3749995); (6.25 : 3.3749995)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/SNAPDatabaseDataContext/SNAP_Workflow/SNAP_Workflow_SNAP_Comment" />
       <nodes>
         <classShapeMoniker Id="c4f59290-9a8f-4d18-b26b-0391011724ee" />
         <classShapeMoniker Id="87419479-8658-440f-969c-fd33af1ba359" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 2.6369075142478); (3.06607443490112 : 2.95298194914892 : JumpStart); (3.34017556509888 : 3.22708307934668 : JumpEnd); (3.34375 : 3.2306575142478); (3.34375 : 4.75525024414063); (3.5 : 4.75525024414063)]" fixedFrom="NotFixed" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(2.75 : 2.6369075142478); (3.22232443490112 : 3.10923194914892 : JumpStart); (3.34017556509888 : 3.22708307934668 : JumpEnd); (3.34375 : 3.2306575142478); (3.34375 : 4.75525024414063); (3.5 : 4.75525024414063)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/SNAPDatabaseDataContext/SNAP_Actor/SNAP_Actor_SNAP_Workflow" />
       <nodes>
         <classShapeMoniker Id="f26df6d2-19be-4ddc-b8ed-b64c4250692a" />
         <classShapeMoniker Id="c4f59290-9a8f-4d18-b26b-0391011724ee" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 4.37762512207031); (3.04166666666667 : 4.37762512207031 : JumpStart); (3.42708333333333 : 4.37762512207031 : JumpEnd); (3.5 : 4.37762512207031)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(2.75 : 4.37762512207031); (3.5 : 4.37762512207031)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/SNAPDatabaseDataContext/SNAP_Request/SNAP_Request_SNAP_Workflow" />
       <nodes>
         <classShapeMoniker Id="f0354341-90ad-47dc-94d1-7e406ad67264" />
         <classShapeMoniker Id="c4f59290-9a8f-4d18-b26b-0391011724ee" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(5.5 : 5.19275024414063); (6.25 : 5.19275024414063)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(5.5 : 5.19275024414063); (6.25 : 5.19275024414063)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/SNAPDatabaseDataContext/SNAP_Workflow/SNAP_Workflow_SNAP_Workflow_State" />
       <nodes>
         <classShapeMoniker Id="c4f59290-9a8f-4d18-b26b-0391011724ee" />

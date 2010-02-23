@@ -15,9 +15,19 @@ namespace Apollo.AIM.SNAP.Web.Controls
 {
     public partial class RequestForm : System.Web.UI.UserControl
     {
+        private List<usp_open_request_tabResult> _requestData;
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            RequestFormSection requestFormSection;
+            _requestData = loadRequestData();
+
+            if (!brandNewRequest())
+            {
+                 //_requestData[0].userDisplayName
+                // display user name, mgr name ...etc
+            }
+
+            RequestFormSection requestFormSection=null;
 
             var data = loadRequestFormData();
 
@@ -26,6 +36,9 @@ namespace Apollo.AIM.SNAP.Web.Controls
                 requestFormSection = LoadControl(@"/Controls/RequestFormSection.ascx") as RequestFormSection;
 
                 requestFormSection.ParentID = access.pkId.ToString();
+
+                if (!brandNewRequest())
+                    requestFormSection.RequestData = _requestData;
 
                 Label outerLabel;
                 outerLabel = (Label)WebUtilities.FindControlRecursive(requestFormSection, "_outerLabel");
@@ -44,25 +57,8 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
                 this._requestForm.Controls.Add(requestFormSection);
             }
-
         }
 
-        /*
-        static DataTable GetTable()
-        {
-            DataTable table = new DataTable();
-            table.Columns.Add("pkId", typeof(int));
-            table.Columns.Add("parentId", typeof(int));
-            table.Columns.Add("label", typeof(string));
-            table.Columns.Add("description", typeof(string));
-            table.Columns.Add("isActive", typeof(bool));
-            table.Columns.Add("isRequired", typeof(bool));
-
-            table.Rows.Add(1, 0, "Access Details","Please complete one or more of the following sections...",true,true);
-            table.Rows.Add(5, 0, "Justification", "Enter the reason for requesting...", true, true);
-            return table;
-        }
-        */
 
         public string UserName
         {
@@ -133,7 +129,6 @@ namespace Apollo.AIM.SNAP.Web.Controls
             return newRequestList;
         }
 
-
         private IEnumerable<SNAP_Access_Details_Form> loadRequestFormData()
         {
             var db = new SNAPDatabaseDataContext();
@@ -141,7 +136,18 @@ namespace Apollo.AIM.SNAP.Web.Controls
                                   where (form.parentId == 0) && (form.isActive == true)
                                   select form;
             return formDetails;
-            
+        }
+
+        private List<usp_open_request_tabResult> loadRequestData()
+        {
+            var db = new SNAPDatabaseDataContext();
+            var formData = db.usp_open_request_tab("clschwim", 1003);
+            return formData.ToList();
+        }
+
+        private bool brandNewRequest()
+        {
+            return _requestData == null ||_requestData.Count() == 0;
         }
     }
 
