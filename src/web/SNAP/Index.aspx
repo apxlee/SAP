@@ -1,5 +1,6 @@
 <%@ Page CodeBehind="Index.aspx.cs" Language="c#" AutoEventWireup="True" Inherits="Apollo.AIM.SNAP.Web.Index"  %>
 <%@ Register src="~/Controls/DefaultIncludes.ascx" tagname="DefaultIncludes" tagprefix="uc" %>
+<%@ Register src="~/Controls/Header.ascx" tagname="Header" tagprefix="uc" %>
 <%@ Register src="~/Controls/Footer.ascx" tagname="Footer" tagprefix="uc" %>
 <%@ Register src="~/Controls/LoginForm.ascx" tagname="LoginForm" tagprefix="uc" %>
 <%@ Register src="~/Controls/UserView.ascx" tagname="UserView" tagprefix="uc" %>
@@ -20,16 +21,7 @@
 	<!-- BEGIN MASTER CONTAINER -->
 	<div class="csm_container_100 csm_template_1">
 	
-		<asp:PlaceHolder ID="_topNavigation" runat="server">
-			<div class="snap_brand_header" style="height:94px;">
-				<div class="csm_container_16" style="height:94px;background: url('../images/tlrTOP.png') top repeat-y;">
-					<div class="csm_grid_4 csm_prefix_2 csm_alpha csm_omega logo_itservices"></div>
-					<div class="csm_grid_6 csm_prefix_3 csm_alpha csm_omega logo_oospa"></div>
-					
-				</div>
-			</div>
-			<div class="csm_clear">&nbsp;</div>
-		</asp:PlaceHolder>
+		<uc:Header ID="_headerControl" runat="server" />		
 		
 		<!-- BEGIN CONTENT AREA -->
 		<asp:Panel ID="_contentContainer" CssClass="csm_container_16 csm_500" runat="server">
@@ -70,7 +62,6 @@
 		<div class="csm_clear">&nbsp;</div>
 		<!-- END CONTENT AREA -->
 
-		<!-- TODO: FOOTER CONTROL -->
 		<uc:Footer ID="_footerControl" runat="server" />		
 	
 	</div>

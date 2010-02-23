@@ -41,13 +41,13 @@ namespace Apollo.AIM.SNAP.Web {
         protected global::Apollo.AIM.SNAP.Web.Controls.DefaultIncludes _includes;
         
         /// <summary>
-        /// _topNavigation control.
+        /// _headerControl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder _topNavigation;
+        protected global::Apollo.AIM.SNAP.Web.Controls.Header _headerControl;
         
         /// <summary>
         /// _contentContainer control.
