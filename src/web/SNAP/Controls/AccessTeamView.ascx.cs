@@ -23,7 +23,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 				foreach (DataRow request in requestTestTable.Rows)
 				{
 					MasterRequestBlade requestBlade;
-					requestBlade = LoadControl(@"/Controls/MasterRequestBlade.ascx") as MasterRequestBlade;
+					requestBlade = LoadControl("~/Controls/MasterRequestBlade.ascx") as MasterRequestBlade;
 					requestBlade.RequestId = request["request_id"].ToString();
 					requestBlade.AffectedEndUserName = request["affected_end_user_name"].ToString();
 					requestBlade.OverallRequestStatus = request["overall_request_status"].ToString();

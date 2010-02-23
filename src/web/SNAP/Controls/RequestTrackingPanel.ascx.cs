@@ -23,7 +23,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			foreach (DataRow workflowRow in workflowBladeTestTable.Rows)
 			{
 				WorkflowBlade workflowBlade;
-				workflowBlade = LoadControl(@"/Controls/WorkflowBlade.ascx") as WorkflowBlade;
+				workflowBlade = LoadControl("~/Controls/WorkflowBlade.ascx") as WorkflowBlade;
 
 				// TODO: test for access team and append csm_alternating_bg
 				//

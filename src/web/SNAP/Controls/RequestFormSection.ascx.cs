@@ -25,7 +25,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
             {
                 if (access.parentId.ToString() == ParentID)
                 {
-                    requestFormField = LoadControl(@"/Controls/RequestFormField.ascx") as RequestFormField;
+                    requestFormField = LoadControl("~/Controls/RequestFormField.ascx") as RequestFormField;
 
                     Label innerLabel;
                     innerLabel = (Label)WebUtilities.FindControlRecursive(requestFormField, "_innerLabel");

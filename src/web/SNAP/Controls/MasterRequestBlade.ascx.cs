@@ -71,7 +71,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		{
 			ReadOnlyRequestPanel readOnlyRequestPanel;
 
-			readOnlyRequestPanel = LoadControl(@"/Controls/ReadOnlyRequestPanel.ascx") as ReadOnlyRequestPanel;
+			readOnlyRequestPanel = LoadControl("~/Controls/ReadOnlyRequestPanel.ascx") as ReadOnlyRequestPanel;
 			readOnlyRequestPanel.RequestId = RequestId.ToString();
 			_readOnlyRequestPanelContainer.Controls.Add(readOnlyRequestPanel);		
 		}
@@ -80,7 +80,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		{
 			RequestTrackingPanel requestTrackingPanel;
 
-			requestTrackingPanel = LoadControl(@"/Controls/RequestTrackingPanel.ascx") as RequestTrackingPanel;
+            requestTrackingPanel = LoadControl("~/Controls/RequestTrackingPanel.ascx") as RequestTrackingPanel;
 			requestTrackingPanel.RequestId = RequestId.ToString();
 			_requestTrackingPanelContainer.Controls.Add(requestTrackingPanel);		
 		}
@@ -90,8 +90,8 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			AcknowledgementPanel acknowledgementPanel;
 			WorkflowBuilderPanel workflowBuilderPanel;
 			AccessCommentsPanel accessCommentsPanel;
-			
-			workflowBuilderPanel = LoadControl(@"/Controls/WorkflowBuilderPanel.ascx") as WorkflowBuilderPanel;
+
+            workflowBuilderPanel = LoadControl("~/Controls/WorkflowBuilderPanel.ascx") as WorkflowBuilderPanel;
 			workflowBuilderPanel.RequestId = RequestId.ToString();
 			_accessTeamPanelContainer.Controls.Add(workflowBuilderPanel);
 			
