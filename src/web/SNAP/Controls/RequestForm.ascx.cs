@@ -89,23 +89,32 @@ namespace Apollo.AIM.SNAP.Web.Controls
             try
             {
                 List<RequestData> newRequestList = RequestFormRequestData(_requestForm);
-                var xmlInput = RequestData.ToXml(newRequestList);
 
-                // To-do: Should use CAP login user object here
-                var submitBy = Request.ServerVariables["AUTH_USER"].Split('\\')[1]; // remove domain name
-
-                ADUserDetail detail = Apollo.AIM.SNAP.CA.DirectoryServices.GetUserByLoginName(UserLoginId);
-
-                using (var db = new SNAPDatabaseDataContext())
+                if (brandNewRequest())
                 {
-                    db.usp_insert_request_xml(xmlInput, submitBy, UserLoginId, UserName, detail.Title);
+                    var xmlInput = RequestData.ToXml(newRequestList);
+
+                    ADUserDetail detail = Apollo.AIM.SNAP.CA.DirectoryServices.GetUserByLoginName(UserLoginId);
+
+                    using (var db = new SNAPDatabaseDataContext())
+                    {
+                        db.usp_insert_request_xml(xmlInput, browseUser, UserLoginId, UserName, detail.Title);
+                    }
+
                 }
+                else
+                {
+                    RequestData.UpdateRequestData(newRequestList, _requestData);
+                }
+
             }
             catch (Exception ex)
             {
-                Logger.Fatal("SNAP Submit failure", ex);
+                Logger.Fatal("SNAP: Request Form -  Submit failure", ex);
             }
         }
+
+
 
         private List<RequestData> RequestFormRequestData(Control controlRoot)
         {
@@ -140,14 +149,45 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
         private List<usp_open_request_tabResult> loadRequestData()
         {
-            var db = new SNAPDatabaseDataContext();
-            var formData = db.usp_open_request_tab("clschwim", 1003);
-            return formData.ToList();
+            var requestId = Request.QueryString["RequestId"];
+            int reqId = 0;
+            // 1003
+            try
+            {
+                if (requestId != null)
+                    reqId = System.Convert.ToInt32(requestId);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("SNAP: Request Form - Request id convert error", ex);
+            }
+            if (reqId != 0)
+            {
+                var db = new SNAPDatabaseDataContext();
+                var formData = db.usp_open_request_tab(browseUser, reqId);
+                return formData.ToList();
+            }
+            else
+            {
+                return new List<usp_open_request_tabResult>();
+            }
         }
 
         private bool brandNewRequest()
         {
             return _requestData == null ||_requestData.Count() == 0;
+        }
+
+        private string browseUser
+        {
+            get
+            {
+                // To-do: Should use CAP login user object here
+                var x = Request.ServerVariables["AUTH_USER"].Split('\\')[1]; // remove domain name
+
+                return "clschwim";
+                //return x;
+            }
         }
     }
 

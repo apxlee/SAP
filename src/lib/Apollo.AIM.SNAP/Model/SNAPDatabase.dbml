@@ -20,10 +20,11 @@
   </Table>
   <Table Name="dbo.SNAP_Access_User_Text" Member="SNAP_Access_User_Texts">
     <Type Name="SNAP_Access_User_Text">
+      <Column Name="pkId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="requestId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="access_details_formId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="userText" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
-      <Column Name="modifiedDate" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+      <Column Name="modifiedDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
       <Association Name="SNAP_Access_Details_Form_SNAP_Access_User_Text" Member="SNAP_Access_Details_Form" ThisKey="access_details_formId" OtherKey="pkId" Type="SNAP_Access_Details_Form" IsForeignKey="true" />
       <Association Name="SNAP_Request_SNAP_Access_User_Text" Member="SNAP_Request" ThisKey="requestId" OtherKey="pkId" Type="SNAP_Request" IsForeignKey="true" />
     </Type>
@@ -111,8 +112,8 @@
       <Column Name="pkId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="workflowId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="workflowStatusEnum" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
-      <Column Name="notifyDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
-      <Column Name="dueDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+      <Column Name="notifyDate" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+      <Column Name="dueDate" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
       <Column Name="completedDate" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
       <Association Name="SNAP_Workflow_SNAP_Workflow_State" Member="SNAP_Workflow" ThisKey="workflowId" OtherKey="pkId" Type="SNAP_Workflow" IsForeignKey="true" />
     </Type>
@@ -136,6 +137,7 @@
       <Column Name="fieldId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="fieldLabel" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Column Name="fieldText" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="modifiedDate" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
       <Column Name="ticketNumber" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="isChanged" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="statusEnum" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />

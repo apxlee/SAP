@@ -111,6 +111,7 @@
     <Content Include="Controls\LoginForm.ascx" />
     <Content Include="Controls\MasterRequestBlade.ascx" />
     <Content Include="Controls\ReadOnlyRequestPanel.ascx" />
+    <Content Include="Controls\RequestForm.ascx" />
     <Content Include="Controls\RequestFormField.ascx" />
     <Content Include="Controls\RequestFormSection.ascx" />
     <Content Include="Controls\RequestTrackingPanel.ascx" />
@@ -157,6 +158,7 @@
     <Content Include="styles\jquery-ui-1.7.2.custom.css" />
     <Content Include="styles\login.css" />
     <Content Include="styles\SNAP_Brand.css" />
+    <Content Include="User.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -243,6 +245,13 @@
     </Compile>
     <Compile Include="Controls\ReadOnlyRequestPanel.ascx.designer.cs">
       <DependentUpon>ReadOnlyRequestPanel.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\RequestForm.ascx.cs">
+      <DependentUpon>RequestForm.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\RequestForm.ascx.designer.cs">
+      <DependentUpon>RequestForm.ascx</DependentUpon>
     </Compile>
     <Compile Include="Controls\RequestFormField.ascx.cs">
       <DependentUpon>RequestFormField.ascx</DependentUpon>
@@ -339,6 +348,13 @@
     <Compile Include="PersonTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UltimusTools.cs" />
+    <Compile Include="User.aspx.cs">
+      <DependentUpon>User.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="User.aspx.designer.cs">
+      <DependentUpon>User.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\lib\Apollo.AIM.SNAP\Apollo.AIM.SNAP.csproj">

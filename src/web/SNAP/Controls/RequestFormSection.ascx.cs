@@ -103,8 +103,25 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
             if (RequestData.Count() > 0)
             {
+                /*
                 var item = RequestData.Single(x => x.fieldId == fieldId);
                 return item.fieldText;
+                 */
+
+                var items = (from r in RequestData
+                            where r.fieldId == fieldId
+                            select r).ToList();
+
+                if (items.Count() > 1)  // fields have multiple entries due to modification
+                {
+                    var t = (DateTime) items.Max(x => x.modifiedDate); //!!! modifiation date not create date
+                    var item = items.Single(x => x.modifiedDate == t);
+                    return item.fieldText;
+                }
+                else
+                {
+                    return items[0].fieldText;
+                }
             }
 
             return "";

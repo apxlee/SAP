@@ -36,6 +36,9 @@ namespace Apollo.AIM.SNAP.Model
     partial void InsertSNAP_Workflow_State_Type(SNAP_Workflow_State_Type instance);
     partial void UpdateSNAP_Workflow_State_Type(SNAP_Workflow_State_Type instance);
     partial void DeleteSNAP_Workflow_State_Type(SNAP_Workflow_State_Type instance);
+    partial void InsertSNAP_Access_User_Text(SNAP_Access_User_Text instance);
+    partial void UpdateSNAP_Access_User_Text(SNAP_Access_User_Text instance);
+    partial void DeleteSNAP_Access_User_Text(SNAP_Access_User_Text instance);
     partial void InsertSNAP_Actor_Group(SNAP_Actor_Group instance);
     partial void UpdateSNAP_Actor_Group(SNAP_Actor_Group instance);
     partial void DeleteSNAP_Actor_Group(SNAP_Actor_Group instance);
@@ -221,6 +224,8 @@ namespace Apollo.AIM.SNAP.Model
 		
 		private System.Nullable<bool> _isRequired;
 		
+		private EntitySet<SNAP_Access_User_Text> _SNAP_Access_User_Texts;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -241,6 +246,7 @@ namespace Apollo.AIM.SNAP.Model
 		
 		public SNAP_Access_Details_Form()
 		{
+			this._SNAP_Access_User_Texts = new EntitySet<SNAP_Access_User_Text>(new Action<SNAP_Access_User_Text>(this.attach_SNAP_Access_User_Texts), new Action<SNAP_Access_User_Text>(this.detach_SNAP_Access_User_Texts));
 			OnCreated();
 		}
 		
@@ -364,6 +370,19 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
+		[Association(Name="SNAP_Access_Details_Form_SNAP_Access_User_Text", Storage="_SNAP_Access_User_Texts", ThisKey="pkId", OtherKey="access_details_formId")]
+		public EntitySet<SNAP_Access_User_Text> SNAP_Access_User_Texts
+		{
+			get
+			{
+				return this._SNAP_Access_User_Texts;
+			}
+			set
+			{
+				this._SNAP_Access_User_Texts.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -382,6 +401,18 @@ namespace Apollo.AIM.SNAP.Model
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+		
+		private void attach_SNAP_Access_User_Texts(SNAP_Access_User_Text entity)
+		{
+			this.SendPropertyChanging();
+			entity.SNAP_Access_Details_Form = this;
+		}
+		
+		private void detach_SNAP_Access_User_Texts(SNAP_Access_User_Text entity)
+		{
+			this.SendPropertyChanging();
+			entity.SNAP_Access_Details_Form = null;
 		}
 	}
 	
@@ -472,8 +503,12 @@ namespace Apollo.AIM.SNAP.Model
 	}
 	
 	[Table(Name="dbo.SNAP_Access_User_Text")]
-	public partial class SNAP_Access_User_Text
+	public partial class SNAP_Access_User_Text : INotifyPropertyChanging, INotifyPropertyChanged
 	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _pkId;
 		
 		private int _requestId;
 		
@@ -481,10 +516,53 @@ namespace Apollo.AIM.SNAP.Model
 		
 		private string _userText;
 		
-		private System.Nullable<System.DateTime> _modifiedDate;
+		private System.DateTime _modifiedDate;
+		
+		private EntityRef<SNAP_Access_Details_Form> _SNAP_Access_Details_Form;
+		
+		private EntityRef<SNAP_Request> _SNAP_Request;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnpkIdChanging(int value);
+    partial void OnpkIdChanged();
+    partial void OnrequestIdChanging(int value);
+    partial void OnrequestIdChanged();
+    partial void Onaccess_details_formIdChanging(int value);
+    partial void Onaccess_details_formIdChanged();
+    partial void OnuserTextChanging(string value);
+    partial void OnuserTextChanged();
+    partial void OnmodifiedDateChanging(System.DateTime value);
+    partial void OnmodifiedDateChanged();
+    #endregion
 		
 		public SNAP_Access_User_Text()
 		{
+			this._SNAP_Access_Details_Form = default(EntityRef<SNAP_Access_Details_Form>);
+			this._SNAP_Request = default(EntityRef<SNAP_Request>);
+			OnCreated();
+		}
+		
+		[Column(Storage="_pkId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int pkId
+		{
+			get
+			{
+				return this._pkId;
+			}
+			set
+			{
+				if ((this._pkId != value))
+				{
+					this.OnpkIdChanging(value);
+					this.SendPropertyChanging();
+					this._pkId = value;
+					this.SendPropertyChanged("pkId");
+					this.OnpkIdChanged();
+				}
+			}
 		}
 		
 		[Column(Storage="_requestId", DbType="Int NOT NULL")]
@@ -498,7 +576,15 @@ namespace Apollo.AIM.SNAP.Model
 			{
 				if ((this._requestId != value))
 				{
+					if (this._SNAP_Request.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnrequestIdChanging(value);
+					this.SendPropertyChanging();
 					this._requestId = value;
+					this.SendPropertyChanged("requestId");
+					this.OnrequestIdChanged();
 				}
 			}
 		}
@@ -514,7 +600,15 @@ namespace Apollo.AIM.SNAP.Model
 			{
 				if ((this._access_details_formId != value))
 				{
+					if (this._SNAP_Access_Details_Form.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.Onaccess_details_formIdChanging(value);
+					this.SendPropertyChanging();
 					this._access_details_formId = value;
+					this.SendPropertyChanged("access_details_formId");
+					this.Onaccess_details_formIdChanged();
 				}
 			}
 		}
@@ -530,13 +624,17 @@ namespace Apollo.AIM.SNAP.Model
 			{
 				if ((this._userText != value))
 				{
+					this.OnuserTextChanging(value);
+					this.SendPropertyChanging();
 					this._userText = value;
+					this.SendPropertyChanged("userText");
+					this.OnuserTextChanged();
 				}
 			}
 		}
 		
-		[Column(Storage="_modifiedDate", DbType="SmallDateTime")]
-		public System.Nullable<System.DateTime> modifiedDate
+		[Column(Storage="_modifiedDate", DbType="SmallDateTime NOT NULL")]
+		public System.DateTime modifiedDate
 		{
 			get
 			{
@@ -546,8 +644,100 @@ namespace Apollo.AIM.SNAP.Model
 			{
 				if ((this._modifiedDate != value))
 				{
+					this.OnmodifiedDateChanging(value);
+					this.SendPropertyChanging();
 					this._modifiedDate = value;
+					this.SendPropertyChanged("modifiedDate");
+					this.OnmodifiedDateChanged();
 				}
+			}
+		}
+		
+		[Association(Name="SNAP_Access_Details_Form_SNAP_Access_User_Text", Storage="_SNAP_Access_Details_Form", ThisKey="access_details_formId", OtherKey="pkId", IsForeignKey=true)]
+		public SNAP_Access_Details_Form SNAP_Access_Details_Form
+		{
+			get
+			{
+				return this._SNAP_Access_Details_Form.Entity;
+			}
+			set
+			{
+				SNAP_Access_Details_Form previousValue = this._SNAP_Access_Details_Form.Entity;
+				if (((previousValue != value) 
+							|| (this._SNAP_Access_Details_Form.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._SNAP_Access_Details_Form.Entity = null;
+						previousValue.SNAP_Access_User_Texts.Remove(this);
+					}
+					this._SNAP_Access_Details_Form.Entity = value;
+					if ((value != null))
+					{
+						value.SNAP_Access_User_Texts.Add(this);
+						this._access_details_formId = value.pkId;
+					}
+					else
+					{
+						this._access_details_formId = default(int);
+					}
+					this.SendPropertyChanged("SNAP_Access_Details_Form");
+				}
+			}
+		}
+		
+		[Association(Name="SNAP_Request_SNAP_Access_User_Text", Storage="_SNAP_Request", ThisKey="requestId", OtherKey="pkId", IsForeignKey=true)]
+		public SNAP_Request SNAP_Request
+		{
+			get
+			{
+				return this._SNAP_Request.Entity;
+			}
+			set
+			{
+				SNAP_Request previousValue = this._SNAP_Request.Entity;
+				if (((previousValue != value) 
+							|| (this._SNAP_Request.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._SNAP_Request.Entity = null;
+						previousValue.SNAP_Access_User_Texts.Remove(this);
+					}
+					this._SNAP_Request.Entity = value;
+					if ((value != null))
+					{
+						value.SNAP_Access_User_Texts.Add(this);
+						this._requestId = value.pkId;
+					}
+					else
+					{
+						this._requestId = default(int);
+					}
+					this.SendPropertyChanged("SNAP_Request");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
 	}
@@ -1477,6 +1667,8 @@ namespace Apollo.AIM.SNAP.Model
 		
 		private System.DateTime _createdDate;
 		
+		private EntitySet<SNAP_Access_User_Text> _SNAP_Access_User_Texts;
+		
 		private EntitySet<SNAP_Workflow> _SNAP_Workflows;
 		
     #region Extensibility Method Definitions
@@ -1505,6 +1697,7 @@ namespace Apollo.AIM.SNAP.Model
 		
 		public SNAP_Request()
 		{
+			this._SNAP_Access_User_Texts = new EntitySet<SNAP_Access_User_Text>(new Action<SNAP_Access_User_Text>(this.attach_SNAP_Access_User_Texts), new Action<SNAP_Access_User_Text>(this.detach_SNAP_Access_User_Texts));
 			this._SNAP_Workflows = new EntitySet<SNAP_Workflow>(new Action<SNAP_Workflow>(this.attach_SNAP_Workflows), new Action<SNAP_Workflow>(this.detach_SNAP_Workflows));
 			OnCreated();
 		}
@@ -1689,6 +1882,19 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
+		[Association(Name="SNAP_Request_SNAP_Access_User_Text", Storage="_SNAP_Access_User_Texts", ThisKey="pkId", OtherKey="requestId")]
+		public EntitySet<SNAP_Access_User_Text> SNAP_Access_User_Texts
+		{
+			get
+			{
+				return this._SNAP_Access_User_Texts;
+			}
+			set
+			{
+				this._SNAP_Access_User_Texts.Assign(value);
+			}
+		}
+		
 		[Association(Name="SNAP_Request_SNAP_Workflow", Storage="_SNAP_Workflows", ThisKey="pkId", OtherKey="requestId")]
 		public EntitySet<SNAP_Workflow> SNAP_Workflows
 		{
@@ -1720,6 +1926,18 @@ namespace Apollo.AIM.SNAP.Model
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+		
+		private void attach_SNAP_Access_User_Texts(SNAP_Access_User_Text entity)
+		{
+			this.SendPropertyChanging();
+			entity.SNAP_Request = this;
+		}
+		
+		private void detach_SNAP_Access_User_Texts(SNAP_Access_User_Text entity)
+		{
+			this.SendPropertyChanging();
+			entity.SNAP_Request = null;
 		}
 		
 		private void attach_SNAP_Workflows(SNAP_Workflow entity)
@@ -1995,9 +2213,9 @@ namespace Apollo.AIM.SNAP.Model
 		
 		private byte _workflowStatusEnum;
 		
-		private System.DateTime _notifyDate;
+		private System.Nullable<System.DateTime> _notifyDate;
 		
-		private System.DateTime _dueDate;
+		private System.Nullable<System.DateTime> _dueDate;
 		
 		private System.Nullable<System.DateTime> _completedDate;
 		
@@ -2013,9 +2231,9 @@ namespace Apollo.AIM.SNAP.Model
     partial void OnworkflowIdChanged();
     partial void OnworkflowStatusEnumChanging(byte value);
     partial void OnworkflowStatusEnumChanged();
-    partial void OnnotifyDateChanging(System.DateTime value);
+    partial void OnnotifyDateChanging(System.Nullable<System.DateTime> value);
     partial void OnnotifyDateChanged();
-    partial void OndueDateChanging(System.DateTime value);
+    partial void OndueDateChanging(System.Nullable<System.DateTime> value);
     partial void OndueDateChanged();
     partial void OncompletedDateChanging(System.Nullable<System.DateTime> value);
     partial void OncompletedDateChanged();
@@ -2091,8 +2309,8 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Column(Storage="_notifyDate", DbType="SmallDateTime NOT NULL")]
-		public System.DateTime notifyDate
+		[Column(Storage="_notifyDate", DbType="SmallDateTime")]
+		public System.Nullable<System.DateTime> notifyDate
 		{
 			get
 			{
@@ -2111,8 +2329,8 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Column(Storage="_dueDate", DbType="SmallDateTime NOT NULL")]
-		public System.DateTime dueDate
+		[Column(Storage="_dueDate", DbType="SmallDateTime")]
+		public System.Nullable<System.DateTime> dueDate
 		{
 			get
 			{
@@ -2222,6 +2440,8 @@ namespace Apollo.AIM.SNAP.Model
 		private string _fieldLabel;
 		
 		private string _fieldText;
+		
+		private System.Nullable<System.DateTime> _modifiedDate;
 		
 		private System.Nullable<int> _ticketNumber;
 		
@@ -2343,6 +2563,22 @@ namespace Apollo.AIM.SNAP.Model
 				if ((this._fieldText != value))
 				{
 					this._fieldText = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_modifiedDate", DbType="SmallDateTime")]
+		public System.Nullable<System.DateTime> modifiedDate
+		{
+			get
+			{
+				return this._modifiedDate;
+			}
+			set
+			{
+				if ((this._modifiedDate != value))
+				{
+					this._modifiedDate = value;
 				}
 			}
 		}
