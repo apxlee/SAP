@@ -128,7 +128,7 @@
     <Content Include="images\slice_hover.png" />
     <Content Include="images\icon_delete_small.png" />
     <Content Include="images\icon_edit_small.png" />
-    <Content Include="images\heading_links_slider.png" />
+    <Content Include="images\slider_heading_links.png" />
     <Content Include="images\logo_aim.png" />
     <Content Include="images\logo_itservices.png" />
     <Content Include="images\logo_oospa.png" />
