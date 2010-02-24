@@ -34,7 +34,7 @@
 
 div#csm_ribbon_container_outer {
 	height: 36px;
-	width: 763px;	
+	/*width: 763px;*/
 	margin: 0;
 	margin-left: auto;
 	margin-right: auto;
@@ -74,6 +74,36 @@ ul#csm_ribbon_container_inner li a {
 	overflow: hidden;
 	text-decoration: none;
 	}
+ 
+div#csm_ribbon_container_outer ul#csm_ribbon_container_inner li a.snap_approvals_text_two_digits
+, div#csm_ribbon_container_outer ul#csm_ribbon_container_inner li a.snap_approvals_text_one_digit 
+, div#csm_ribbon_container_outer ul#csm_ribbon_container_inner li a.snap_aim_text_two_digits 
+, div#csm_ribbon_container_outer ul#csm_ribbon_container_inner li a.snap_aim_text_one_digit {
+	overflow: hidden;
+	text-indent: 0px;
+	text-decoration: none;
+	text-align: center;
+	}
+
+li a.snap_approvals_text_two_digits span
+, li a.snap_approvals_text_one_digit span
+, li a.snap_aim_text_two_digits span
+, li a.snap_aim_text_one_digit span {
+	font-family: Helvetica;
+	font-size: 12px;
+	font-weight: bold;
+	color: #f5f5f5;
+	position: relative;
+	top: 11px;
+	margin: 0;
+	letter-spacing: 1px;
+	}	
+	
+li a.snap_approvals_text_two_digits span {padding: 0 0 0 105px;}
+li a.snap_approvals_text_one_digit span {padding: 0 0 0 105px;}
+li a.snap_aim_text_two_digits span {padding: 0 0 0 102px;}
+li a.snap_aim_text_one_digit span {padding: 0 0 0 100px;}
+	
 	
 /* LINK BUTTON DEFAULT SIZE */
 	
@@ -90,7 +120,7 @@ ul#csm_ribbon_container_inner li a {
 , #access_team_button a
 , #search_button a
 , #support_button a {
-	background: url('/images/heading_links_slider.png') no-repeat;
+	background: url('/images/slider_heading_links.png') no-repeat;
 	padding: 0 17px 0 17px !important;}
 
 #request_form_button a:hover {background-position: -34px -100px;}
