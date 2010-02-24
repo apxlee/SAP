@@ -11,7 +11,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 	{
 		protected void Page_Load(object sender, EventArgs e)
 		{
-			BuildRibbon("my_requests");
+			BuildRibbon("my_requests", 4, 78);
 
 		}
 
@@ -32,7 +32,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			return placeHolder;
 		}		
 		
-		private void BuildRibbon(string CurrentPageName)
+		private void BuildRibbon(string CurrentPageName, int PendingApprovals, int PendingAccessTeam)
 		{
 			Panel ribbonPanel = new Panel();
 			ribbonPanel.CssClass = CurrentPageName;
@@ -43,8 +43,9 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			};
 
 			Literal openElements = new Literal();
-			openElements.Text = string.Format("<div id='{0}' class=''><ul id='{1}'>"
+			openElements.Text = string.Format("<div id='{0}' style='width:{1}px;'><ul id='{2}'>"
 				, "csm_ribbon_container_outer"
+				, "763"
 				, "csm_ribbon_container_inner");
 
 			Literal closeElements = new Literal();
@@ -57,7 +58,24 @@ namespace Apollo.AIM.SNAP.Web.Controls
 				LinkButton link = new LinkButton();
 				link.CommandName = link_name + "_button";
 				link.Command += new CommandEventHandler(RibbonLink_Click);
-				link.Text = link.CommandName;
+				
+				switch (link_name)
+				{
+					case "my_approvals" :
+						link.Text = "<span>" + PendingApprovals.ToString() + "</span>";
+						link.CssClass = (PendingApprovals < 10) ? "snap_approvals_text_one_digit" : "snap_approvals_text_two_digits";
+						break;
+						
+					case "access_team" :
+						link.Text = "<span>" + PendingAccessTeam.ToString() + "</span>";
+						link.CssClass = (PendingAccessTeam < 10) ? "snap_aim_text_one_digit" : "snap_aim_text_two_digits";
+						break;
+						
+					default :
+						link.Text = link.CommandName;
+						break;
+				}
+
 				ribbonPanel.Controls.Add(WrapControl(link, "li", link.CommandName));
 			}
 
