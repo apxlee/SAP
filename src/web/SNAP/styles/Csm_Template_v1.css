@@ -668,7 +668,7 @@ Revised: 1/14/2010  J.Steele
 
 .csm_template_1 .csm_footer {
 	margin-top: 30px;
-	padding-bottom: 10px;
+	padding-bottom: 0px;
 	min-height: 150px;
 	color: #fff;
 	}
