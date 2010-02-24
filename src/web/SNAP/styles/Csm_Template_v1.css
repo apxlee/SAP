@@ -12,7 +12,6 @@ Revised: 1/14/2010  J.Steele
 	font-size: .80em;
 	line-height: 1.5em;
 	background-color: #000;	/* NOTE: Also change .csm_static_selected_style bg-color */
-	background: transparent url('../images/tlrSHDER.png') top repeat-y;
 	}
 	
 .csm_template_1 a {color: Blue;text-decoration: inherit;}
@@ -133,6 +132,7 @@ Revised: 1/14/2010  J.Steele
 
 
 /* Tabs
+TODO: REMOVE THIS SECTION
 ----------------------------------------------------------------------------------------------------*/
 
 .csm_template_1 .csm_tab_master_container {
@@ -166,7 +166,6 @@ Revised: 1/14/2010  J.Steele
 	letter-spacing: .3pt;
 	line-height: 2em;
 	background-color: transparent;
-	
 	border-bottom: 1px solid #b7b7b7;
 	}
 	
@@ -199,7 +198,7 @@ Revised: 1/14/2010  J.Steele
 .csm_template_1 h1 {
 	margin: 10px 0px;
 	padding: 5px;
-	background: url('../images/h1_slice.png') repeat-x;	
+	/*background: url('../images/h1_slice.png') repeat-x;	*/
 	/*border: 1px solid #b7b7b7;*/
 	border-bottom: 2px solid #771111;
 	height: 16px;
@@ -279,7 +278,7 @@ Revised: 1/14/2010  J.Steele
 .csm_template_1 .csm_toggle_container {/* used by jquery to identify toggle elements */}
 
 .csm_template_1 .csm_toggle_hover {
-	background: #fff url('../images/hover_slice.png') bottom repeat-x !important;
+	background: #fff url('/images/slice_hover') bottom repeat-x !important;
 	background-color: #fff !important;
 	cursor: hand;
 	}
@@ -315,11 +314,11 @@ Revised: 1/14/2010  J.Steele
 	}	
 
 .csm_template_1 .csm_divided_heading .csm_toggle_container .csm_toggle_icon_down {
-	background: url('../images/toggle_icon_down.png') 50% 50% no-repeat;
+	background: url('/images/icon_toggle_down.png') 50% 50% no-repeat;
 	}	
 	
 .csm_template_1 .csm_divided_heading .csm_toggle_container .csm_toggle_icon_up {
-	background: url('../images/toggle_icon_up.png') 50% 50% no-repeat;
+	background: url('/images/icon_toggle_up.png') 50% 50% no-repeat;
 	}	
 
 
@@ -453,7 +452,7 @@ Revised: 1/14/2010  J.Steele
 	padding: 0px;
 	padding-left: 5px;
 	font-size: .85em;
-	background: #fff url('../images/dropshadow_slice_green.png') top repeat-x;
+	/*background: #fff url('../images/dropshadow_slice_green.png') top repeat-x;*/
 	border: 1px solid #b7b7b7;		
 	line-height: 1.7em;
 	height: 1.8em;
@@ -466,7 +465,7 @@ Revised: 1/14/2010  J.Steele
 	padding: 0px;
 	padding-left: 5px;
 	font-size: .85em;
-	background: #fff url('../images/dropshadow_slice_green.png') top repeat-x;
+	/*background: #fff url('../images/dropshadow_slice_green.png') top repeat-x;*/
 	border: 1px solid #b7b7b7;		
 	line-height: 1.7em;
 	height: 1.8em;
@@ -479,7 +478,7 @@ Revised: 1/14/2010  J.Steele
 	padding: 0px;
 	padding-left: 5px;
 	font-size: .85em;
-	background: #fff url('../images/dropshadow_slice_green.png') top repeat-x;
+	/*background: #fff url('../images/dropshadow_slice_green.png') top repeat-x;*/
 	border: 1px solid #b7b7b7;		
 	line-height: 1.7em;
 	height: 1.8em;
@@ -598,7 +597,7 @@ Revised: 1/14/2010  J.Steele
 	
 .csm_template_1 
 .csm_input_spanning_column .csm_input_required_field {
-	background-image: url('../images/required_field_icon_small4.png');
+	background-image: url('/images/icon_required_field_small.png');
 	background-position: right 1px;
 	background-repeat: no-repeat;
 	}
@@ -608,7 +607,7 @@ Revised: 1/14/2010  J.Steele
 ----------------------------------------------------------------------------------------------------*/
 
 .csm_template_1 .csm_input_required_field {
-	background-image: url('../images/required_field_icon_small4.png');
+	background-image: url('/images/icon_required_field_small.png');
 	background-position: 4px 9px;
 	background-repeat: no-repeat;
 	}
@@ -674,7 +673,7 @@ Revised: 1/14/2010  J.Steele
 	}
 	
 .csm_template_1 .csm_footer_logo {
-	background: url('../images/logoFOOTER.png') bottom no-repeat;
+	background: url('/images/logo_aim.png') bottom no-repeat;
 	background-position: 6px 0px;
 	height: 149px;
 	}	
@@ -731,31 +730,31 @@ Revised: 1/14/2010  J.Steele
     }
 
 .oospa_request_details {
-	background: transparent url('../images/reqDETAILS.png') no-repeat;
+	background: transparent url('/images/icon_white_clipboard.png') no-repeat;
     }
     
 .oospa_request_status {
-	background: transparent url('../images/status.png') no-repeat;
+	background: transparent url('/images/icon_yellow_chart.png') no-repeat;
     }
     
 .oospa_aim_builder {
-	background: transparent url('../images/AIM.png') no-repeat;
+	background: transparent url('/images/icon_red_clipboard.png') no-repeat;
 	}
 	
 .oospa_aim_comments {
-	background: transparent url('../images/AIM.png') no-repeat;
+	background: transparent url('/images/icon_red_clipboard.png') no-repeat;
 	}
 	
 .oospa_aim_acknowledgement {
-	background: transparent url('../images/AIM.png') no-repeat;
+	background: transparent url('/images/icon_red_clipboard.png') no-repeat;
 	}
 	
 .oospa_delete_icon {
-	background: transparent url('../images/icn_deleteSMALL.png') 0 2px no-repeat;
+	background: transparent url('/images/icon_delete_small.png') 0 2px no-repeat;
 	}
 	
 .oospa_edit_icon {
-	background: transparent url('../images/icn_editSMALL.png') 0 2px no-repeat;
+	background: transparent url('/images/icon_edit_small.png') 0 2px no-repeat;
 	}
 	
 .csm_template_1 .csm_icon_heading_container h2 {

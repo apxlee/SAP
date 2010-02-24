@@ -1,20 +1,31 @@
-﻿.csm_template_1 .snap_brand_header {
-	color: #fff;
-	background: url('../images/tlrHEADER.jpg') top repeat-x;
+﻿.csm_template_1 {
+	background: transparent url('/images/slice_body_bg.png') top repeat-y;
 	}
 
+.csm_template_1 .snap_brand_header {
+	color: #fff;
+	height: 94px;
+	background: url('/images/slice_header_bg.jpg') top repeat-x;
+	}
+	
 .csm_template_1 .snap_brand_footer {
-	background: url('../images/tlrFOOTER3.png') top repeat-x;
+	background: url('/images/slice_footer_bg.png') top repeat-x;
+	min-height: 150px;
+	}
+		
+.csm_template_1 .snap_brand_header div.csm_container_16
+, .csm_template_1 .snap_brand_footer div.csm_container_16 {
+	background: url('/images/slice_brand_sides.png') top repeat-y;
 	}
 
 .csm_template_1 .logo_itservices {
-	background: url('../images/logoITS.png') no-repeat;
+	background: url('/images/logo_itservices.png') no-repeat;
 	background-position: 83px 2px;
 	height: 58px;
 	}
 
 .csm_template_1 .logo_oospa {
-	background: url('../images/logoOUTTASCP.png')  no-repeat;
+	background: url('/images/logo_oospa.png')  no-repeat;
 	background-position: 210px 28px;
 	height: 58px;
 	}
@@ -28,7 +39,6 @@ div#csm_ribbon_container_outer {
 	margin-left: auto;
 	margin-right: auto;
 	padding: 0;
-	/*border: 1px dotted yellow;*/
 	}
 	
 div#csm_ribbon_container_outer 
@@ -50,7 +60,6 @@ ul#csm_ribbon_container_inner li {
 	/*position: absolute;*/
 	float: left;
 	top: 0;
-	
 	}
 	
 ul#csm_ribbon_container_inner li
@@ -81,7 +90,7 @@ ul#csm_ribbon_container_inner li a {
 , #access_team_button a
 , #search_button a
 , #support_button a {
-	background: url('../images/linksShade3.png') no-repeat;
+	background: url('/images/heading_links_slider.png') no-repeat;
 	padding: 0 17px 0 17px !important;}
 
 #request_form_button a:hover {background-position: -34px -100px;}
