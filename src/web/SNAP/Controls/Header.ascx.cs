@@ -37,6 +37,8 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			Panel ribbonPanel = new Panel();
 			ribbonPanel.CssClass = CurrentPageName;
 			
+			// TODO: based on role, build list of linkbuttons
+			//
 			List<string> linkButtons = new List<string>
 			{
 				"request_form", "my_requests", "my_approvals", "access_team", "search", "support"
