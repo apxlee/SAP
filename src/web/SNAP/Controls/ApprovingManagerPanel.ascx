@@ -3,7 +3,7 @@
 <div class="csm_text_container">
  	<table border="0" cellpadding="0" cellspacing="0" style="margin-bottom:5px;">
         <tr>
-            <td><img src="Styles/approver.png" /></td>
+            <td><img src="Styles/section_image_blue_suit.png" /></td>
             <td><h2>&nbsp;&nbsp;Approver Section</h2></td>
         </tr>
     </table>
