@@ -22,7 +22,7 @@ namespace Apollo.AIM.SNAP.Test
             {
                 var maxRequestId = db.SNAP_Requests.Max(x => x.pkId);
                 var data = db.RetrieveRequest(++maxRequestId);
-                Assert.IsTrue(data.Count() == 0);
+                Assert.IsTrue(data.Count() == 0);              
             }
 
         }

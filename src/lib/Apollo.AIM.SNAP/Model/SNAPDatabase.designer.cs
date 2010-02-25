@@ -225,7 +225,7 @@ namespace Apollo.AIM.SNAP.Model
 		
 		private int _pkId;
 		
-		private System.Nullable<byte> _parentId;
+		private System.Nullable<int> _parentId;
 		
 		private string _label;
 		
@@ -243,7 +243,7 @@ namespace Apollo.AIM.SNAP.Model
     partial void OnCreated();
     partial void OnpkIdChanging(int value);
     partial void OnpkIdChanged();
-    partial void OnparentIdChanging(System.Nullable<byte> value);
+    partial void OnparentIdChanging(System.Nullable<int> value);
     partial void OnparentIdChanged();
     partial void OnlabelChanging(string value);
     partial void OnlabelChanged();
@@ -281,8 +281,8 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Column(Storage="_parentId", DbType="TinyInt")]
-		public System.Nullable<byte> parentId
+		[Column(Storage="_parentId", DbType="Int")]
+		public System.Nullable<int> parentId
 		{
 			get
 			{
