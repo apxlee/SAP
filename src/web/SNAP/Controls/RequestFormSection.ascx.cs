@@ -123,6 +123,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
                     return item[0].fieldText;
                      */
+                    return item.fieldText;
                 }
                 else
                 {
