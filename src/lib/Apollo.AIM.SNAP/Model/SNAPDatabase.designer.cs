@@ -45,12 +45,12 @@ namespace Apollo.AIM.SNAP.Model
     partial void InsertSNAP_Actor(SNAP_Actor instance);
     partial void UpdateSNAP_Actor(SNAP_Actor instance);
     partial void DeleteSNAP_Actor(SNAP_Actor instance);
-    partial void InsertSNAP_Comment(SNAP_Comment instance);
-    partial void UpdateSNAP_Comment(SNAP_Comment instance);
-    partial void DeleteSNAP_Comment(SNAP_Comment instance);
     partial void InsertSNAP_Comments_Type(SNAP_Comments_Type instance);
     partial void UpdateSNAP_Comments_Type(SNAP_Comments_Type instance);
     partial void DeleteSNAP_Comments_Type(SNAP_Comments_Type instance);
+    partial void InsertSNAP_Request_Comment(SNAP_Request_Comment instance);
+    partial void UpdateSNAP_Request_Comment(SNAP_Request_Comment instance);
+    partial void DeleteSNAP_Request_Comment(SNAP_Request_Comment instance);
     partial void InsertSNAP_Request_State_Type(SNAP_Request_State_Type instance);
     partial void UpdateSNAP_Request_State_Type(SNAP_Request_State_Type instance);
     partial void DeleteSNAP_Request_State_Type(SNAP_Request_State_Type instance);
@@ -60,6 +60,9 @@ namespace Apollo.AIM.SNAP.Model
     partial void InsertSNAP_Workflow(SNAP_Workflow instance);
     partial void UpdateSNAP_Workflow(SNAP_Workflow instance);
     partial void DeleteSNAP_Workflow(SNAP_Workflow instance);
+    partial void InsertSNAP_Workflow_Comment(SNAP_Workflow_Comment instance);
+    partial void UpdateSNAP_Workflow_Comment(SNAP_Workflow_Comment instance);
+    partial void DeleteSNAP_Workflow_Comment(SNAP_Workflow_Comment instance);
     partial void InsertSNAP_Workflow_State(SNAP_Workflow_State instance);
     partial void UpdateSNAP_Workflow_State(SNAP_Workflow_State instance);
     partial void DeleteSNAP_Workflow_State(SNAP_Workflow_State instance);
@@ -143,19 +146,19 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		public System.Data.Linq.Table<SNAP_Comment> SNAP_Comments
-		{
-			get
-			{
-				return this.GetTable<SNAP_Comment>();
-			}
-		}
-		
 		public System.Data.Linq.Table<SNAP_Comments_Type> SNAP_Comments_Types
 		{
 			get
 			{
 				return this.GetTable<SNAP_Comments_Type>();
+			}
+		}
+		
+		public System.Data.Linq.Table<SNAP_Request_Comment> SNAP_Request_Comments
+		{
+			get
+			{
+				return this.GetTable<SNAP_Request_Comment>();
 			}
 		}
 		
@@ -183,6 +186,14 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
+		public System.Data.Linq.Table<SNAP_Workflow_Comment> SNAP_Workflow_Comments
+		{
+			get
+			{
+				return this.GetTable<SNAP_Workflow_Comment>();
+			}
+		}
+		
 		public System.Data.Linq.Table<SNAP_Workflow_State> SNAP_Workflow_States
 		{
 			get
@@ -192,9 +203,9 @@ namespace Apollo.AIM.SNAP.Model
 		}
 		
 		[Function(Name="dbo.usp_insert_request_xml")]
-		public int usp_insert_request_xml([Parameter(DbType="Xml")] System.Xml.Linq.XElement request_data, [Parameter(DbType="NVarChar(10)")] string submittedBy, [Parameter(DbType="NVarChar(10)")] string userId, [Parameter(DbType="NVarChar(100)")] string userDisplayName, [Parameter(DbType="NVarChar(100)")] string userTitle)
+		public int usp_insert_request_xml([Parameter(DbType="Xml")] System.Xml.Linq.XElement request_data, [Parameter(DbType="NVarChar(10)")] string submittedBy, [Parameter(DbType="NVarChar(10)")] string userId, [Parameter(DbType="NVarChar(100)")] string userDisplayName, [Parameter(DbType="NVarChar(100)")] string userTitle, [Parameter(DbType="NVarChar(10)")] string managerUserId, [Parameter(DbType="NVarChar(100)")] string managerDisplayName)
 		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), request_data, submittedBy, userId, userDisplayName, userTitle);
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), request_data, submittedBy, userId, userDisplayName, userTitle, managerUserId, managerDisplayName);
 			return ((int)(result.ReturnValue));
 		}
 		
@@ -310,7 +321,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Column(Storage="_description", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		[Column(Storage="_description", DbType="NVarChar(MAX)")]
 		public string description
 		{
 			get
@@ -613,7 +624,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Column(Storage="_userText", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		[Column(Storage="_userText", DbType="NVarChar(MAX)")]
 		public string userText
 		{
 			get
@@ -822,7 +833,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Column(Storage="_description", DbType="NText", UpdateCheck=UpdateCheck.Never)]
+		[Column(Storage="_description", DbType="NVarChar(MAX)")]
 		public string description
 		{
 			get
@@ -1248,205 +1259,6 @@ namespace Apollo.AIM.SNAP.Model
 		}
 	}
 	
-	[Table(Name="dbo.SNAP_Comments")]
-	public partial class SNAP_Comment : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _pkId;
-		
-		private int _workflowId;
-		
-		private byte _commentTypeEnum;
-		
-		private string _commentText;
-		
-		private System.DateTime _createdDate;
-		
-		private EntityRef<SNAP_Workflow> _SNAP_Workflow;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnpkIdChanging(int value);
-    partial void OnpkIdChanged();
-    partial void OnworkflowIdChanging(int value);
-    partial void OnworkflowIdChanged();
-    partial void OncommentTypeEnumChanging(byte value);
-    partial void OncommentTypeEnumChanged();
-    partial void OncommentTextChanging(string value);
-    partial void OncommentTextChanged();
-    partial void OncreatedDateChanging(System.DateTime value);
-    partial void OncreatedDateChanged();
-    #endregion
-		
-		public SNAP_Comment()
-		{
-			this._SNAP_Workflow = default(EntityRef<SNAP_Workflow>);
-			OnCreated();
-		}
-		
-		[Column(Storage="_pkId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int pkId
-		{
-			get
-			{
-				return this._pkId;
-			}
-			set
-			{
-				if ((this._pkId != value))
-				{
-					this.OnpkIdChanging(value);
-					this.SendPropertyChanging();
-					this._pkId = value;
-					this.SendPropertyChanged("pkId");
-					this.OnpkIdChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_workflowId", DbType="Int NOT NULL")]
-		public int workflowId
-		{
-			get
-			{
-				return this._workflowId;
-			}
-			set
-			{
-				if ((this._workflowId != value))
-				{
-					if (this._SNAP_Workflow.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnworkflowIdChanging(value);
-					this.SendPropertyChanging();
-					this._workflowId = value;
-					this.SendPropertyChanged("workflowId");
-					this.OnworkflowIdChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_commentTypeEnum", DbType="TinyInt NOT NULL")]
-		public byte commentTypeEnum
-		{
-			get
-			{
-				return this._commentTypeEnum;
-			}
-			set
-			{
-				if ((this._commentTypeEnum != value))
-				{
-					this.OncommentTypeEnumChanging(value);
-					this.SendPropertyChanging();
-					this._commentTypeEnum = value;
-					this.SendPropertyChanged("commentTypeEnum");
-					this.OncommentTypeEnumChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_commentText", DbType="Text NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
-		public string commentText
-		{
-			get
-			{
-				return this._commentText;
-			}
-			set
-			{
-				if ((this._commentText != value))
-				{
-					this.OncommentTextChanging(value);
-					this.SendPropertyChanging();
-					this._commentText = value;
-					this.SendPropertyChanged("commentText");
-					this.OncommentTextChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_createdDate", DbType="SmallDateTime NOT NULL")]
-		public System.DateTime createdDate
-		{
-			get
-			{
-				return this._createdDate;
-			}
-			set
-			{
-				if ((this._createdDate != value))
-				{
-					this.OncreatedDateChanging(value);
-					this.SendPropertyChanging();
-					this._createdDate = value;
-					this.SendPropertyChanged("createdDate");
-					this.OncreatedDateChanged();
-				}
-			}
-		}
-		
-		[Association(Name="SNAP_Workflow_SNAP_Comment", Storage="_SNAP_Workflow", ThisKey="workflowId", OtherKey="pkId", IsForeignKey=true)]
-		public SNAP_Workflow SNAP_Workflow
-		{
-			get
-			{
-				return this._SNAP_Workflow.Entity;
-			}
-			set
-			{
-				SNAP_Workflow previousValue = this._SNAP_Workflow.Entity;
-				if (((previousValue != value) 
-							|| (this._SNAP_Workflow.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._SNAP_Workflow.Entity = null;
-						previousValue.SNAP_Comments.Remove(this);
-					}
-					this._SNAP_Workflow.Entity = value;
-					if ((value != null))
-					{
-						value.SNAP_Comments.Add(this);
-						this._workflowId = value.pkId;
-					}
-					else
-					{
-						this._workflowId = default(int);
-					}
-					this.SendPropertyChanged("SNAP_Workflow");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
 	[Table(Name="dbo.SNAP_Comments_Type")]
 	public partial class SNAP_Comments_Type : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -1532,6 +1344,205 @@ namespace Apollo.AIM.SNAP.Model
 					this._audience = value;
 					this.SendPropertyChanged("audience");
 					this.OnaudienceChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[Table(Name="dbo.SNAP_Request_Comments")]
+	public partial class SNAP_Request_Comment : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _pkId;
+		
+		private int _requestId;
+		
+		private byte _commentTypeEnum;
+		
+		private string _commentText;
+		
+		private System.DateTime _createdDate;
+		
+		private EntityRef<SNAP_Request> _SNAP_Request;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnpkIdChanging(int value);
+    partial void OnpkIdChanged();
+    partial void OnrequestIdChanging(int value);
+    partial void OnrequestIdChanged();
+    partial void OncommentTypeEnumChanging(byte value);
+    partial void OncommentTypeEnumChanged();
+    partial void OncommentTextChanging(string value);
+    partial void OncommentTextChanged();
+    partial void OncreatedDateChanging(System.DateTime value);
+    partial void OncreatedDateChanged();
+    #endregion
+		
+		public SNAP_Request_Comment()
+		{
+			this._SNAP_Request = default(EntityRef<SNAP_Request>);
+			OnCreated();
+		}
+		
+		[Column(Storage="_pkId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int pkId
+		{
+			get
+			{
+				return this._pkId;
+			}
+			set
+			{
+				if ((this._pkId != value))
+				{
+					this.OnpkIdChanging(value);
+					this.SendPropertyChanging();
+					this._pkId = value;
+					this.SendPropertyChanged("pkId");
+					this.OnpkIdChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_requestId", DbType="Int NOT NULL")]
+		public int requestId
+		{
+			get
+			{
+				return this._requestId;
+			}
+			set
+			{
+				if ((this._requestId != value))
+				{
+					if (this._SNAP_Request.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnrequestIdChanging(value);
+					this.SendPropertyChanging();
+					this._requestId = value;
+					this.SendPropertyChanged("requestId");
+					this.OnrequestIdChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_commentTypeEnum", DbType="TinyInt NOT NULL")]
+		public byte commentTypeEnum
+		{
+			get
+			{
+				return this._commentTypeEnum;
+			}
+			set
+			{
+				if ((this._commentTypeEnum != value))
+				{
+					this.OncommentTypeEnumChanging(value);
+					this.SendPropertyChanging();
+					this._commentTypeEnum = value;
+					this.SendPropertyChanged("commentTypeEnum");
+					this.OncommentTypeEnumChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_commentText", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string commentText
+		{
+			get
+			{
+				return this._commentText;
+			}
+			set
+			{
+				if ((this._commentText != value))
+				{
+					this.OncommentTextChanging(value);
+					this.SendPropertyChanging();
+					this._commentText = value;
+					this.SendPropertyChanged("commentText");
+					this.OncommentTextChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_createdDate", DbType="SmallDateTime NOT NULL")]
+		public System.DateTime createdDate
+		{
+			get
+			{
+				return this._createdDate;
+			}
+			set
+			{
+				if ((this._createdDate != value))
+				{
+					this.OncreatedDateChanging(value);
+					this.SendPropertyChanging();
+					this._createdDate = value;
+					this.SendPropertyChanged("createdDate");
+					this.OncreatedDateChanged();
+				}
+			}
+		}
+		
+		[Association(Name="SNAP_Request_SNAP_Request_Comment", Storage="_SNAP_Request", ThisKey="requestId", OtherKey="pkId", IsForeignKey=true)]
+		public SNAP_Request SNAP_Request
+		{
+			get
+			{
+				return this._SNAP_Request.Entity;
+			}
+			set
+			{
+				SNAP_Request previousValue = this._SNAP_Request.Entity;
+				if (((previousValue != value) 
+							|| (this._SNAP_Request.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._SNAP_Request.Entity = null;
+						previousValue.SNAP_Request_Comments.Remove(this);
+					}
+					this._SNAP_Request.Entity = value;
+					if ((value != null))
+					{
+						value.SNAP_Request_Comments.Add(this);
+						this._requestId = value.pkId;
+					}
+					else
+					{
+						this._requestId = default(int);
+					}
+					this.SendPropertyChanged("SNAP_Request");
 				}
 			}
 		}
@@ -1659,7 +1670,11 @@ namespace Apollo.AIM.SNAP.Model
 		
 		private string _userTitle;
 		
-		private System.Nullable<int> _ticketNumber;
+		private string _managerUserId;
+		
+		private string _managerDisplayName;
+		
+		private string _ticketNumber;
 		
 		private bool _isChanged;
 		
@@ -1668,6 +1683,8 @@ namespace Apollo.AIM.SNAP.Model
 		private System.DateTime _createdDate;
 		
 		private EntitySet<SNAP_Access_User_Text> _SNAP_Access_User_Texts;
+		
+		private EntitySet<SNAP_Request_Comment> _SNAP_Request_Comments;
 		
 		private EntitySet<SNAP_Workflow> _SNAP_Workflows;
 		
@@ -1685,7 +1702,11 @@ namespace Apollo.AIM.SNAP.Model
     partial void OnuserDisplayNameChanged();
     partial void OnuserTitleChanging(string value);
     partial void OnuserTitleChanged();
-    partial void OnticketNumberChanging(System.Nullable<int> value);
+    partial void OnmanagerUserIdChanging(string value);
+    partial void OnmanagerUserIdChanged();
+    partial void OnmanagerDisplayNameChanging(string value);
+    partial void OnmanagerDisplayNameChanged();
+    partial void OnticketNumberChanging(string value);
     partial void OnticketNumberChanged();
     partial void OnisChangedChanging(bool value);
     partial void OnisChangedChanged();
@@ -1698,6 +1719,7 @@ namespace Apollo.AIM.SNAP.Model
 		public SNAP_Request()
 		{
 			this._SNAP_Access_User_Texts = new EntitySet<SNAP_Access_User_Text>(new Action<SNAP_Access_User_Text>(this.attach_SNAP_Access_User_Texts), new Action<SNAP_Access_User_Text>(this.detach_SNAP_Access_User_Texts));
+			this._SNAP_Request_Comments = new EntitySet<SNAP_Request_Comment>(new Action<SNAP_Request_Comment>(this.attach_SNAP_Request_Comments), new Action<SNAP_Request_Comment>(this.detach_SNAP_Request_Comments));
 			this._SNAP_Workflows = new EntitySet<SNAP_Workflow>(new Action<SNAP_Workflow>(this.attach_SNAP_Workflows), new Action<SNAP_Workflow>(this.detach_SNAP_Workflows));
 			OnCreated();
 		}
@@ -1802,8 +1824,48 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Column(Storage="_ticketNumber", DbType="Int")]
-		public System.Nullable<int> ticketNumber
+		[Column(Storage="_managerUserId", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
+		public string managerUserId
+		{
+			get
+			{
+				return this._managerUserId;
+			}
+			set
+			{
+				if ((this._managerUserId != value))
+				{
+					this.OnmanagerUserIdChanging(value);
+					this.SendPropertyChanging();
+					this._managerUserId = value;
+					this.SendPropertyChanged("managerUserId");
+					this.OnmanagerUserIdChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_managerDisplayName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string managerDisplayName
+		{
+			get
+			{
+				return this._managerDisplayName;
+			}
+			set
+			{
+				if ((this._managerDisplayName != value))
+				{
+					this.OnmanagerDisplayNameChanging(value);
+					this.SendPropertyChanging();
+					this._managerDisplayName = value;
+					this.SendPropertyChanged("managerDisplayName");
+					this.OnmanagerDisplayNameChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_ticketNumber", DbType="NVarChar(20)")]
+		public string ticketNumber
 		{
 			get
 			{
@@ -1895,6 +1957,19 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
+		[Association(Name="SNAP_Request_SNAP_Request_Comment", Storage="_SNAP_Request_Comments", ThisKey="pkId", OtherKey="requestId")]
+		public EntitySet<SNAP_Request_Comment> SNAP_Request_Comments
+		{
+			get
+			{
+				return this._SNAP_Request_Comments;
+			}
+			set
+			{
+				this._SNAP_Request_Comments.Assign(value);
+			}
+		}
+		
 		[Association(Name="SNAP_Request_SNAP_Workflow", Storage="_SNAP_Workflows", ThisKey="pkId", OtherKey="requestId")]
 		public EntitySet<SNAP_Workflow> SNAP_Workflows
 		{
@@ -1940,6 +2015,18 @@ namespace Apollo.AIM.SNAP.Model
 			entity.SNAP_Request = null;
 		}
 		
+		private void attach_SNAP_Request_Comments(SNAP_Request_Comment entity)
+		{
+			this.SendPropertyChanging();
+			entity.SNAP_Request = this;
+		}
+		
+		private void detach_SNAP_Request_Comments(SNAP_Request_Comment entity)
+		{
+			this.SendPropertyChanging();
+			entity.SNAP_Request = null;
+		}
+		
 		private void attach_SNAP_Workflows(SNAP_Workflow entity)
 		{
 			this.SendPropertyChanging();
@@ -1965,7 +2052,7 @@ namespace Apollo.AIM.SNAP.Model
 		
 		private int _actorId;
 		
-		private EntitySet<SNAP_Comment> _SNAP_Comments;
+		private EntitySet<SNAP_Workflow_Comment> _SNAP_Workflow_Comments;
 		
 		private EntitySet<SNAP_Workflow_State> _SNAP_Workflow_States;
 		
@@ -1987,7 +2074,7 @@ namespace Apollo.AIM.SNAP.Model
 		
 		public SNAP_Workflow()
 		{
-			this._SNAP_Comments = new EntitySet<SNAP_Comment>(new Action<SNAP_Comment>(this.attach_SNAP_Comments), new Action<SNAP_Comment>(this.detach_SNAP_Comments));
+			this._SNAP_Workflow_Comments = new EntitySet<SNAP_Workflow_Comment>(new Action<SNAP_Workflow_Comment>(this.attach_SNAP_Workflow_Comments), new Action<SNAP_Workflow_Comment>(this.detach_SNAP_Workflow_Comments));
 			this._SNAP_Workflow_States = new EntitySet<SNAP_Workflow_State>(new Action<SNAP_Workflow_State>(this.attach_SNAP_Workflow_States), new Action<SNAP_Workflow_State>(this.detach_SNAP_Workflow_States));
 			this._SNAP_Actor = default(EntityRef<SNAP_Actor>);
 			this._SNAP_Request = default(EntityRef<SNAP_Request>);
@@ -2062,16 +2149,16 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Association(Name="SNAP_Workflow_SNAP_Comment", Storage="_SNAP_Comments", ThisKey="pkId", OtherKey="workflowId")]
-		public EntitySet<SNAP_Comment> SNAP_Comments
+		[Association(Name="SNAP_Workflow_SNAP_Workflow_Comment", Storage="_SNAP_Workflow_Comments", ThisKey="pkId", OtherKey="workflowId")]
+		public EntitySet<SNAP_Workflow_Comment> SNAP_Workflow_Comments
 		{
 			get
 			{
-				return this._SNAP_Comments;
+				return this._SNAP_Workflow_Comments;
 			}
 			set
 			{
-				this._SNAP_Comments.Assign(value);
+				this._SNAP_Workflow_Comments.Assign(value);
 			}
 		}
 		
@@ -2176,13 +2263,13 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		private void attach_SNAP_Comments(SNAP_Comment entity)
+		private void attach_SNAP_Workflow_Comments(SNAP_Workflow_Comment entity)
 		{
 			this.SendPropertyChanging();
 			entity.SNAP_Workflow = this;
 		}
 		
-		private void detach_SNAP_Comments(SNAP_Comment entity)
+		private void detach_SNAP_Workflow_Comments(SNAP_Workflow_Comment entity)
 		{
 			this.SendPropertyChanging();
 			entity.SNAP_Workflow = null;
@@ -2198,6 +2285,205 @@ namespace Apollo.AIM.SNAP.Model
 		{
 			this.SendPropertyChanging();
 			entity.SNAP_Workflow = null;
+		}
+	}
+	
+	[Table(Name="dbo.SNAP_Workflow_Comments")]
+	public partial class SNAP_Workflow_Comment : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _pkId;
+		
+		private int _workflowId;
+		
+		private byte _commentTypeEnum;
+		
+		private string _commentText;
+		
+		private System.DateTime _createdDate;
+		
+		private EntityRef<SNAP_Workflow> _SNAP_Workflow;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnpkIdChanging(int value);
+    partial void OnpkIdChanged();
+    partial void OnworkflowIdChanging(int value);
+    partial void OnworkflowIdChanged();
+    partial void OncommentTypeEnumChanging(byte value);
+    partial void OncommentTypeEnumChanged();
+    partial void OncommentTextChanging(string value);
+    partial void OncommentTextChanged();
+    partial void OncreatedDateChanging(System.DateTime value);
+    partial void OncreatedDateChanged();
+    #endregion
+		
+		public SNAP_Workflow_Comment()
+		{
+			this._SNAP_Workflow = default(EntityRef<SNAP_Workflow>);
+			OnCreated();
+		}
+		
+		[Column(Storage="_pkId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int pkId
+		{
+			get
+			{
+				return this._pkId;
+			}
+			set
+			{
+				if ((this._pkId != value))
+				{
+					this.OnpkIdChanging(value);
+					this.SendPropertyChanging();
+					this._pkId = value;
+					this.SendPropertyChanged("pkId");
+					this.OnpkIdChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_workflowId", DbType="Int NOT NULL")]
+		public int workflowId
+		{
+			get
+			{
+				return this._workflowId;
+			}
+			set
+			{
+				if ((this._workflowId != value))
+				{
+					if (this._SNAP_Workflow.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnworkflowIdChanging(value);
+					this.SendPropertyChanging();
+					this._workflowId = value;
+					this.SendPropertyChanged("workflowId");
+					this.OnworkflowIdChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_commentTypeEnum", DbType="TinyInt NOT NULL")]
+		public byte commentTypeEnum
+		{
+			get
+			{
+				return this._commentTypeEnum;
+			}
+			set
+			{
+				if ((this._commentTypeEnum != value))
+				{
+					this.OncommentTypeEnumChanging(value);
+					this.SendPropertyChanging();
+					this._commentTypeEnum = value;
+					this.SendPropertyChanged("commentTypeEnum");
+					this.OncommentTypeEnumChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_commentText", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string commentText
+		{
+			get
+			{
+				return this._commentText;
+			}
+			set
+			{
+				if ((this._commentText != value))
+				{
+					this.OncommentTextChanging(value);
+					this.SendPropertyChanging();
+					this._commentText = value;
+					this.SendPropertyChanged("commentText");
+					this.OncommentTextChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_createdDate", DbType="SmallDateTime NOT NULL")]
+		public System.DateTime createdDate
+		{
+			get
+			{
+				return this._createdDate;
+			}
+			set
+			{
+				if ((this._createdDate != value))
+				{
+					this.OncreatedDateChanging(value);
+					this.SendPropertyChanging();
+					this._createdDate = value;
+					this.SendPropertyChanged("createdDate");
+					this.OncreatedDateChanged();
+				}
+			}
+		}
+		
+		[Association(Name="SNAP_Workflow_SNAP_Workflow_Comment", Storage="_SNAP_Workflow", ThisKey="workflowId", OtherKey="pkId", IsForeignKey=true)]
+		public SNAP_Workflow SNAP_Workflow
+		{
+			get
+			{
+				return this._SNAP_Workflow.Entity;
+			}
+			set
+			{
+				SNAP_Workflow previousValue = this._SNAP_Workflow.Entity;
+				if (((previousValue != value) 
+							|| (this._SNAP_Workflow.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._SNAP_Workflow.Entity = null;
+						previousValue.SNAP_Workflow_Comments.Remove(this);
+					}
+					this._SNAP_Workflow.Entity = value;
+					if ((value != null))
+					{
+						value.SNAP_Workflow_Comments.Add(this);
+						this._workflowId = value.pkId;
+					}
+					else
+					{
+						this._workflowId = default(int);
+					}
+					this.SendPropertyChanged("SNAP_Workflow");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 	
@@ -2435,15 +2721,19 @@ namespace Apollo.AIM.SNAP.Model
 		
 		private string _userDisplayName;
 		
+		private string _managerUserId;
+		
+		private string _managerDisplayName;
+		
 		private int _fieldId;
 		
 		private string _fieldLabel;
 		
 		private string _fieldText;
 		
-		private System.Nullable<System.DateTime> _modifiedDate;
+		private System.DateTime _modifiedDate;
 		
-		private System.Nullable<int> _ticketNumber;
+		private string _ticketNumber;
 		
 		private bool _isChanged;
 		
@@ -2519,6 +2809,38 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
+		[Column(Storage="_managerUserId", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
+		public string managerUserId
+		{
+			get
+			{
+				return this._managerUserId;
+			}
+			set
+			{
+				if ((this._managerUserId != value))
+				{
+					this._managerUserId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_managerDisplayName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string managerDisplayName
+		{
+			get
+			{
+				return this._managerDisplayName;
+			}
+			set
+			{
+				if ((this._managerDisplayName != value))
+				{
+					this._managerDisplayName = value;
+				}
+			}
+		}
+		
 		[Column(Storage="_fieldId", DbType="Int NOT NULL")]
 		public int fieldId
 		{
@@ -2551,7 +2873,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Column(Storage="_fieldText", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		[Column(Storage="_fieldText", DbType="NVarChar(MAX)")]
 		public string fieldText
 		{
 			get
@@ -2567,8 +2889,8 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Column(Storage="_modifiedDate", DbType="SmallDateTime")]
-		public System.Nullable<System.DateTime> modifiedDate
+		[Column(Storage="_modifiedDate", DbType="SmallDateTime NOT NULL")]
+		public System.DateTime modifiedDate
 		{
 			get
 			{
@@ -2583,8 +2905,8 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Column(Storage="_ticketNumber", DbType="Int")]
-		public System.Nullable<int> ticketNumber
+		[Column(Storage="_ticketNumber", DbType="NVarChar(20)")]
+		public string ticketNumber
 		{
 			get
 			{

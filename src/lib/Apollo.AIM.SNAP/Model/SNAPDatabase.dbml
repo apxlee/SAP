@@ -6,7 +6,7 @@
       <Column Name="pkId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="parentId" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
       <Column Name="label" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="description" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="description" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
       <Column Name="isActive" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Column Name="isRequired" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Association Name="SNAP_Access_Details_Form_SNAP_Access_User_Text" Member="SNAP_Access_User_Texts" ThisKey="pkId" OtherKey="access_details_formId" Type="SNAP_Access_User_Text" />
@@ -23,7 +23,7 @@
       <Column Name="pkId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="requestId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="access_details_formId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="userText" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="userText" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
       <Column Name="modifiedDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
       <Association Name="SNAP_Access_Details_Form_SNAP_Access_User_Text" Member="SNAP_Access_Details_Form" ThisKey="access_details_formId" OtherKey="pkId" Type="SNAP_Access_Details_Form" IsForeignKey="true" />
       <Association Name="SNAP_Request_SNAP_Access_User_Text" Member="SNAP_Request" ThisKey="requestId" OtherKey="pkId" Type="SNAP_Request" IsForeignKey="true" />
@@ -33,7 +33,7 @@
     <Type Name="SNAP_Actor_Group">
       <Column Name="pkId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="groupName" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="description" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="description" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
       <Column Name="actorGroupType" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
       <Column Name="isActive" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Association Name="SNAP_Actor_Group_SNAP_Actor" Member="SNAP_Actors" ThisKey="pkId" OtherKey="actor_groupId" Type="SNAP_Actor" />
@@ -58,21 +58,21 @@
       <Association Name="SNAP_Actor_Group_SNAP_Actor" Member="SNAP_Actor_Group" ThisKey="actor_groupId" OtherKey="pkId" Type="SNAP_Actor_Group" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.SNAP_Comments" Member="SNAP_Comments">
-    <Type Name="SNAP_Comment">
-      <Column Name="pkId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="workflowId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="commentTypeEnum" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
-      <Column Name="commentText" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
-      <Column Name="createdDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
-      <Association Name="SNAP_Workflow_SNAP_Comment" Member="SNAP_Workflow" ThisKey="workflowId" OtherKey="pkId" Type="SNAP_Workflow" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.SNAP_Comments_Type" Member="SNAP_Comments_Types">
     <Type Name="SNAP_Comments_Type">
       <Column Name="pkId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="typeName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="audience" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SNAP_Request_Comments" Member="SNAP_Request_Comments">
+    <Type Name="SNAP_Request_Comment">
+      <Column Name="pkId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="requestId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="commentTypeEnum" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="commentText" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="createdDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+      <Association Name="SNAP_Request_SNAP_Request_Comment" Member="SNAP_Request" ThisKey="requestId" OtherKey="pkId" Type="SNAP_Request" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.SNAP_Request_State_Type" Member="SNAP_Request_State_Types">
@@ -88,11 +88,14 @@
       <Column Name="userId" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
       <Column Name="userDisplayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="userTitle" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="ticketNumber" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="managerUserId" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="managerDisplayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ticketNumber" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
       <Column Name="isChanged" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="statusEnum" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
       <Column Name="createdDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
       <Association Name="SNAP_Request_SNAP_Access_User_Text" Member="SNAP_Access_User_Texts" ThisKey="pkId" OtherKey="requestId" Type="SNAP_Access_User_Text" />
+      <Association Name="SNAP_Request_SNAP_Request_Comment" Member="SNAP_Request_Comments" ThisKey="pkId" OtherKey="requestId" Type="SNAP_Request_Comment" />
       <Association Name="SNAP_Request_SNAP_Workflow" Member="SNAP_Workflows" ThisKey="pkId" OtherKey="requestId" Type="SNAP_Workflow" />
     </Type>
   </Table>
@@ -101,10 +104,20 @@
       <Column Name="pkId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="requestId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="actorId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="SNAP_Workflow_SNAP_Comment" Member="SNAP_Comments" ThisKey="pkId" OtherKey="workflowId" Type="SNAP_Comment" />
+      <Association Name="SNAP_Workflow_SNAP_Workflow_Comment" Member="SNAP_Workflow_Comments" ThisKey="pkId" OtherKey="workflowId" Type="SNAP_Workflow_Comment" />
       <Association Name="SNAP_Workflow_SNAP_Workflow_State" Member="SNAP_Workflow_States" ThisKey="pkId" OtherKey="workflowId" Type="SNAP_Workflow_State" />
       <Association Name="SNAP_Actor_SNAP_Workflow" Member="SNAP_Actor" ThisKey="actorId" OtherKey="pkId" Type="SNAP_Actor" IsForeignKey="true" />
       <Association Name="SNAP_Request_SNAP_Workflow" Member="SNAP_Request" ThisKey="requestId" OtherKey="pkId" Type="SNAP_Request" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SNAP_Workflow_Comments" Member="SNAP_Workflow_Comments">
+    <Type Name="SNAP_Workflow_Comment">
+      <Column Name="pkId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="workflowId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="commentTypeEnum" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="commentText" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="createdDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+      <Association Name="SNAP_Workflow_SNAP_Workflow_Comment" Member="SNAP_Workflow" ThisKey="workflowId" OtherKey="pkId" Type="SNAP_Workflow" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.SNAP_Workflow_State" Member="SNAP_Workflow_States">
@@ -124,6 +137,8 @@
     <Parameter Name="userId" Type="System.String" DbType="NVarChar(10)" />
     <Parameter Name="userDisplayName" Type="System.String" DbType="NVarChar(100)" />
     <Parameter Name="userTitle" Type="System.String" DbType="NVarChar(100)" />
+    <Parameter Name="managerUserId" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="managerDisplayName" Type="System.String" DbType="NVarChar(100)" />
     <Return Type="System.Int32" />
   </Function>
   <Function Name="dbo.usp_open_request_tab" Method="usp_open_request_tab">
@@ -134,11 +149,13 @@
       <Column Name="submittedBy" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
       <Column Name="userId" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
       <Column Name="userDisplayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="managerUserId" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="managerDisplayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="fieldId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="fieldLabel" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="fieldText" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
-      <Column Name="modifiedDate" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
-      <Column Name="ticketNumber" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="fieldText" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="modifiedDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ticketNumber" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
       <Column Name="isChanged" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="statusEnum" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
       <Column Name="createdDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />

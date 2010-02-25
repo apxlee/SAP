@@ -25,7 +25,8 @@ namespace Apollo.AIM.SNAP.Web.Controls
             {
                 this.UserName = _requestFormData[0].userDisplayName;
                 this.UserLoginId = _requestFormData[0].userId;
-                // display manager name when it is ready
+                this.ManagerName = _requestFormData[0].managerDisplayName;
+                this.ManagerLoginId = _requestFormData[0].managerUserId;
             }
 
             RequestFormSection requestFormSection=null;
@@ -102,7 +103,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
                     using (var db = new SNAPDatabaseDataContext())
                     {
-                        db.usp_insert_request_xml(xmlInput, browseUser, UserLoginId, UserName, detail.Title);
+                        db.usp_insert_request_xml(xmlInput, browseUser, UserLoginId, UserName, detail.Title, ManagerLoginId, ManagerName);
                     }
 
                 }
@@ -191,8 +192,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
                 // To-do: Should use CAP login user object here
                 var x = Request.ServerVariables["AUTH_USER"].Split('\\')[1]; // remove domain name
 
-                return "clschwim";
-                //return x;
+                return x;
             }
         }
     }
