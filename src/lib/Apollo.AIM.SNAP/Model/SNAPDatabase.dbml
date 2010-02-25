@@ -24,7 +24,7 @@
       <Column Name="requestId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="access_details_formId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="userText" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="modifiedDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+      <Column Name="modifiedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="SNAP_Access_Details_Form_SNAP_Access_User_Text" Member="SNAP_Access_Details_Form" ThisKey="access_details_formId" OtherKey="pkId" Type="SNAP_Access_Details_Form" IsForeignKey="true" />
       <Association Name="SNAP_Request_SNAP_Access_User_Text" Member="SNAP_Request" ThisKey="requestId" OtherKey="pkId" Type="SNAP_Request" IsForeignKey="true" />
     </Type>
@@ -149,16 +149,19 @@
       <Column Name="submittedBy" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
       <Column Name="userId" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
       <Column Name="userDisplayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="userTitle" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="managerUserId" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
       <Column Name="managerDisplayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="fieldId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="fieldLabel" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Column Name="fieldText" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="modifiedDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+      <Column Name="modifiedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="ticketNumber" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
       <Column Name="isChanged" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="statusEnum" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
       <Column Name="createdDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+      <Column Name="commentTypeEnum" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="commentText" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
     </ElementType>
   </Function>
 </Database>

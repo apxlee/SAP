@@ -38,12 +38,14 @@ namespace Apollo.AIM.SNAP.Model
 
                 if (requestDataItems.Count() > 1)  // fields have multiple entries due to modification
                 {
-                    var t = (DateTime)requestDataItems.Max(x => x.modifiedDate);
-                    //requestItem = requestDataItems.Single(x => x.modifiedDate == t);
+                    var t = (DateTime) requestDataItems.Max(x => x.modifiedDate);
+                    requestItem = requestDataItems.Single(x => x.modifiedDate == t);
+                    /*
                     var temp = (from i in requestDataItems
                                where i.modifiedDate == t && i.fieldId == formId
                                select i).ToList();
                     requestItem = temp[0];
+                     */
                 }
                 else
                 {

@@ -644,7 +644,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Column(Storage="_modifiedDate", DbType="SmallDateTime NOT NULL")]
+		[Column(Storage="_modifiedDate", DbType="DateTime NOT NULL")]
 		public System.DateTime modifiedDate
 		{
 			get
@@ -2721,6 +2721,8 @@ namespace Apollo.AIM.SNAP.Model
 		
 		private string _userDisplayName;
 		
+		private string _userTitle;
+		
 		private string _managerUserId;
 		
 		private string _managerDisplayName;
@@ -2740,6 +2742,10 @@ namespace Apollo.AIM.SNAP.Model
 		private byte _statusEnum;
 		
 		private System.DateTime _createdDate;
+		
+		private System.Nullable<byte> _commentTypeEnum;
+		
+		private string _commentText;
 		
 		public usp_open_request_tabResult()
 		{
@@ -2805,6 +2811,22 @@ namespace Apollo.AIM.SNAP.Model
 				if ((this._userDisplayName != value))
 				{
 					this._userDisplayName = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_userTitle", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string userTitle
+		{
+			get
+			{
+				return this._userTitle;
+			}
+			set
+			{
+				if ((this._userTitle != value))
+				{
+					this._userTitle = value;
 				}
 			}
 		}
@@ -2889,7 +2911,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Column(Storage="_modifiedDate", DbType="SmallDateTime NOT NULL")]
+		[Column(Storage="_modifiedDate", DbType="DateTime NOT NULL")]
 		public System.DateTime modifiedDate
 		{
 			get
@@ -2965,6 +2987,38 @@ namespace Apollo.AIM.SNAP.Model
 				if ((this._createdDate != value))
 				{
 					this._createdDate = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_commentTypeEnum", DbType="TinyInt")]
+		public System.Nullable<byte> commentTypeEnum
+		{
+			get
+			{
+				return this._commentTypeEnum;
+			}
+			set
+			{
+				if ((this._commentTypeEnum != value))
+				{
+					this._commentTypeEnum = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_commentText", DbType="NVarChar(MAX)")]
+		public string commentText
+		{
+			get
+			{
+				return this._commentText;
+			}
+			set
+			{
+				if ((this._commentText != value))
+				{
+					this._commentText = value;
 				}
 			}
 		}
