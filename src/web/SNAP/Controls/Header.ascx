@@ -4,7 +4,9 @@
 		<div class="csm_grid_4 csm_prefix_2 csm_alpha csm_omega logo_itservices"></div>
 		<div class="csm_grid_6 csm_prefix_3 csm_alpha csm_omega logo_oospa"></div>
 		<div class="csm_clear">&nbsp;</div>
-		<asp:PlaceHolder ID="_ribbonContainer" runat="server"></asp:PlaceHolder>
+		<asp:Panel ID="_ribbonContainerOuter" runat="server">
+			<asp:PlaceHolder ID="_ribbonContainer" runat="server"></asp:PlaceHolder>
+		</asp:Panel>
 	</div>
 </div>
 <div class="csm_clear">&nbsp;</div>
