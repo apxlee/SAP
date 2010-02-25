@@ -59,13 +59,22 @@ namespace Apollo.AIM.SNAP.Web {
         protected global::System.Web.UI.WebControls.Panel _contentContainer;
         
         /// <summary>
-        /// _csmMultiView control.
+        /// _masterMultiView control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.MultiView _csmMultiView;
+        protected global::System.Web.UI.WebControls.MultiView _masterMultiView;
+        
+        /// <summary>
+        /// _loginFormView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.View _loginFormView;
         
         /// <summary>
         /// _requestFormView control.
@@ -122,13 +131,13 @@ namespace Apollo.AIM.SNAP.Web {
         protected global::System.Web.UI.WebControls.View _accessTeamView;
         
         /// <summary>
-        /// _accessTeamViewControls control.
+        /// _accessTeamViewControl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Apollo.AIM.SNAP.Web.Controls.AccessTeamView _accessTeamViewControls;
+        protected global::Apollo.AIM.SNAP.Web.Controls.AccessTeamView _accessTeamViewControl;
         
         /// <summary>
         /// _searchFormView control.
@@ -138,6 +147,24 @@ namespace Apollo.AIM.SNAP.Web {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.View _searchFormView;
+        
+        /// <summary>
+        /// _searchControl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Apollo.AIM.SNAP.Web.Controls.SearchView _searchControl;
+        
+        /// <summary>
+        /// _supportView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.View _supportView;
         
         /// <summary>
         /// _footerControl control.

@@ -6,6 +6,7 @@
 <%@ Register src="~/Controls/UserView.ascx" tagname="UserView" tagprefix="uc" %>
 <%@ Register src="~/Controls/ApprovingManagerView.ascx" tagname="ApprovingManagerView" tagprefix="uc" %>
 <%@ Register src="~/Controls/AccessTeamView.ascx" tagname="AccessTeamView" tagprefix="uc" %>
+<%@ Register src="~/Controls/SearchView.ascx" tagname="SearchView" tagprefix="uc" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -29,27 +30,34 @@
 		<div class="csm_grid_14 csm_prefix_1 csm_suffix_1">
 			
 			<!-- BEGIN MULTIVIEW CONTROL -->
-			<asp:MultiView ID="_csmMultiView" runat="server" ActiveViewIndex="1" >
+			<asp:MultiView ID="_masterMultiView" runat="server" ActiveViewIndex="0">
 
-				<!-- TODO: ADD LOGIN FORM VIEW -->
+				<asp:View ID="_loginFormView" runat="server"><!-- 0 -->
+					<div class="csm_container_center_700"><h1>Login Form</h1></div>
+				</asp:View>
 
-				<asp:View ID="_requestFormView" runat="server">
+				<asp:View ID="_requestFormView" runat="server"><!-- 1 -->
+					<div class="csm_container_center_700"><h1>Request Form</h1></div>
 				</asp:View>
 				
-				<asp:View ID="_userView" runat="server">
+				<asp:View ID="_userView" runat="server"><!-- 2 -->
 					<uc:UserView id="_userViewControl" runat="server" />
 				</asp:View>
 
-				<asp:View ID="_approvingManagerView" runat="server">
+				<asp:View ID="_approvingManagerView" runat="server"><!-- 3 -->
 					<uc:ApprovingManagerView id="_approvingManagerViewControl" runat="server" />
 				</asp:View>
 				
-				<asp:View ID="_accessTeamView" runat="server">
-					<uc:AccessTeamView id="_accessTeamViewControls" runat="server" />
+				<asp:View ID="_accessTeamView" runat="server"><!-- 4 -->
+					<uc:AccessTeamView id="_accessTeamViewControl" runat="server" />
 				</asp:View>
 				
-				<asp:View ID="_searchFormView" runat="server">
-					<p>TODO: SEARCH FORM VIEW</p>
+				<asp:View ID="_searchFormView" runat="server"><!-- 5 -->
+					<uc:SearchView id="_searchControl" runat="server" />
+				</asp:View>
+				
+				<asp:View ID="_supportView" runat="server"><!-- 6 -->
+					<div class="csm_container_center_700"><h1>Support</h1></div>
 				</asp:View>
 				
 			</asp:MultiView>
