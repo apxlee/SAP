@@ -114,7 +114,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
                 if (items.Count() > 1)  // fields have multiple entries due to modification
                 {
-                    var t = (DateTime) items.Max(x => x.modifiedDate); //!!! modifiation date not create date
+                    var t = (DateTime) items.Max(x => x.modifiedDate); 
                     var item = items.Single(x => x.modifiedDate == t);
                     return item.fieldText;
                 }

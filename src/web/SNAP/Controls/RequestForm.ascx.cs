@@ -15,21 +15,22 @@ namespace Apollo.AIM.SNAP.Web.Controls
 {
     public partial class RequestForm : System.Web.UI.UserControl
     {
-        private List<usp_open_request_tabResult> _requestData;
+        private List<usp_open_request_tabResult> _requestFormData;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            _requestData = loadRequestData();
+            _requestFormData = loadRequestFormData();
 
             if (!brandNewRequest())
             {
-                 //_requestData[0].userDisplayName
-                // display user name, mgr name ...etc
+                this.UserName = _requestFormData[0].userDisplayName;
+                this.UserLoginId = _requestFormData[0].userId;
+                // display manager name when it is ready
             }
 
             RequestFormSection requestFormSection=null;
 
-            var data = loadRequestFormData();
+            var data = loadRequestFormLabelDescriptionData();
 
             foreach (var access in data)
             {
@@ -38,7 +39,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
                 requestFormSection.ParentID = access.pkId.ToString();
 
                 if (!brandNewRequest())
-                    requestFormSection.RequestData = _requestData;
+                    requestFormSection.RequestData = _requestFormData;
 
                 Label outerLabel;
                 outerLabel = (Label)WebUtilities.FindControlRecursive(requestFormSection, "_outerLabel");
@@ -62,13 +63,14 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
         public string UserName
         {
-            
             get { return this._requestorId.Text; }
+            set { _requestorId.Text = value;  }
         }
 
         public string UserLoginId
         {
             get { return this._requestorLoginId.Text; }
+            set { _requestorLoginId.Text = value; }
         }
 
         public string ManagerName
@@ -77,22 +79,24 @@ namespace Apollo.AIM.SNAP.Web.Controls
             {
                 return this._managerName.Text;
             }
+            set { _managerName.Text = value; }
         }
 
         public string ManagerLoginId
         {
             get { return this._managerLoginId.Text; }
+            set { _managerLoginId.Text = value; }
         }
 
         protected void _submitForm_Click(object sender, EventArgs e)
         {
             try
             {
-                List<RequestData> newRequestList = RequestFormRequestData(_requestForm);
+                List<RequestData> newRequestDataList = RequestFormRequestData(_requestForm);
 
                 if (brandNewRequest())
                 {
-                    var xmlInput = RequestData.ToXml(newRequestList);
+                    var xmlInput = RequestData.ToXml(newRequestDataList);
 
                     ADUserDetail detail = Apollo.AIM.SNAP.CA.DirectoryServices.GetUserByLoginName(UserLoginId);
 
@@ -104,7 +108,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
                 }
                 else
                 {
-                    RequestData.UpdateRequestData(newRequestList, _requestData);
+                    RequestData.UpdateRequestData(newRequestDataList, _requestFormData);
                 }
 
             }
@@ -118,13 +122,13 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
         private List<RequestData> RequestFormRequestData(Control controlRoot)
         {
-            List<RequestData> newRequestList = new List<RequestData>();
+            List<RequestData> newRequestDataList = new List<RequestData>();
 
             if (!controlRoot.HasControls()) { return null; }
 
             foreach (Control childControl in controlRoot.Controls)
             {
-                if (childControl.HasControls()) { newRequestList.AddRange(RequestFormRequestData(childControl)); }
+                if (childControl.HasControls()) { newRequestDataList.AddRange(RequestFormRequestData(childControl)); }
 
                 if (childControl is TextBox)
                 {
@@ -132,13 +136,13 @@ namespace Apollo.AIM.SNAP.Web.Controls
                     RequestData newRequest = new RequestData();
                     newRequest.FormId = textControl.ID;
                     newRequest.UserText = textControl.Text;
-                    newRequestList.Add(newRequest);
+                    newRequestDataList.Add(newRequest);
                 }
             }
-            return newRequestList;
+            return newRequestDataList;
         }
 
-        private IEnumerable<SNAP_Access_Details_Form> loadRequestFormData()
+        private IEnumerable<SNAP_Access_Details_Form> loadRequestFormLabelDescriptionData()
         {
             var db = new SNAPDatabaseDataContext();
             var formDetails = from form in db.SNAP_Access_Details_Forms
@@ -147,7 +151,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
             return formDetails;
         }
 
-        private List<usp_open_request_tabResult> loadRequestData()
+        private List<usp_open_request_tabResult> loadRequestFormData()
         {
             var requestId = Request.QueryString["RequestId"];
             int reqId = 0;
@@ -165,6 +169,8 @@ namespace Apollo.AIM.SNAP.Web.Controls
             {
                 var db = new SNAPDatabaseDataContext();
                 var formData = db.usp_open_request_tab(browseUser, reqId);
+                // formData contain history of all data fields, we are only interested in the latest
+
                 return formData.ToList();
             }
             else
@@ -175,7 +181,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
         private bool brandNewRequest()
         {
-            return _requestData == null ||_requestData.Count() == 0;
+            return _requestFormData == null ||_requestFormData.Count() == 0;
         }
 
         private string browseUser

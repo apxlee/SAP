@@ -15,48 +15,6 @@ namespace Apollo.AIM.SNAP.Test
         {
         }
 
-        [Test]public void ShoudMax()
-        {
-            var orgData = new List<usp_open_request_tabResult>()
-                              {
-                                  new usp_open_request_tabResult()
-                                      {
-                                          fieldId = 1,
-                                          fieldText = "Test 1",
-                                          createdDate = DateTime.Now.AddHours(-1),
-                                      },
-                                  new usp_open_request_tabResult()
-                                      {
-                                          fieldId = 2,
-                                          fieldText = "Test 2"
-                                      },
-                                  new usp_open_request_tabResult()
-                                     {
-                                          fieldId = 1,
-                                          fieldText = "Test 111",
-                                          createdDate = DateTime.Now,
-                                      }
-
-                              };
-            /*
-            var d = orgData.Single(x => x.fieldId == 1);
-            Console.WriteLine(d.fieldText);
-            */
-
-            var data = from x in orgData
-                       where x.fieldId == 1
-                       select x;
-            Console.WriteLine(data.Count());
-
-            DateTime t = data.Max(x => x.createdDate);
-
-            var finalData = data.Single(x => x.createdDate == t);
-            Console.WriteLine(finalData.fieldText);
-            
-
-
-            
-        }
         [Test]
         public void ShouldFindNoDifferent()
         {
@@ -80,7 +38,7 @@ namespace Apollo.AIM.SNAP.Test
                                       }
                               };
 
-            Assert.IsTrue(RequestData.UpdateRequestList(newData, orgData).Count == 0);
+            Assert.IsTrue(RequestData.UpdatedRequestDataList(newData, orgData).Count == 0);
         }
 
         [Test]
@@ -105,12 +63,96 @@ namespace Apollo.AIM.SNAP.Test
                                           fieldText = "Test 222"
                                       }
                               };
-            var result = RequestData.UpdateRequestList(newData, orgData);
+            var result = RequestData.UpdatedRequestDataList(newData, orgData);
             Assert.IsTrue(result.Count == 1);
             Assert.IsTrue(result[0].FormId == "2");
-            Assert.IsTrue(result[0].UserText == "Test 222");
+            Assert.IsTrue(result[0].UserText == "Test 2");
 
         }
+
+        [Test]
+        public void ShouldFindNoDifferentWithMultipleModDate()
+        {
+            var newData = new List<RequestData>()
+                              {
+                                    new RequestData() {FormId = "1", UserText = "Test 1"},
+                                    new RequestData() {FormId = "2", UserText = "Test 2"},
+                              };
+
+            var orgData = new List<usp_open_request_tabResult>()
+                              {
+                                  new usp_open_request_tabResult()
+                                      {
+                                          fieldId = 1,
+                                          fieldText = "Test 1",
+                                          modifiedDate = DateTime.Now
+                                      },
+                                  new usp_open_request_tabResult()
+                                     {
+                                          fieldId = 2,
+                                          fieldText = "Test 221",
+                                          modifiedDate = DateTime.Now.AddHours(-2)
+                                      },
+                                   new usp_open_request_tabResult()
+                                     {
+                                          fieldId = 2,
+                                          fieldText = "Test 222",
+                                          modifiedDate = DateTime.Now.AddHours(-1)
+                                      },
+                                    new usp_open_request_tabResult()
+                                     {
+                                          fieldId = 2,
+                                          fieldText = "Test 2",
+                                          modifiedDate = DateTime.Now
+                                      }
+                              };
+            var result = RequestData.UpdatedRequestDataList(newData, orgData);
+            Assert.IsTrue(result.Count == 0);
+        }
+
+        [Test]
+        public void ShouldFindDifferentWithMultipleModDate()
+        {
+            var newData = new List<RequestData>()
+                              {
+                                    new RequestData() {FormId = "1", UserText = "Test 1"},
+                                    new RequestData() {FormId = "2", UserText = "Test 2"},
+                              };
+
+            var orgData = new List<usp_open_request_tabResult>()
+                              {
+                                  new usp_open_request_tabResult()
+                                      {
+                                          fieldId = 1,
+                                          fieldText = "Test 1",
+                                          modifiedDate = DateTime.Now
+                                      },
+                                  new usp_open_request_tabResult()
+                                     {
+                                          fieldId = 2,
+                                          fieldText = "Test 221",
+                                          modifiedDate = DateTime.Now.AddHours(-2)
+                                      },
+                                   new usp_open_request_tabResult()
+                                     {
+                                          fieldId = 2,
+                                          fieldText = "Test 2",
+                                          modifiedDate = DateTime.Now.AddHours(-1)
+                                      },
+                                    new usp_open_request_tabResult()
+                                     {
+                                          fieldId = 2,
+                                          fieldText = "Test 223",
+                                          modifiedDate = DateTime.Now
+                                      }
+                              };
+            var result = RequestData.UpdatedRequestDataList(newData, orgData);
+            Assert.IsTrue(result.Count == 1);
+            Assert.IsTrue(result[0].FormId == "2");
+            Assert.IsTrue(result[0].UserText == "Test 2");
+
+        }
+
 
     }
 }

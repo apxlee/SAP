@@ -22,13 +22,32 @@ namespace Apollo.AIM.SNAP.Model
             return root;
         }
 
-        public static List<RequestData> UpdateRequestList(List<RequestData> newRequestList, List<usp_open_request_tabResult> requestData)
+        public static List<RequestData> UpdatedRequestDataList(List<RequestData> newRequestList, List<usp_open_request_tabResult> requestData)
         {
             var result = new List<RequestData>();
+            usp_open_request_tabResult requestItem = null;
+
             foreach (var newData in newRequestList)
             {
-                var data = requestData.Single(x => x.fieldId == System.Convert.ToInt16(newData.FormId));
-                if (data.fieldText != newData.UserText)
+                //var data = requestData.Single(x => x.fieldId == System.Convert.ToInt16(newData.FormId));
+
+                var formId = Convert.ToInt16(newData.FormId);
+                var requestDataItems = (from r in requestData
+                                    where r.fieldId == formId
+                                    select r).ToList();
+
+                if (requestDataItems.Count() > 1)  // fields have multiple entries due to modification
+                {
+                    var t = (DateTime)requestDataItems.Max(x => x.modifiedDate);
+                    requestItem = requestDataItems.Single(x => x.modifiedDate == t);
+                }
+                else
+                {
+                    requestItem = requestDataItems[0];
+                }
+
+
+                if (requestItem.fieldText != newData.UserText)
                 {
                     result.Add(new RequestData() { FormId = newData.FormId, UserText = newData.UserText});
                 }
@@ -38,7 +57,7 @@ namespace Apollo.AIM.SNAP.Model
 
         public static void UpdateRequestData(List<RequestData> newRequestList, List<usp_open_request_tabResult> requestData)
         {
-            var result = UpdateRequestList(newRequestList, requestData);
+            var result = UpdatedRequestDataList(newRequestList, requestData);
             if (result.Count > 0)
             {
                 using (var db = new SNAPDatabaseDataContext())
