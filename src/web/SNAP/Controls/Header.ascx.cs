@@ -20,14 +20,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			PendingApprovals = 10;
 			PendingAccessTeam = 20;
 			
-			if (!IsPostBack)
-			{
-				BuildRibbon("login");
-			}
-			else
-			{
-				BuildRibbon("");
-			}
+			BuildRibbon();
 		}
 
 		private PlaceHolder WrapControl(WebControl control, string element, string elementID)
@@ -47,10 +40,9 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			return placeHolder;
 		}		
 		
-		private void BuildRibbon(string CurrentPageName)
+		private void BuildRibbon()
 		{
-			//Panel ribbonPanel = new Panel();
-			_ribbonContainerOuter.CssClass = CurrentPageName;
+			//_ribbonContainerOuter.CssClass = CurrentPageName;
 			
 			// TODO: based on role, build list of linkbuttons
 			// TODO: build from xml?  make List of objects (link buttons?) that have url pre-populated?
@@ -63,11 +55,11 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			Literal openElements = new Literal();
 			openElements.Text = string.Format("<div id='{0}' style='width:{1}px;'><ul id='{2}'>"
 				, "csm_ribbon_container_outer", "763", "csm_ribbon_container_inner");
+			// TODO: dynamically figure out proper width based on number of links
 
 			Literal closeElements = new Literal();
 			closeElements.Text = "</ul></div>";
 
-			//ribbonPanel.Controls.Add(openElements);
 			_ribbonContainerOuter.Controls.Add(openElements);
 
 			foreach (string link_name in linkButtons)
@@ -93,14 +85,10 @@ namespace Apollo.AIM.SNAP.Web.Controls
 						break;
 				}
 
-				//ribbonPanel.Controls.Add(WrapControl(link, "li", link.CommandName));
 				_ribbonContainerOuter.Controls.Add(WrapControl(link, "li", link.CommandName));
 			}
 
-			//ribbonPanel.Controls.Add(closeElements);
 			_ribbonContainerOuter.Controls.Add(closeElements);		
-			
-			//_ribbonContainer.Controls.Add(ribbonPanel);
 		}
 		
         protected void RibbonLink_Click(object sender, CommandEventArgs e)
