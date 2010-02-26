@@ -115,6 +115,7 @@
     <Content Include="Controls\RequestFormField.ascx" />
     <Content Include="Controls\RequestFormSection.ascx" />
     <Content Include="Controls\RequestTrackingPanel.ascx" />
+    <Content Include="Controls\SearchView.ascx" />
     <Content Include="Controls\UserManager.ascx" />
     <Content Include="Controls\UserView.ascx" />
     <Content Include="Controls\WorkflowApprover.ascx" />
@@ -273,6 +274,13 @@
     </Compile>
     <Compile Include="Controls\RequestTrackingPanel.ascx.designer.cs">
       <DependentUpon>RequestTrackingPanel.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SearchView.ascx.cs">
+      <DependentUpon>SearchView.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\SearchView.ascx.designer.cs">
+      <DependentUpon>SearchView.ascx</DependentUpon>
     </Compile>
     <Compile Include="Controls\UserManager.ascx.cs">
       <DependentUpon>UserManager.ascx</DependentUpon>
