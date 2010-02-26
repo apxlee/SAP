@@ -7,6 +7,7 @@
 <%@ Register src="~/Controls/ApprovingManagerView.ascx" tagname="ApprovingManagerView" tagprefix="uc" %>
 <%@ Register src="~/Controls/AccessTeamView.ascx" tagname="AccessTeamView" tagprefix="uc" %>
 <%@ Register src="~/Controls/SearchView.ascx" tagname="SearchView" tagprefix="uc" %>
+<%@ Register src="~/Controls/RequestForm.ascx" tagname="RequestForm" tagprefix="uc" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -38,6 +39,9 @@
 
 				<asp:View ID="_requestFormView" runat="server"><!-- 1 -->
 					<div class="csm_container_center_700"><h1>Request Form</h1></div>
+					<script src="Scripts/jquery-ui-1.7.2.custom.min.js" type="text/javascript"></script>
+					<uc:RequestForm id='_requestFormControl' runat="server" />
+					<script type="text/javascript">   $(document).ready(DocReady);  </script>
 				</asp:View>
 				
 				<asp:View ID="_userView" runat="server"><!-- 2 -->
