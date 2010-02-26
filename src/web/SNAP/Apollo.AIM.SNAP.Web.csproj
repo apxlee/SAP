@@ -146,6 +146,7 @@
     <Content Include="includes\ucHeader.ascx" />
     <Content Include="includes\ucUserDetails.ascx" />
     <Content Include="Index.aspx" />
+    <Content Include="scripts\jquery-1.4.2.min.js" />
     <Content Include="scripts\MasterRequestBlade.js" />
     <Content Include="scripts\jquery-ui-1.7.2.custom.min.js" />
     <Content Include="scripts\SNAPDefaultJQuery.js" />
