@@ -215,6 +215,20 @@ namespace Apollo.AIM.SNAP.Model
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId, requestId);
 			return ((ISingleResult<usp_open_request_tabResult>)(result.ReturnValue));
 		}
+		
+		[Function(Name="dbo.usp_open_user_view_details")]
+		public ISingleResult<usp_open_user_view_detailsResult> usp_open_user_view_details([Parameter(DbType="NVarChar(10)")] string userId)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId);
+			return ((ISingleResult<usp_open_user_view_detailsResult>)(result.ReturnValue));
+		}
+		
+		[Function(Name="dbo.usp_open_user_view_status")]
+		public ISingleResult<usp_open_user_view_statusResult> usp_open_user_view_status([Parameter(DbType="NVarChar(10)")] string userId)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId);
+			return ((ISingleResult<usp_open_user_view_statusResult>)(result.ReturnValue));
+		}
 	}
 	
 	[Table(Name="dbo.SNAP_Access_Details_Form")]
@@ -3019,6 +3033,490 @@ namespace Apollo.AIM.SNAP.Model
 				if ((this._commentText != value))
 				{
 					this._commentText = value;
+				}
+			}
+		}
+	}
+	
+	public partial class usp_open_user_view_detailsResult
+	{
+		
+		private int _requestId;
+		
+		private string _submittedBy;
+		
+		private string _userId;
+		
+		private string _userDisplayName;
+		
+		private string _userTitle;
+		
+		private string _managerUserId;
+		
+		private string _managerDisplayName;
+		
+		private int _fieldId;
+		
+		private string _fieldLabel;
+		
+		private string _fieldText;
+		
+		private string _ticketNumber;
+		
+		private bool _isChanged;
+		
+		private byte _statusEnum;
+		
+		private System.DateTime _createdDate;
+		
+		private System.Nullable<byte> _commentTypeEnum;
+		
+		private string _commentText;
+		
+		public usp_open_user_view_detailsResult()
+		{
+		}
+		
+		[Column(Storage="_requestId", DbType="Int NOT NULL")]
+		public int requestId
+		{
+			get
+			{
+				return this._requestId;
+			}
+			set
+			{
+				if ((this._requestId != value))
+				{
+					this._requestId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_submittedBy", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
+		public string submittedBy
+		{
+			get
+			{
+				return this._submittedBy;
+			}
+			set
+			{
+				if ((this._submittedBy != value))
+				{
+					this._submittedBy = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_userId", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
+		public string userId
+		{
+			get
+			{
+				return this._userId;
+			}
+			set
+			{
+				if ((this._userId != value))
+				{
+					this._userId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_userDisplayName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string userDisplayName
+		{
+			get
+			{
+				return this._userDisplayName;
+			}
+			set
+			{
+				if ((this._userDisplayName != value))
+				{
+					this._userDisplayName = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_userTitle", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string userTitle
+		{
+			get
+			{
+				return this._userTitle;
+			}
+			set
+			{
+				if ((this._userTitle != value))
+				{
+					this._userTitle = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_managerUserId", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
+		public string managerUserId
+		{
+			get
+			{
+				return this._managerUserId;
+			}
+			set
+			{
+				if ((this._managerUserId != value))
+				{
+					this._managerUserId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_managerDisplayName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string managerDisplayName
+		{
+			get
+			{
+				return this._managerDisplayName;
+			}
+			set
+			{
+				if ((this._managerDisplayName != value))
+				{
+					this._managerDisplayName = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_fieldId", DbType="Int NOT NULL")]
+		public int fieldId
+		{
+			get
+			{
+				return this._fieldId;
+			}
+			set
+			{
+				if ((this._fieldId != value))
+				{
+					this._fieldId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_fieldLabel", DbType="NVarChar(50)")]
+		public string fieldLabel
+		{
+			get
+			{
+				return this._fieldLabel;
+			}
+			set
+			{
+				if ((this._fieldLabel != value))
+				{
+					this._fieldLabel = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_fieldText", DbType="NVarChar(MAX)")]
+		public string fieldText
+		{
+			get
+			{
+				return this._fieldText;
+			}
+			set
+			{
+				if ((this._fieldText != value))
+				{
+					this._fieldText = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_ticketNumber", DbType="NVarChar(20)")]
+		public string ticketNumber
+		{
+			get
+			{
+				return this._ticketNumber;
+			}
+			set
+			{
+				if ((this._ticketNumber != value))
+				{
+					this._ticketNumber = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_isChanged", DbType="Bit NOT NULL")]
+		public bool isChanged
+		{
+			get
+			{
+				return this._isChanged;
+			}
+			set
+			{
+				if ((this._isChanged != value))
+				{
+					this._isChanged = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_statusEnum", DbType="TinyInt NOT NULL")]
+		public byte statusEnum
+		{
+			get
+			{
+				return this._statusEnum;
+			}
+			set
+			{
+				if ((this._statusEnum != value))
+				{
+					this._statusEnum = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_createdDate", DbType="SmallDateTime NOT NULL")]
+		public System.DateTime createdDate
+		{
+			get
+			{
+				return this._createdDate;
+			}
+			set
+			{
+				if ((this._createdDate != value))
+				{
+					this._createdDate = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_commentTypeEnum", DbType="TinyInt")]
+		public System.Nullable<byte> commentTypeEnum
+		{
+			get
+			{
+				return this._commentTypeEnum;
+			}
+			set
+			{
+				if ((this._commentTypeEnum != value))
+				{
+					this._commentTypeEnum = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_commentText", DbType="NVarChar(MAX)")]
+		public string commentText
+		{
+			get
+			{
+				return this._commentText;
+			}
+			set
+			{
+				if ((this._commentText != value))
+				{
+					this._commentText = value;
+				}
+			}
+		}
+	}
+	
+	public partial class usp_open_user_view_statusResult
+	{
+		
+		private int _requestId;
+		
+		private int _workflowId;
+		
+		private string _userId;
+		
+		private string _displayName;
+		
+		private byte _workflowStatusEnum;
+		
+		private System.Nullable<System.DateTime> _notifyDate;
+		
+		private System.Nullable<System.DateTime> _dueDate;
+		
+		private System.Nullable<System.DateTime> _completedDate;
+		
+		private string _commentText;
+		
+		private System.Nullable<byte> _commentTypeEnum;
+		
+		public usp_open_user_view_statusResult()
+		{
+		}
+		
+		[Column(Storage="_requestId", DbType="Int NOT NULL")]
+		public int requestId
+		{
+			get
+			{
+				return this._requestId;
+			}
+			set
+			{
+				if ((this._requestId != value))
+				{
+					this._requestId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_workflowId", DbType="Int NOT NULL")]
+		public int workflowId
+		{
+			get
+			{
+				return this._workflowId;
+			}
+			set
+			{
+				if ((this._workflowId != value))
+				{
+					this._workflowId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_userId", DbType="NVarChar(10)")]
+		public string userId
+		{
+			get
+			{
+				return this._userId;
+			}
+			set
+			{
+				if ((this._userId != value))
+				{
+					this._userId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_displayName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string displayName
+		{
+			get
+			{
+				return this._displayName;
+			}
+			set
+			{
+				if ((this._displayName != value))
+				{
+					this._displayName = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_workflowStatusEnum", DbType="TinyInt NOT NULL")]
+		public byte workflowStatusEnum
+		{
+			get
+			{
+				return this._workflowStatusEnum;
+			}
+			set
+			{
+				if ((this._workflowStatusEnum != value))
+				{
+					this._workflowStatusEnum = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_notifyDate", DbType="SmallDateTime")]
+		public System.Nullable<System.DateTime> notifyDate
+		{
+			get
+			{
+				return this._notifyDate;
+			}
+			set
+			{
+				if ((this._notifyDate != value))
+				{
+					this._notifyDate = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_dueDate", DbType="SmallDateTime")]
+		public System.Nullable<System.DateTime> dueDate
+		{
+			get
+			{
+				return this._dueDate;
+			}
+			set
+			{
+				if ((this._dueDate != value))
+				{
+					this._dueDate = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_completedDate", DbType="SmallDateTime")]
+		public System.Nullable<System.DateTime> completedDate
+		{
+			get
+			{
+				return this._completedDate;
+			}
+			set
+			{
+				if ((this._completedDate != value))
+				{
+					this._completedDate = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_commentText", DbType="NVarChar(MAX)")]
+		public string commentText
+		{
+			get
+			{
+				return this._commentText;
+			}
+			set
+			{
+				if ((this._commentText != value))
+				{
+					this._commentText = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_commentTypeEnum", DbType="TinyInt")]
+		public System.Nullable<byte> commentTypeEnum
+		{
+			get
+			{
+				return this._commentTypeEnum;
+			}
+			set
+			{
+				if ((this._commentTypeEnum != value))
+				{
+					this._commentTypeEnum = value;
 				}
 			}
 		}

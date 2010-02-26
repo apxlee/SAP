@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Linq;
+using System.Data.Linq.Mapping;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace Apollo.AIM.SNAP.Model
@@ -28,5 +31,16 @@ namespace Apollo.AIM.SNAP.Model
             //}
 
         }
+        
+        [Function(Name = "dbo.usp_open_user_view_tab")]
+        [ResultType(typeof(usp_open_user_view_statusResult))]
+        [ResultType(typeof(usp_open_user_view_detailsResult))]
+        public IMultipleResults usp_open_user_view_tab([Parameter(DbType = "NVarChar(10)")] string userId)
+        {
+            IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId);
+            return (IMultipleResults)(result.ReturnValue);
+        }
+         
+
     }
 }
