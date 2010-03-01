@@ -3,6 +3,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 {
 	public enum Role
 	{
+		NotAuthenticated, 
 		Requestor,
 		ApprovingManager,
 		AccessTeam,
@@ -42,5 +43,15 @@ namespace Apollo.AIM.SNAP.Web.Common
 		Access_Notes_ApprovingManager = 6,
 		Access_Notes_AccessTeam = 7,		
 		Access_Notes_SuperUser = 9
+	}
+	
+	public enum ViewIndex
+	{
+		request_form = 1,
+		my_requests = 2,
+		my_approvals = 3,
+		access_team = 4,
+		search = 5,
+		support = 6
 	}
 }

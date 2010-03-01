@@ -14,14 +14,37 @@ namespace Apollo.AIM.SNAP.Web.Common
 {
     public class WebUtilities
     {
-            public static string ApplicationTitle
-            {
-                get { return ConfigurationManager.AppSettings["CsmApplicationTitle"]; }
-            }
+			//public static string ApplicationTitle
+			//{
+			//    get { return ConfigurationManager.AppSettings["CsmApplicationTitle"]; }
+			//}
 
-            public static string UserControlPath
+			//public static string UserControlPath
+			//{
+			//    get { return ConfigurationManager.AppSettings["CsmUserControlPath"]; }
+			//}
+            
+            public static Role CurrentRole
             {
-                get { return ConfigurationManager.AppSettings["CsmUserControlPath"]; }
+				get 
+				{
+					Page currentPage = HttpContext.Current.Handler as Page;
+					try 
+					{ 
+						return (Role)currentPage.Session["OOSPAUserRole"]; 
+					}
+					catch 
+					{
+						currentPage.Session["OOSPAUserRole"] = Role.NotAuthenticated;
+						return Role.NotAuthenticated;
+					}
+				}
+
+				set 
+				{
+					Page currentPage = HttpContext.Current.Handler as Page;
+					currentPage.Session["OOSPAUserRole"] = value;
+				}
             }
 
             public static Control FindControlRecursive(Control controlRoot, string controlId)
@@ -36,13 +59,10 @@ namespace Apollo.AIM.SNAP.Web.Common
                 return null;
             }
 
-            public static void SetActiveView(Page currentPage, string viewId)
+            public static void SetActiveView(string viewId)
             {
-                MultiView multiView = (MultiView)WebUtilities.FindControlRecursive(currentPage, "_csmMultiView");
-                Menu tabMenu = (Menu)WebUtilities.FindControlRecursive(currentPage, "_tabbedMenu");
-
-                try { tabMenu.FindItem(viewId).Selected = true; }
-                catch { tabMenu.Items[0].Selected = true; }
+				Page currentPage = HttpContext.Current.Handler as Page;
+				MultiView multiView = (MultiView)WebUtilities.FindControlRecursive(currentPage, "_masterMultiView");
 
                 try
                 {
@@ -51,12 +71,23 @@ namespace Apollo.AIM.SNAP.Web.Common
                 }
                 catch
                 {
-                    Panel contentContainer = (Panel)WebUtilities.FindControlRecursive(currentPage, "_contentContainer");
-                    UserControl pageNotFound = currentPage.LoadControl(WebUtilities.UserControlPath + "Csm404.ascx") as UserControl;
-                    contentContainer.Controls.Add(pageNotFound);
-
                     multiView.ActiveViewIndex = -1;
                 }
             }
+
+			public static void SetActiveView(int viewIndex)
+			{
+				Page currentPage = HttpContext.Current.Handler as Page;
+				MultiView multiView = (MultiView)WebUtilities.FindControlRecursive(currentPage, "_masterMultiView");
+
+				try
+				{
+					multiView.ActiveViewIndex = viewIndex;
+				}
+				catch
+				{
+					multiView.ActiveViewIndex = -1;
+				}
+			}            
         }
 }
