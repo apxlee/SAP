@@ -670,26 +670,30 @@ TODO: REMOVE THIS SECTION
 	padding-bottom: 0px;
 	min-height: 150px;
 	color: #fff;
+	
 	}
 	
 .csm_template_1 .csm_footer_logo {
 	background: url('/images/logo_aim.png') bottom no-repeat;
-	background-position: 6px 0px;
+	/*background-position: 6px 0px;*/
 	height: 149px;
 	}	
 
 .csm_template_1 .csm_footer h1 {
-	margin: 10px 0 0;
-	padding: 0 5px;
+	margin: 0;
+	padding: 3px 0 1px 5px;
 	width: 95% !important;	
 	background-image: none;
 	border: 0;
-	border-bottom: 1px solid #d3d3d3;
+	border-bottom: 3px solid #5d0c00;
 	letter-spacing: normal;
-	font-weight: normal;
+	font-weight: bold;
 	font-size: .85em;
-	line-height: 1em;	
-	color: #545454;
+	line-height: 1.2em;	
+	color: #f5f5f5;
+	
+	background-color: #000;
+	color: #c5c5c5;
 	}
 	
 .csm_template_1 .csm_footer h2 {
@@ -702,21 +706,31 @@ TODO: REMOVE THIS SECTION
 	letter-spacing: normal;
 	font-weight: normal;
 	font-size: .85em;
-	color: #545454;
+	color: #f0f0f0;
 	}	
 
 .csm_template_1 .csm_footer ul {
 	margin-left: 5px;
-	line-height: 1.3em;
+	padding-left: 0px;
+	line-height: 1.5em;
 	}
 	
 .csm_template_1 .csm_footer ul li {
 	}
 	
 .csm_template_1 .csm_footer a {
-	font-size: .80em;
-	line-height: .85em;
+	font-size: .82em;
+	line-height: 1.5em;
 	}
+	
+.csm_template_1 .csm_footer a
+, .csm_template_1 .csm_footer a:link
+, .csm_template_1 .csm_footer a:visited
+, .csm_template_1 .csm_footer a:active {
+	color: #f0f0f0;
+	}
+	
+.csm_template_1 .csm_footer a:hover {text-decoration: underline;}	
 	
 	
 /* OOSPA Specific

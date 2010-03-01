@@ -11,6 +11,7 @@
 .csm_template_1 .snap_brand_footer {
 	background: url('/images/slice_footer_bg.png') top repeat-x;
 	min-height: 150px;
+	background-color: #5d0c00;
 	}
 		
 .csm_template_1 .snap_brand_header div.csm_container_16
@@ -106,44 +107,48 @@ li a.snap_aim_text_one_digit span {padding: 0 0 0 99px;}
 	
 	
 /* LINK BUTTON DEFAULT SIZE */
-	
-#request_form_button a {width: 98px;}
-#my_requests_button a {width: 90px;}
-#my_approvals_button a {width: 134px;}
-#access_team_button a {width: 129px;}
-#search_button a {width: 47px;}
-#support_button a {width: 56px;}
 
-#request_form_button a
-, #my_requests_button a
-, #my_approvals_button a
-, #access_team_button a
-, #search_button a
-, #support_button a {
+#login a {width: 47px;}	
+#request_form a {width: 98px;}
+#my_requests a {width: 90px;}
+#my_approvals a {width: 134px;}
+#access_team a {width: 129px;}
+#search a {width: 47px;}
+#support a {width: 56px;}
+
+#login a
+, #request_form a
+, #my_requests a
+, #my_approvals a
+, #access_team a
+, #search a
+, #support a {
 	background: url('/images/slider_heading_links.png') no-repeat;
 	padding: 0 17px 0 17px !important;}
 
-#request_form_button a:hover {background-position: -34px -100px;}
-#my_requests_button a:hover {background-position: -239px -100px;}
-#my_approvals_button a:hover {background-position: -416px -100px;}
-#access_team_button a:hover {background-position: -618px -100px;}
-#search_button a:hover {background-position: -859px -100px;}
-#support_button a:hover {background-position: -1055px -100px;}
+#request_form a:hover {background-position: -34px -100px;}
+#my_requests a:hover {background-position: -239px -100px;}
+#my_approvals a:hover {background-position: -416px -100px;}
+#access_team a:hover {background-position: -618px -100px;}
+#search a:hover {background-position: -859px -100px;}
+#support a:hover {background-position: -1055px -100px;}
 
 /* YOU ARE HERE */
 
-#request_form_button a {background-position: -34px 0px;}
-#my_requests_button a {background-position: -239px 0px;}
-#my_approvals_button a {background-position: -416px 0px;}
-#access_team_button a {background-position: -618px 0px;}
-#search_button a {background-position: -859px 0px;}
-#support_button a {background-position: -1055px 0px;}
+#login a {background-position: -1255px -50px;}
+#request_form a {background-position: -34px 0px;}
+#my_requests a {background-position: -239px 0px;}
+#my_approvals a {background-position: -416px 0px;}
+#access_team a {background-position: -618px 0px;}
+#search a {background-position: -859px 0px;}
+#support a {background-position: -1055px 0px;}
 
-div.request_form #request_form_button a {background-position: -34px -50px;}
-div.my_requests #my_requests_button a {background-position: -239px -50px;}
-div.my_approvals #my_approvals_button a {background-position: -416px -50px;}
-div.access_team #access_team_button a {background-position: -618px -50px;}
-div.search #search_button a {background-position: -859px -50px;}
-div.support #support_button a {background-position: -1055px -50px;}
+div.login #login a {background-position: -1255px -50px;}
+div.request_form #request_form a {background-position: -34px -50px;}
+div.my_requests #my_requests a {background-position: -239px -50px;}
+div.my_approvals #my_approvals a {background-position: -416px -50px;}
+div.access_team #access_team a {background-position: -618px -50px;}
+div.search #search a {background-position: -859px -50px;}
+div.support #support a {background-position: -1055px -50px;}
 
 	
