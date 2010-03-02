@@ -770,7 +770,10 @@ TODO: REMOVE THIS SECTION
 .oospa_edit_icon {
 	background: transparent url('/images/icon_edit_small.png') 0 2px no-repeat;
 	}
-	
+.oospa_select_user {
+    width: 100%;
+    height: 200px;
+}	
 .csm_template_1 .csm_icon_heading_container h2 {
     margin-left: 48px;
     line-height: 1.8em;

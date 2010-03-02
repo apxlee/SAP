@@ -12,6 +12,7 @@
 		
 		<fieldset><!-- use fieldset for standards & compliance -->
 		
+		<!-- TODO use javascript to write page validation to the container-->
 		<div class="csm_input_validation_summary">
             <span>Required Fields Are Missing</span>
             <ul>
@@ -19,6 +20,8 @@
                 <li><label for="_justification">Please complete the justification section.</label></li>
             </ul>
         </div>
+        
+        <asp:PlaceHolder ID="_changeComments" runat="server" />
 		
 		<div class="csm_input_buttons_container">
 			<input type="button" value="Clear Form" class="csm_html_button" id='_clearForm'/>
@@ -39,11 +42,11 @@
 
 			        <p><em>Example: axuser (domain name is not needed)</em></p>
 				</td>
-				<td style="vertical-align: top">
+				<!--<td style="vertical-align: top">
                     <div id="_notification" style="display:none;">
                         <img alt='loading...' src="/images/ajax_indicator.gif" width="16" height="16" />
                     </div>
-				</td>
+				</td>-->
                 <td>
                     <asp:TextBox ID="_requestorLoginId" runat="server" style="display:none" ></asp:TextBox>
                 </td>
@@ -83,11 +86,11 @@
 
       <div id='_managerSelectionDiv' style="display:none"; >
           <p />
-          <select size="3" name="managerSelection" id="_managerSelection"></select>
+          <select size="3" class="oospa_select_user" name="managerSelection" id="_managerSelection"></select>
       </div>
       <div id='_nameSelectionDiv' style="display:none"; >
            <p />
-          <select size="3" name="nameSelection" id="_nameSelection"></select>
+          <select size="3" class="oospa_select_user" name="nameSelection" id="_nameSelection"></select>
       </div>
 
      <div id="dialog" class="" style="display:none;">

@@ -67,7 +67,7 @@ var userManager = {
         this.mgrSelectionDiv = $("#_managerSelectionDiv");
 
         this.mgrEdit = $("button[id$='_editManagerName']");
-        this.ajaxIndicator = $("div[id$='_notification']");
+        //this.ajaxIndicator = $("div[id$='_notification']");
 
         this.submitButton = $("input[id$='_submitForm']");
         this.submitButtonLower = $("input[id$='_submitForm_lower']");
@@ -87,7 +87,7 @@ var userManager = {
 
     GetNames: function(name, selection, dialogDiv) {
         var postData = "{'name':'" + name.val() + "'}";
-        userManager.ajaxIndicator.show();
+        //userManager.ajaxIndicator.show();
 
         $.ajax({
             type: "POST",
@@ -96,7 +96,7 @@ var userManager = {
             data: postData,
             dataType: "json",
             success: function(msg) {
-                userManager.ajaxIndicator.hide();
+                //userManager.ajaxIndicator.hide();
 
                 var names = msg.d;
 
@@ -117,7 +117,7 @@ var userManager = {
             },
 
             error: function(XMLHttpRequest, textStatus, errorThrown) {
-                userManager.ajaxIndicator.hide();
+                //userManager.ajaxIndicator.hide();
                 alert("GetNames Error: " + XMLHttpRequest);
                 alert("GetNames Error: " + textStatus);
                 alert("GetNames Error: " + errorThrown);
@@ -127,7 +127,7 @@ var userManager = {
 
     GetUserManagerInfo: function(flag, fullName) {
         var postData = "{'fullName':'" + fullName.val() + "'}";
-        userManager.ajaxIndicator.show();
+        //userManager.ajaxIndicator.show();
 
         $.ajax({
             type: "POST",
@@ -136,13 +136,13 @@ var userManager = {
             data: postData,
             dataType: "json",
             success: function(msg) {
-                userManager.ajaxIndicator.hide();
+                //userManager.ajaxIndicator.hide();
                 var userInfo = msg.d;
                 userManager.FillUserManagerInfo(flag, userInfo);
             },
 
             error: function(XMLHttpRequest, textStatus, errorThrown) {
-                userManager.ajaxIndicator.hide();
+                //userManager.ajaxIndicator.hide();
                 alert("GetUserManagerInfo Error: " + XMLHttpRequest);
                 alert("GetUserManagerInfo Error: " + textStatus);
                 alert("GetUserManagerInfo Error: " + errorThrown);
@@ -386,22 +386,18 @@ var userManager = {
 
     ConvertToDialog: function(obj) {
         obj.dialog({
-            title: 'Selection',
+            title: 'Select User',
             bgiframe: true,
             resizable: false,
             draggable: false,
-            height: 500,
-            width: 500,
+            height: 300,
+            width: 350,
             modal: true,
             overlay: {
                 backgroundColor: '#ff0000', opacity: 0.5
 
             },
             buttons: {
-                'Acknowledge': function() {
-                    alert('This would submit the form and take you to the View Page');
-                    $(this).dialog('close');
-                },
                 Cancel: function() {
                     $(this).dialog('close');
                 }
