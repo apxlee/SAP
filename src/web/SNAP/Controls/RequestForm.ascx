@@ -1,10 +1,9 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="RequestForm.ascx.cs" Inherits="Apollo.AIM.SNAP.Web.Controls.RequestForm" %>
 
-<script src='/scripts/RequestFormUser.js' type="text/javascript" ></script>
+<script src='/scripts/RequestForm.js' type="text/javascript" ></script>
 
 <div class="csm_container_center_700">
     
-	<h1>Request Form</h1>
 	<div class="csm_content_container">
 		
 		<div class="csm_text_container">
@@ -12,6 +11,14 @@
 		</div>
 		
 		<fieldset><!-- use fieldset for standards & compliance -->
+		
+		<div class="csm_input_validation_summary">
+            <span>Required Fields Are Missing</span>
+            <ul>
+                <li><label for="_userId">Please enter your name.</label></li>
+                <li><label for="_justification">Please complete the justification section.</label></li>
+            </ul>
+        </div>
 		
 		<div class="csm_input_buttons_container">
 			<input type="button" value="Clear Form" class="csm_html_button" id='_clearForm'/>
