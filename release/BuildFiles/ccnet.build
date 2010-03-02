@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<project xmlns="http://nant.sf.net/release/0.85-rc4/nant.xsd" default="build.all">
+
+  <include buildfile="default.build"/>
+
+  <target name="build.all" description="Performs entire build/package process for ccnet.">
+    <call target="build.svn"/>
+    <call target="package"/>
+    <property name="configuration" value="debug"/>
+    <call target="build.svn"/>
+    <call target="test.coverage"/>
+    <call target="analyze.similarity"/>
+    <call target="verify.coverage"/>
+    <call target="verify.similarity"/>
+  </target>
+
+</project>
