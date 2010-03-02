@@ -1,4 +1,14 @@
-﻿function csmToggle(sender, tree) {
+﻿$(document).ready(function() {
+    $(".csm_toggle_container").hover(
+			  function() {
+			      $(this).addClass("csm_toggle_hover");
+			  },
+			  function() {
+			      $(this).removeClass("csm_toggle_hover");
+			  }
+			);
+});
+function csmToggle(sender, tree) {
     if (tree == "ppnn") {
         $(document).ready(function() {
             if ($(sender).parent().parent().next().next().is(":hidden")) {
