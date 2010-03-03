@@ -180,6 +180,7 @@ var userManager = {
         })
     },
 
+
     HandleSubmitClick: function() {
         userManager.HandleSubmitButtonClick();
         userManager.HandleSubmitButtonLowerClick();
@@ -286,6 +287,12 @@ var userManager = {
     HandleNameSelectionChange: function() { userManager.userSelection.change(userManager.UserNameSelected) },
     HandleManagerSelectionChange: function() { userManager.mgrSelection.change(userManager.ManagerNameSelected) },
 
+    UserNameFocusOut: function() {
+        userManager.userName.focusout(function() {
+            userManager.GetNames(userManager.userName, userManager.userSelection, userManager.userSelectionDiv);
+        })
+    },
+
     UserNameSelected: function() {
         userManager.AssignSelectedName(userManager.userName,
         //$('select[id$=nameSelection] option:selected').text(),
@@ -295,6 +302,12 @@ var userManager = {
         userManager.userSelectionDiv.dialog('close');
     },
 
+    MgrNameFocusOut: function() {
+        userManager.mgrName.focusout(function() {
+            userManager.GetNames(userManager.mgrName, userManager.mgrSelection, userManager.mgrSelectionDiv);
+        })
+    },
+    
     ManagerNameSelected: function() {
         userManager.AssignSelectedName(userManager.mgrName,
         //$('select[id$=mgrSelection] option:selected').text(),
@@ -435,7 +448,9 @@ var userManager = {
         this.BuildDialog();
         this.HandleGetUserNames();
         this.HandleGetManagerNames();
+        this.UserNameFocusOut();
         this.HandleNameSelectionChange();
+        this.MgrNameFocusOut();
         this.HandleManagerSelectionChange();
         this.HandleEditManagerName();
         this.HandleClearClick();
