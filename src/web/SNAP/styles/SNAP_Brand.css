@@ -1,32 +1,32 @@
 ﻿.csm_template_1 {
-	background: transparent url('/images/slice_body_bg.png') top repeat-y;
+	background: transparent url('../images/slice_body_bg.png') top repeat-y;
 	}
 
 .csm_template_1 .snap_brand_header {
 	color: #fff;
 	height: 94px;
-	background: url('/images/slice_header_bg.jpg') top repeat-x;
+	background: url('../images/slice_header_bg.jpg') top repeat-x;
 	}
 	
 .csm_template_1 .snap_brand_footer {
-	background: url('/images/slice_footer_bg.png') top repeat-x;
+	background: url('../images/slice_footer_bg.png') top repeat-x;
 	min-height: 170px;
 	background-color: #5d0c00;
 	}
 		
 .csm_template_1 .snap_brand_header div.csm_container_16
 , .csm_template_1 .snap_brand_footer div.csm_container_16 {
-	background: url('/images/slice_brand_sides.png') top repeat-y;
+	background: url('../images/slice_brand_sides.png') top repeat-y;
 	}
 
 .csm_template_1 .logo_itservices {
-	background: url('/images/logo_itservices.png') no-repeat;
+	background: url('../images/logo_itservices.png') no-repeat;
 	background-position: 83px 2px;
 	height: 58px;
 	}
 
 .csm_template_1 .logo_oospa {
-	background: url('/images/logo_oospa.png')  no-repeat;
+	background: url('../images/logo_oospa.png')  no-repeat;
 	background-position: 210px 28px;
 	height: 58px;
 	}
@@ -123,7 +123,7 @@ li a.snap_aim_text_one_digit span {padding: 0 0 0 99px;}
 , #access_team a
 , #search a
 , #support a {
-	background: url('/images/slider_heading_links.png') no-repeat;
+	background: url('../images/slider_heading_links.png') no-repeat;
 	padding: 0 17px 0 17px !important;}
 
 #request_form a:hover {background-position: -34px -100px;}
