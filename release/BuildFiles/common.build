@@ -254,6 +254,8 @@
       <trycatch>
         <try>
           <!--<typemockstart target="2.0" link="NCover2.0"/>-->
+	  <!--
+
           <ncover program="${ncover.console.path}"
             commandLineExe="${nunit.console.path}"
             commandLineArgs="${test.assembly}.test.dll /nologo /exclude=${exclude.test.categories} /xml=&quot;${test.output.dir}${test.assembly}.test.xml&quot;"
@@ -265,6 +267,8 @@
             fileExclusionPatterns=".*schema\.cs;.*Reference\.cs;.*Settings.Designer\.cs"
             excludeAttributes="CoverageExcludeAttribute"
             />
+
+          -->
           <!--<typemockstop/>-->
         </try>
         <catch property="failure">
