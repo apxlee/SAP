@@ -7,9 +7,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
 
-    <script src="/scripts/jquery-1.3.2.js" type="text/javascript"></script> 
+    <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ScriptUrl("jquery-1.3.2.js") %>" type="text/javascript"></script> 
     <% if (false) { %> 
-    <script src="/scripts/jquery-1.3.2-vsdoc.js"  type="text/javascript"></script> 
+    <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ScriptUrl("jquery-1.3.2-vsdoc.js") %>" type="text/javascript"></script>  
     <% } %>
 
     <script type="text/javascript" >

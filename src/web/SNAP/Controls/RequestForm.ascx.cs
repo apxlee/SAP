@@ -35,7 +35,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
             foreach (var access in data)
             {
-                requestFormSection = LoadControl(@"/Controls/RequestFormSection.ascx") as RequestFormSection;
+                requestFormSection = LoadControl("~/Controls/RequestFormSection.ascx") as RequestFormSection;
 
                 requestFormSection.ParentID = access.pkId.ToString();
 

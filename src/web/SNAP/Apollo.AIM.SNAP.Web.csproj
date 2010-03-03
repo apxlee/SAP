@@ -122,6 +122,7 @@
     <Content Include="Controls\WorkflowBlade.ascx" />
     <Content Include="Controls\WorkflowBuilderPanel.ascx" />
     <Content Include="Default.aspx" />
+    <Content Include="images\ajax_indicator.gif" />
     <Content Include="images\icon_red_clipboard.png" />
     <Content Include="images\icon_blue_suit.png" />
     <Content Include="images\calendar.gif" />

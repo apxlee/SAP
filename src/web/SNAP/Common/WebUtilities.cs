@@ -88,6 +88,13 @@ namespace Apollo.AIM.SNAP.Web.Common
 				{
 					multiView.ActiveViewIndex = -1;
 				}
-			}            
+			}
+
+            private static string ScriptsRoot = "~/scripts/";
+
+            public static string ScriptUrl(string scriptFile)
+            {
+                return VirtualPathUtility.ToAbsolute(ScriptsRoot + scriptFile);
+            }
         }
 }
