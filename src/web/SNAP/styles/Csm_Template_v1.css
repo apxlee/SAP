@@ -668,14 +668,15 @@ TODO: REMOVE THIS SECTION
 .csm_template_1 .csm_footer {
 	margin-top: 30px;
 	padding-bottom: 0px;
-	min-height: 150px;
+	min-height: 170px;
 	color: #fff;
+	background-color: #783630;
 	
 	}
 	
 .csm_template_1 .csm_footer_logo {
 	background: url('/images/logo_aim.png') bottom no-repeat;
-	/*background-position: 6px 0px;*/
+	background-position: 6px 0px;
 	height: 149px;
 	}	
 
@@ -685,14 +686,12 @@ TODO: REMOVE THIS SECTION
 	width: 95% !important;	
 	background-image: none;
 	border: 0;
-	border-bottom: 3px solid #5d0c00;
+	border-bottom: 1px solid #783630;
 	letter-spacing: normal;
+	font-family: Calibri, "Trebuchet MS", Helvetica, Sans-Serif;
 	font-weight: bold;
-	font-size: .85em;
+	font-size: 1em;
 	line-height: 1.2em;	
-	color: #f5f5f5;
-	
-	background-color: #000;
 	color: #c5c5c5;
 	}
 	
@@ -719,7 +718,8 @@ TODO: REMOVE THIS SECTION
 	}
 	
 .csm_template_1 .csm_footer a {
-	font-size: .82em;
+	font-family: Calibri, "Trebuchet MS", Helvetica, Sans-Serif;
+	font-size: .90em;
 	line-height: 1.5em;
 	}
 	
