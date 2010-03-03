@@ -216,18 +216,48 @@ namespace Apollo.AIM.SNAP.Model
 			return ((ISingleResult<usp_open_request_tabResult>)(result.ReturnValue));
 		}
 		
-		[Function(Name="dbo.usp_open_user_view_details")]
-		public ISingleResult<usp_open_user_view_detailsResult> usp_open_user_view_details([Parameter(DbType="NVarChar(10)")] string userId)
+		[Function(Name="dbo.usp_open_my_request_comments")]
+		public ISingleResult<usp_open_my_request_commentsResult> usp_open_my_request_comments([Parameter(DbType="NVarChar(10)")] string userId)
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId);
-			return ((ISingleResult<usp_open_user_view_detailsResult>)(result.ReturnValue));
+			return ((ISingleResult<usp_open_my_request_commentsResult>)(result.ReturnValue));
 		}
 		
-		[Function(Name="dbo.usp_open_user_view_status")]
-		public ISingleResult<usp_open_user_view_statusResult> usp_open_user_view_status([Parameter(DbType="NVarChar(10)")] string userId)
+		[Function(Name="dbo.usp_open_my_request_details")]
+		public ISingleResult<usp_open_my_request_detailsResult> usp_open_my_request_details([Parameter(DbType="NVarChar(10)")] string userId)
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId);
-			return ((ISingleResult<usp_open_user_view_statusResult>)(result.ReturnValue));
+			return ((ISingleResult<usp_open_my_request_detailsResult>)(result.ReturnValue));
+		}
+		
+        /*
+		[Function(Name="dbo.usp_open_my_request_tab")]
+		public ISingleResult<usp_open_my_request_tabResult> usp_open_my_request_tab([Parameter(DbType="NVarChar(10)")] string userId)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId);
+			return ((ISingleResult<usp_open_my_request_tabResult>)(result.ReturnValue));
+		}
+		
+        
+		[Function(Name="dbo.usp_open_my_request_text")]
+		public int usp_open_my_request_text([Parameter(DbType="NVarChar(10)")] string userId)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId);
+			return ((int)(result.ReturnValue));
+		}
+		*/
+		[Function(Name="dbo.usp_open_my_request_workflow_comments")]
+		public ISingleResult<usp_open_my_request_workflow_commentsResult> usp_open_my_request_workflow_comments([Parameter(DbType="NVarChar(10)")] string userId)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId);
+			return ((ISingleResult<usp_open_my_request_workflow_commentsResult>)(result.ReturnValue));
+		}
+		
+		[Function(Name="dbo.usp_open_my_request_workflow_details")]
+		public ISingleResult<usp_open_my_request_workflow_detailsResult> usp_open_my_request_workflow_details([Parameter(DbType="NVarChar(10)")] string userId)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId);
+			return ((ISingleResult<usp_open_my_request_workflow_detailsResult>)(result.ReturnValue));
 		}
 	}
 	
@@ -3038,43 +3068,37 @@ namespace Apollo.AIM.SNAP.Model
 		}
 	}
 	
-	public partial class usp_open_user_view_detailsResult
+	public partial class usp_open_my_request_commentsResult
 	{
+		
+		private int _pkId;
 		
 		private int _requestId;
 		
-		private string _submittedBy;
-		
-		private string _userId;
-		
-		private string _userDisplayName;
-		
-		private string _userTitle;
-		
-		private string _managerUserId;
-		
-		private string _managerDisplayName;
-		
-		private int _fieldId;
-		
-		private string _fieldLabel;
-		
-		private string _fieldText;
-		
-		private string _ticketNumber;
-		
-		private bool _isChanged;
-		
-		private byte _statusEnum;
-		
-		private System.DateTime _createdDate;
-		
-		private System.Nullable<byte> _commentTypeEnum;
+		private byte _commentTypeEnum;
 		
 		private string _commentText;
 		
-		public usp_open_user_view_detailsResult()
+		private System.DateTime _createdDate;
+		
+		public usp_open_my_request_commentsResult()
 		{
+		}
+		
+		[Column(Storage="_pkId", DbType="Int NOT NULL")]
+		public int pkId
+		{
+			get
+			{
+				return this._pkId;
+			}
+			set
+			{
+				if ((this._pkId != value))
+				{
+					this._pkId = value;
+				}
+			}
 		}
 		
 		[Column(Storage="_requestId", DbType="Int NOT NULL")]
@@ -3089,6 +3113,100 @@ namespace Apollo.AIM.SNAP.Model
 				if ((this._requestId != value))
 				{
 					this._requestId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_commentTypeEnum", DbType="TinyInt NOT NULL")]
+		public byte commentTypeEnum
+		{
+			get
+			{
+				return this._commentTypeEnum;
+			}
+			set
+			{
+				if ((this._commentTypeEnum != value))
+				{
+					this._commentTypeEnum = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_commentText", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string commentText
+		{
+			get
+			{
+				return this._commentText;
+			}
+			set
+			{
+				if ((this._commentText != value))
+				{
+					this._commentText = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_createdDate", DbType="SmallDateTime NOT NULL")]
+		public System.DateTime createdDate
+		{
+			get
+			{
+				return this._createdDate;
+			}
+			set
+			{
+				if ((this._createdDate != value))
+				{
+					this._createdDate = value;
+				}
+			}
+		}
+	}
+	
+	public partial class usp_open_my_request_detailsResult
+	{
+		
+		private int _pkId;
+		
+		private string _submittedBy;
+		
+		private string _userId;
+		
+		private string _userDisplayName;
+		
+		private string _userTitle;
+		
+		private string _managerUserId;
+		
+		private string _managerDisplayName;
+		
+		private string _ticketNumber;
+		
+		private bool _isChanged;
+		
+		private byte _statusEnum;
+		
+		private System.DateTime _createdDate;
+		
+		public usp_open_my_request_detailsResult()
+		{
+		}
+		
+		[Column(Storage="_pkId", DbType="Int NOT NULL")]
+		public int pkId
+		{
+			get
+			{
+				return this._pkId;
+			}
+			set
+			{
+				if ((this._pkId != value))
+				{
+					this._pkId = value;
 				}
 			}
 		}
@@ -3189,50 +3307,208 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Column(Storage="_fieldId", DbType="Int NOT NULL")]
-		public int fieldId
+		[Column(Storage="_ticketNumber", DbType="NVarChar(20)")]
+		public string ticketNumber
 		{
 			get
 			{
-				return this._fieldId;
+				return this._ticketNumber;
 			}
 			set
 			{
-				if ((this._fieldId != value))
+				if ((this._ticketNumber != value))
 				{
-					this._fieldId = value;
+					this._ticketNumber = value;
 				}
 			}
 		}
 		
-		[Column(Storage="_fieldLabel", DbType="NVarChar(50)")]
-		public string fieldLabel
+		[Column(Storage="_isChanged", DbType="Bit NOT NULL")]
+		public bool isChanged
 		{
 			get
 			{
-				return this._fieldLabel;
+				return this._isChanged;
 			}
 			set
 			{
-				if ((this._fieldLabel != value))
+				if ((this._isChanged != value))
 				{
-					this._fieldLabel = value;
+					this._isChanged = value;
 				}
 			}
 		}
 		
-		[Column(Storage="_fieldText", DbType="NVarChar(MAX)")]
-		public string fieldText
+		[Column(Storage="_statusEnum", DbType="TinyInt NOT NULL")]
+		public byte statusEnum
 		{
 			get
 			{
-				return this._fieldText;
+				return this._statusEnum;
 			}
 			set
 			{
-				if ((this._fieldText != value))
+				if ((this._statusEnum != value))
 				{
-					this._fieldText = value;
+					this._statusEnum = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_createdDate", DbType="SmallDateTime NOT NULL")]
+		public System.DateTime createdDate
+		{
+			get
+			{
+				return this._createdDate;
+			}
+			set
+			{
+				if ((this._createdDate != value))
+				{
+					this._createdDate = value;
+				}
+			}
+		}
+	}
+	
+	public partial class usp_open_my_request_tabResult
+	{
+		
+		private int _pkId;
+		
+		private string _submittedBy;
+		
+		private string _userId;
+		
+		private string _userDisplayName;
+		
+		private string _userTitle;
+		
+		private string _managerUserId;
+		
+		private string _managerDisplayName;
+		
+		private string _ticketNumber;
+		
+		private bool _isChanged;
+		
+		private byte _statusEnum;
+		
+		private System.DateTime _createdDate;
+		
+		public usp_open_my_request_tabResult()
+		{
+		}
+		
+		[Column(Storage="_pkId", DbType="Int NOT NULL")]
+		public int pkId
+		{
+			get
+			{
+				return this._pkId;
+			}
+			set
+			{
+				if ((this._pkId != value))
+				{
+					this._pkId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_submittedBy", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
+		public string submittedBy
+		{
+			get
+			{
+				return this._submittedBy;
+			}
+			set
+			{
+				if ((this._submittedBy != value))
+				{
+					this._submittedBy = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_userId", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
+		public string userId
+		{
+			get
+			{
+				return this._userId;
+			}
+			set
+			{
+				if ((this._userId != value))
+				{
+					this._userId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_userDisplayName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string userDisplayName
+		{
+			get
+			{
+				return this._userDisplayName;
+			}
+			set
+			{
+				if ((this._userDisplayName != value))
+				{
+					this._userDisplayName = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_userTitle", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string userTitle
+		{
+			get
+			{
+				return this._userTitle;
+			}
+			set
+			{
+				if ((this._userTitle != value))
+				{
+					this._userTitle = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_managerUserId", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
+		public string managerUserId
+		{
+			get
+			{
+				return this._managerUserId;
+			}
+			set
+			{
+				if ((this._managerUserId != value))
+				{
+					this._managerUserId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_managerDisplayName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string managerDisplayName
+		{
+			get
+			{
+				return this._managerDisplayName;
+			}
+			set
+			{
+				if ((this._managerDisplayName != value))
+				{
+					this._managerDisplayName = value;
 				}
 			}
 		}
@@ -3300,64 +3576,24 @@ namespace Apollo.AIM.SNAP.Model
 				}
 			}
 		}
-		
-		[Column(Storage="_commentTypeEnum", DbType="TinyInt")]
-		public System.Nullable<byte> commentTypeEnum
-		{
-			get
-			{
-				return this._commentTypeEnum;
-			}
-			set
-			{
-				if ((this._commentTypeEnum != value))
-				{
-					this._commentTypeEnum = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_commentText", DbType="NVarChar(MAX)")]
-		public string commentText
-		{
-			get
-			{
-				return this._commentText;
-			}
-			set
-			{
-				if ((this._commentText != value))
-				{
-					this._commentText = value;
-				}
-			}
-		}
 	}
 	
-	public partial class usp_open_user_view_statusResult
+	public partial class usp_open_my_request_workflow_commentsResult
 	{
 		
 		private int _requestId;
 		
+		private int _pkId;
+		
 		private int _workflowId;
 		
-		private string _userId;
-		
-		private string _displayName;
-		
-		private byte _workflowStatusEnum;
-		
-		private System.Nullable<System.DateTime> _notifyDate;
-		
-		private System.Nullable<System.DateTime> _dueDate;
-		
-		private System.Nullable<System.DateTime> _completedDate;
+		private byte _commentTypeEnum;
 		
 		private string _commentText;
 		
-		private System.Nullable<byte> _commentTypeEnum;
+		private System.DateTime _createdDate;
 		
-		public usp_open_user_view_statusResult()
+		public usp_open_my_request_workflow_commentsResult()
 		{
 		}
 		
@@ -3373,6 +3609,22 @@ namespace Apollo.AIM.SNAP.Model
 				if ((this._requestId != value))
 				{
 					this._requestId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_pkId", DbType="Int NOT NULL")]
+		public int pkId
+		{
+			get
+			{
+				return this._pkId;
+			}
+			set
+			{
+				if ((this._pkId != value))
+				{
+					this._pkId = value;
 				}
 			}
 		}
@@ -3393,34 +3645,134 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Column(Storage="_userId", DbType="NVarChar(10)")]
-		public string userId
+		[Column(Storage="_commentTypeEnum", DbType="TinyInt NOT NULL")]
+		public byte commentTypeEnum
 		{
 			get
 			{
-				return this._userId;
+				return this._commentTypeEnum;
 			}
 			set
 			{
-				if ((this._userId != value))
+				if ((this._commentTypeEnum != value))
 				{
-					this._userId = value;
+					this._commentTypeEnum = value;
 				}
 			}
 		}
 		
-		[Column(Storage="_displayName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
-		public string displayName
+		[Column(Storage="_commentText", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string commentText
 		{
 			get
 			{
-				return this._displayName;
+				return this._commentText;
 			}
 			set
 			{
-				if ((this._displayName != value))
+				if ((this._commentText != value))
 				{
-					this._displayName = value;
+					this._commentText = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_createdDate", DbType="SmallDateTime NOT NULL")]
+		public System.DateTime createdDate
+		{
+			get
+			{
+				return this._createdDate;
+			}
+			set
+			{
+				if ((this._createdDate != value))
+				{
+					this._createdDate = value;
+				}
+			}
+		}
+	}
+	
+	public partial class usp_open_my_request_workflow_detailsResult
+	{
+		
+		private int _requestId;
+		
+		private int _pkId;
+		
+		private int _workflowId;
+		
+		private byte _workflowStatusEnum;
+		
+		private System.Nullable<System.DateTime> _notifyDate;
+		
+		private System.Nullable<System.DateTime> _dueDate;
+		
+		private System.Nullable<System.DateTime> _completedDate;
+		
+		private int _pkId1;
+		
+		private int _actor_groupId;
+		
+		private string _userId;
+		
+		private string _displayName;
+		
+		private string _emailAddress;
+		
+		private bool _isDefault;
+		
+		private bool _isActive;
+		
+		public usp_open_my_request_workflow_detailsResult()
+		{
+		}
+		
+		[Column(Storage="_requestId", DbType="Int NOT NULL")]
+		public int requestId
+		{
+			get
+			{
+				return this._requestId;
+			}
+			set
+			{
+				if ((this._requestId != value))
+				{
+					this._requestId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_pkId", DbType="Int NOT NULL")]
+		public int pkId
+		{
+			get
+			{
+				return this._pkId;
+			}
+			set
+			{
+				if ((this._pkId != value))
+				{
+					this._pkId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_workflowId", DbType="Int NOT NULL")]
+		public int workflowId
+		{
+			get
+			{
+				return this._workflowId;
+			}
+			set
+			{
+				if ((this._workflowId != value))
+				{
+					this._workflowId = value;
 				}
 			}
 		}
@@ -3489,34 +3841,114 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Column(Storage="_commentText", DbType="NVarChar(MAX)")]
-		public string commentText
+		[Column(Storage="_pkId1", DbType="Int NOT NULL")]
+		public int pkId1
 		{
 			get
 			{
-				return this._commentText;
+				return this._pkId1;
 			}
 			set
 			{
-				if ((this._commentText != value))
+				if ((this._pkId1 != value))
 				{
-					this._commentText = value;
+					this._pkId1 = value;
 				}
 			}
 		}
 		
-		[Column(Storage="_commentTypeEnum", DbType="TinyInt")]
-		public System.Nullable<byte> commentTypeEnum
+		[Column(Storage="_actor_groupId", DbType="Int NOT NULL")]
+		public int actor_groupId
 		{
 			get
 			{
-				return this._commentTypeEnum;
+				return this._actor_groupId;
 			}
 			set
 			{
-				if ((this._commentTypeEnum != value))
+				if ((this._actor_groupId != value))
 				{
-					this._commentTypeEnum = value;
+					this._actor_groupId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_userId", DbType="NVarChar(10)")]
+		public string userId
+		{
+			get
+			{
+				return this._userId;
+			}
+			set
+			{
+				if ((this._userId != value))
+				{
+					this._userId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_displayName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string displayName
+		{
+			get
+			{
+				return this._displayName;
+			}
+			set
+			{
+				if ((this._displayName != value))
+				{
+					this._displayName = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_emailAddress", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string emailAddress
+		{
+			get
+			{
+				return this._emailAddress;
+			}
+			set
+			{
+				if ((this._emailAddress != value))
+				{
+					this._emailAddress = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_isDefault", DbType="Bit NOT NULL")]
+		public bool isDefault
+		{
+			get
+			{
+				return this._isDefault;
+			}
+			set
+			{
+				if ((this._isDefault != value))
+				{
+					this._isDefault = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_isActive", DbType="Bit NOT NULL")]
+		public bool isActive
+		{
+			get
+			{
+				return this._isActive;
+			}
+			set
+			{
+				if ((this._isActive != value))
+				{
+					this._isActive = value;
 				}
 			}
 		}

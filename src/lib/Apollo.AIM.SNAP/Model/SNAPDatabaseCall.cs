@@ -32,15 +32,53 @@ namespace Apollo.AIM.SNAP.Model
 
         }
         
-        [Function(Name = "dbo.usp_open_user_view_tab")]
-        [ResultType(typeof(usp_open_user_view_statusResult))]
-        [ResultType(typeof(usp_open_user_view_detailsResult))]
-        public IMultipleResults usp_open_user_view_tab([Parameter(DbType = "NVarChar(10)")] string userId)
+
+
+        /*
+         * !!! These are customed SP that require special anotation !!!
+         * 
+         * Don't use the LinqToSql tool to drap these SP to autognerate code
+         * Hand code these SP
+         */
+
+        [Function(Name = "dbo.usp_open_my_request_text")]
+        public ISingleResult<SNAP_Access_User_Text> usp_open_my_request_text([Parameter(DbType = "NVarChar(10)")] string userId)
         {
             IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId);
-            return (IMultipleResults)(result.ReturnValue);
+            return ((ISingleResult<SNAP_Access_User_Text>)(result.ReturnValue));
         }
-         
 
+
+        [Function(Name = "dbo.usp_open_my_request_tab")]
+        [ResultType(typeof(usp_open_my_request_detailsResult))]
+        [ResultType(typeof(SNAP_Access_User_Text))]
+        [ResultType(typeof(usp_open_my_request_commentsResult))]
+        [ResultType(typeof(usp_open_my_request_workflow_detailsResult))]
+        [ResultType(typeof(usp_open_my_request_workflow_commentsResult))]
+        public IMultipleResults usp_open_my_request_tab([Parameter(DbType = "NVarChar(10)")] string userId)
+        {
+            IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId);
+            return ((IMultipleResults)(result.ReturnValue));
+        }
+
+
+
+        // this method just package my open request call results into dictionary type
+        public Dictionary<string, object> MyOpenRequests(string userId)
+        {
+
+            var myRequests = new Dictionary<string, object>();
+            IMultipleResults result = usp_open_my_request_tab(userId);
+            if (result.ReturnValue.ToString() == "0")
+            {
+                myRequests.Add("reqDetails", result.GetResult<usp_open_my_request_detailsResult>().ToList());
+                myRequests.Add("reqText", result.GetResult<SNAP_Access_User_Text>().ToList());
+                myRequests.Add("reqComments", result.GetResult<usp_open_my_request_commentsResult>().ToList());
+                myRequests.Add("wfDetails", result.GetResult<usp_open_my_request_workflow_detailsResult>().ToList());
+                myRequests.Add("wfComments", result.GetResult<usp_open_my_request_workflow_commentsResult>().ToList());
+            }
+
+            return myRequests;
+        }
     }
 }

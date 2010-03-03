@@ -17,6 +17,28 @@ namespace Apollo.AIM.SNAP.Test
         {
         }
 
+        /*
+        [Test]
+        public void ShouldReturnMyOpenRequest()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+
+                var requests = db.MyOpenRequests("pxlee2");
+                var reqDetails = (List<usp_open_my_request_detailsResult>)requests["reqDetails"];
+                foreach (var d in reqDetails)
+                {
+                    Console.WriteLine(d.pkId + "," + d.statusEnum);
+                }
+                var wfComments = (List<usp_open_my_request_workflow_commentsResult>)requests["wfComments"];
+                foreach (var c in wfComments)
+                {
+                    Console.WriteLine(c.requestId + "," + c.commentText);
+                }
+
+            }    
+        }
+         */
         //[Test]
         //public void ShouldReturnNoRequestData()
         //{
