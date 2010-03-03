@@ -39,9 +39,7 @@
 
 				<asp:View ID="_requestFormView" runat="server"><!-- 1 -->
 					<div class="csm_container_center_700"><h1>Request Form</h1></div>
-					<script src="Scripts/jquery-ui-1.7.2.custom.min.js" type="text/javascript"></script>
 					<uc:RequestForm id='_requestFormControl' runat="server" />
-					<script type="text/javascript">   $(document).ready(DocReady);  </script>
 				</asp:View>
 				
 				<asp:View ID="_userView" runat="server"><!-- 2 -->

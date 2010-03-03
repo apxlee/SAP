@@ -6,9 +6,6 @@
 <link href="styles/SNAP_Brand.css" rel="stylesheet" type="text/css" />
 <link href="styles/jquery-ui-1.7.2.custom.css" rel="stylesheet" type="text/css" />
 <script src="../scripts/jquery-1.4.2.min.js" type="text/javascript"></script>
-
-<%--<script src="scripts/jquery-1.3.2.min.js" type="text/javascript" />
-<script src="scripts/SNAPDefaultJQuery.js" type="text/javascript" />
-<script src="scripts/jquery-ui-1.7.2.custom.min.js" type="text/javascript" />--%>
+<script src="../scripts/jquery-ui-1.7.2.custom.min.js" type="text/javascript"></script>
 
 
