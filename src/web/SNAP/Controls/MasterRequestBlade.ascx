@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="MasterRequestBlade.ascx.cs" Inherits="Apollo.AIM.SNAP.Web.Controls.MasterRequestBlade" %>
-<script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ScriptUrl("MasterRequestBlade.js") %>" type="text/javascript"></script>
+<script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>MasterRequestBlade.js" type="text/javascript"></script>
 	<!-- BEGIN REQUEST BLADE ------------------------------------------------------------------------------->
 	<div class="csm_content_container">
 		<!-- BEGIN FLOATING HEADING -->
