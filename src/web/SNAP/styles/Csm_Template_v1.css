@@ -660,7 +660,7 @@ TODO: REMOVE THIS SECTION
 ----------------------------------------------------------------------------------------------------*/
 
 .csm_footer_float {
-	position: relative; 
+	position: static; 
 	bottom: 0px;
 	min-height: 0 !important;
 	}
@@ -668,17 +668,40 @@ TODO: REMOVE THIS SECTION
 .csm_template_1 .csm_footer {
 	margin-top: 30px;
 	padding-bottom: 0px;
-	min-height: 170px;
 	color: #fff;
-	background-color: #783630;
-	
+	background: url('../images/slice_footer_bg.png') top repeat-x;
+	background-color: #5d0c00;	
+	}
+		
+.csm_template_1 .csm_footer div.csm_container_16 {
+	background:  url('../images/slice_brand_sides.png') top repeat-y;
+	}
+
+.csm_template_1 .csm_footer .csm_footer_logo {
+	background: url('../images/logo_aim.png') no-repeat bottom right;
+	min-height: 150px;
 	}
 	
-.csm_template_1 .csm_footer_logo {
-	background: url('../images/logo_aim.png') bottom no-repeat;
-	background-position: 6px 0px;
-	height: 149px;
-	}	
+.csm_template_1 .csm_footer .snap_copyright {
+	margin: 15px 0 10px;
+	padding: 4px 0 0;
+	border-top: 1px solid #783630;
+	text-align: center;
+	width: 586px;
+	display:inline;
+	float: left;
+	line-height: 1em;
+	}
+
+.csm_template_1 .csm_footer .snap_copyright span {
+	padding: 0;
+	margin: 0;
+	color:#783630 !important;
+	font-family:Calibri,Trebuchet MS, Helvetica, sans-serif;
+	font-size:12px;
+	letter-spacing: 0px;
+	line-height: .9em;
+	}
 
 .csm_template_1 .csm_footer h1 {
 	margin: 0;
