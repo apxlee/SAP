@@ -137,7 +137,7 @@
     <Content Include="images\logo_itservices.png" />
     <Content Include="images\logo_oospa.png" />
     <Content Include="images\icon_white_clipboard.png" />
-    <Content Include="images\icon_required_field_smalll.png" />
+    <Content Include="images\icon_required_field_small.png" />
     <Content Include="images\icon_yellow_chart.png" />
     <Content Include="images\slice_footer_bg.png" />
     <Content Include="images\slice_header_bg.jpg" />
