@@ -8,6 +8,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Apollo.AIM.SNAP.Model;
 using Apollo.Ultimus.CAP.Model;
+using Apollo.AIM.SNAP.CA;
 
 namespace Apollo.AIM.SNAP.Web
 {
@@ -36,15 +37,31 @@ namespace Apollo.AIM.SNAP.Web
         [WebMethod]
         public static List<UserManagerInfo> GetNames(string name)
         {
-            //System.Threading.Thread.Sleep(3000);
-            //return CA.DirectoryServices.GetUserManagerInfo(name);
+            List<UserManagerInfo> singleUser = new List<UserManagerInfo>();
 
             if (name == string.Empty)
             {
                 return new List<UserManagerInfo>();
             }
 
-            return CA.DirectoryServices.GetSimplifiedUserManagerInfo(name);
+            if (name.Length <= 8)
+            {
+                UserManagerInfo userManagerInfo = new UserManagerInfo();
+                ADUserDetail userDetail;
+                userDetail = DirectoryServices.GetUserByLoginName(name);
+
+                if (userDetail != null)
+                {
+                    userManagerInfo.LoginId = userDetail.LoginName;
+                    userManagerInfo.ManagerLoginId = userDetail.Manager.ToString();
+                    userManagerInfo.ManagerName = userDetail.ManagerName;
+                    userManagerInfo.Name = userDetail.FirstName + " " + userDetail.LastName;
+                    singleUser.Add(userManagerInfo);
+                }
+            }
+
+            if (singleUser.Count == 0) { return CA.DirectoryServices.GetSimplifiedUserManagerInfo(name); }
+            else { return singleUser; }
         }
 
 

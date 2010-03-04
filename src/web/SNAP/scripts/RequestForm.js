@@ -289,6 +289,14 @@ var userManager = {
 
     UserNameFocusOut: function() {
         userManager.userName.focusout(function() {
+            if (userManager.userLoginId.val() == "") {
+                userManager.GetNames(userManager.userName, userManager.userSelection, userManager.userSelectionDiv);
+            }
+        })
+    },
+
+    UserNameChange: function() {
+        userManager.userName.change(function() {
             userManager.GetNames(userManager.userName, userManager.userSelection, userManager.userSelectionDiv);
         })
     },
@@ -298,16 +306,25 @@ var userManager = {
         //$('select[id$=nameSelection] option:selected').text(),
                             $('#' + userManager.userSelection.attr('id') + ' option:selected').text(),
                             userManager.userSelection);
+        userManager.userLoginId.val('loading');
         userManager.GetUserManagerInfo("user", userManager.userName);
         userManager.userSelectionDiv.dialog('close');
     },
 
     MgrNameFocusOut: function() {
         userManager.mgrName.focusout(function() {
+            if (userManager.mgrLoginId.val() == "") {
+                userManager.GetNames(userManager.mgrName, userManager.mgrSelection, userManager.mgrSelectionDiv);
+            }
+        })
+    },
+
+    MgrNameChange: function() {
+        userManager.mgrName.change(function() {
             userManager.GetNames(userManager.mgrName, userManager.mgrSelection, userManager.mgrSelectionDiv);
         })
     },
-    
+
     ManagerNameSelected: function() {
         userManager.AssignSelectedName(userManager.mgrName,
         //$('select[id$=mgrSelection] option:selected').text(),
@@ -345,10 +362,13 @@ var userManager = {
         if (name.attr('id').indexOf("manager") > -1) {
             userManager.mgrName.val("No such name! Try again");
             userManager.mgrLoginId.val("");
+            userManager.mgrName.focus();
         }
         else {
             userManager.userName.val("No such name! Try again");
             userManager.userLoginId.val("");
+            userManager.mgrLoginId.val("");
+            userManager.userName.focus();
         }
     },
 
@@ -396,6 +416,20 @@ var userManager = {
         userManager.mgrLoginId.val(userManagerInfo.LoginId)
     },
 
+    DialogClose: function(obj) {
+        if ($(obj).attr('id').indexOf("name") > -1) {
+            if ($("#_requestFormControl__requestorLoginId").val() == "") {
+                $("#_requestFormControl__requestorId").focus();
+            }
+        }
+        else {
+            if ($("#_requestFormControl__managerName").attr("disabled") == true) {
+                if ($("#_requestFormControl__managerLoginId").val() == "") {
+                    $("#_requestFormControl__managerName").focus();
+                }
+            }
+        }
+    },
 
     ConvertToDialog: function(obj) {
         obj.dialog({
@@ -406,6 +440,9 @@ var userManager = {
             height: 300,
             width: 350,
             modal: true,
+            close: function(event, ui) {
+                userManager.DialogClose(obj);
+            },
             overlay: {
                 backgroundColor: '#ff0000', opacity: 0.5
 
@@ -416,14 +453,13 @@ var userManager = {
                 }
             }
         });
-
         obj.dialog('close');
     },
 
 
     BuildDialog: function() {
-        userManager.ConvertToDialog(userManager.userSelectionDiv);
         userManager.ConvertToDialog(userManager.mgrSelectionDiv);
+        userManager.ConvertToDialog(userManager.userSelectionDiv);
     },
 
     /*
@@ -449,8 +485,10 @@ var userManager = {
         this.HandleGetUserNames();
         this.HandleGetManagerNames();
         this.UserNameFocusOut();
+        this.UserNameChange();
         this.HandleNameSelectionChange();
         this.MgrNameFocusOut();
+        this.MgrNameChange();
         this.HandleManagerSelectionChange();
         this.HandleEditManagerName();
         this.HandleClearClick();
