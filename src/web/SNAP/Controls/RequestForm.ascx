@@ -6,7 +6,12 @@
 	<div class="csm_content_container">
 		
 		<div class="csm_text_container">
-		    <asp:Label ID="_requestFormDescription" runat="server">[TODO - REQUEST FORM DESCRIPTION PLACEHOLDER]</asp:Label>
+		    <p>Use this form to request Out-of-Scope Privileged Access to
+		    servers only.  "Out-of-Scope" is defined as resources that are not subject to PCI/SOX compliance.  In-Scope access is
+		    handled with a <a href="http://microsoft.com">Computer Access Process Request.</a></p>
+		    <p>Please Note: This form is NOT used for requesting application or database access.  Windows Sql Server database
+		    access requires an "a.dot" account (you may request "a.dot" accounts with this application).  Database access is
+		    completed using a Service Desk ticket assigned to the database group.</p>
 		</div>
 		
 		<fieldset><!-- use fieldset for standards & compliance -->
@@ -51,7 +56,7 @@
 			</tr>
 
 			<tr>
-				<td class="csm_input_form_label_column">
+				<td class="csm_input_form_label_column csm_input_required_field">
 					<label for="_requestFormControl__managerName">Manager Name</label>
 					<p>Please verify your manager name</p>
 				</td>

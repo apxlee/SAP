@@ -42,18 +42,24 @@ namespace Apollo.AIM.SNAP.Web.Controls
                 if (!brandNewRequest())
                     requestFormSection.RequestData = _requestFormData;
 
-                Label outerLabel;
-                outerLabel = (Label)WebUtilities.FindControlRecursive(requestFormSection, "_outerLabel");
-                outerLabel.Text = access.label;
 
                 Label outerDescription;
                 outerDescription = (Label)WebUtilities.FindControlRecursive(requestFormSection, "_outerDescription");
                 outerDescription.Text = access.description;
 
+				//Label outerLabel;
+				//outerLabel = (Label)WebUtilities.FindControlRecursive(requestFormSection, "_outerLabel");
+				//outerLabel.Text = access.label;
+				
+				Literal htmlLabelText = new Literal();
+				htmlLabelText.Text = access.label;
+
+				HtmlControl labelContainer;
+				labelContainer = (HtmlControl)WebUtilities.FindControlRecursive(requestFormSection, "_labelContainer");
+				labelContainer.Controls.Add(htmlLabelText);
+
                 if (access.isActive == true)
                 {
-                    HtmlControl labelContainer;
-                    labelContainer = (HtmlControl)WebUtilities.FindControlRecursive(requestFormSection, "_labelContainer");
                     labelContainer.Attributes.Add("class", "csm_input_required_field");
                 }
 
@@ -154,30 +160,46 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
         private List<usp_open_request_tabResult> loadRequestFormData()
         {
-            var requestId = Request.QueryString["RequestId"];
-            int reqId = 0;
-            // 1003
-            try
-            {
-                if (requestId != null)
-                    reqId = System.Convert.ToInt32(requestId);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error("SNAP: Request Form - Request id convert error", ex);
-            }
-            if (reqId != 0)
-            {
-                var db = new SNAPDatabaseDataContext();
-                var formData = db.usp_open_request_tab(WebUtilities.CurrentLoginUserId, reqId);
-                // formData contain history of all data fields, we are only interested in the latest
+			if (!string.IsNullOrEmpty(Request.QueryString["requestId"]))
+			{
+				var requestId = System.Convert.ToInt32(Request.QueryString["RequestId"]);
+				var db = new SNAPDatabaseDataContext();
+				var formData = db.usp_open_request_tab(WebUtilities.CurrentLoginUserId, requestId);
+				// formData contain history of all data fields, we are only interested in the latest
 
-                return formData.ToList();
-            }
-            else
-            {
-                return new List<usp_open_request_tabResult>();
-            }
+				return formData.ToList();
+			}
+			else
+			{
+				return new List<usp_open_request_tabResult>();
+			}
+
+			//var requestId = Request.QueryString["RequestId"];
+			//int reqId = 0;
+			//// 1003
+			//try
+			//{
+			//    if (requestId != null)
+			//        reqId = System.Convert.ToInt32(requestId);
+			//}
+			//catch (Exception ex)
+			//{
+			//    Logger.Error("SNAP: Request Form - Request id convert error", ex);
+			//}
+
+
+			//if (reqId != 0)
+			//{
+			//    var db = new SNAPDatabaseDataContext();
+			//    var formData = db.usp_open_request_tab(WebUtilities.CurrentLoginUserId, reqId);
+			//    // formData contain history of all data fields, we are only interested in the latest
+
+			//    return formData.ToList();
+			//}
+			//else
+			//{
+			//    return new List<usp_open_request_tabResult>();
+			//}
         }
 
         private bool brandNewRequest()
