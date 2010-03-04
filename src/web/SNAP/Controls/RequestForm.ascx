@@ -40,12 +40,10 @@
 					<button type='button' id='_checkRequestorId' class="csm_html_button">Check</button>
 
 			        <p><em>Example: axuser (domain name is not needed)</em></p>
-				</td>
-				<!--<td style="vertical-align: top">
-                    <div id="_notification" style="display:none;">
+			        <div id="_notification" style="display:none;">
                         <img alt='loading...' src="/images/ajax_indicator.gif" width="16" height="16" />
                     </div>
-				</td>-->
+				</td>
                 <td>
                     <asp:TextBox ID="_requestorLoginId" runat="server" style="display:none" ></asp:TextBox>
                 </td>

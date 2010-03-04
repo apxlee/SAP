@@ -1,8 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="User.aspx.cs" Inherits="Apollo.AIM.SNAP.Web.User" %>
-<!--<%@ Register src="Controls/UserManager.ascx" tagname="UserManager" tagprefix="uc1" %> -->
-
 <%@ Register src="Controls/RequestForm.ascx" tagname="RequestForm" tagprefix="uc2" %>
-
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -10,10 +7,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
     <title></title>
-   
-    <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ScriptUrl("jquery-1.3.2.js") %>" type="text/javascript"></script> 
+
+    <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>jquery-1.4.2.min.js" type="text/javascript"></script> 
     <% if (false) { %> 
-    <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ScriptUrl("jquery-1.3.2-vsdoc.js") %>" type="text/javascript"></script>  
+    <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>jquery-1.3.2-vsdoc.js" type="text/javascript"></script> 
     <% } %>
      
 </head>
