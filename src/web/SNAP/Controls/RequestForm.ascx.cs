@@ -103,7 +103,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
                     using (var db = new SNAPDatabaseDataContext())
                     {
-                        db.usp_insert_request_xml(xmlInput, browseUser, UserLoginId, UserName, detail.Title, ManagerLoginId, ManagerName);
+                        db.usp_insert_request_xml(xmlInput, WebUtilities.CurrentLoginUserId, UserLoginId, UserName, detail.Title, ManagerLoginId, ManagerName);
                     }
 
                 }
@@ -169,7 +169,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
             if (reqId != 0)
             {
                 var db = new SNAPDatabaseDataContext();
-                var formData = db.usp_open_request_tab(browseUser, reqId);
+                var formData = db.usp_open_request_tab(WebUtilities.CurrentLoginUserId, reqId);
                 // formData contain history of all data fields, we are only interested in the latest
 
                 return formData.ToList();
@@ -185,16 +185,6 @@ namespace Apollo.AIM.SNAP.Web.Controls
             return _requestFormData == null ||_requestFormData.Count() == 0;
         }
 
-        private string browseUser
-        {
-            get
-            {
-                // To-do: Should use CAP login user object here
-                var x = Request.ServerVariables["AUTH_USER"].Split('\\')[1]; // remove domain name
-
-                return x;
-            }
-        }
     }
 
 }
