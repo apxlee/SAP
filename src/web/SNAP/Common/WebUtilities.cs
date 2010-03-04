@@ -14,15 +14,15 @@ namespace Apollo.AIM.SNAP.Web.Common
 {
     public class WebUtilities
     {
-			//public static string ApplicationTitle
-			//{
-			//    get { return ConfigurationManager.AppSettings["CsmApplicationTitle"]; }
-			//}
-
-			//public static string UserControlPath
-			//{
-			//    get { return ConfigurationManager.AppSettings["CsmUserControlPath"]; }
-			//}
+			public static string ClientScriptPath
+			{
+				get { return VirtualPathUtility.ToAbsolute( ConfigurationManager.AppSettings["OOSPAScriptsPath"] ); }
+			}
+			
+			public static string AppVersion
+			{
+				get { return ConfigurationManager.AppSettings["OOSPAVersion"]; }
+			}
             
             public static Role CurrentRole
             {
@@ -89,13 +89,6 @@ namespace Apollo.AIM.SNAP.Web.Common
 					multiView.ActiveViewIndex = -1;
 				}
 			}
-
-            private static string ScriptsRoot = "~/scripts/";
-
-            public static string ScriptUrl(string scriptFile)
-            {
-                return VirtualPathUtility.ToAbsolute(ScriptsRoot + scriptFile);
-            }
 
             public static string CurrentLoginUserId
             {
