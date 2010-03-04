@@ -41,7 +41,7 @@
 
 			        <p><em>Example: axuser (domain name is not needed)</em></p>
 			        <div id="_notificationUser" style="display:none;">
-                        <img alt='loading...' src="../images/ajax_indicator.gif" width="16" height="16" />
+                        <img alt='loading...' src="images/ajax_indicator.gif" width="16" height="16" />
                     </div>
 				</td>
                 <td>
@@ -61,7 +61,7 @@
 			        <button type='button' id='_checkManagerName' class="csm_html_button">Check</button>
 			        <button type='button' id="_editManagerName" class="csm_html_button">Edit</button>
 			        <div id="_notificationManager" style="display:none;">
-                        <img alt='loading...' src="../images/ajax_indicator.gif" width="16" height="16" />
+                        <img alt='loading...' src="images/ajax_indicator.gif" width="16" height="16" />
                     </div>			        
 				</td>
 				<td>&nbsp</td>

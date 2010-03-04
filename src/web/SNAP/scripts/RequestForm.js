@@ -67,8 +67,9 @@ var userManager = {
         this.mgrSelectionDiv = $("#_managerSelectionDiv");
 
         this.mgrEdit = $("button[id$='_editManagerName']");
-        this.ajaxIndicator = $("div[id$='_notification']");
-
+        this.ajaxIndicatorUser = $("div[id$='_notificationUser']");
+        this.ajaxIndicatorManager = $("div[id$='_notificationManager']");
+        
         this.submitButton = $("input[id$='_submitForm']");
         this.submitButtonLower = $("input[id$='_submitForm_lower']");
 
@@ -87,7 +88,7 @@ var userManager = {
 
     GetNames: function(name, selection, dialogDiv) {
         var postData = "{'name':'" + name.val() + "'}";
-        userManager.ajaxIndicator.show();
+        userManager.ajaxIndicatorUser.show();
 
         $.ajax({
             type: "POST",
@@ -96,7 +97,7 @@ var userManager = {
             data: postData,
             dataType: "json",
             success: function(msg) {
-                userManager.ajaxIndicator.hide();
+                userManager.ajaxIndicatorUser.hide();
 
                 var names = msg.d;
 
@@ -117,7 +118,7 @@ var userManager = {
             },
 
             error: function(XMLHttpRequest, textStatus, errorThrown) {
-                userManager.ajaxIndicator.hide();
+                userManager.ajaxIndicatorUser.hide();
                 alert("GetNames Error: " + XMLHttpRequest);
                 alert("GetNames Error: " + textStatus);
                 alert("GetNames Error: " + errorThrown);
@@ -127,7 +128,7 @@ var userManager = {
 
     GetUserManagerInfo: function(flag, fullName) {
         var postData = "{'fullName':'" + fullName.val() + "'}";
-        userManager.ajaxIndicator.show();
+        userManager.ajaxIndicatorUser.show();
 
         $.ajax({
             type: "POST",
@@ -136,13 +137,13 @@ var userManager = {
             data: postData,
             dataType: "json",
             success: function(msg) {
-                userManager.ajaxIndicator.hide();
+                userManager.ajaxIndicatorUser.hide();
                 var userInfo = msg.d;
                 userManager.FillUserManagerInfo(flag, userInfo);
             },
 
             error: function(XMLHttpRequest, textStatus, errorThrown) {
-                userManager.ajaxIndicator.hide();
+                userManager.ajaxIndicatorUser.hide();
                 alert("GetUserManagerInfo Error: " + XMLHttpRequest);
                 alert("GetUserManagerInfo Error: " + textStatus);
                 alert("GetUserManagerInfo Error: " + errorThrown);
