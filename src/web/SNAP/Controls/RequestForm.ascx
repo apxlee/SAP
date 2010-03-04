@@ -40,8 +40,8 @@
 					<button type='button' id='_checkRequestorId' class="csm_html_button">Check</button>
 
 			        <p><em>Example: axuser (domain name is not needed)</em></p>
-			        <div id="_notification" style="display:none;">
-                        <img alt='loading...' src="/images/ajax_indicator.gif" width="16" height="16" />
+			        <div id="_notificationUser" style="display:none;">
+                        <img alt='loading...' src="../images/ajax_indicator.gif" width="16" height="16" />
                     </div>
 				</td>
                 <td>
@@ -60,6 +60,9 @@
 			        <!--<asp:Button ID="_checkManagerName" runat="server" CssClass="csm_html_button" Text="Check" /> -->
 			        <button type='button' id='_checkManagerName' class="csm_html_button">Check</button>
 			        <button type='button' id="_editManagerName" class="csm_html_button">Edit</button>
+			        <div id="_notificationManager" style="display:none;">
+                        <img alt='loading...' src="../images/ajax_indicator.gif" width="16" height="16" />
+                    </div>			        
 				</td>
 				<td>&nbsp</td>
 	            <td>
