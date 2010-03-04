@@ -1,11 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Threading;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-
+using Apollo.AIM.SNAP.Model;
 using Apollo.CA.Logging;
 using Apollo.Ultimus.CAP;
 using Apollo.Ultimus.CAP.Model;
@@ -23,7 +24,7 @@ namespace Apollo.AIM.SNAP.Web
 	{
 		protected void Page_Load(object sender, EventArgs e)	
 		{
-			// TODO: make sure user is in access team AD group and then allow role change
+		    // TODO: make sure user is in access team AD group and then allow role change
 			//
 			if (!string.IsNullOrEmpty(Request.QueryString["role"]))
 			{
@@ -33,7 +34,9 @@ namespace Apollo.AIM.SNAP.Web
 			{
 				// TODO: utility to find AD group and/or look into DB for existence of pending approvals to determine role
 			}
-			
+
+		    WebUtilities.CurrentRole = OOSPARole.Requestor;
+
 			Panel ribbonContainer = (Panel)WebUtilities.FindControlRecursive(Page, "_ribbonContainerOuter");
 
 			switch (WebUtilities.CurrentRole)
@@ -63,6 +66,7 @@ namespace Apollo.AIM.SNAP.Web
 				case OOSPARole.Requestor:
 					WebUtilities.SetActiveView("_userView");
 					ribbonContainer.CssClass = "my_requests";
+			        loadMyRequests();
 					break;
 
 				case OOSPARole.NotAuthenticated:
@@ -72,5 +76,27 @@ namespace Apollo.AIM.SNAP.Web
 					break;
 			}			
 		}
+
+        private void loadMyRequests()
+        {
+            try
+            {
+                using (var db = new SNAPDatabaseDataContext())
+                {
+
+                    var requests = db.MyOpenRequests(WebUtilities.CurrentLoginUserId);
+                    if (Context.Items.Contains("Requests"))
+                        Context.Items.Remove("Requests");
+
+                    Context.Items.Add("Requests", requests);
+
+                }
+            }
+            catch(Exception ex)
+            {
+                Logger.Error("SNAP - Index: loadMyRequests failed", ex);
+            }
+
+        }
 	}
 }

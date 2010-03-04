@@ -17,14 +17,14 @@ namespace Apollo.AIM.SNAP.Test
         {
         }
 
-        /*
+        
         [Test]
         public void ShouldReturnMyOpenRequest()
         {
             using (var db = new SNAPDatabaseDataContext())
             {
 
-                var requests = db.MyOpenRequests("pxlee2");
+                var requests = db.MyOpenRequests("pxlee");
                 var reqDetails = (List<usp_open_my_request_detailsResult>)requests["reqDetails"];
                 foreach (var d in reqDetails)
                 {
@@ -35,10 +35,14 @@ namespace Apollo.AIM.SNAP.Test
                 {
                     Console.WriteLine(c.requestId + "," + c.commentText);
                 }
-
+                var texts = (List<SNAP_Access_User_Text>) requests["reqText"];
+                foreach (SNAP_Access_User_Text list in texts)
+                {
+                    Console.WriteLine(list.access_details_formId + "," + list.userText);
+                }
             }    
         }
-         */
+        
         //[Test]
         //public void ShouldReturnNoRequestData()
         //{
