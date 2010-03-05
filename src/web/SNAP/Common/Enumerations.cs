@@ -12,25 +12,25 @@ namespace Apollo.AIM.SNAP.Web.Common
 	
 	public enum RequestState
 	{
-		Open,
-		Pending,
-		Change_Requested,
-		Closed
+		Open = 0,
+		Change_Requested = 1,
+		Pending = 2,
+		Closed = 3
 	}
 	
 	public enum WorkflowState
 	{
-		Approved,
-		Change_Requested,
-		Closed_Cancelled,
-		Closed_Completed,
-		Closed_Denied,
-		Not_Active,
-		Pending_Acknowlegement,
-		Pending_Approval,
-		Pending_Provisioning,
-		Pending_Workflow,
-		Workflow_Created
+		Approved = 0,
+		Change_Requested = 1,
+		Closed_Cancelled = 2,
+		Closed_Completed = 3,
+		Closed_Denied = 4,
+		Not_Active = 5,
+		Pending_Acknowlegement = 6,
+		Pending_Approval = 7,
+		Pending_Provisioning= 8,
+		Pending_Workflow = 9,
+		Workflow_Created = 10
 	}
 	
 	public enum CommentsType
