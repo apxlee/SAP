@@ -23,6 +23,12 @@ namespace Apollo.AIM.SNAP.Web.Common
 			{
 				get { return ConfigurationManager.AppSettings["OOSPAVersion"]; }
 			}
+			
+			public static string CurrentServer
+			{
+				// TODO
+				get { return "AWACPXS01"; }
+			}
             
             public static Role CurrentRole
             {
@@ -110,6 +116,11 @@ namespace Apollo.AIM.SNAP.Web.Common
             }
             
             public static void StripTitleFromUserName(string userName)
+            {
+				// TODO
+            }
+            
+            public static void StripUnderscore(string value)
             {
 				// TODO
             }
