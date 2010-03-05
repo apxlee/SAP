@@ -35,7 +35,7 @@ namespace Apollo.AIM.SNAP.Web
 				// TODO: utility to find AD group and/or look into DB for existence of pending approvals to determine role
 			}
 
-		    WebUtilities.CurrentRole = OOSPARole.Requestor;
+		    //WebUtilities.CurrentRole = OOSPARole.Requestor;
 
 			Panel ribbonContainer = (Panel)WebUtilities.FindControlRecursive(Page, "_ribbonContainerOuter");
 
