@@ -14,123 +14,128 @@ namespace Apollo.AIM.SNAP.Web.Common
 {
     public class WebUtilities
     {
-			public static string ClientScriptPath
-			{
-				get { return VirtualPathUtility.ToAbsolute( ConfigurationManager.AppSettings["OOSPAScriptsPath"] ); }
-			}
-			
-			public static string AppVersion
-			{
-				get { return ConfigurationManager.AppSettings["OOSPAVersion"]; }
-			}
-			
-			public static string CurrentServer
-			{
-				// TODO
-				get { return "AWACPXS01"; }
-			}
-            
-            public static Role CurrentRole
-            {
-				get 
-				{
-					Page currentPage = HttpContext.Current.Handler as Page;
-					try 
-					{ 
-						return (Role)currentPage.Session["OOSPAUserRole"]; 
-					}
-					catch 
-					{
-						currentPage.Session["OOSPAUserRole"] = Role.NotAuthenticated;
-						return Role.NotAuthenticated;
-					}
-				}
-
-				set 
-				{
-					Page currentPage = HttpContext.Current.Handler as Page;
-					currentPage.Session["OOSPAUserRole"] = value;
-				}
-            }
-
-            public static Control FindControlRecursive(Control controlRoot, string controlId)
-            {
-                if (controlId == string.Empty) { return null; }
-                if (controlRoot.ID == controlId) { return controlRoot; }
-                foreach (Control childControl in controlRoot.Controls)
-                {
-                    Control target = FindControlRecursive(childControl, controlId);
-                    if (target != null) { return target; }
-                }
-                return null;
-            }
-
-            public static void SetActiveView(string viewId)
-            {
-				Page currentPage = HttpContext.Current.Handler as Page;
-				MultiView multiView = (MultiView)WebUtilities.FindControlRecursive(currentPage, "_masterMultiView");
-
-                try
-                {
-                    View selectedView = (View)WebUtilities.FindControlRecursive(multiView, viewId);
-                    multiView.SetActiveView(selectedView);
-                }
-                catch
-                {
-                    multiView.ActiveViewIndex = -1;
-                }
-            }
-
-			public static void SetActiveView(int viewIndex)
+		public static string ClientScriptPath
+		{
+			get { return VirtualPathUtility.ToAbsolute( ConfigurationManager.AppSettings["OOSPAScriptsPath"] ); }
+		}
+		
+		public static string AppVersion
+		{
+			get { return ConfigurationManager.AppSettings["OOSPAVersion"]; }
+		}
+		
+		public static string CurrentServer
+		{
+			// TODO
+			get { return "AWACPXS01"; }
+		}
+        
+        public static Role CurrentRole
+        {
+			get 
 			{
 				Page currentPage = HttpContext.Current.Handler as Page;
-				MultiView multiView = (MultiView)WebUtilities.FindControlRecursive(currentPage, "_masterMultiView");
-
-				try
-				{
-					multiView.ActiveViewIndex = viewIndex;
+				try 
+				{ 
+					return (Role)currentPage.Session["OOSPAUserRole"]; 
 				}
-				catch
+				catch 
 				{
-					multiView.ActiveViewIndex = -1;
+					currentPage.Session["OOSPAUserRole"] = Role.NotAuthenticated;
+					return Role.NotAuthenticated;
 				}
 			}
 
-            public static string CurrentLoginUserId
-            {
-                get
-                {
-                    Page currentPage = HttpContext.Current.Handler as Page;
-                    // To-do: Should use CAP login user object here
-                    var x = currentPage.Request.ServerVariables["AUTH_USER"].Split('\\')[1]; // remove domain name
+			set 
+			{
+				Page currentPage = HttpContext.Current.Handler as Page;
+				currentPage.Session["OOSPAUserRole"] = value;
+			}
+        }
 
-                    return "clschwim";
-                    return x;
-                }
+        public static Control FindControlRecursive(Control controlRoot, string controlId)
+        {
+            if (controlId == string.Empty) { return null; }
+            if (controlRoot.ID == controlId) { return controlRoot; }
+            foreach (Control childControl in controlRoot.Controls)
+            {
+                Control target = FindControlRecursive(childControl, controlId);
+                if (target != null) { return target; }
+            }
+            return null;
+        }
 
-            }
+        public static void SetActiveView(string viewId)
+        {
+			Page currentPage = HttpContext.Current.Handler as Page;
+			MultiView multiView = (MultiView)WebUtilities.FindControlRecursive(currentPage, "_masterMultiView");
 
-            public static string RequestKey
+            try
             {
-                get
-                {
-                    return CurrentLoginUserId + "-" + "Requests";
-                }
+                View selectedView = (View)WebUtilities.FindControlRecursive(multiView, viewId);
+                multiView.SetActiveView(selectedView);
             }
-            
-            public static void MakePrettyDate(string date)
+            catch
             {
-				// TODO
-            }
-            
-            public static void StripTitleFromUserName(string userName)
-            {
-				// TODO
-            }
-            
-            public static void StripUnderscore(string value)
-            {
-				// TODO
+                multiView.ActiveViewIndex = -1;
             }
         }
+
+		public static void SetActiveView(int viewIndex)
+		{
+			Page currentPage = HttpContext.Current.Handler as Page;
+			MultiView multiView = (MultiView)WebUtilities.FindControlRecursive(currentPage, "_masterMultiView");
+
+			try
+			{
+				multiView.ActiveViewIndex = viewIndex;
+			}
+			catch
+			{
+				multiView.ActiveViewIndex = -1;
+			}
+		}
+
+        public static string CurrentLoginUserId
+        {
+            get
+            {
+                Page currentPage = HttpContext.Current.Handler as Page;
+                // To-do: Should use CAP login user object here
+                var x = currentPage.Request.ServerVariables["AUTH_USER"].Split('\\')[1]; // remove domain name
+
+                return "clschwim";
+                return x;
+            }
+         }
+
+		public static string RequestKey
+        {
+            get
+            {
+                return CurrentLoginUserId + "-" + "Requests";
+            }
+        }
+     }
+     
+        
+    public static class ExtensionMethods
+    {
+		public static string StripTitleFromUserName(this String value)
+		{
+			try
+			{
+				return value.Remove( value.ToString().IndexOf("(") );
+			}
+			catch
+			{
+				return value;
+			}
+		}
+		
+		public static string StripUnderscore(this String value)
+		{
+			return value.Replace("_", " ");
+		}
+    }
 }
