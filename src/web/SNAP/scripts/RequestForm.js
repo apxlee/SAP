@@ -1,53 +1,53 @@
-﻿$(function() {
-    $("#dialog").dialog({
-        title: 'Disclaimer',
-        bgiframe: true,
-        resizable: false,
-        draggable: false,
-        height: 500,
-        width: 500,
-        modal: true,
-        overlay: {
-            backgroundColor: '#ff0000', opacity: 0.5
+﻿//$(function() {
+//    $("#dialog").dialog({
+//        title: 'Disclaimer',
+//        bgiframe: true,
+//        resizable: false,
+//        draggable: false,
+//        height: 500,
+//        width: 500,
+//        modal: true,
+//        overlay: {
+//            backgroundColor: '#ff0000', opacity: 0.5
 
-        },
-        buttons: {
-            'Acknowledge': function() {
-                alert('This would submit the form and take you to the View Page');
-                $(this).dialog('close');
-            },
-            Cancel: function() {
-                $(this).dialog('close');
-            }
-        }
-    });
-    $("#dialog").dialog('close');
-});
-function throwModal() {
-    $("#dialog").dialog('open');
-}
-$(document).ready(function() {
-    $("input, textarea, select").focus(
-			  function() {
-			      $(this).addClass("csm_input_focus");
-			  }
-			);
-});
+//        },
+//        buttons: {
+//            'Acknowledge': function() {
+//                alert('This would submit the form and take you to the View Page');
+//                $(this).dialog('close');
+//            },
+//            Cancel: function() {
+//                $(this).dialog('close');
+//            }
+//        }
+//    });
+//    $("#dialog").dialog('close');
+//});
+//function throwModal() {
+//    $("#dialog").dialog('open');
+//}
+//$(document).ready(function() {
+//    $("input, textarea, select").focus(
+//			  function() {
+//			      $(this).addClass("csm_input_focus");
+//			  }
+//			);
+//});
 
-$(document).ready(function() {
-    $("input, textarea, select").blur(
-			  function() {
-			      $(this).removeClass("csm_input_focus");
-			  }
-			);
-});
+//$(document).ready(function() {
+//    $("input, textarea, select").blur(
+//			  function() {
+//			      $(this).removeClass("csm_input_focus");
+//			  }
+//			);
+//});
 /// <reference path="jquery-1.3.2-vsdoc.js" />
 //$(document).ready(function() { });
 
 //$.ready(DocReady);
 
 function DocReady() {
-    BorderMyh3();
+//    BorderMyh3();
     userManager.Ready();
 }
 
@@ -69,7 +69,7 @@ var userManager = {
         this.mgrEdit = $("button[id$='_editManagerName']");
         this.ajaxIndicatorUser = $("div[id$='_notificationUser']");
         this.ajaxIndicatorManager = $("div[id$='_notificationManager']");
-        
+
         this.submitButton = $("input[id$='_submitForm']");
         this.submitButtonLower = $("input[id$='_submitForm_lower']");
 
@@ -78,6 +78,7 @@ var userManager = {
 
         this.inputFields = $("input[type='text'][id*='requestFormControl']");
         this.textAreas = $("textarea[id*='requestFormControl']");
+        this.labels = $("label[id*='requestFormControl']");
     },
 
     ToggleSelecction: function() {
@@ -93,7 +94,7 @@ var userManager = {
         $.ajax({
             type: "POST",
             contentType: "application/json; character=utf-8",
-            url: "Default.aspx/GetNames",
+            url: "UserCheck.aspx/GetNames",
             data: postData,
             dataType: "json",
             success: function(msg) {
@@ -133,7 +134,7 @@ var userManager = {
         $.ajax({
             type: "POST",
             contentType: "application/json; character=utf-8",
-            url: "Default.aspx/GetUserManagerInfoByFullName",
+            url: "UserCheck.aspx/GetUserManagerInfoByFullName",
             data: postData,
             dataType: "json",
             success: function(msg) {
@@ -204,38 +205,100 @@ var userManager = {
         */
 
         var status = true;
-        var cnt = 0;
-        var element;
+        var check = true;
+        var strSections = '';
+        var strSection = '';
 
-        userManager.textAreas.each(function() {
-            if ($(this).val() != '') {
-                cnt++;
+        //        var cnt = 0;
+        //        var element;
+
+        //        userManager.textAreas.each(function() {
+        //            if ($(this).val() != '') {
+        //                cnt++;
+        //            }
+        //            else {
+        //                if (element == undefined)
+        //                    element = $(this);
+        //            }
+        //        });
+        ////////////////////////////////////!!!!!!!!!!!!!!!!!!!!!!!!
+
+        userManager.labels.each(function() {
+            if ($(this).hasClass("csm_input_required_field")) {
+                strSection = $(this).html();
+                strSections = strSections + "[" + strSection;
+                $(this).parent().next().children('textarea').each(function() {
+                    if ($(this).val() == '') {
+                        check = false
+                        strSections = strSections + "," + $(this).attr("name");
+                    }
+                });
+                strSections = strSections + "]";
             }
-            else {
-                if (element == undefined)
-                    element = $(this);
-            }
+            if (check == false) { status = check; }
         });
 
-        if (cnt == 0) {
-            status = false;
-            userManager.MissingData(element);
-        }
+        if (!status) {
+            var arySections = strSections.split("][");
 
-        if (status) {
-            userManager.inputFields.each(function() {
-                if ($(this).val() == '') {
-                    userManager.MissingData($(this));
-                    status = false;
-                    return status;
-                }
+            var span = jQuery(document.createElement("span"));
+            span.html("Required Fields Are Missing");
+
+            var ul = jQuery(document.createElement('ul'));
+            
+            $("#_formValidation").html('');
+            $("#_formValidation").append(span);
+            $("#_formValidation").append(ul);
+
+            jQuery.each(arySections, function(i, val) {
+                var aryElements = val.split(",");
+
+                jQuery.each(aryElements, function(i, val) {
+                    if (i == 0) { strSection = val.replace("[", ""); }
+                    else {
+                        var li = jQuery(document.createElement('li'));
+                        var label = jQuery(document.createElement('label'));
+                        label.html(strSection + " empty field");
+                        label.attr("for", val.replace("]", ""));
+                        li.append(label);
+                        li.appendTo($("#_formValidation").children("ul"));
+                    }
+                });
             });
+
+            $("#_formValidation").addClass("csm_input_validation_summary");
+
         }
 
-        if (status && userManager.mgrName.attr("disabled") == false) {
-            alert("Please check manager name");
-            status = false;
-        }
+        //        
+        //        <div class="csm_input_validation_summary">
+        //            <span>Required Fields Are Missing</span>
+        //            <ul>
+        //                <li><label for="_userId">Please enter your name.</label></li>
+        //                <li><label for="_justification">Please complete the justification section.</label></li>
+        //            </ul>
+        //        </div>
+        //        
+        //////////////////////////////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        //        if (cnt == 0) {
+        //            status = false;
+        //            userManager.MissingData(element);
+        //        }
+
+        //        if (status) {
+        //            userManager.inputFields.each(function() {
+        //                if ($(this).val() == '') {
+        //                    userManager.MissingData($(this));
+        //                    status = false;
+        //                    return status;
+        //                }
+        //            });
+        //        }
+
+        //        if (status && userManager.mgrName.attr("disabled") == false) {
+        //            alert("Please check manager name");
+        //            status = false;
+        //        }
 
         return status;
     },
@@ -419,14 +482,14 @@ var userManager = {
 
     DialogClose: function(obj) {
         if ($(obj).attr('id').indexOf("name") > -1) {
-            if ($("#_requestFormControl__requestorLoginId").val() == "") {
-                $("#_requestFormControl__requestorId").focus();
+            if (userManager.userLoginId.val() == "") {
+                userManager.userName.focus();
             }
         }
         else {
-            if ($("#_requestFormControl__managerName").attr("disabled") == true) {
-                if ($("#_requestFormControl__managerLoginId").val() == "") {
-                    $("#_requestFormControl__managerName").focus();
+            if (userManager.mgrName.attr("disabled") == false) {
+                if (userManager.mgrLoginId.val() == "") {
+                    userManager.mgrName.focus();
                 }
             }
         }
@@ -498,7 +561,7 @@ var userManager = {
     }
 }
 
-function BorderMyh3() { $("h3").css("border", "3px solid red"); }
+//function BorderMyh3() { $("h3").css("border", "3px solid red"); }
 
 /*
 
