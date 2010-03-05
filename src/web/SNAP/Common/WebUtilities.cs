@@ -103,5 +103,15 @@ namespace Apollo.AIM.SNAP.Web.Common
                 }
 
             }
+            
+            public static void MakePrettyDate(string date)
+            {
+				// TODO
+            }
+            
+            public static void StripTitleFromUserName(string userName)
+            {
+				// TODO
+            }
         }
 }
