@@ -121,7 +121,7 @@
     <Content Include="Controls\WorkflowApprover.ascx" />
     <Content Include="Controls\WorkflowBlade.ascx" />
     <Content Include="Controls\WorkflowBuilderPanel.ascx" />
-    <Content Include="Default.aspx" />
+    <Content Include="UserCheck.aspx" />
     <Content Include="images\ajax_indicator.gif" />
     <Content Include="images\icon_red_clipboard.png" />
     <Content Include="images\icon_blue_suit.png" />
@@ -177,7 +177,6 @@
     <Content Include="styles\jquery-ui-1.7.2.custom.css" />
     <Content Include="styles\login.css" />
     <Content Include="styles\SNAP_Brand.css" />
-    <Content Include="User.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -335,12 +334,12 @@
     <Compile Include="Controls\WorkflowBuilderPanel.ascx.designer.cs">
       <DependentUpon>WorkflowBuilderPanel.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
+    <Compile Include="UserCheck.aspx.cs">
+      <DependentUpon>UserCheck.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
+    <Compile Include="UserCheck.aspx.designer.cs">
+      <DependentUpon>UserCheck.aspx</DependentUpon>
     </Compile>
     <Compile Include="includes\ucFooter.ascx.cs">
       <DependentUpon>ucFooter.ascx</DependentUpon>
@@ -374,13 +373,6 @@
     <Compile Include="PersonTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UltimusTools.cs" />
-    <Compile Include="User.aspx.cs">
-      <DependentUpon>User.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="User.aspx.designer.cs">
-      <DependentUpon>User.aspx</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\lib\Apollo.AIM.SNAP\Apollo.AIM.SNAP.csproj">
