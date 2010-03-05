@@ -54,9 +54,9 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			table.Columns.Add("label", typeof(string));
 			table.Columns.Add("value", typeof(string));
 
-            if (HttpContext.Current.Items.Contains("Requests"))
+            if (HttpContext.Current.Items.Contains(WebUtilities.RequestKey))
             {
-                var requests = (Dictionary<string, object>) HttpContext.Current.Items["Requests"];
+                var requests = (Dictionary<string, object>) HttpContext.Current.Items[WebUtilities.RequestKey];
                 var reqDetails = (List<usp_open_my_request_detailsResult>) requests["reqDetails"];
                 var reqUserTexts = (List<SNAP_Access_User_Text>)requests["reqText"];
 
@@ -114,9 +114,9 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
 
 
-            if (HttpContext.Current.Items.Contains("Requests"))
+            if (HttpContext.Current.Items.Contains(WebUtilities.RequestKey))
             {
-                var requests = (Dictionary<string, object>) HttpContext.Current.Items["Requests"];
+                var requests = (Dictionary<string, object>) HttpContext.Current.Items[WebUtilities.RequestKey];
                 var reqComments = (List<usp_open_my_request_commentsResult>) requests["reqComments"];
 
                 var comments = reqComments.Where(x => x.requestId.ToString() == RequestId).ToList();

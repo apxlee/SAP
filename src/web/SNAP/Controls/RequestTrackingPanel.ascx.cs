@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Apollo.AIM.SNAP.Model;
 using Apollo.AIM.SNAP.Web.Common;
 
 namespace Apollo.AIM.SNAP.Web.Controls
@@ -94,7 +95,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			return table;
 		}
 
-		static DataTable GetWorkflowBlade()
+		DataTable GetWorkflowBlade()
 		{
 			// TODO: where RequestId = this.RequestId
 			//
@@ -105,9 +106,28 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			table.Columns.Add("workflow_completed_date", typeof(string));
 			table.Columns.Add("workflow_pkid", typeof(int));
 
-			table.Rows.Add("Actor One", "Status One", "Feb. 12, 2010", "Feb. 12, 2010", 1);
+
+
+            if (HttpContext.Current.Items.Contains(WebUtilities.RequestKey))
+            {
+                var requests = (Dictionary<string, object>) HttpContext.Current.Items[WebUtilities.RequestKey];
+                var wfDetails = (List<usp_open_my_request_workflow_detailsResult>)requests["wfDetails"];
+
+                var details = wfDetails.Where(x => x.requestId.ToString() == RequestId);
+
+                foreach (usp_open_my_request_workflow_detailsResult list in details)
+                {
+                    table.Rows.Add(list.displayName, list.workflowStatusEnum, list.dueDate, list.completedDate,
+                                   list.workflowId);
+                }
+
+            }
+
+            /*
+		    table.Rows.Add("Actor One", "Status One", "Feb. 12, 2010", "Feb. 12, 2010", 1);
 			table.Rows.Add("Actor Two", "Status Two", "Feb. 13, 2010", "Feb. 12, 2010", 2);
 			table.Rows.Add("Actor Three", "Status Three", "Feb. 14, 2010", "Feb. 12, 2010", 3);
+             */
 			return table;
 		}				
 	}

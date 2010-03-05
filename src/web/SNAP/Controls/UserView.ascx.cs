@@ -51,9 +51,9 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			table.Columns.Add("last_updated_date", typeof(string));
 			table.Columns.Add("is_selected", typeof(bool));
 
-            if (HttpContext.Current.Items.Contains("Requests"))
+            if (HttpContext.Current.Items.Contains(WebUtilities.RequestKey))
             {
-                var requests = (Dictionary<string, object>) HttpContext.Current.Items["Requests"];
+                var requests = (Dictionary<string, object>) HttpContext.Current.Items[WebUtilities.RequestKey];
                 var reqDetails = (List<usp_open_my_request_detailsResult>)requests["reqDetails"];
 
                	if (RequestState == RequestState.Open)
