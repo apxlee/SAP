@@ -428,6 +428,7 @@
       <arg value="-ignoreCurlyBraces+"/>
       <arg value="-excludes=**\*schema.cs"/>
       <arg value="-excludes=**\Reference.cs"/>
+      <arg value="-excludes=**\*.designer.cs"/>
       <arg value="-excludes=src\test\**\*"/>
       <arg value="**\*.cs"/>
     </exec>
