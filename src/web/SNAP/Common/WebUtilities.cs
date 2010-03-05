@@ -102,10 +102,10 @@ namespace Apollo.AIM.SNAP.Web.Common
             {
                 Page currentPage = HttpContext.Current.Handler as Page;
                 // To-do: Should use CAP login user object here
-                var x = currentPage.Request.ServerVariables["AUTH_USER"].Split('\\')[1]; // remove domain name
+                //var x = currentPage.Request.ServerVariables["AUTH_USER"].Split('\\')[1]; // remove domain name
 
                 return "clschwim";
-                return x;
+                //return x;
             }
          }
 

@@ -26,7 +26,7 @@
         </div>
         -->
         
-        <div id="_formValidation"></div>
+        <div id="_formValidationTop"></div>
         
         <asp:PlaceHolder ID="_changeComments" runat="server" />
 		
@@ -82,6 +82,8 @@
 			<asp:PlaceHolder ID="_requestForm" runat="server" ></asp:PlaceHolder>		
 				
 		</table>
+		
+		<div id="_formValidationBottom"></div>
 		
 		<div class="csm_input_buttons_container">
 			<input type="button" value="Clear Form" class="csm_html_button" id='_clearForm_lower'/>

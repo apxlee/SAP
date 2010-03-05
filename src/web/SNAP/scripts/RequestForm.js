@@ -47,10 +47,8 @@
 //$.ready(DocReady);
 
 function DocReady() {
-//    BorderMyh3();
     userManager.Ready();
 }
-
 
 var userManager = {
     Setup: function() {
@@ -192,63 +190,56 @@ var userManager = {
     Clear: function() {
         userManager.textAreas.val('');
         userManager.inputFields.val('');
+        userManager.mgrNameCheck.attr("disabled", true);
+        userManager.mgrEdit.removeAttr('disabled');
+        userManager.mgrName.attr("disabled", true);
     },
 
     InputChange: function() {
-        /*
-        if ($("textarea[id*='RequestForm']:empty").length > 0)
-        alert("Text Area empty!");
-
-        if ($("input[type='text'][id*='RequestForm']:empty").length > 0)
-        alert("input empty!");
-
-        */
 
         var status = true;
-        var check = true;
+        var check = false;
         var strSections = '';
-        var strSection = '';
+        var strElement = '';
+        var strName = '';
 
-        //        var cnt = 0;
-        //        var element;
-
-        //        userManager.textAreas.each(function() {
-        //            if ($(this).val() != '') {
-        //                cnt++;
-        //            }
-        //            else {
-        //                if (element == undefined)
-        //                    element = $(this);
-        //            }
-        //        });
-        ////////////////////////////////////!!!!!!!!!!!!!!!!!!!!!!!!
-
+        //check dynamic fields
         userManager.labels.each(function() {
             if ($(this).hasClass("csm_input_required_field")) {
-                strSection = $(this).html();
-                strSections = strSections + "[" + strSection;
+                strName = $(this).html();
+                strElement = strElement + "[" + strName;
+                check = false;
                 $(this).parent().next().children('textarea').each(function() {
-                    if ($(this).val() == '') {
-                        check = false
-                        strSections = strSections + "," + $(this).attr("name");
-                    }
+                    if ($(this).val() > '') { check = true; }
+                    else { strElement = strElement + "," + $(this).attr("id"); }
                 });
-                strSections = strSections + "]";
+                strElement = strElement + "]";
             }
-            if (check == false) { status = check; }
+            if (!check) {
+                strSections = strSections + strElement;
+                strElement = '';
+                status = check;
+            }
+            else { strElement = ''; }
         });
 
+        //check static fields
+        if (userManager.userLoginId.val() == '') { strSections = strSections + "[User Name,_requestFormControl$_requestorId]"; status = false; }
+        if (userManager.mgrLoginId.val() == '') { strSections = strSections + "[Manager Name,_requestFormControl$_managerName]"; status = false; }
+
+        //test validation bit
         if (!status) {
+            //create elements and add to DOM
             var arySections = strSections.split("][");
 
             var span = jQuery(document.createElement("span"));
             span.html("Required Fields Are Missing");
 
             var ul = jQuery(document.createElement('ul'));
-            
-            $("#_formValidation").html('');
-            $("#_formValidation").append(span);
-            $("#_formValidation").append(ul);
+
+            $("#_formValidationTop").html('');
+            $("#_formValidationTop").append(span);
+            $("#_formValidationTop").append(ul);
 
             jQuery.each(arySections, function(i, val) {
                 var aryElements = val.split(",");
@@ -261,58 +252,17 @@ var userManager = {
                         label.html(strSection + " empty field");
                         label.attr("for", val.replace("]", ""));
                         li.append(label);
-                        li.appendTo($("#_formValidation").children("ul"));
+                        li.appendTo($("#_formValidationTop").children("ul"));
                     }
                 });
             });
-
-            $("#_formValidation").addClass("csm_input_validation_summary");
-
+            $("#_formValidationBottom").html($("#_formValidationTop").html());
+            $("#_formValidationTop").addClass("csm_input_validation_summary");
+            $("#_formValidationBottom").addClass("csm_input_validation_summary");
         }
-
-        //        
-        //        <div class="csm_input_validation_summary">
-        //            <span>Required Fields Are Missing</span>
-        //            <ul>
-        //                <li><label for="_userId">Please enter your name.</label></li>
-        //                <li><label for="_justification">Please complete the justification section.</label></li>
-        //            </ul>
-        //        </div>
-        //        
-        //////////////////////////////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        //        if (cnt == 0) {
-        //            status = false;
-        //            userManager.MissingData(element);
-        //        }
-
-        //        if (status) {
-        //            userManager.inputFields.each(function() {
-        //                if ($(this).val() == '') {
-        //                    userManager.MissingData($(this));
-        //                    status = false;
-        //                    return status;
-        //                }
-        //            });
-        //        }
-
-        //        if (status && userManager.mgrName.attr("disabled") == false) {
-        //            alert("Please check manager name");
-        //            status = false;
-        //        }
 
         return status;
     },
-
-    /*
-    HandleInputChange: function() {
-    userManager.inputFields.change(function() {
-    userManager.InputChange();
-    });
-    userManager.textAreas.change(function() {
-    userManager.InputChange();
-    });
-    },
-    */
 
     HandleClearButtonClick: function() {
         userManager.clearButton.click(function() { userManager.Clear(); })
@@ -331,20 +281,21 @@ var userManager = {
         userManager.userNameCheck.click(function() {
             // this is ref to the button not usermanager, hence to call usermanager function I need to ref to qualify user manager
             userManager.GetNames(userManager.userName, userManager.userSelection, userManager.userSelectionDiv);
-            //userManager.userSelectionDiv.dialog('open');
         })
     },
     HandleGetManagerNames: function() {
         userManager.mgrNameCheck.click(function() {
             // this is ref to the button not usermanager, hence to call usermanager function I need to ref to qualify user manager
             userManager.GetNames(userManager.mgrName, userManager.mgrSelection, userManager.mgrSelectionDiv);
-            //userManager.managerSelectionDiv.dialog('open');
         })
     },
 
     HandleEditManagerName: function() {
         userManager.mgrEdit.click(function() {
             userManager.mgrName.removeAttr('disabled');
+            userManager.mgrNameCheck.removeAttr('disabled');
+            userManager.mgrEdit.attr("disabled", true);
+            userManager.mgrName.focus();
         })
     },
 
@@ -367,7 +318,6 @@ var userManager = {
 
     UserNameSelected: function() {
         userManager.AssignSelectedName(userManager.userName,
-        //$('select[id$=nameSelection] option:selected').text(),
                             $('#' + userManager.userSelection.attr('id') + ' option:selected').text(),
                             userManager.userSelection);
         userManager.userLoginId.val('loading');
@@ -391,7 +341,6 @@ var userManager = {
 
     ManagerNameSelected: function() {
         userManager.AssignSelectedName(userManager.mgrName,
-        //$('select[id$=mgrSelection] option:selected').text(),
                             $('#' + userManager.mgrSelection.attr('id') + ' :selected').text(),
                             userManager.mgrSelection);
         userManager.GetUserManagerInfo("manager", userManager.mgrName);
@@ -405,6 +354,8 @@ var userManager = {
     AssignManagerName: function(name) {
         userManager.mgrName.val(name);
         userManager.mgrName.attr("disabled", true);
+        userManager.mgrNameCheck.attr("disabled", true);
+        userManager.mgrEdit.removeAttr('disabled');
     },
 
     FillAllFields: function(name, names) {
@@ -526,22 +477,6 @@ var userManager = {
         userManager.ConvertToDialog(userManager.userSelectionDiv);
     },
 
-    /*
-    DisableSubmitButton: function() {
-    userManager.submitButton.attr("disabled", "disabled");
-    userManager.submitButtonLower.attr("disabled", "disabled");
-    },
-    EnableSubmitButton: function() {
-    userManager.submitButton.removeAttr("disabled");
-    userManager.submitButtonLower.removeAttr("disabled"); ;
-    },
-    */
-
-    MissingData: function(element) {
-        alert("Missing Data");
-        element.focus();
-        //element.css("border", "3px solid red");
-    },
     Ready: function() {
         // this: userManager object
         this.Setup();
@@ -557,11 +492,9 @@ var userManager = {
         this.HandleEditManagerName();
         this.HandleClearClick();
         this.HandleSubmitClick();
-        userManager.mgrName.attr("disabled", true);
+        this.Clear();
     }
 }
-
-//function BorderMyh3() { $("h3").css("border", "3px solid red"); }
 
 /*
 

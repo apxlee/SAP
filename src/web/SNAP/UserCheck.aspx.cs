@@ -53,7 +53,7 @@ namespace Apollo.AIM.SNAP.Web
                 if (userDetail != null)
                 {
                     userManagerInfo.LoginId = userDetail.LoginName;
-                    userManagerInfo.ManagerLoginId = userDetail.Manager.ToString();
+                    userManagerInfo.ManagerLoginId = DirectoryServices.GetUserByFullName(userDetail.ManagerName).LoginName;
                     userManagerInfo.ManagerName = userDetail.ManagerName;
                     userManagerInfo.Name = userDetail.FirstName + " " + userDetail.LastName;
                     singleUser.Add(userManagerInfo);
