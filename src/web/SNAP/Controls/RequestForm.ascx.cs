@@ -42,7 +42,6 @@ namespace Apollo.AIM.SNAP.Web.Controls
                 if (!brandNewRequest())
                     requestFormSection.RequestData = _requestFormData;
 
-
                 Label outerDescription;
                 outerDescription = (Label)WebUtilities.FindControlRecursive(requestFormSection, "_outerDescription");
                 outerDescription.Text = access.description;
