@@ -44,17 +44,17 @@ namespace Apollo.AIM.SNAP.Web.Controls
 				Label workflowCompletedDate = (Label)WebUtilities.FindControlRecursive(workflowBlade, "_workflowCompletedDate");
 				workflowCompletedDate.Text = workflowRow["workflow_completed_date"].ToString();
 
-				BuildBladeComments( workflowBlade, (int)workflowRow["workflow_pkid"] );
+                BuildBladeComments(workflowBlade, (int)workflowRow["workflow_pkid"], workflowRow["workflow_actor_name"].ToString());
 				
 				this._workflowBladeContainer.Controls.Add(workflowBlade);
 			}
 		}
 		
-		private void BuildBladeComments(Control CurrentBlade, int WorkflowId)
+		private void BuildBladeComments(Control CurrentBlade, int WorkflowId, string actorName)
 		{
 			// if no comments then hide comments container
 			//
-			DataTable workflowCommentsTable = GetWorkflowComments(WorkflowId);
+			DataTable workflowCommentsTable = GetWorkflowComments(WorkflowId, actorName);
 			Panel workflowBladeCommentsContainer = (Panel)WebUtilities.FindControlRecursive(CurrentBlade, "_workflowBladeCommentsContainer");
 			StringBuilder workflowComments = new StringBuilder();
 
@@ -76,7 +76,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			workflowBladeCommentsContainer.Visible = true;
 		}
 		
-		static DataTable GetWorkflowComments(int WorkflowId)
+		DataTable GetWorkflowComments(int WorkflowId, string actorName)
 		{
 			// NOTE: dataset must be ordered from first to last
 			//
@@ -86,12 +86,30 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			table.Columns.Add("comment_date", typeof(string));
 			table.Columns.Add("comment", typeof(string));
 			table.Columns.Add("is_new", typeof(bool));
-			
+
+
+            if (HttpContext.Current.Items.Contains(WebUtilities.RequestKey))
+            {
+                var requests = (Dictionary<string, object>)HttpContext.Current.Items[WebUtilities.RequestKey];
+                //var wfDetails = (List<usp_open_my_request_workflow_detailsResult>)requests["wfDetails"];
+                var wfComments = (List<usp_open_my_request_workflow_commentsResult>)requests["wfComments"];
+
+                var details = wfComments.Where(x => x.workflowId == WorkflowId);
+
+                foreach (usp_open_my_request_workflow_commentsResult list in details)
+                {
+                    table.Rows.Add(list.commentTypeEnum, actorName, list.createdDate, list.commentText, true);
+                }
+
+            }
+
+			/*
 			table.Rows.Add("Acknowledged", "AIM", "Jan. 24, 2010", "Due Date: Jan. 20, 2010", false);
 			table.Rows.Add("Change Requested", "AIM", "Jan. 24, 2010", "The 'justification' section on the form was not completed.", false);
 			table.Rows.Add("Acknowledged", "AIM", "Jan. 25, 2010", "Due Date: Jan. 25, 2010", false);
 			table.Rows.Add("Change Requested", "AIM", "Jan. 26, 2010", "Please complete the form as requested.", true);
-			
+			*/
+
 			return table;
 		}
 
