@@ -35,7 +35,8 @@
 				</div>
 				<div class="snap_copyright">
 					<span>&copy;2010 Apollo Group, Inc.&nbsp;|&nbsp;Access & Identity Management
-					<br />Out-of-Scope Privileged Access&nbsp;<asp:Label ID="_versionAndServer" runat="server"></asp:Label></span>
+					<br />Out-of-Scope Privileged Access&nbsp;<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.AppVersion %>
+					&nbsp;on&nbsp;<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.CurrentServer %></span>
 				</div>
 				<div class="csm_clear">&nbsp;</div>									
 			</div>			

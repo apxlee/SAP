@@ -18,9 +18,6 @@ namespace Apollo.AIM.SNAP.Web.Controls
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-			// TODO: replace with request server name
-			//
-			_versionAndServer.Text = "1.0 on AWACSPX001";
         }
     }
 }
