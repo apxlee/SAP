@@ -26,7 +26,7 @@
 		<uc:Header ID="_headerControl" runat="server" />		
 		
 		<!-- BEGIN CONTENT AREA -->
-		<asp:Panel ID="_contentContainer" CssClass="csm_container_16 csm_500" runat="server">
+		<asp:Panel ID="_contentContainer" CssClass="csm_container_100 csm_500" runat="server">
 		<!-- TODO: do we really need this container server-side? -->
 		<div class="csm_grid_14 csm_prefix_1 csm_suffix_1">
 			
@@ -38,7 +38,6 @@
 				</asp:View>
 
 				<asp:View ID="_requestFormView" runat="server"><!-- 1 -->
-					<div class="csm_container_center_700"><h1>Request Form</h1></div>
 					<uc:RequestForm id='_requestFormControl' runat="server" />
 				</asp:View>
 				
