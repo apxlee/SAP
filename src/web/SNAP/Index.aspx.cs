@@ -82,28 +82,5 @@ namespace Apollo.AIM.SNAP.Web
                 loader.Load();
 		}
 
-
-        private void loadMyApprovalRequests()
-        {
-            try
-            {
-                using (var db = new SNAPDatabaseDataContext())
-                {
-
-                    var requests = db.MyOpenApprovalRequests(WebUtilities.CurrentLoginUserId);
-                    if (Context.Items.Contains(Common.Request.RequestKey))
-                        Context.Items.Remove(Common.Request.RequestKey);
-
-                    Context.Items.Add(Common.Request.RequestKey, requests);
-
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error("SNAP - Index: loadMyRequests failed", ex);
-            }
-
-        }
-
 	}
 }
