@@ -54,26 +54,22 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			table.Columns.Add("label", typeof(string));
 			table.Columns.Add("value", typeof(string));
 
-            if (HttpContext.Current.Items.Contains(WebUtilities.RequestKey))
-            {
-                var requests = (Dictionary<string, object>) HttpContext.Current.Items[WebUtilities.RequestKey];
-                var reqDetails = (List<usp_open_my_request_detailsResult>) requests["reqDetails"];
-                var reqUserTexts = (List<SNAP_Access_User_Text>)requests["reqText"];
+            var reqDetails = Common.Request.Details;
+            var reqUserTexts = Common.Request.UserTexts;
 
-                var reqDetail = reqDetails.Single(x => x.pkId.ToString() == RequestId);
-                var reqUserText = reqUserTexts.Where(x => x.requestId.ToString() == RequestId).ToList();
-                
+            var reqDetail = reqDetails.Single(x => x.pkId.ToString() == RequestId);
+            var reqUserText = reqUserTexts.Where(x => x.requestId.ToString() == RequestId).ToList();
+            
 
-                table.Rows.Add("Title", reqDetail.userTitle);
-                table.Rows.Add("Manager Name", reqDetail.managerDisplayName);
-                table.Rows.Add("AD Manager Name", "Sally Kirkland");
-                table.Rows.Add("Requestor", reqDetail.submittedBy);
-                table.Rows.Add("Windows Servers", userText(reqUserText, 2)); //reqUserText.Single(x => x.access_details_formId == 2).userText); ;
-                table.Rows.Add("Linux/Unix Servers", userText(reqUserText, 3)); //reqUserText.Single(x => x.access_details_formId == 3).userText);
-                table.Rows.Add("Network Shares", userText(reqUserText, 4)); //reqUserText.Single(x => x.access_details_formId == 4).userText);
-                table.Rows.Add("Justification", userText(reqUserText, 5)); //reqUserText.Single(x => x.access_details_formId == 5).userText);
+            table.Rows.Add("Title", reqDetail.userTitle);
+            table.Rows.Add("Manager Name", reqDetail.managerDisplayName);
+            table.Rows.Add("AD Manager Name", "Sally Kirkland");
+            table.Rows.Add("Requestor", reqDetail.submittedBy);
+            table.Rows.Add("Windows Servers", userText(reqUserText, 2)); //reqUserText.Single(x => x.access_details_formId == 2).userText); ;
+            table.Rows.Add("Linux/Unix Servers", userText(reqUserText, 3)); //reqUserText.Single(x => x.access_details_formId == 3).userText);
+            table.Rows.Add("Network Shares", userText(reqUserText, 4)); //reqUserText.Single(x => x.access_details_formId == 4).userText);
+            table.Rows.Add("Justification", userText(reqUserText, 5)); //reqUserText.Single(x => x.access_details_formId == 5).userText);
 
-            }
 
             /*
 		    table.Rows.Add("Title", "Network Engineer II");
@@ -112,20 +108,12 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			table.Columns.Add("comment_date", typeof(string));
 			table.Columns.Add("comment", typeof(string));
 
+   
+            var reqComments = Common.Request.Comments;
+            var comments = reqComments.Where(x => x.requestId.ToString() == RequestId).ToList();
+            foreach (usp_open_my_request_commentsResult result in comments)
+                table.Rows.Add(result.commentTypeEnum, result.createdDate, result.commentText);
 
-
-            if (HttpContext.Current.Items.Contains(WebUtilities.RequestKey))
-            {
-                var requests = (Dictionary<string, object>) HttpContext.Current.Items[WebUtilities.RequestKey];
-                var reqComments = (List<usp_open_my_request_commentsResult>) requests["reqComments"];
-
-                var comments = reqComments.Where(x => x.requestId.ToString() == RequestId).ToList();
-                foreach (usp_open_my_request_commentsResult result in comments)
-                {
-                    table.Rows.Add(result.commentTypeEnum, result.createdDate, result.commentText);
-                }
-
-            }
 
 
             // TODO

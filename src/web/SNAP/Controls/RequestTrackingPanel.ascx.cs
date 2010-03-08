@@ -88,19 +88,12 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			table.Columns.Add("is_new", typeof(bool));
 
 
-            if (HttpContext.Current.Items.Contains(WebUtilities.RequestKey))
+		    var wfComments = Common.Request.WfComments;
+            var details = wfComments.Where(x => x.workflowId == WorkflowId);
+
+            foreach (usp_open_my_request_workflow_commentsResult list in details)
             {
-                var requests = (Dictionary<string, object>)HttpContext.Current.Items[WebUtilities.RequestKey];
-                //var wfDetails = (List<usp_open_my_request_workflow_detailsResult>)requests["wfDetails"];
-                var wfComments = (List<usp_open_my_request_workflow_commentsResult>)requests["wfComments"];
-
-                var details = wfComments.Where(x => x.workflowId == WorkflowId);
-
-                foreach (usp_open_my_request_workflow_commentsResult list in details)
-                {
-                    table.Rows.Add(list.commentTypeEnum, actorName, list.createdDate, list.commentText, true);
-                }
-
+                table.Rows.Add(list.commentTypeEnum, actorName, list.createdDate, list.commentText, true);
             }
 
 			/*
@@ -125,21 +118,15 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			table.Columns.Add("workflow_pkid", typeof(int));
 
 
+            var wfDetails = Common.Request.WfDetails;
+            var details = wfDetails.Where(x => x.requestId.ToString() == RequestId);
 
-            if (HttpContext.Current.Items.Contains(WebUtilities.RequestKey))
+            foreach (usp_open_my_request_workflow_detailsResult list in details)
             {
-                var requests = (Dictionary<string, object>) HttpContext.Current.Items[WebUtilities.RequestKey];
-                var wfDetails = (List<usp_open_my_request_workflow_detailsResult>)requests["wfDetails"];
-
-                var details = wfDetails.Where(x => x.requestId.ToString() == RequestId);
-
-                foreach (usp_open_my_request_workflow_detailsResult list in details)
-                {
-                    table.Rows.Add(list.displayName, list.workflowStatusEnum, list.dueDate, list.completedDate,
-                                   list.workflowId);
-                }
-
+                table.Rows.Add(list.displayName, list.workflowStatusEnum, list.dueDate, list.completedDate,
+                               list.workflowId);
             }
+
 
             /*
 		    table.Rows.Add("Actor One", "Status One", "Feb. 12, 2010", "Feb. 12, 2010", 1);
