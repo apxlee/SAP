@@ -54,6 +54,7 @@ namespace Apollo.AIM.SNAP.Web
 					WebUtilities.SetActiveView("_accessTeamView");
 					ribbonContainer.CssClass = "access_team";
 					// TODO: get from db
+                    loader = new Common.AccessTeamRequestLooder();
 					_headerControl.PendingAccessTeam = 5;
 					break;
 

@@ -54,4 +54,14 @@ namespace Apollo.AIM.SNAP.Web.Common
         }
     }
 
+    public class AccessTeamRequestLooder : RequestLoader
+    {
+
+        protected override Dictionary<string, object> loadData(SNAPDatabaseDataContext db)
+        {
+            return db.AccessTeamRequests();
+        }
+    }
+
+
 }

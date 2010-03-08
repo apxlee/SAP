@@ -68,7 +68,32 @@ namespace Apollo.AIM.SNAP.Test
             }
         }
 
-        
+
+        [Test]
+        public void ShouldReturnAccessRequest()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+
+                var requests = db.AccessTeamRequests();
+                var reqDetails = (List<usp_open_my_request_detailsResult>)requests["reqDetails"];
+                foreach (var d in reqDetails)
+                {
+                    Console.WriteLine(d.pkId + "," + d.statusEnum);
+                }
+                var wfComments = (List<usp_open_my_request_workflow_commentsResult>)requests["wfComments"];
+                foreach (var c in wfComments)
+                {
+                    Console.WriteLine(c.requestId + "," + c.commentText);
+                }
+                var texts = (List<SNAP_Access_User_Text>)requests["reqText"];
+                foreach (SNAP_Access_User_Text list in texts)
+                {
+                    Console.WriteLine(list.access_details_formId + "," + list.userText);
+                }
+            }
+        }
+
         //[Test]
         //public void ShouldReturnNoRequestData()
         //{

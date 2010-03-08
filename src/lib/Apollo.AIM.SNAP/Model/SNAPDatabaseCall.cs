@@ -75,6 +75,18 @@ namespace Apollo.AIM.SNAP.Model
         }
 
 
+        [Function(Name = "dbo.usp_open_access_team_tab")]
+        [ResultType(typeof(usp_open_my_request_detailsResult))]
+        [ResultType(typeof(SNAP_Access_User_Text))]
+        [ResultType(typeof(usp_open_my_request_commentsResult))]
+        [ResultType(typeof(usp_open_my_request_workflow_detailsResult))]
+        [ResultType(typeof(usp_open_my_request_workflow_commentsResult))]
+        public IMultipleResults usp_open_access_team_tab()
+        {
+            IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
+            return ((IMultipleResults)(result.ReturnValue));
+        }
+
         // this method just package my open request call results into dictionary type
         public Dictionary<string, object> MyOpenRequests(string userId)
         {
@@ -91,6 +103,15 @@ namespace Apollo.AIM.SNAP.Model
 
             var myRequests = new Dictionary<string, object>();
             IMultipleResults result = usp_open_my_approval_tab(userId);
+            populateRequests(result, myRequests);
+            return myRequests;
+        }
+
+        public Dictionary<string, object> AccessTeamRequests()
+        {
+
+            var myRequests = new Dictionary<string, object>();
+            IMultipleResults result = usp_open_access_team_tab();
             populateRequests(result, myRequests);
             return myRequests;
         }
