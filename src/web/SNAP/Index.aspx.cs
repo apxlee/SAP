@@ -38,6 +38,7 @@ namespace Apollo.AIM.SNAP.Web
 		    //WebUtilities.CurrentRole = OOSPARole.Requestor;
 
 			Panel ribbonContainer = (Panel)WebUtilities.FindControlRecursive(Page, "_ribbonContainerOuter");
+		    Common.RequestLoader loader = null;
 
 			switch (WebUtilities.CurrentRole)
 			{
@@ -45,6 +46,7 @@ namespace Apollo.AIM.SNAP.Web
 					WebUtilities.SetActiveView("_approvingManagerView");
 					ribbonContainer.CssClass = "my_approvals";
 					// TODO: get from db
+                    loader = new Common.MyOpenApprovalRequestLooder();
 					_headerControl.PendingApprovals = 20;
 					break;
 
@@ -66,7 +68,7 @@ namespace Apollo.AIM.SNAP.Web
 				case OOSPARole.Requestor:
 					WebUtilities.SetActiveView("_userView");
 					ribbonContainer.CssClass = "my_requests";
-			        loadMyRequests();
+                    loader = new Common.MyOpenRequestLooder();
 					break;
 
 				case OOSPARole.NotAuthenticated:
@@ -74,17 +76,21 @@ namespace Apollo.AIM.SNAP.Web
 					WebUtilities.SetActiveView("_loginView");
 					ribbonContainer.CssClass = "login";
 					break;
-			}			
+			}		
+	
+            if (loader != null)
+                loader.Load();
 		}
 
-        private void loadMyRequests()
+
+        private void loadMyApprovalRequests()
         {
             try
             {
                 using (var db = new SNAPDatabaseDataContext())
                 {
 
-                    var requests = db.MyOpenRequests(WebUtilities.CurrentLoginUserId);
+                    var requests = db.MyOpenApprovalRequests(WebUtilities.CurrentLoginUserId);
                     if (Context.Items.Contains(Common.Request.RequestKey))
                         Context.Items.Remove(Common.Request.RequestKey);
 
@@ -92,11 +98,12 @@ namespace Apollo.AIM.SNAP.Web
 
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Logger.Error("SNAP - Index: loadMyRequests failed", ex);
             }
 
         }
+
 	}
 }
