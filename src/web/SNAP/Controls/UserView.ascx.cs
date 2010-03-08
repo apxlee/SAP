@@ -51,25 +51,23 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			table.Columns.Add("last_updated_date", typeof(string));
 			table.Columns.Add("is_selected", typeof(bool));
 
-            if (HttpContext.Current.Items.Contains(WebUtilities.RequestKey))
-            {
-                var requests = (Dictionary<string, object>) HttpContext.Current.Items[WebUtilities.RequestKey];
-                var reqDetails = (List<usp_open_my_request_detailsResult>)requests["reqDetails"];
+            
 
-               	if (RequestState == RequestState.Open)
-			    {
-				    //table.Rows.Add("12345", "User One", "Open", "Feb. 10, 2010", false);
-				    //table.Rows.Add("54321", "User Two", "Open", "Jan. 3, 2010", true);
+           	if (RequestState == RequestState.Open)
+		    {
+                var reqDetails = Common.Request.Details;
 
-                    foreach (usp_open_my_request_detailsResult list in reqDetails)
-                    {
-                        table.Rows.Add(list.pkId, list.userDisplayName.StripTitleFromUserName()
-							, Convert.ToString((WorkflowState)Enum.Parse(typeof(WorkflowState), list.statusEnum.ToString())).StripUnderscore()
-							, list.createdDate.ToString("MMM d, yyyy"), false);
-                        // is this "last updated date" or "created date"?
-                    }
-			    }
-            }
+			    //table.Rows.Add("12345", "User One", "Open", "Feb. 10, 2010", false);
+			    //table.Rows.Add("54321", "User Two", "Open", "Jan. 3, 2010", true);
+
+                foreach (usp_open_my_request_detailsResult list in reqDetails)
+                {
+                    table.Rows.Add(list.pkId, list.userDisplayName.StripTitleFromUserName()
+						, Convert.ToString((WorkflowState)Enum.Parse(typeof(WorkflowState), list.statusEnum.ToString())).StripUnderscore()
+						, list.createdDate.ToString("MMM d, yyyy"), false);
+                    // is this "last updated date" or "created date"?
+                }
+		    }
 
 			if (RequestState == RequestState.Closed)
 			{

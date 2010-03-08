@@ -66,7 +66,7 @@ namespace Apollo.AIM.SNAP.Web.Common
         {
             get
             {
-                return HttpContext.Current.Items.Contains(requestKey);
+                return HttpContext.Current.Items.Contains(RequestKey);
             }
         }
 
@@ -75,13 +75,13 @@ namespace Apollo.AIM.SNAP.Web.Common
             get
             {
                 if (exist)
-                    return (Dictionary<string, object>) HttpContext.Current.Items[requestKey];
+                    return (Dictionary<string, object>) HttpContext.Current.Items[RequestKey];
 
                 return new Dictionary<string, object>();
             }
         }
 
-        static string requestKey
+        public static string RequestKey
         {
             get
             {

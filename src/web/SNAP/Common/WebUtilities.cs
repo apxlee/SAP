@@ -109,13 +109,6 @@ namespace Apollo.AIM.SNAP.Web.Common
             }
          }
 
-		public static string RequestKey
-        {
-            get
-            {
-                return CurrentLoginUserId + "-" + "Requests";
-            }
-        }
      }
      
         

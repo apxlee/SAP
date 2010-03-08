@@ -85,10 +85,10 @@ namespace Apollo.AIM.SNAP.Web
                 {
 
                     var requests = db.MyOpenRequests(WebUtilities.CurrentLoginUserId);
-                    if (Context.Items.Contains(WebUtilities.RequestKey))
-                        Context.Items.Remove(WebUtilities.RequestKey);
+                    if (Context.Items.Contains(Common.Request.RequestKey))
+                        Context.Items.Remove(Common.Request.RequestKey);
 
-                    Context.Items.Add(WebUtilities.RequestKey, requests);
+                    Context.Items.Add(Common.Request.RequestKey, requests);
 
                 }
             }
