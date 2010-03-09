@@ -2,6 +2,7 @@
 using System.Data;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Apollo.AIM.SNAP.Model;
 using Apollo.AIM.SNAP.Web.Common;
 
 namespace Apollo.AIM.SNAP.Web.Controls
@@ -10,6 +11,9 @@ namespace Apollo.AIM.SNAP.Web.Controls
 	{
 		protected void Page_Load(object sender, EventArgs e)
 		{
+            var loader = new Common.AccessTeamRequestLooder();
+            loader.Load();
+
 			BuildRequests(RequestState.Open, _openRequestsContainer, false);
 			BuildRequests(RequestState.Closed, _closedRequestsContainer, true);
 		}
@@ -50,8 +54,19 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
 			if (RequestState == RequestState.Open)
 			{
-				//table.Rows.Add("12345", "User One", "Open", "Feb. 10, 2010", false);
-				//table.Rows.Add("54321", "User Two", "Open", "Jan. 3, 2010", true);
+                if (RequestState == RequestState.Open)
+                {
+                    var reqDetails = Common.Request.Details;
+
+                    foreach (usp_open_my_request_detailsResult list in reqDetails)
+                    {
+                        table.Rows.Add(list.pkId, list.userDisplayName.StripTitleFromUserName()
+                            , Convert.ToString((WorkflowState)Enum.Parse(typeof(WorkflowState), list.statusEnum.ToString())).StripUnderscore()
+                            , list.createdDate.ToString("MMM d, yyyy"), false);
+                        // is this "last updated date" or "created date"?
+                    }
+                }
+
 			}
 
 			if (RequestState == RequestState.Closed)

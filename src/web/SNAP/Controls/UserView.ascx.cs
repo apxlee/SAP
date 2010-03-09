@@ -13,6 +13,9 @@ namespace Apollo.AIM.SNAP.Web.Controls
 	{
 		protected void Page_Load(object sender, EventArgs e)
 		{
+            var loader = new Common.MyOpenRequestLooder();
+		    loader.Load();
+
 			BuildRequests(RequestState.Open, _openRequestsContainer, false);
 			BuildRequests(RequestState.Closed, _closedRequestsContainer, true);
 		}

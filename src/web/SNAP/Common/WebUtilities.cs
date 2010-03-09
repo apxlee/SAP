@@ -9,6 +9,9 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
+using Apollo.AIM.SNAP.CA;
+using Apollo.AIM.SNAP.Model;
+using Apollo.CA.Logging;
 
 namespace Apollo.AIM.SNAP.Web.Common
 {
@@ -51,6 +54,39 @@ namespace Apollo.AIM.SNAP.Web.Common
 				Page currentPage = HttpContext.Current.Handler as Page;
 				currentPage.Session["OOSPAUserRole"] = value;
 			}
+        }
+
+        public static Role DetermineRole()
+        {
+            var role = Role.NotAuthenticated;
+            ADUserDetail userDetail = CA.DirectoryServices.GetUserByLoginName(CurrentLoginUserId);
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                
+                try
+                {
+                    // AD group is access team
+                    if (userDetail.MemberOf.Contains("Access"))
+                    {
+                        // 1 - aim team. Is the user configured as AIM in the db?
+                        var rolecheck = db.SNAP_Actors.Where(
+                                a => a.actor_groupId == 1 && a.userId == CurrentLoginUserId && a.isActive == true);
+                        role = rolecheck.Count() > 0 ? Role.SuperUser : Role.AccessTeam;
+                    }
+                    else
+                    {
+                        // Is the user configure as approval manager?
+                        var rolecheck = db.SNAP_Actors.Where(
+                                a => a.actor_groupId != 1 && a.userId == CurrentLoginUserId && a.isActive == true);
+                        role = rolecheck.Count() > 0 ? Role.ApprovingManager : Role.Requestor;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error("WebUtilities - DetermineRole failed", ex);
+                }
+            }
+            return role;
         }
 
         public static Control FindControlRecursive(Control controlRoot, string controlId)

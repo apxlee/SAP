@@ -225,7 +225,23 @@ namespace Apollo.AIM.SNAP.CA
 
         public static void Main()
         {
+            //Console.WriteLine("Test AD ...");
+            //Console.ReadLine();
             
+            
+            var ldap = new LDAPConnection();
+            Console.WriteLine("host: " + ldap.Host);
+            Console.WriteLine("base: " + ldap.LDAPbase);
+            Console.WriteLine("connection: " + ldap.LdapConnectionString);
+            Console.WriteLine("ldap host: " + ldap.LDAPHost);
+            Console.WriteLine("password" + ldap.Password);
+            Console.WriteLine("port: " + ldap.Port);
+            Console.WriteLine("username: " + ldap.Username);
+            Console.WriteLine("SearchBase: " + ldap.UserSearchBase);
+
+            Console.ReadLine();
+            
+
             List<string> users = DirectoryServices.GetAllUserByFullName("Jason Smith");
             users.ForEach(delegate(string x)
                               {
@@ -233,11 +249,15 @@ namespace Apollo.AIM.SNAP.CA
                                   DisplayDetails(u);
                               });
             
+
             ADUserDetail detail = DirectoryServices.GetUserByLoginName("pxlee");
             DisplayDetails(detail);
             detail = DirectoryServices.GetUserByLoginName("gjbelang");
             DisplayDetails(detail);
+            
+ 
             Console.ReadLine();
+             
         }
 
         public static void DisplayDetails(ADUserDetail detail)

@@ -33,28 +33,22 @@ namespace Apollo.AIM.SNAP.Web
 			else
 			{
 				// TODO: utility to find AD group and/or look into DB for existence of pending approvals to determine role
+			    WebUtilities.CurrentRole = WebUtilities.DetermineRole();
 			}
 
-		    //WebUtilities.CurrentRole = OOSPARole.Requestor;
-
 			Panel ribbonContainer = (Panel)WebUtilities.FindControlRecursive(Page, "_ribbonContainerOuter");
-		    Common.RequestLoader loader = null;
 
 			switch (WebUtilities.CurrentRole)
 			{
 				case OOSPARole.ApprovingManager:
 					WebUtilities.SetActiveView("_approvingManagerView");
 					ribbonContainer.CssClass = "my_approvals";
-					// TODO: get from db
-                    loader = new Common.MyOpenApprovalRequestLooder();
 					_headerControl.PendingApprovals = 20;
 					break;
 
 				case OOSPARole.AccessTeam:
 					WebUtilities.SetActiveView("_accessTeamView");
 					ribbonContainer.CssClass = "access_team";
-					// TODO: get from db
-                    loader = new Common.AccessTeamRequestLooder();
 					_headerControl.PendingAccessTeam = 5;
 					break;
 
@@ -69,7 +63,6 @@ namespace Apollo.AIM.SNAP.Web
 				case OOSPARole.Requestor:
 					WebUtilities.SetActiveView("_userView");
 					ribbonContainer.CssClass = "my_requests";
-                    loader = new Common.MyOpenRequestLooder();
 					break;
 
 				case OOSPARole.NotAuthenticated:
@@ -79,8 +72,6 @@ namespace Apollo.AIM.SNAP.Web
 					break;
 			}		
 	
-            if (loader != null)
-                loader.Load();
 		}
 
 	}
