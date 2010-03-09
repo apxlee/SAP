@@ -17,11 +17,11 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		
 		protected void Page_Load(object sender, EventArgs e)
 		{
-			DataTable workflowBladeTestTable = GetWorkflowBlade();
+			DataTable workflowBladeTable = GetWorkflowBlade();
 			
 			// TODO: if there are no blades (which would be odd), then build 'no data' message
 			
-			foreach (DataRow workflowRow in workflowBladeTestTable.Rows)
+			foreach (DataRow workflowRow in workflowBladeTable.Rows)
 			{
 				WorkflowBlade workflowBlade;
 				workflowBlade = LoadControl("~/Controls/WorkflowBlade.ascx") as WorkflowBlade;
@@ -36,13 +36,16 @@ namespace Apollo.AIM.SNAP.Web.Controls
 				workflowActorName.Text = workflowRow["workflow_actor_name"].ToString();
 				
 				Label workflowStatus = (Label)WebUtilities.FindControlRecursive(workflowBlade, "_workflowStatus");
-				workflowStatus.Text = workflowRow["workflow_status"].ToString();
+				//workflowStatus.Text = workflowRow["workflow_status"].ToString();
+				workflowStatus.Text = Convert.ToString((WorkflowState)Enum.Parse(typeof(WorkflowState), workflowRow["workflow_status"].ToString())).StripUnderscore();
+
+				// Convert.ToString((WorkflowState)Enum.Parse(typeof(WorkflowState), workflowRow["workflow_status"].ToString())).StripUnderscore()
 				
 				Label workflowDueDate = (Label)WebUtilities.FindControlRecursive(workflowBlade, "_workflowDueDate");
-				workflowDueDate.Text = workflowRow["workflow_due_date"].ToString();
-
+				workflowDueDate.Text = TestAndConvertDate(workflowRow["workflow_due_date"].ToString());
+				
 				Label workflowCompletedDate = (Label)WebUtilities.FindControlRecursive(workflowBlade, "_workflowCompletedDate");
-				workflowCompletedDate.Text = workflowRow["workflow_completed_date"].ToString();
+				workflowCompletedDate.Text = TestAndConvertDate(workflowRow["workflow_completed_date"].ToString());
 
                 BuildBladeComments(workflowBlade, (int)workflowRow["workflow_pkid"], workflowRow["workflow_actor_name"].ToString());
 				
@@ -74,6 +77,18 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
 			workflowBladeCommentsContainer.Controls.Add(comments);
 			workflowBladeCommentsContainer.Visible = true;
+		}
+		
+		private string TestAndConvertDate(string date)
+		{
+			if (!string.IsNullOrEmpty(date.ToString()))
+			{
+				return Convert.ToDateTime(date).ToString("MMM d, yyyy");
+			}
+			else
+			{
+				return "-";
+			}
 		}
 		
 		DataTable GetWorkflowComments(int WorkflowId, string actorName)
@@ -114,25 +129,18 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			table.Columns.Add("workflow_actor_name", typeof(string));
 			table.Columns.Add("workflow_status", typeof(string));
 			table.Columns.Add("workflow_due_date", typeof(string));
-			table.Columns.Add("workflow_completed_date", typeof(string));
+			table.Columns.Add("workflow_completed_date", typeof(DateTime));
 			table.Columns.Add("workflow_pkid", typeof(int));
-
 
             var wfDetails = Common.Request.WfDetails;
             var details = wfDetails.Where(x => x.requestId.ToString() == RequestId);
 
             foreach (usp_open_my_request_workflow_detailsResult list in details)
             {
-                table.Rows.Add(list.displayName, list.workflowStatusEnum, list.dueDate, list.completedDate,
-                               list.workflowId);
+                table.Rows.Add(list.displayName, list.workflowStatusEnum, list.dueDate, list.completedDate, list.workflowId);
+                // why is workflowStatusEnum byte instead of int?
             }
 
-
-            /*
-		    table.Rows.Add("Actor One", "Status One", "Feb. 12, 2010", "Feb. 12, 2010", 1);
-			table.Rows.Add("Actor Two", "Status Two", "Feb. 13, 2010", "Feb. 12, 2010", 2);
-			table.Rows.Add("Actor Three", "Status Three", "Feb. 14, 2010", "Feb. 12, 2010", 3);
-             */
 			return table;
 		}				
 	}

@@ -17,8 +17,6 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		public string LastUpdatedDate { get; set; }
 		public bool IsSelectedRequest { get; set; }
 		
-		private Role _testRole = Role.AccessTeam;
-	
 		protected void Page_Load(object sender, EventArgs e)
 		{
 			PopulateUserInfo();
