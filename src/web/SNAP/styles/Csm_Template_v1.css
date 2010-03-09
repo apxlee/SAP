@@ -706,7 +706,7 @@ TODO: REMOVE THIS SECTION
 	font-family:Calibri,Trebuchet MS, Helvetica, sans-serif;
 	font-size:12px;
 	letter-spacing: 0px;
-	line-height: .9em;
+	line-height: 1.1em;
 	}
 
 .csm_template_1 .csm_footer h1 {
@@ -717,9 +717,9 @@ TODO: REMOVE THIS SECTION
 	border: 0;
 	border-bottom: 1px solid #783630;
 	letter-spacing: normal;
-	font-family: Calibri, "Trebuchet MS", Helvetica, Sans-Serif;
+	font-family: Calibri, "Trebuchet MS", Arial, Helvetica, Sans-Serif;
 	font-weight: bold;
-	font-size: 1em;
+	font-size: 13px;
 	line-height: 1.2em;	
 	color: #c5c5c5;
 	}
