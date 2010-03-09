@@ -116,12 +116,15 @@
     <Content Include="Controls\RequestFormSection.ascx" />
     <Content Include="Controls\RequestTrackingPanel.ascx" />
     <Content Include="Controls\SearchView.ascx" />
+    <Content Include="Controls\SupportView.ascx" />
     <Content Include="Controls\UserManager.ascx" />
     <Content Include="Controls\UserView.ascx" />
     <Content Include="Controls\WorkflowApprover.ascx" />
     <Content Include="Controls\WorkflowBlade.ascx" />
     <Content Include="Controls\WorkflowBuilderPanel.ascx" />
+    <Content Include="images\logo_aim.png" />
     <Content Include="images\modal_shadow_696x572.png" />
+    <Content Include="images\placard_quknpainls.png" />
     <Content Include="UserCheck.aspx" />
     <Content Include="images\ajax_indicator.gif" />
     <Content Include="images\icon_red_clipboard.png" />
@@ -134,7 +137,6 @@
     <Content Include="images\icon_delete_small.png" />
     <Content Include="images\icon_edit_small.png" />
     <Content Include="images\slider_heading_links.png" />
-    <Content Include="images\logo_aim.png" />
     <Content Include="images\logo_itservices.png" />
     <Content Include="images\logo_oospa.png" />
     <Content Include="images\icon_white_clipboard.png" />
@@ -301,6 +303,13 @@
     </Compile>
     <Compile Include="Controls\SearchView.ascx.designer.cs">
       <DependentUpon>SearchView.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SupportView.ascx.cs">
+      <DependentUpon>SupportView.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\SupportView.ascx.designer.cs">
+      <DependentUpon>SupportView.ascx</DependentUpon>
     </Compile>
     <Compile Include="Controls\UserManager.ascx.cs">
       <DependentUpon>UserManager.ascx</DependentUpon>
