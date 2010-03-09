@@ -14,33 +14,8 @@ namespace Apollo.AIM.SNAP.Web.Controls
             var loader = new Common.AccessTeamRequestLooder();
             loader.Load();
 
-			BuildRequests(RequestState.Open, _openRequestsContainer, false);
-			BuildRequests(RequestState.Closed, _closedRequestsContainer, true);
-		}
-
-		private void BuildRequests(RequestState RequestState, PlaceHolder BladeContainer, bool IsNullRecordTest)
-		{
-			DataTable requestTestTable = ViewBaseUtilities.GetRequests(RequestState);
-
-			if (!IsNullRecordTest)
-			{
-				foreach (DataRow request in requestTestTable.Rows)
-				{
-					MasterRequestBlade requestBlade;
-					requestBlade = LoadControl("~/Controls/MasterRequestBlade.ascx") as MasterRequestBlade;
-					requestBlade.RequestId = request["request_id"].ToString();
-					requestBlade.AffectedEndUserName = request["affected_end_user_name"].ToString();
-					requestBlade.OverallRequestStatus = request["overall_request_status"].ToString();
-					requestBlade.LastUpdatedDate = request["last_updated_date"].ToString();
-					requestBlade.IsSelectedRequest = (bool)request["is_selected"];
-
-					BladeContainer.Controls.Add(requestBlade);
-				}
-			}
-			else
-			{
-				_nullDataMessage_ClosedRequests.Visible = true;
-			}
+            ViewBaseUtilities.BuildRequests(this.Page, RequestState.Open, _openRequestsContainer, _nullDataMessage_ClosedRequests, false);
+            ViewBaseUtilities.BuildRequests(this.Page, RequestState.Closed, _closedRequestsContainer, _nullDataMessage_ClosedRequests, true);
 		}
 
 	}

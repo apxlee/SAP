@@ -13,7 +13,7 @@ namespace Apollo.AIM.SNAP.Web.Common
     public class ViewBaseUtilities
     {
 
-		public static DataTable GetRequests(RequestState RequestState)
+		static DataTable GetRequests(RequestState RequestState)
 		{
             DataTable table = new DataTable();
             table.Columns.Add("request_id", typeof(string));
@@ -48,5 +48,31 @@ namespace Apollo.AIM.SNAP.Web.Common
 			
 			return table;
 		}
+
+        public static void BuildRequests(Page page, RequestState RequestState, PlaceHolder BladeContainer, Panel nullMessage, bool IsNullRecordTest)
+        {
+            DataTable requestTestTable = ViewBaseUtilities.GetRequests(RequestState);
+
+            if (!IsNullRecordTest)
+            {
+                foreach (DataRow request in requestTestTable.Rows)
+                {
+                    MasterRequestBlade requestBlade;
+                    requestBlade = page.LoadControl("~/Controls/MasterRequestBlade.ascx") as MasterRequestBlade;
+                    requestBlade.RequestId = request["request_id"].ToString();
+                    requestBlade.AffectedEndUserName = request["affected_end_user_name"].ToString();
+                    requestBlade.OverallRequestStatus = request["overall_request_status"].ToString();
+                    requestBlade.LastUpdatedDate = request["last_updated_date"].ToString();
+                    requestBlade.IsSelectedRequest = (bool)request["is_selected"];
+
+                    BladeContainer.Controls.Add(requestBlade);
+                }
+            }
+            else
+            {
+                nullMessage.Visible = true;
+            }
+        }
+
     }
 }
