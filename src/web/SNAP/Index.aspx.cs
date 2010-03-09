@@ -24,17 +24,17 @@ namespace Apollo.AIM.SNAP.Web
 	{
 		protected void Page_Load(object sender, EventArgs e)	
 		{
-		    // TODO: make sure user is in access team AD group and then allow role change
+		    // TODO: REMOVE THIS SECTION AFTER DEMO!  
 			//
 			if (!string.IsNullOrEmpty(Request.QueryString["role"]))
 			{
 				WebUtilities.CurrentRole = (OOSPARole)Enum.Parse(typeof(OOSPARole), Request.QueryString["role"]);
 			}
-			else
-			{
-				// TODO: utility to find AD group and/or look into DB for existence of pending approvals to determine role
-			    WebUtilities.CurrentRole = WebUtilities.DetermineRole();
-			}
+			//else
+			//{
+			//    // TODO: utility to find AD group and/or look into DB for existence of pending approvals to determine role
+			//    WebUtilities.CurrentRole = WebUtilities.DetermineRole();
+			//}
 
 			Panel ribbonContainer = (Panel)WebUtilities.FindControlRecursive(Page, "_ribbonContainerOuter");
 
