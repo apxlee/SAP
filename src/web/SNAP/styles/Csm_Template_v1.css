@@ -28,7 +28,7 @@ body {
 .csm_template_1 .csm_top5 {margin-top: 5px;}
 .csm_template_1 .csm_top10 {margin-top: 10px;}
 .csm_template_1 .csm_top15 {margin-top: 15px;}
-.csm_template_1 .csm_500 {min-height: 546px;padding-bottom:20px;} /* TODO: return to 500 when logo cutoff changed */
+.csm_template_1 .csm_500 {min-height: 500px;padding-bottom:20px;} /* TODO: return to 500 when logo cutoff changed */
 
 .csm_template_1 .csm_content_container {
 	margin: 5px;
@@ -685,7 +685,7 @@ TODO: REMOVE THIS SECTION
 
 .csm_template_1 .csm_footer .csm_footer_logo {
 	background: url('../images/logo_aim.png') no-repeat bottom right;
-	min-height: 150px;
+	min-height: 210px;
 	}
 	
 .csm_template_1 .csm_footer .snap_copyright {

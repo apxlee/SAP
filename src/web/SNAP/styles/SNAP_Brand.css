@@ -119,6 +119,7 @@ li a.snap_aim_text_one_digit span {padding: 0 0 0 99px;}
 	background: url('../images/slider_heading_links.png') no-repeat;
 	padding: 0 17px 0 17px !important;}
 
+#login a:hover {background-position: -1255px -100px;}
 #request_form a:hover {background-position: -34px -100px;}
 #my_requests a:hover {background-position: -239px -100px;}
 #my_approvals a:hover {background-position: -416px -100px;}
@@ -128,7 +129,7 @@ li a.snap_aim_text_one_digit span {padding: 0 0 0 99px;}
 
 /* YOU ARE HERE */
 
-#login a {background-position: -1255px -50px;}
+#login a {background-position: -1255px 0px;}
 #request_form a {background-position: -34px 0px;}
 #my_requests a {background-position: -239px 0px;}
 #my_approvals a {background-position: -416px 0px;}
