@@ -27,8 +27,8 @@
 		
 		<!-- BEGIN CONTENT AREA -->
 		<asp:Panel ID="_contentContainer" CssClass="csm_container_100 csm_500" runat="server">
-		<!-- TODO: do we really need this container server-side? -->
-		<div class="csm_grid_14 csm_prefix_1 csm_suffix_1">
+		<!-- TODO: do we really need this container server-side? csm_prefix_1 csm_suffix_1 csm_grid_14-->
+		<div class="snap_container_center_844">
 			
 			<!-- BEGIN MULTIVIEW CONTROL -->
 			<asp:MultiView ID="_masterMultiView" runat="server" ActiveViewIndex="0">
