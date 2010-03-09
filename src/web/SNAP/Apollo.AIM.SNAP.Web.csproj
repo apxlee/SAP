@@ -121,6 +121,7 @@
     <Content Include="Controls\WorkflowApprover.ascx" />
     <Content Include="Controls\WorkflowBlade.ascx" />
     <Content Include="Controls\WorkflowBuilderPanel.ascx" />
+    <Content Include="images\modal_shadow_696x572.png" />
     <Content Include="UserCheck.aspx" />
     <Content Include="images\ajax_indicator.gif" />
     <Content Include="images\icon_red_clipboard.png" />

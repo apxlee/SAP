@@ -1,52 +1,4 @@
-﻿//$(function() {
-//    $("#dialog").dialog({
-//        title: 'Disclaimer',
-//        bgiframe: true,
-//        resizable: false,
-//        draggable: false,
-//        height: 500,
-//        width: 500,
-//        modal: true,
-//        overlay: {
-//            backgroundColor: '#ff0000', opacity: 0.5
-
-//        },
-//        buttons: {
-//            'Acknowledge': function() {
-//                alert('This would submit the form and take you to the View Page');
-//                $(this).dialog('close');
-//            },
-//            Cancel: function() {
-//                $(this).dialog('close');
-//            }
-//        }
-//    });
-//    $("#dialog").dialog('close');
-//});
-//function throwModal() {
-//    $("#dialog").dialog('open');
-//}
-//$(document).ready(function() {
-//    $("input, textarea, select").focus(
-//			  function() {
-//			      $(this).addClass("csm_input_focus");
-//			  }
-//			);
-//});
-
-//$(document).ready(function() {
-//    $("input, textarea, select").blur(
-//			  function() {
-//			      $(this).removeClass("csm_input_focus");
-//			  }
-//			);
-//});
-/// <reference path="jquery-1.3.2-vsdoc.js" />
-//$(document).ready(function() { });
-
-//$.ready(DocReady);
-
-function DocReady() {
+﻿function DocReady() {
     userManager.Ready();
 }
 
@@ -77,6 +29,8 @@ var userManager = {
         this.inputFields = $("input[type='text'][id*='requestFormControl']");
         this.textAreas = $("textarea[id*='requestFormControl']");
         this.labels = $("label[id*='requestFormControl']");
+
+        this.acknowledgmentDiv = $("#_acknowledgmentDiv");
     },
 
     ToggleSelecction: function() {
@@ -157,6 +111,7 @@ var userManager = {
     SubmitHack: function() {
         if (userManager.InputChange()) {
             userManager.mgrName.removeAttr("disabled");
+            //userManager.acknowledgmentDiv.dialog('open');
             return true;
         }
         return false;
@@ -446,35 +401,64 @@ var userManager = {
         }
     },
 
-    ConvertToDialog: function(obj) {
-        obj.dialog({
-            title: 'Select User',
-            bgiframe: true,
-            resizable: false,
-            draggable: false,
-            height: 300,
-            width: 350,
-            modal: true,
-            close: function(event, ui) {
-                userManager.DialogClose(obj);
-            },
-            overlay: {
-                backgroundColor: '#ff0000', opacity: 0.5
+    ConvertToDialog: function(obj, type) {
+        if (type == "user") {
+            obj.dialog({
+                title: 'Select User',
+                autoOpen: false,
+                bgiframe: true,
+                resizable: false,
+                draggable: false,
+                height: 300,
+                width: 350,
+                modal: true,
+                close: function(event, ui) {
+                    userManager.DialogClose(obj);
+                },
+                overlay: {
+                    backgroundColor: '#ff0000', opacity: 0.5
 
-            },
-            buttons: {
-                Cancel: function() {
-                    $(this).dialog('close');
+                },
+                buttons: {
+                    Cancel: function() {
+                        $(this).dialog('close');
+                    }
                 }
-            }
-        });
-        obj.dialog('close');
+            });
+        }
+        if (type == "ack") {
+            obj.dialog({
+                title: 'Acknowledgement',
+                autoOpen: false,
+                bgiframe: true,
+                resizable: false,
+                draggable: false,
+                height: 523,
+                width: 645,
+                modal: true,
+                dialogClass: 'ui-dialogB ui-widget ui-widget-contentB ui-corner-all',
+                overlay: {
+                    backgroundColor: '#ff0000', opacity: 0.5
+
+                },
+                buttons: {
+                    Acknowledge: function() {
+                        $(this).dialog('close');
+                        __doPostBack = newDoPostBack;
+                    },
+                    Cancel: function() {
+                        $(this).dialog('close');
+                    }
+                }
+            });
+        }
+
     },
 
-
     BuildDialog: function() {
-        userManager.ConvertToDialog(userManager.mgrSelectionDiv);
-        userManager.ConvertToDialog(userManager.userSelectionDiv);
+        userManager.ConvertToDialog(userManager.mgrSelectionDiv, 'user');
+        userManager.ConvertToDialog(userManager.userSelectionDiv, 'user');
+        userManager.ConvertToDialog(userManager.acknowledgmentDiv, 'ack');
     },
 
     Ready: function() {
@@ -493,6 +477,20 @@ var userManager = {
         this.HandleClearClick();
         this.HandleSubmitClick();
         this.Clear();
+    }
+}
+
+function newDoPostBack(eventTarget, eventArgument) {
+    var theForm = document.forms[0];
+
+    if (!theForm) {
+        theForm = document._defaultForm;
+    }
+
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        document.getElementById("__EVENTTARGET").value = eventTarget;
+        document.getElementById("__EVENTARGUMENT").value = eventArgument;
+        theForm.submit();
     }
 }
 

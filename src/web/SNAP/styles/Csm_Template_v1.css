@@ -824,3 +824,29 @@ span.group_description {
 	color: #595959;
 	padding-bottom: 5px;
 	}
+
+div.modal_li
+{
+    margin:15px;
+    font-family: Calibri, "Trebuchet MS", Helvetica, Sans-Serif;
+    font-size: .90em;
+	line-height: 1.5em;
+}
+.modal_li p
+{
+    text-align:left;
+    font-weight: bold; 
+    padding-left:15px;
+}
+.modal_li ul
+{
+    margin: 10px 35px;
+	padding: 0;
+}
+.modal_li li
+{
+    list-style-position: inside;
+	list-style-type: disc;
+	list-style: disc inside;
+	font-weight: normal; 
+}
