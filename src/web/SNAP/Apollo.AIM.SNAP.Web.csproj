@@ -190,6 +190,7 @@
     <Compile Include="Common\Enumerations.cs" />
     <Compile Include="Common\Request.cs" />
     <Compile Include="Common\RequestLoader.cs" />
+    <Compile Include="Common\ViewBaseUtilities.cs" />
     <Compile Include="Common\WebUtilities.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Controls\AccessCommentsPanel.ascx.cs">
