@@ -14,7 +14,6 @@
 	margin-left: auto;
 	margin-right: auto;
 	width: 976px;
-	
 	}
 	
 .csm_container_100 {
@@ -28,13 +27,14 @@
 .csm_container_center_700 {
    	margin-left: auto;
 	margin-right: auto;
+	padding-top: 5px;
 	width: 700px;
     }
     
 .csm_container_center_600 {
    	margin-left: auto;
 	margin-right: auto;
-	width: 700px;
+	width: 600px;
     }
     
 .snap_container_center_844 {
