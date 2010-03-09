@@ -8,6 +8,7 @@
 <%@ Register src="~/Controls/AccessTeamView.ascx" tagname="AccessTeamView" tagprefix="uc" %>
 <%@ Register src="~/Controls/SearchView.ascx" tagname="SearchView" tagprefix="uc" %>
 <%@ Register src="~/Controls/RequestForm.ascx" tagname="RequestForm" tagprefix="uc" %>
+<%@ Register src="~/Controls/SupportView.ascx" tagname="SupportView" tagprefix="uc" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -58,7 +59,7 @@
 				</asp:View>
 				
 				<asp:View ID="_supportView" runat="server"><!-- 6 -->
-					<div class="csm_container_center_700"><h1>Support</h1></div>
+					<uc:SupportView id="_supportControl" runat="server" />
 				</asp:View>
 				
 			</asp:MultiView>

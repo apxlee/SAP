@@ -74,8 +74,8 @@ namespace Apollo.AIM.SNAP.Web
 
 				case OOSPARole.NotAuthenticated:
 				default :
-					WebUtilities.SetActiveView("_loginView");
-					ribbonContainer.CssClass = "login";
+					WebUtilities.SetActiveView("_supportView");
+					ribbonContainer.CssClass = "support";
 					break;
 			}		
 	
