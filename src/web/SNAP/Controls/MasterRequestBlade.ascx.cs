@@ -12,6 +12,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 	public partial class MasterRequestBlade : System.Web.UI.UserControl
 	{
 		public string RequestId { get; set; }
+        public RequestState RequestState { get; set; }
 		public string AffectedEndUserName { get; set; }
 		public string OverallRequestStatus { get; set; }
 		public string LastUpdatedDate { get; set; }
@@ -71,6 +72,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
 			readOnlyRequestPanel = LoadControl("~/Controls/ReadOnlyRequestPanel.ascx") as ReadOnlyRequestPanel;
 			readOnlyRequestPanel.RequestId = RequestId.ToString();
+            readOnlyRequestPanel.RequestState = RequestState;
 			_readOnlyRequestPanelContainer.Controls.Add(readOnlyRequestPanel);		
 		}
 		
@@ -80,6 +82,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
             requestTrackingPanel = LoadControl("~/Controls/RequestTrackingPanel.ascx") as RequestTrackingPanel;
 			requestTrackingPanel.RequestId = RequestId.ToString();
+            requestTrackingPanel.RequestState = RequestState;
 			_requestTrackingPanelContainer.Controls.Add(requestTrackingPanel);		
 		}
 		

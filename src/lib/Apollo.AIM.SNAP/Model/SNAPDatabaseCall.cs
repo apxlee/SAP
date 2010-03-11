@@ -11,6 +11,21 @@ namespace Apollo.AIM.SNAP.Model
     public partial class SNAPDatabaseDataContext
     {
 
+        private Dictionary<string, object> _openRquests = new Dictionary<string, object>();
+        private Dictionary<string, object> _closeRquests = new Dictionary<string, object>();
+
+        public Dictionary<string, object> OpenRquests
+        {
+            get { return _openRquests; }
+
+        }
+
+        public Dictionary<string, object> CloseRquests
+        {
+            get { return _closeRquests; }
+
+        }
+
         public IEnumerable<SNAP_Access_User_Text> RetrieveRequest(int requestId)
         {
             //using (var db = new SNAPDatabaseDataContext())
@@ -42,52 +57,6 @@ namespace Apollo.AIM.SNAP.Model
          * Hand code these SP
          */
 
-        [Function(Name = "dbo.usp_open_my_request_text")]
-        public ISingleResult<SNAP_Access_User_Text> usp_open_my_request_text([Parameter(DbType = "NVarChar(10)")] string userId)
-        {
-            IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId);
-            return ((ISingleResult<SNAP_Access_User_Text>)(result.ReturnValue));
-        }
-
-
-        [Function(Name = "dbo.usp_open_my_request_tab")]
-        [ResultType(typeof(usp_open_my_request_detailsResult))]
-        [ResultType(typeof(SNAP_Access_User_Text))]
-        [ResultType(typeof(usp_open_my_request_commentsResult))]
-        [ResultType(typeof(usp_open_my_request_workflow_detailsResult))]
-        [ResultType(typeof(usp_open_my_request_workflow_commentsResult))]
-        public IMultipleResults usp_open_my_request_tab([Parameter(DbType = "NVarChar(10)")] string userId)
-        {
-            IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId);
-            return ((IMultipleResults)(result.ReturnValue));
-        }
-
-
-        [Function(Name = "dbo.usp_open_my_approval_tab")]
-        [ResultType(typeof(usp_open_my_request_detailsResult))]
-        [ResultType(typeof(SNAP_Access_User_Text))]
-        [ResultType(typeof(usp_open_my_request_commentsResult))]
-        [ResultType(typeof(usp_open_my_request_workflow_detailsResult))]
-        [ResultType(typeof(usp_open_my_request_workflow_commentsResult))]
-        public IMultipleResults usp_open_my_approval_tab([Parameter(DbType = "NVarChar(10)")] string userId)
-        {
-            IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId);
-            return ((IMultipleResults)(result.ReturnValue));
-        }
-
-
-        [Function(Name = "dbo.usp_open_access_team_tab")]
-        [ResultType(typeof(usp_open_my_request_detailsResult))]
-        [ResultType(typeof(SNAP_Access_User_Text))]
-        [ResultType(typeof(usp_open_my_request_commentsResult))]
-        [ResultType(typeof(usp_open_my_request_workflow_detailsResult))]
-        [ResultType(typeof(usp_open_my_request_workflow_commentsResult))]
-        public IMultipleResults usp_open_access_team_tab()
-        {
-            IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
-            return ((IMultipleResults)(result.ReturnValue));
-        }
-
         [Function(Name = "dbo.usp_requests")]
         [ResultType(typeof(usp_open_my_request_detailsResult))]
         [ResultType(typeof(SNAP_Access_User_Text))]
@@ -101,59 +70,19 @@ namespace Apollo.AIM.SNAP.Model
         }
 
 
-        // this method just package my open request call results into dictionary type
-        public Dictionary<string, object> MyOpenRequests(string userId)
+        // this is for the app to call, so request data (open, close) are available
+        public void GetAllRequests(string userId, string role)
         {
-
-            var myRequests = new Dictionary<string, object>();
-            IMultipleResults result = usp_open_my_request_tab(userId);
-            populateRequests(result, myRequests);
-            return myRequests;
-        }
-
-
-        public Dictionary<string, object> MyOpenApprovalRequests(string userId)
-        {
-
-            var myRequests = new Dictionary<string, object>();
-            IMultipleResults result = usp_open_my_approval_tab(userId);
-            populateRequests(result, myRequests);
-            return myRequests;
-        }
-
-        public Dictionary<string, object> AccessTeamRequests()
-        {
-
-            var myRequests = new Dictionary<string, object>();
-            IMultipleResults result = usp_open_access_team_tab();
-            populateRequests(result, myRequests);
-            return myRequests;
-        }
-
-
-
-        public void GetAllRequests(string userId, Dictionary<string, object> open, Dictionary<string, object> close)
-        {
-            IMultipleResults result = usp_requests(userId, "my");
-            populateAllRequests(result, open, close);
-        }
-
-        static void populateRequests(IMultipleResults result, Dictionary<string, object> myRequests)
-        {
-            if (result.ReturnValue.ToString() == "0")
-            {
-                myRequests.Add("reqDetails", result.GetResult<usp_open_my_request_detailsResult>().ToList());
-                myRequests.Add("reqText", result.GetResult<SNAP_Access_User_Text>().ToList());
-                myRequests.Add("reqComments", result.GetResult<usp_open_my_request_commentsResult>().ToList());
-                myRequests.Add("wfDetails", result.GetResult<usp_open_my_request_workflow_detailsResult>().ToList());
-                myRequests.Add("wfComments", result.GetResult<usp_open_my_request_workflow_commentsResult>().ToList());
-            }
-
+            IMultipleResults result = usp_requests(userId, role);
+            populateAllRequests(result, _openRquests, _closeRquests);
         }
 
 
         static void populateAllRequests(IMultipleResults result, Dictionary<string, object> myOpenRequests, Dictionary<string, object> myCloseRequests)
         {
+            myOpenRequests.Clear();
+            myCloseRequests.Clear();
+
             if (result.ReturnValue.ToString() == "0")
             {
                 myOpenRequests.Add("reqDetails", result.GetResult<usp_open_my_request_detailsResult>().ToList());

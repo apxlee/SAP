@@ -8,86 +8,77 @@ namespace Apollo.AIM.SNAP.Web.Common
 {
     public class Request
     {
-        public static List<usp_open_my_request_detailsResult> Details
+        public static List<usp_open_my_request_detailsResult> Details(RequestState state)
         {
-            get
-            {
-                if (requests.ContainsKey("reqDetails"))
-                    return (List<usp_open_my_request_detailsResult>) requests["reqDetails"];
+            if (requests(state).ContainsKey("reqDetails"))
+                return (List<usp_open_my_request_detailsResult>) requests(state)["reqDetails"];
 
-                return new List<usp_open_my_request_detailsResult>();
-            }
+            return new List<usp_open_my_request_detailsResult>();
         }
 
-        public static List<SNAP_Access_User_Text> UserTexts
+        public static List<SNAP_Access_User_Text> UserTexts(RequestState state)
         {
-            get
-            {
-                if (requests.ContainsKey("reqText"))
-                    return (List<SNAP_Access_User_Text>)requests["reqText"];
+                if (requests(state).ContainsKey("reqText"))
+                    return (List<SNAP_Access_User_Text>)requests(state)["reqText"];
 
                 return new List<SNAP_Access_User_Text>();
-            }
         }
 
-        public static List<usp_open_my_request_commentsResult> Comments
+        public static List<usp_open_my_request_commentsResult> Comments(RequestState state)
         {
-            get
-            {
-                if (requests.ContainsKey("reqComments"))
-                    return (List<usp_open_my_request_commentsResult>) requests["reqComments"];
+                if (requests(state).ContainsKey("reqComments"))
+                    return (List<usp_open_my_request_commentsResult>) requests(state)["reqComments"];
 
                 return new List<usp_open_my_request_commentsResult>();
-            }
         }
 
-        public static List<usp_open_my_request_workflow_detailsResult> WfDetails
+        public static List<usp_open_my_request_workflow_detailsResult> WfDetails(RequestState state)
         {
-            get
-            {
-                if (requests.ContainsKey("wfDetails"))
-                    return (List<usp_open_my_request_workflow_detailsResult>) requests["wfDetails"];
+                if (requests(state).ContainsKey("wfDetails"))
+                    return (List<usp_open_my_request_workflow_detailsResult>) requests(state)["wfDetails"];
 
                 return new List<usp_open_my_request_workflow_detailsResult>();
-            }
         }
 
-        public static List<usp_open_my_request_workflow_commentsResult> WfComments
+        public static List<usp_open_my_request_workflow_commentsResult> WfComments(RequestState state)
         {
-            get
-            {
-                if (requests.ContainsKey("wfComments"))
-                    return (List<usp_open_my_request_workflow_commentsResult>) requests["wfComments"];
+                if (requests(state).ContainsKey("wfComments"))
+                    return (List<usp_open_my_request_workflow_commentsResult>) requests(state)["wfComments"];
 
                 return new List<usp_open_my_request_workflow_commentsResult>();
-            }
         }
-        static bool exist
+        static bool exist(RequestState state)
+        {
+            var key = state == RequestState.Open ? OpenRequestKey : CloseRequestKey;
+            return HttpContext.Current.Items.Contains(key);
+        }
+
+        static Dictionary<string, object> requests(RequestState state)
+        {
+            var key = state == RequestState.Open ? OpenRequestKey : CloseRequestKey;
+
+            if (exist(state))
+                return (Dictionary<string, object>) HttpContext.Current.Items[key];
+
+            return new Dictionary<string, object>();
+        }
+
+        public static string OpenRequestKey
         {
             get
             {
-                return HttpContext.Current.Items.Contains(RequestKey);
+                return WebUtilities.CurrentLoginUserId + "-" + "OpenRequests";
             }
         }
 
-        static Dictionary<string, object> requests
+        public static string CloseRequestKey
         {
             get
             {
-                if (exist)
-                    return (Dictionary<string, object>) HttpContext.Current.Items[RequestKey];
-
-                return new Dictionary<string, object>();
+                return WebUtilities.CurrentLoginUserId + "-" + "CloseRequests";
             }
         }
 
-        public static string RequestKey
-        {
-            get
-            {
-                return WebUtilities.CurrentLoginUserId + "-" + "Requests";
-            }
-        }
 
     }
 }

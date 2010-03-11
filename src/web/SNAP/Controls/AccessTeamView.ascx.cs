@@ -11,11 +11,13 @@ namespace Apollo.AIM.SNAP.Web.Controls
 	{
 		protected void Page_Load(object sender, EventArgs e)
 		{
-            var loader = new Common.AccessTeamRequestLooder();
-            loader.Load();
+            var requestLoader = new Common.AccessTeamRequestLooder();
+            requestLoader.Load();
 
             ViewBaseUtilities.BuildRequests(this.Page, RequestState.Open, _openRequestsContainer, _nullDataMessage_ClosedRequests, false);
-            ViewBaseUtilities.BuildRequests(this.Page, RequestState.Closed, _closedRequestsContainer, _nullDataMessage_ClosedRequests, true);
+            //ViewBaseUtilities.BuildRequests(this.Page, RequestState.Closed, _closedRequestsContainer, _nullDataMessage_ClosedRequests, true);
+            ViewBaseUtilities.BuildRequests(this.Page, RequestState.Closed, _closedRequestsContainer, _nullDataMessage_ClosedRequests, false);
+             
 		}
 
 	}

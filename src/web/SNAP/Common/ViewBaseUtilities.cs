@@ -13,7 +13,7 @@ namespace Apollo.AIM.SNAP.Web.Common
     public class ViewBaseUtilities
     {
 
-		static DataTable GetRequests(RequestState RequestState)
+		static DataTable GetRequests(RequestState requestState)
 		{
             DataTable table = new DataTable();
             table.Columns.Add("request_id", typeof(string));
@@ -22,11 +22,21 @@ namespace Apollo.AIM.SNAP.Web.Common
 			table.Columns.Add("last_updated_date", typeof(string));
 			table.Columns.Add("is_selected", typeof(bool));
 
-            
 
-           	if (RequestState == RequestState.Open)
+            var reqDetails = Common.Request.Details(requestState);
+            foreach (usp_open_my_request_detailsResult list in reqDetails)
+            {
+                table.Rows.Add(list.pkId, list.userDisplayName.StripTitleFromUserName()
+                    , Convert.ToString((WorkflowState)Enum.Parse(typeof(WorkflowState), list.statusEnum.ToString())).StripUnderscore()
+                    , list.createdDate.ToString("MMM d, yyyy"), false);
+                // is this "last updated date" or "created date"?
+            }
+
+
+            /*
+           	if (requestState == RequestState.Open)
 		    {
-                var reqDetails = Common.Request.Details;
+                var reqDetails = Common.Request.Details(requestState);
 
 			    //table.Rows.Add("12345", "User One", "Open", "Feb. 10, 2010", false);
 			    //table.Rows.Add("54321", "User Two", "Open", "Jan. 3, 2010", true);
@@ -40,12 +50,29 @@ namespace Apollo.AIM.SNAP.Web.Common
                 }
 		    }
 
-			if (RequestState == RequestState.Closed)
+			if (requestState == RequestState.Closed)
 			{
+                
+                
+                var reqDetails = Common.Request.Details(requestState);
+
+                //table.Rows.Add("12345", "User One", "Open", "Feb. 10, 2010", false);
+                //table.Rows.Add("54321", "User Two", "Open", "Jan. 3, 2010", true);
+
+                foreach (usp_open_my_request_detailsResult list in reqDetails)
+                {
+                    table.Rows.Add(list.pkId, list.userDisplayName.StripTitleFromUserName()
+                        , Convert.ToString((WorkflowState)Enum.Parse(typeof(WorkflowState), list.statusEnum.ToString())).StripUnderscore()
+                        , list.createdDate.ToString("MMM d, yyyy"), false);
+                    // is this "last updated date" or "created date"?
+                }
+                
+
 				//table.Rows.Add("98544", "User One", "Closed", "Jan. 10, 2010", false);
 				//table.Rows.Add("96554", "User Two", "Closed", "Jan. 3, 2010", false);
+                
 			}			
-			
+			*/
 			return table;
 		}
 
@@ -60,6 +87,7 @@ namespace Apollo.AIM.SNAP.Web.Common
                     MasterRequestBlade requestBlade;
                     requestBlade = page.LoadControl("~/Controls/MasterRequestBlade.ascx") as MasterRequestBlade;
                     requestBlade.RequestId = request["request_id"].ToString();
+                    requestBlade.RequestState = RequestState;
                     requestBlade.AffectedEndUserName = request["affected_end_user_name"].ToString();
                     requestBlade.OverallRequestStatus = request["overall_request_status"].ToString();
                     requestBlade.LastUpdatedDate = request["last_updated_date"].ToString();

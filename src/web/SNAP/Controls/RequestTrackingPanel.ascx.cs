@@ -14,6 +14,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 	public partial class RequestTrackingPanel : System.Web.UI.UserControl
 	{
 		public string RequestId { get; set; }
+        public RequestState RequestState { get; set; }
 		
 		protected void Page_Load(object sender, EventArgs e)
 		{
@@ -103,7 +104,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			table.Columns.Add("is_new", typeof(bool));
 
 
-		    var wfComments = Common.Request.WfComments;
+		    var wfComments = Common.Request.WfComments(RequestState);
             var details = wfComments.Where(x => x.workflowId == WorkflowId);
 
             foreach (usp_open_my_request_workflow_commentsResult list in details)
@@ -132,7 +133,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			table.Columns.Add("workflow_completed_date", typeof(DateTime));
 			table.Columns.Add("workflow_pkid", typeof(int));
 
-            var wfDetails = Common.Request.WfDetails;
+            var wfDetails = Common.Request.WfDetails(RequestState);
             var details = wfDetails.Where(x => x.requestId.ToString() == RequestId);
 
             foreach (usp_open_my_request_workflow_detailsResult list in details)

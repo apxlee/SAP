@@ -16,6 +16,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		// TODO: if no reqId, will raise error when attempting to 'get'
 		//
 		public string RequestId { get; set; }
+        public RequestState RequestState { get; set; }
 		protected void Page_Load(object sender, EventArgs e)
 		{
 			// build details section
@@ -51,27 +52,30 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		private DataTable GetDetails()
 		{
 			DataTable table = new DataTable();
-			table.Columns.Add("label", typeof(string));
-			table.Columns.Add("value", typeof(string));
+            table.Columns.Add("label", typeof (string));
+            table.Columns.Add("value", typeof (string));
 
-            var reqDetails = Common.Request.Details;
-            var reqUserTexts = Common.Request.UserTexts;
+            var reqDetails = Common.Request.Details(RequestState);
+            var reqUserTexts = Common.Request.UserTexts(RequestState);
 
             var reqDetail = reqDetails.Single(x => x.pkId.ToString() == RequestId);
             var reqUserText = reqUserTexts.Where(x => x.requestId.ToString() == RequestId).ToList();
-            
+
 
             table.Rows.Add("Title", reqDetail.userTitle);
             table.Rows.Add("Manager Name", reqDetail.managerDisplayName);
             table.Rows.Add("AD Manager Name", "Sally Kirkland");
             table.Rows.Add("Requestor", reqDetail.submittedBy);
-            table.Rows.Add("Windows Servers", userText(reqUserText, 2)); //reqUserText.Single(x => x.access_details_formId == 2).userText); ;
-            table.Rows.Add("Linux/Unix Servers", userText(reqUserText, 3)); //reqUserText.Single(x => x.access_details_formId == 3).userText);
-            table.Rows.Add("Network Shares", userText(reqUserText, 4)); //reqUserText.Single(x => x.access_details_formId == 4).userText);
-            table.Rows.Add("Justification", userText(reqUserText, 5)); //reqUserText.Single(x => x.access_details_formId == 5).userText);
+            table.Rows.Add("Windows Servers", userText(reqUserText, 2));
+                //reqUserText.Single(x => x.access_details_formId == 2).userText); ;
+            table.Rows.Add("Linux/Unix Servers", userText(reqUserText, 3));
+                //reqUserText.Single(x => x.access_details_formId == 3).userText);
+            table.Rows.Add("Network Shares", userText(reqUserText, 4));
+                //reqUserText.Single(x => x.access_details_formId == 4).userText);
+            table.Rows.Add("Justification", userText(reqUserText, 5));
+                //reqUserText.Single(x => x.access_details_formId == 5).userText);
 
-
-            /*
+		    /*
 		    table.Rows.Add("Title", "Network Engineer II");
 			table.Rows.Add("Manager Name", "Bob Jones");
 			table.Rows.Add("AD Manager Name", "Sally Kirkland");
@@ -109,7 +113,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			table.Columns.Add("comment", typeof(string));
 
    
-            var reqComments = Common.Request.Comments;
+            var reqComments = Common.Request.Comments(RequestState);
             var comments = reqComments.Where(x => x.requestId.ToString() == RequestId).ToList();
             foreach (usp_open_my_request_commentsResult result in comments)
                 table.Rows.Add(result.commentTypeEnum, result.createdDate, result.commentText);

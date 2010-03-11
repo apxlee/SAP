@@ -16,12 +16,13 @@ namespace Apollo.AIM.SNAP.Web.Common
                 using (var db = new SNAPDatabaseDataContext())
                 {
 
-                    var requests = loadData(db);
-                    if (HttpContext.Current.Items.Contains(Common.Request.RequestKey))
-                        HttpContext.Current.Items.Remove(Common.Request.RequestKey);
+                    Dictionary<string, object> openRequests = null;
+                    Dictionary<string, object> closeRequests = null;
 
-                    HttpContext.Current.Items.Add(Common.Request.RequestKey, requests);
-
+                    loadData(db, ref openRequests, ref closeRequests);
+                    addToContext(Common.Request.OpenRequestKey, openRequests);
+                    addToContext(Common.Request.CloseRequestKey, closeRequests);
+                    
                 }
             }
             catch (Exception ex)
@@ -31,37 +32,50 @@ namespace Apollo.AIM.SNAP.Web.Common
 
         }
 
-        protected abstract Dictionary<string, object> loadData(SNAPDatabaseDataContext db);
+        private void addToContext(string key, Dictionary<string, object> data)
+        {
+            if (HttpContext.Current.Items.Contains(key))
+                HttpContext.Current.Items.Remove(key);
+
+            HttpContext.Current.Items.Add(key, data);
+            
+        }
+
+        protected abstract void loadData(SNAPDatabaseDataContext db, ref Dictionary<string, object> open, ref Dictionary<string, object> close);
 
     }
 
-    public class MyOpenRequestLooder : RequestLoader
+    public class MyRequestLooder : RequestLoader
     {
 
-        protected override Dictionary<string, object> loadData(SNAPDatabaseDataContext db)
+        protected override void loadData(SNAPDatabaseDataContext db, ref Dictionary<string, object> open, ref Dictionary<string, object> close)
         {
-            return db.MyOpenRequests(WebUtilities.CurrentLoginUserId);
+            db.GetAllRequests(WebUtilities.CurrentLoginUserId, "my");
+            open = db.OpenRquests;
+            close = db.CloseRquests;
         }
     }
 
-
-    public class MyOpenApprovalRequestLooder : RequestLoader
+    public class MyApprovalLooder : RequestLoader
     {
 
-        protected override Dictionary<string, object> loadData(SNAPDatabaseDataContext db)
+        protected override void loadData(SNAPDatabaseDataContext db, ref Dictionary<string, object> open, ref Dictionary<string, object> close)
         {
-            return db.MyOpenApprovalRequests(WebUtilities.CurrentLoginUserId);
+            db.GetAllRequests(WebUtilities.CurrentLoginUserId, "approval");
+            open = db.OpenRquests;
+            close = db.CloseRquests;
         }
     }
 
     public class AccessTeamRequestLooder : RequestLoader
     {
 
-        protected override Dictionary<string, object> loadData(SNAPDatabaseDataContext db)
+        protected override void loadData(SNAPDatabaseDataContext db, ref Dictionary<string, object> open, ref Dictionary<string, object> close)
         {
-            return db.AccessTeamRequests();
+            db.GetAllRequests(WebUtilities.CurrentLoginUserId, "accessteam");
+            open = db.OpenRquests;
+            close = db.CloseRquests;
         }
     }
-
 
 }

@@ -13,6 +13,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
     public partial class WorkflowBuilderPanel : System.Web.UI.UserControl
     {
 		public string RequestId { get; set; }
+        public RequestState RequestState { get; set; }
     
         protected void Page_Load(object sender, EventArgs e)
         {

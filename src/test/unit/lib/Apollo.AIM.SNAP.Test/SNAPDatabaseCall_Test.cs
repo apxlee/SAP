@@ -22,177 +22,99 @@ namespace Apollo.AIM.SNAP.Test
         {
             using (var db = new SNAPDatabaseDataContext())
             {
-                Dictionary<string, object> openRequests = new Dictionary<string, object>();
-                Dictionary<string, object> closeRequests = new Dictionary<string, object>();
 
-                db.GetAllRequests("clschwim", openRequests, closeRequests);
+                Console.WriteLine("Access Team Requests:");
+                db.GetAllRequests("clschwim", "accessteam");
 
-                var reqDetails = (List<usp_open_my_request_detailsResult>)openRequests["reqDetails"];
-                foreach (var d in reqDetails)
-                {
-                    Console.WriteLine(d.pkId + "," + d.statusEnum);
-                }
-                var wfComments = (List<usp_open_my_request_workflow_commentsResult>)openRequests["wfComments"];
-                foreach (var c in wfComments)
-                {
-                    Console.WriteLine(c.requestId + "," + c.commentText);
-                }
-                var texts = (List<SNAP_Access_User_Text>)openRequests["reqText"];
-                foreach (SNAP_Access_User_Text list in texts)
-                {
-                    Console.WriteLine(list.access_details_formId + "," + list.userText);
-                }
+                Console.WriteLine("\tOpen Requests:");
+                output(db.OpenRquests);
+                Console.WriteLine("\tClose Requests:");
+                output(db.CloseRquests);
 
-                Console.WriteLine("Close ....");
-                reqDetails = (List<usp_open_my_request_detailsResult>)closeRequests["reqDetails"];
-                foreach (var d in reqDetails)
-                {
-                    Console.WriteLine(d.pkId + "," + d.statusEnum);
-                }
-                wfComments = (List<usp_open_my_request_workflow_commentsResult>)closeRequests["wfComments"];
-                foreach (var c in wfComments)
-                {
-                    Console.WriteLine(c.requestId + "," + c.commentText);
-                }
-                texts = (List<SNAP_Access_User_Text>)closeRequests["reqText"];
-                foreach (SNAP_Access_User_Text list in texts)
-                {
-                    Console.WriteLine(list.access_details_formId + "," + list.userText);
-                }
+                Console.WriteLine("\n======");
+                Console.WriteLine("My Requests:");
+                db.GetAllRequests("clschwim", "my");
+                Console.WriteLine("\tOpen Requests:");
+                output(db.OpenRquests);
+                Console.WriteLine("\tClose Requests:");
+                output(db.CloseRquests);
+
+                Console.WriteLine("\n======");
+                Console.WriteLine("Approval Requests:");
+                db.GetAllRequests("clschwim", "approval");
+                Console.WriteLine("\tOpen Requests:");
+                output(db.OpenRquests);
+                Console.WriteLine("\tClose Requests:");
+                output(db.CloseRquests);
 
             }    
 
         }
         
+        private void output(Dictionary<string, object> data)
+        {
+            var reqDetails = (List<usp_open_my_request_detailsResult>)data["reqDetails"];
+            Console.WriteLine("\t\tReq details cnt: " + reqDetails.Count);
+
+            foreach (var d in reqDetails)
+            {
+                //Console.WriteLine(d.pkId + "," + d.statusEnum);
+            }
+            var texts = (List<SNAP_Access_User_Text>)data["reqText"];
+            Console.WriteLine("\t\tReq texts cnt: " + texts.Count);
+            foreach (SNAP_Access_User_Text list in texts)
+            {
+                //Console.WriteLine(list.access_details_formId + "," + list.userText);
+            }
+            
+            var comments = (List<usp_open_my_request_commentsResult>)data["reqComments"];
+            Console.WriteLine("\t\tReq comments cnt: " + comments.Count);
+            foreach (usp_open_my_request_commentsResult list in comments)
+            {
+                //Console.WriteLine(list.pkId + "," + list.commentText);
+            }
+            var wfDetails = (List<usp_open_my_request_workflow_detailsResult>)data["wfDetails"];
+            Console.WriteLine("\t\tWf details cnt: " + wfDetails.Count);
+            foreach (usp_open_my_request_workflow_detailsResult list in wfDetails)
+            {
+                //Console.WriteLine(list.pkId+ "," + list.workflowStatusEnum);
+            }
+            var wfComments = (List<usp_open_my_request_workflow_commentsResult>)data["wfComments"];
+            Console.WriteLine("\t\tWf comments cnt: " + wfComments.Count);
+            foreach (var c in wfComments)
+            {
+                //Console.WriteLine(c.requestId + "," + c.commentText);
+            }
+            
+        }
         [Test]
-        public void ShouldReturnMyOpenRequest()
+        public void ShouldReturnNoRequestData()
         {
             using (var db = new SNAPDatabaseDataContext())
             {
+                var maxRequestId = db.SNAP_Requests.Max(x => x.pkId);
+                var data = db.RetrieveRequest(++maxRequestId);
+                Assert.IsTrue(data.Count() == 0);
+            }
 
-                var requests = db.MyOpenRequests("pxlee");
-                var reqDetails = (List<usp_open_my_request_detailsResult>)requests["reqDetails"];
-                foreach (var d in reqDetails)
-                {
-                    Console.WriteLine(d.pkId + "," + d.statusEnum);
-                }
-                var wfComments = (List<usp_open_my_request_workflow_commentsResult>)requests["wfComments"];
-                foreach (var c in wfComments)
-                {
-                    Console.WriteLine(c.requestId + "," + c.commentText);
-                }
-                var texts = (List<SNAP_Access_User_Text>) requests["reqText"];
-                foreach (SNAP_Access_User_Text list in texts)
-                {
-                    Console.WriteLine(list.access_details_formId + "," + list.userText);
-                }
-            }    
         }
 
         [Test]
-        public void ShouldReturnMyApprovalRequest()
+        public void ShouldReturnRequestData()
         {
             using (var db = new SNAPDatabaseDataContext())
             {
+                var maxRequestId = db.SNAP_Requests.Max(x => x.pkId);
+                var requestTexts = db.RetrieveRequest(maxRequestId);
 
-                var requests = db.MyOpenApprovalRequests("clschwim");
-                var reqDetails = (List<usp_open_my_request_detailsResult>)requests["reqDetails"];
-                foreach (var d in reqDetails)
+                foreach (var text in requestTexts)
                 {
-                    Console.WriteLine(d.pkId + "," + d.statusEnum);
+                    Console.WriteLine(text.userText);
                 }
-                var wfComments = (List<usp_open_my_request_workflow_commentsResult>)requests["wfComments"];
-                foreach (var c in wfComments)
-                {
-                    Console.WriteLine(c.requestId + "," + c.commentText);
-                }
-                var texts = (List<SNAP_Access_User_Text>)requests["reqText"];
-                foreach (SNAP_Access_User_Text list in texts)
-                {
-                    Console.WriteLine(list.access_details_formId + "," + list.userText);
-                }
+                Assert.IsTrue(requestTexts.Count() > 0);
+
             }
         }
 
-
-        [Test]
-        public void ShouldReturnAccessRequest()
-        {
-            using (var db = new SNAPDatabaseDataContext())
-            {
-
-                var requests = db.AccessTeamRequests();
-                var reqDetails = (List<usp_open_my_request_detailsResult>)requests["reqDetails"];
-                foreach (var d in reqDetails)
-                {
-                    Console.WriteLine(d.pkId + "," + d.statusEnum);
-                }
-                var wfComments = (List<usp_open_my_request_workflow_commentsResult>)requests["wfComments"];
-                foreach (var c in wfComments)
-                {
-                    Console.WriteLine(c.requestId + "," + c.commentText);
-                }
-                var texts = (List<SNAP_Access_User_Text>)requests["reqText"];
-                foreach (SNAP_Access_User_Text list in texts)
-                {
-                    Console.WriteLine(list.access_details_formId + "," + list.userText);
-                }
-            }
-        }
-
-        //[Test]
-        //public void ShouldReturnNoRequestData()
-        //{
-        //    using (var db = new SNAPDatabaseDataContext())
-        //    {
-        //        var maxRequestId = db.SNAP_Requests.Max(x => x.pkId);
-        //        var data = db.RetrieveRequest(++maxRequestId);
-        //        Assert.IsTrue(data.Count() == 0);              
-        //    }
-
-        //}
-
-        //[Test]
-        //public void ShouldReturnRequestData()
-        //{
-        //    using (var db = new SNAPDatabaseDataContext())
-        //    {
-        //        var maxRequestId = db.SNAP_Requests.Max(x => x.pkId);
-        //        var requestTexts = db.RetrieveRequest(maxRequestId);
-
-        //        foreach (var text in requestTexts)
-        //        {
-        //            Console.WriteLine(text.userText);
-        //        }
-        //        Assert.IsTrue(requestTexts.Count() > 0);
-
-        //    }
-        //}
-
-        //[Test] public void SouldReturnUserViewTab()
-        //{
-        //    var userViewTab = new Dictionary<string, object>();
-        //    Console.WriteLine("org: " + userViewTab.Count);
-        //    using (var db = new SNAPDatabaseDataContext())
-        //    {
-        //        IMultipleResults result = db.usp_open_user_view_tab("clschwim");
-        //        if (result.ReturnValue.ToString() == "0")
-        //        {
-        //            userViewTab.Add("details", result.GetResult<usp_open_user_view_detailsResult>().ToList());
-        //            userViewTab.Add("status", result.GetResult<usp_open_user_view_statusResult>().ToList());
-        //        }
-        //    }
-        //    Console.WriteLine("final: " + userViewTab.Count);
-        //    foreach (var x in (IEnumerable<usp_open_user_view_detailsResult>)userViewTab["details"])
-        //    {
-        //        Console.WriteLine(x.requestId);
-        //    }
-
-        //    foreach (var x in (IEnumerable<usp_open_user_view_statusResult>)userViewTab["status"])
-        //    {
-        //        Console.WriteLine(x.requestId);
-        //    }
-
-        //}
     }
 }
