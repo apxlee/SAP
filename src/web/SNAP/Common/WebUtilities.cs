@@ -100,37 +100,23 @@ namespace Apollo.AIM.SNAP.Web.Common
             return null;
         }
 
-        public static void SetActiveView(string viewId)
-        {
-			Page currentPage = HttpContext.Current.Handler as Page;
-			MultiView multiView = (MultiView)WebUtilities.FindControlRecursive(currentPage, "_masterMultiView");
-
-            try
-            {
-                View selectedView = (View)WebUtilities.FindControlRecursive(multiView, viewId);
-                multiView.SetActiveView(selectedView);
-            }
-            catch
-            {
-                multiView.ActiveViewIndex = -1;
-            }
-        }
-
 		public static void SetActiveView(int viewIndex)
 		{
 			Page currentPage = HttpContext.Current.Handler as Page;
 			MultiView multiView = (MultiView)WebUtilities.FindControlRecursive(currentPage, "_masterMultiView");
+			Panel ribbonContainer = (Panel)WebUtilities.FindControlRecursive(currentPage, "_ribbonContainerOuter");
 
 			try
 			{
 				multiView.ActiveViewIndex = viewIndex;
+				ribbonContainer.CssClass = Convert.ToString((ViewIndex)Enum.Parse(typeof(ViewIndex), viewIndex.ToString()));
 			}
 			catch
 			{
 				multiView.ActiveViewIndex = -1;
 			}
 		}
-
+		
         public static string CurrentLoginUserId
         {
             get
