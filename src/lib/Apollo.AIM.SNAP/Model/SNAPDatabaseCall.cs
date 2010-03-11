@@ -10,6 +10,7 @@ namespace Apollo.AIM.SNAP.Model
 {
     public partial class SNAPDatabaseDataContext
     {
+
         public IEnumerable<SNAP_Access_User_Text> RetrieveRequest(int requestId)
         {
             //using (var db = new SNAPDatabaseDataContext())
@@ -87,6 +88,19 @@ namespace Apollo.AIM.SNAP.Model
             return ((IMultipleResults)(result.ReturnValue));
         }
 
+        [Function(Name = "dbo.usp_requests")]
+        [ResultType(typeof(usp_open_my_request_detailsResult))]
+        [ResultType(typeof(SNAP_Access_User_Text))]
+        [ResultType(typeof(usp_open_my_request_commentsResult))]
+        [ResultType(typeof(usp_open_my_request_workflow_detailsResult))]
+        [ResultType(typeof(usp_open_my_request_workflow_commentsResult))]
+        public IMultipleResults usp_requests([Parameter(DbType = "NVarChar(10)")] string userId, [Parameter(DbType = "NVarChar(10)")] string role)
+        {
+            IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId, role);
+            return ((IMultipleResults)(result.ReturnValue));
+        }
+
+
         // this method just package my open request call results into dictionary type
         public Dictionary<string, object> MyOpenRequests(string userId)
         {
@@ -116,6 +130,14 @@ namespace Apollo.AIM.SNAP.Model
             return myRequests;
         }
 
+
+
+        public void GetAllRequests(string userId, Dictionary<string, object> open, Dictionary<string, object> close)
+        {
+            IMultipleResults result = usp_requests(userId, "my");
+            populateAllRequests(result, open, close);
+        }
+
         static void populateRequests(IMultipleResults result, Dictionary<string, object> myRequests)
         {
             if (result.ReturnValue.ToString() == "0")
@@ -125,6 +147,27 @@ namespace Apollo.AIM.SNAP.Model
                 myRequests.Add("reqComments", result.GetResult<usp_open_my_request_commentsResult>().ToList());
                 myRequests.Add("wfDetails", result.GetResult<usp_open_my_request_workflow_detailsResult>().ToList());
                 myRequests.Add("wfComments", result.GetResult<usp_open_my_request_workflow_commentsResult>().ToList());
+            }
+
+        }
+
+
+        static void populateAllRequests(IMultipleResults result, Dictionary<string, object> myOpenRequests, Dictionary<string, object> myCloseRequests)
+        {
+            if (result.ReturnValue.ToString() == "0")
+            {
+                myOpenRequests.Add("reqDetails", result.GetResult<usp_open_my_request_detailsResult>().ToList());
+                myOpenRequests.Add("reqText", result.GetResult<SNAP_Access_User_Text>().ToList());
+                myOpenRequests.Add("reqComments", result.GetResult<usp_open_my_request_commentsResult>().ToList());
+                myOpenRequests.Add("wfDetails", result.GetResult<usp_open_my_request_workflow_detailsResult>().ToList());
+                myOpenRequests.Add("wfComments", result.GetResult<usp_open_my_request_workflow_commentsResult>().ToList());
+
+                myCloseRequests.Add("reqDetails", result.GetResult<usp_open_my_request_detailsResult>().ToList());
+                myCloseRequests.Add("reqText", result.GetResult<SNAP_Access_User_Text>().ToList());
+                myCloseRequests.Add("reqComments", result.GetResult<usp_open_my_request_commentsResult>().ToList());
+                myCloseRequests.Add("wfDetails", result.GetResult<usp_open_my_request_workflow_detailsResult>().ToList());
+                myCloseRequests.Add("wfComments", result.GetResult<usp_open_my_request_workflow_commentsResult>().ToList());
+
             }
 
         }

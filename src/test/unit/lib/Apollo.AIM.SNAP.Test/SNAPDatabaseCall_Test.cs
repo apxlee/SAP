@@ -17,6 +17,52 @@ namespace Apollo.AIM.SNAP.Test
         {
         }
 
+        [Test]
+        public void ShouldReturnAllRequests()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                Dictionary<string, object> openRequests = new Dictionary<string, object>();
+                Dictionary<string, object> closeRequests = new Dictionary<string, object>();
+
+                db.GetAllRequests("clschwim", openRequests, closeRequests);
+
+                var reqDetails = (List<usp_open_my_request_detailsResult>)openRequests["reqDetails"];
+                foreach (var d in reqDetails)
+                {
+                    Console.WriteLine(d.pkId + "," + d.statusEnum);
+                }
+                var wfComments = (List<usp_open_my_request_workflow_commentsResult>)openRequests["wfComments"];
+                foreach (var c in wfComments)
+                {
+                    Console.WriteLine(c.requestId + "," + c.commentText);
+                }
+                var texts = (List<SNAP_Access_User_Text>)openRequests["reqText"];
+                foreach (SNAP_Access_User_Text list in texts)
+                {
+                    Console.WriteLine(list.access_details_formId + "," + list.userText);
+                }
+
+                Console.WriteLine("Close ....");
+                reqDetails = (List<usp_open_my_request_detailsResult>)closeRequests["reqDetails"];
+                foreach (var d in reqDetails)
+                {
+                    Console.WriteLine(d.pkId + "," + d.statusEnum);
+                }
+                wfComments = (List<usp_open_my_request_workflow_commentsResult>)closeRequests["wfComments"];
+                foreach (var c in wfComments)
+                {
+                    Console.WriteLine(c.requestId + "," + c.commentText);
+                }
+                texts = (List<SNAP_Access_User_Text>)closeRequests["reqText"];
+                foreach (SNAP_Access_User_Text list in texts)
+                {
+                    Console.WriteLine(list.access_details_formId + "," + list.userText);
+                }
+
+            }    
+
+        }
         
         [Test]
         public void ShouldReturnMyOpenRequest()

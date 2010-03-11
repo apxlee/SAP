@@ -238,7 +238,6 @@ namespace Apollo.AIM.SNAP.Model
 			return ((ISingleResult<usp_open_my_request_tabResult>)(result.ReturnValue));
 		}
 		
-        
 		[Function(Name="dbo.usp_open_my_request_text")]
 		public int usp_open_my_request_text([Parameter(DbType="NVarChar(10)")] string userId)
 		{
@@ -246,6 +245,7 @@ namespace Apollo.AIM.SNAP.Model
 			return ((int)(result.ReturnValue));
 		}
 		*/
+
 		[Function(Name="dbo.usp_open_my_request_workflow_comments")]
 		public ISingleResult<usp_open_my_request_workflow_commentsResult> usp_open_my_request_workflow_comments([Parameter(DbType="NVarChar(10)")] string userId)
 		{
@@ -259,6 +259,15 @@ namespace Apollo.AIM.SNAP.Model
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId);
 			return ((ISingleResult<usp_open_my_request_workflow_detailsResult>)(result.ReturnValue));
 		}
+		
+        /*
+		[Function(Name="dbo.usp_requests")]
+		public ISingleResult<usp_requestsResult> usp_requests([Parameter(DbType="NVarChar(10)")] string userId, [Parameter(DbType="NVarChar(10)")] string role)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId, role);
+			return ((ISingleResult<usp_requestsResult>)(result.ReturnValue));
+		}
+         */
 	}
 	
 	[Table(Name="dbo.SNAP_Access_Details_Form")]
@@ -3949,6 +3958,212 @@ namespace Apollo.AIM.SNAP.Model
 				if ((this._isActive != value))
 				{
 					this._isActive = value;
+				}
+			}
+		}
+	}
+	
+	public partial class usp_requestsResult
+	{
+		
+		private int _pkId;
+		
+		private string _submittedBy;
+		
+		private string _userId;
+		
+		private string _userDisplayName;
+		
+		private string _userTitle;
+		
+		private string _managerUserId;
+		
+		private string _managerDisplayName;
+		
+		private string _ticketNumber;
+		
+		private bool _isChanged;
+		
+		private byte _statusEnum;
+		
+		private System.DateTime _createdDate;
+		
+		public usp_requestsResult()
+		{
+		}
+		
+		[Column(Storage="_pkId", DbType="Int NOT NULL")]
+		public int pkId
+		{
+			get
+			{
+				return this._pkId;
+			}
+			set
+			{
+				if ((this._pkId != value))
+				{
+					this._pkId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_submittedBy", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
+		public string submittedBy
+		{
+			get
+			{
+				return this._submittedBy;
+			}
+			set
+			{
+				if ((this._submittedBy != value))
+				{
+					this._submittedBy = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_userId", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
+		public string userId
+		{
+			get
+			{
+				return this._userId;
+			}
+			set
+			{
+				if ((this._userId != value))
+				{
+					this._userId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_userDisplayName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string userDisplayName
+		{
+			get
+			{
+				return this._userDisplayName;
+			}
+			set
+			{
+				if ((this._userDisplayName != value))
+				{
+					this._userDisplayName = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_userTitle", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string userTitle
+		{
+			get
+			{
+				return this._userTitle;
+			}
+			set
+			{
+				if ((this._userTitle != value))
+				{
+					this._userTitle = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_managerUserId", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
+		public string managerUserId
+		{
+			get
+			{
+				return this._managerUserId;
+			}
+			set
+			{
+				if ((this._managerUserId != value))
+				{
+					this._managerUserId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_managerDisplayName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string managerDisplayName
+		{
+			get
+			{
+				return this._managerDisplayName;
+			}
+			set
+			{
+				if ((this._managerDisplayName != value))
+				{
+					this._managerDisplayName = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_ticketNumber", DbType="NVarChar(20)")]
+		public string ticketNumber
+		{
+			get
+			{
+				return this._ticketNumber;
+			}
+			set
+			{
+				if ((this._ticketNumber != value))
+				{
+					this._ticketNumber = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_isChanged", DbType="Bit NOT NULL")]
+		public bool isChanged
+		{
+			get
+			{
+				return this._isChanged;
+			}
+			set
+			{
+				if ((this._isChanged != value))
+				{
+					this._isChanged = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_statusEnum", DbType="TinyInt NOT NULL")]
+		public byte statusEnum
+		{
+			get
+			{
+				return this._statusEnum;
+			}
+			set
+			{
+				if ((this._statusEnum != value))
+				{
+					this._statusEnum = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_createdDate", DbType="SmallDateTime NOT NULL")]
+		public System.DateTime createdDate
+		{
+			get
+			{
+				return this._createdDate;
+			}
+			set
+			{
+				if ((this._createdDate != value))
+				{
+					this._createdDate = value;
 				}
 			}
 		}
