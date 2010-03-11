@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Apollo.AIM.SNAP.CA;
 using Apollo.AIM.SNAP.Web.Common;
 using Apollo.AIM.SNAP.Model;
 
@@ -64,7 +65,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
             table.Rows.Add("Title", reqDetail.userTitle);
             table.Rows.Add("Manager Name", reqDetail.managerDisplayName);
-            table.Rows.Add("AD Manager Name", "Sally Kirkland");
+            table.Rows.Add("AD Manager Name", ADManagerName(reqDetail.userId, reqDetail.managerUserId));
             table.Rows.Add("Requestor", reqDetail.submittedBy);
             table.Rows.Add("Windows Servers", userText(reqUserText, 2));
                 //reqUserText.Single(x => x.access_details_formId == 2).userText); ;
@@ -89,6 +90,19 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			return table;
 		}
 		
+        string ADManagerName(string userId, string mgrUsrId)
+        {
+            if (userId != string.Empty)
+            {
+                ADUserDetail usrDetail = Apollo.AIM.SNAP.CA.DirectoryServices.GetUserByLoginName(userId);
+                if (mgrUsrId == usrDetail.Manager.LoginName)
+                    return usrDetail.ManagerName;
+                
+                return "<span style='color:red'><strong>" + usrDetail.ManagerName + "</strong></span>";
+            }
+            return "";
+        }
+
         string userText(List<SNAP_Access_User_Text> list, int formId)
         {
             string txt = string.Empty;
