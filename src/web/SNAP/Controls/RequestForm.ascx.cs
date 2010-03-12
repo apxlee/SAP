@@ -19,6 +19,15 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
         protected void Page_Load(object sender, EventArgs e)
         {
+			if (WebUtilities.CurrentViewIndex == ViewIndex.request_form)
+			{
+				BuildRequestForm();
+			}
+        }
+        
+        private void BuildRequestForm()
+        {
+        
             _requestFormData = loadRequestFormData();
 
             if (!brandNewRequest())
@@ -65,7 +74,6 @@ namespace Apollo.AIM.SNAP.Web.Controls
                 this._requestForm.Controls.Add(requestFormSection);
             }
         }
-
 
         public string UserName
         {
@@ -123,8 +131,6 @@ namespace Apollo.AIM.SNAP.Web.Controls
                 Logger.Fatal("SNAP: Request Form -  Submit failure", ex);
             }
         }
-
-
 
         private List<RequestData> RequestFormRequestData(Control controlRoot)
         {
@@ -205,7 +211,5 @@ namespace Apollo.AIM.SNAP.Web.Controls
         {
             return _requestFormData == null ||_requestFormData.Count() == 0;
         }
-
     }
-
 }
