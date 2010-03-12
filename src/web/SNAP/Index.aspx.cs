@@ -57,6 +57,8 @@ namespace Apollo.AIM.SNAP.Web
 		
 		private void SetViewFromRole()
 		{
+			// TODO: move this to utilities?
+			
 			switch (WebUtilities.CurrentRole)
 			{
 				case OOSPARole.ApprovingManager:
