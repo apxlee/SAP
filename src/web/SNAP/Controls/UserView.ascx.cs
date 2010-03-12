@@ -17,7 +17,10 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			{
 				BuildUserView();
 			}
-			
+		}
+		
+		private void BuildUserView()
+		{
             var requesterLoader = new Common.MyRequestLooder();
 		    requesterLoader.Load();
 
