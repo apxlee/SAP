@@ -768,12 +768,12 @@ TODO: REMOVE THIS SECTION
 
 .csm_template_1 .csm_icon_heading_container {
 	background-position: 0px 0px;
-	height: 43px;
+	height: 50px;
 	margin-bottom: 2px;
     }
 
 .oospa_request_details {
-	background: transparent url('../images/icon_white_clipboard.png') no-repeat;
+	background: transparent url('../images/icon_approver.png') no-repeat;
     }
     
 .oospa_request_status {
@@ -804,8 +804,8 @@ TODO: REMOVE THIS SECTION
     height: 200px;
 }	
 .csm_template_1 .csm_icon_heading_container h2 {
-    margin-left: 48px;
-    line-height: 1.8em;
+    margin-left: 60px;
+    line-height: 2.7em;
     }
     
 table.oospa_workflow_builder_row {
