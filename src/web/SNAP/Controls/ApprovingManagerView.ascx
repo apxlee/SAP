@@ -1,4 +1,20 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ApprovingManagerView.ascx.cs" Inherits="Apollo.AIM.SNAP.Web.Controls.ApprovingManagerView" %>
 <div class="csm_container_center_700">
-	<h1>Approving Manager View</h1>
+	
+	<h1>Pending Approvals</h1>
+	<asp:PlaceHolder ID="_openRequestsContainer" runat="server"></asp:PlaceHolder>
+	<asp:Panel ID="_nullDataMessage_OpenRequests" runat="server" CssClass="csm_content_container" Visible="false">
+		<div class="csm_text_container">
+			<p>There are no Pending Requests at this time.</p>
+		</div>
+	</asp:Panel>
+	
+	<h1>Closed Requests</h1>
+	<asp:PlaceHolder ID="_closedRequestsContainer" runat="server"></asp:PlaceHolder>
+	<asp:Panel ID="_nullDataMessage_ClosedRequests" runat="server" CssClass="csm_content_container" Visible="false">
+		<div class="csm_text_container">
+			<p>There are no Closed Requests at this time.</p>
+		</div>
+	</asp:Panel>	
+
 </div>

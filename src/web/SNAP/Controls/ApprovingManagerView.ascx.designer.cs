@@ -12,5 +12,41 @@ namespace Apollo.AIM.SNAP.Web.Controls {
     
     
     public partial class ApprovingManagerView {
+        
+        /// <summary>
+        /// _openRequestsContainer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder _openRequestsContainer;
+        
+        /// <summary>
+        /// _nullDataMessage_OpenRequests control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel _nullDataMessage_OpenRequests;
+        
+        /// <summary>
+        /// _closedRequestsContainer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder _closedRequestsContainer;
+        
+        /// <summary>
+        /// _nullDataMessage_ClosedRequests control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel _nullDataMessage_ClosedRequests;
     }
 }
