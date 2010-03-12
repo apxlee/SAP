@@ -117,6 +117,22 @@ namespace Apollo.AIM.SNAP.Web.Common
 			}
 		}
 		
+		public static ViewIndex CurrentViewIndex
+		{
+			get 
+			{
+				Page currentPage = HttpContext.Current.Handler as Page;
+				MultiView multiView = (MultiView)WebUtilities.FindControlRecursive(currentPage, "_masterMultiView");
+			
+				return (ViewIndex)multiView.ActiveViewIndex;
+
+				//MultiView requestedView;
+				//Int32 requestedViewIndex;
+				//requestedView = (MultiView)WebUtilities.FindControlRecursive(Page, "_masterMultiView");
+				//requestedViewIndex = requestedView.ActiveViewIndex;				
+			}
+		}
+		
         public static string CurrentLoginUserId
         {
             get
@@ -129,9 +145,7 @@ namespace Apollo.AIM.SNAP.Web.Common
                 //return x;
             }
          }
-
      }
-     
         
     public static class ExtensionMethods
     {
