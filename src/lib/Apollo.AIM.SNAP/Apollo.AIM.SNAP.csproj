@@ -50,6 +50,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\AccessRequest.cs" />
+    <Compile Include="Model\Enumeration.cs" />
     <Compile Include="Model\RequestData.cs" />
     <Compile Include="Model\SNAPDatabase.designer.cs">
       <AutoGen>True</AutoGen>

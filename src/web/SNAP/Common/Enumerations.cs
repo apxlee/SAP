@@ -10,6 +10,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 		SuperUser
 	}
 	
+    /*
 	public enum RequestState
 	{
 		Open = 0,
@@ -44,7 +45,9 @@ namespace Apollo.AIM.SNAP.Web.Common
 		Access_Notes_AccessTeam = 7,		
 		Access_Notes_SuperUser = 9
 	}
-	
+
+     */
+
 	public enum ViewIndex
 	{
 		login = 0,

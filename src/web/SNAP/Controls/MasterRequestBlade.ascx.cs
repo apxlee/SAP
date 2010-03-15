@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Apollo.AIM.SNAP.Model;
 using Apollo.AIM.SNAP.Web.Common;
 
 namespace Apollo.AIM.SNAP.Web.Controls
