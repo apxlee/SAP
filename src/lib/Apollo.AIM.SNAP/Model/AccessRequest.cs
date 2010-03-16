@@ -188,22 +188,6 @@ namespace Apollo.AIM.SNAP.Model
                 switch (approvalType)
                 {
                     case (byte)ActorApprovalType.Manager:
-                        switch (action)
-                        {
-                            case WorkflowAction.Approved:
-                                wf.SNAP_Workflow_States.Add(createState(WorkflowState.Approved));
-                                InformApprovalForAction();
-                                break;
-                            case WorkflowAction.Change:
-                                break;
-                            case WorkflowAction.Denied:
-                                wf.SNAP_Workflow_States.Add(createState(WorkflowState.Closed_Denied));
-                                // TODO - close denied the who request!
-
-                                break;
-                        }
-                        break;
-
                     case (byte)ActorApprovalType.Team_Approver:
                         switch (action)
                         {
@@ -220,7 +204,24 @@ namespace Apollo.AIM.SNAP.Model
                                 break;
                         }
                         break;
+/*
+                    case (byte)ActorApprovalType.Team_Approver:
+                        switch (action)
+                        {
+                            case WorkflowAction.Approved:
+                                wf.SNAP_Workflow_States.Add(createState(WorkflowState.Approved));
+                                InformApprovalForAction();
+                                break;
+                            case WorkflowAction.Change:
+                                break;
+                            case WorkflowAction.Denied:
+                                wf.SNAP_Workflow_States.Add(createState(WorkflowState.Closed_Denied));
+                                // TODO - close denied the who request!
 
+                                break;
+                        }
+                        break;
+*/
                     case (byte)ActorApprovalType.Technical_Approver:
                         switch (action)
                         {
