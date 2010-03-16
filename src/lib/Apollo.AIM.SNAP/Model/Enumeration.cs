@@ -39,4 +39,20 @@ namespace Apollo.AIM.SNAP.Model
         Access_Notes_AccessTeam = 7,
         Access_Notes_SuperUser = 9
     }
+
+    public enum ActorApprovalType
+    {
+        Team_Approver = 0,
+        Technical_Approver = 1,
+        Manager = 2,
+        Workflow_Admin = 3
+
+    }
+
+    public enum WorkflowAction
+    {
+        Approved = 0,
+        Denied = 1,
+        Change = 2
+    }
 }
