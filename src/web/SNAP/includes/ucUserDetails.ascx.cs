@@ -10,6 +10,7 @@ namespace Apollo.AIM.SNAP.Web.includes
 {
     public partial class ucUserDetails : System.Web.UI.UserControl
     {
+        /*
 
         /// <summary>
         /// Handles the Load event of the Page control.
@@ -367,5 +368,6 @@ namespace Apollo.AIM.SNAP.Web.includes
             Server.Transfer("search.aspx");
             //string thing = e.CommandArgument.ToString();
         }
+         */
     }
 }
