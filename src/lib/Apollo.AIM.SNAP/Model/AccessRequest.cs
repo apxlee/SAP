@@ -37,8 +37,9 @@ namespace Apollo.AIM.SNAP.Model
         {
             using (var db = new SNAPDatabaseDataContext())
             {
-
                 createrApprovalWorkFlow(db, actorIds);
+
+                //createFirstNonWorkflowAdminApprovalWorkflow(db, actorIds);
 
                 // complete current state
                 var wf = db.SNAP_Workflows.Single(x => x.requestId == _id && x.actorId == 1);
@@ -46,6 +47,7 @@ namespace Apollo.AIM.SNAP.Model
                 var state = wf.SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Workflow);
                 stateTransition(ActorApprovalType.Workflow_Admin, wf, state, WorkflowState.Pending_Workflow, WorkflowState.Pending_Approval);
                 db.SubmitChanges();
+                 
             }
 
         }
@@ -103,6 +105,7 @@ namespace Apollo.AIM.SNAP.Model
                 approvalType = workflowApprovalType(db, wid);
                 var wf = db.SNAP_Workflows.Single(w => w.pkId == wid);
                 var state = wf.SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval);
+                WorkflowState newState=WorkflowState.Not_Active; 
                 switch (approvalType)
                 {
                     case (byte)ActorApprovalType.Manager:
@@ -111,10 +114,13 @@ namespace Apollo.AIM.SNAP.Model
                         {
                             case WorkflowAction.Approved:
                                 InformApproverForAction();
+                                newState = WorkflowState.Approved;
+                                //createNextApprovalWorkflow(db, approvalType);
                                 break;
                             case WorkflowAction.Change:
                                 break;
                             case WorkflowAction.Denied:
+                                newState = WorkflowState.Closed_Denied;
                                 // TODO - close denied the who request!
                                 break;
                         }
@@ -124,12 +130,13 @@ namespace Apollo.AIM.SNAP.Model
                         switch (action)
                         {
                             case WorkflowAction.Approved:
+                                newState = WorkflowState.Approved;
                                 break;
                             case WorkflowAction.Change:
                                 break;
                             case WorkflowAction.Denied:
                                 // TODO - close denied the who request!
-
+                                newState = WorkflowState.Closed_Denied;
                                 break;
                         }
 
@@ -142,11 +149,78 @@ namespace Apollo.AIM.SNAP.Model
                 // technical mgr ack
                 // determine next state
 
-                stateTransition((ActorApprovalType)approvalType, wf, state, WorkflowState.Pending_Approval, (WorkflowState)action);
+                stateTransition((ActorApprovalType)approvalType, wf, state, WorkflowState.Pending_Approval, newState);
                 db.SubmitChanges();
             }
             if (approvalType == (byte)ActorApprovalType.Technical_Approver && action == WorkflowAction.Approved)
                 completeRequestApprovalCheck();
+
+            if (action == WorkflowAction.Denied)
+                deny((ActorApprovalType)approvalType);
+        }
+
+        private void createFirstNonWorkflowAdminApprovalWorkflow(SNAPDatabaseDataContext db, List<int> actIds)
+        {
+            List<SNAP_Workflow> wfs;
+            //var wf = FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager)[0];
+            createrApprovalWorkFlow(db, new List<int>() { actIds[0]});
+        }
+
+        private void createNextApprovalWorkflow(SNAPDatabaseDataContext db,  int type)
+        {
+            List<SNAP_Workflow> wfs;
+            switch (type)
+            {
+                case (byte) ActorApprovalType.Manager:
+                    wfs = FindApprovalTypeWF(db, (byte) ActorApprovalType.Team_Approver);
+                    if (wfs.Count != 0)
+                    {
+                        createrApprovalWorkFlow(db, new List<int>() { wfs[0].SNAP_Actor.pkId });
+                    }
+                    else
+                    {
+                        createTechnicalApprovalWF(db);
+                    }
+                    break;
+                case (byte) ActorApprovalType.Team_Approver:
+                    createTechnicalApprovalWF(db);
+                    break;
+            }
+        }
+
+        private void createTechnicalApprovalWF(SNAPDatabaseDataContext db)
+        {
+            List<SNAP_Workflow> wfs;
+            wfs = FindApprovalTypeWF(db, (byte) ActorApprovalType.Technical_Approver);
+            if (wfs.Count != 0)
+            {
+                var list = new List<int>();
+                foreach (var wf in wfs)
+                {
+                    list.Add(wf.actorId);
+                }
+                createrApprovalWorkFlow(db, list);
+            }
+        }
+
+        private void deny(ActorApprovalType type)
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(r => r.pkId == _id);
+
+                var wf = FindApprovalTypeWF(db, (byte) type)[0];
+                if (wf.SNAP_Workflow_States.Count(s => s.workflowStatusEnum == (byte)WorkflowState.Closed_Denied) == 1)
+                {
+                    // set accessTeam WF and request to close-denied
+                    var accessTeamWF = FindApprovalTypeWF(db, (byte) ActorApprovalType.Workflow_Admin)[0];
+                    var state = accessTeamWF.SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte) WorkflowState.Pending_Approval);
+                    stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, state, WorkflowState.Pending_Approval, WorkflowState.Closed_Denied);
+                    req.statusEnum = (byte) RequestState.Closed;
+                }
+
+                db.SubmitChanges();
+            }
         }
 
 
