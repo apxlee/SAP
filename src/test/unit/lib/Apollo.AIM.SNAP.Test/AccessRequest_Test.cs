@@ -510,7 +510,7 @@ namespace Apollo.AIM.SNAP.Test
                 Assert.IsTrue(accessTeamState.completedDate != null);  // all technical approval received, complete it
 
                 accessTeamState = accessTeamWF.SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Approved);
-                //Assert.IsTrue(accessTeamState.completedDate == null);  // all technical approval received, complete it
+                Assert.IsTrue(accessTeamState.completedDate == null);  // all technical approval received, complete it
             }
 
         }
