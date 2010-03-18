@@ -56,7 +56,7 @@ namespace Apollo.AIM.SNAP.Model
                 var accessWF = db.SNAP_Workflows.Single(x => x.requestId == _id && x.actorId == 1);
 
                 // complete previous state
-                stateTransition(ActorApprovalType.Workflow_Admin, accessWF, WorkflowState.Pending_Acknowlegement, wfState);
+                stateTransition(ActorApprovalType.Workflow_Admin, accessWF, WorkflowState.Pending_Workflow, wfState);
                 accessWF.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
                                                          {
                                                              commentText = comment,
@@ -93,8 +93,6 @@ namespace Apollo.AIM.SNAP.Model
         }
         public void RequestToChange(string comment)
         {
-            //handleRequestChanges(comment, CommentsType.Requested_Change, WorkflowState.Pending_Workflow, WorkflowState.Change_Requested, RequestState.Pending, RequestState.Change_Requested);
-            
             using (var db = new SNAPDatabaseDataContext())
             {
                 var req = db.SNAP_Requests.Single(r => r.pkId == _id);
@@ -118,8 +116,6 @@ namespace Apollo.AIM.SNAP.Model
 
         public void RequestChanged()
         {
-            //handleRequestChanges(string.Empty, CommentsType.Requested_Change, WorkflowState.Pending_Workflow, WorkflowState.Change_Requested, RequestState.Pending, RequestState.Change_Requested);
-            
             using (var db = new SNAPDatabaseDataContext())
             {
                 var req = db.SNAP_Requests.Single(r => r.pkId == _id);
@@ -381,6 +377,7 @@ namespace Apollo.AIM.SNAP.Model
 
         }
 
+        /*
         private SNAP_Workflow_State createState(WorkflowState s)
         {
             var state = new SNAP_Workflow_State()
@@ -406,6 +403,8 @@ namespace Apollo.AIM.SNAP.Model
             return state;
             
         }
+         */
+
         private void completeRequestApprovalCheck() //SNAPDatabaseDataContext db)
         {
             using (var db = new SNAPDatabaseDataContext())
@@ -437,20 +436,25 @@ namespace Apollo.AIM.SNAP.Model
 
         private void stateTransition(ActorApprovalType approvalType, SNAP_Workflow wf, WorkflowState from, WorkflowState to)
         {
-            try
+            //
+            // !!! if the state completion date is null, it is the WF current state !!!
+            //
+
+            // a brand new WF has no coming from state, such as when creating a new manager, team and techical approval workflow
+            if (from != WorkflowState.Not_Active)
             {
+                // complete current/prev state
+
                 var prevWFState = wf.SNAP_Workflow_States.Single(
-                    s => s.workflowStatusEnum == (byte)from 
-                    && s.completedDate == null);
+                    s => s.workflowStatusEnum == (byte)from
+                    && s.completedDate == null); // o prevent looping in old state, null date is the latest state
 
                 if (prevWFState != null)
                     prevWFState.completedDate = DateTime.Now;
-
-            }
-            catch (Exception ex)
-            {
+                
             }
 
+            // create new state
             var newState = new SNAP_Workflow_State()
             {
                 completedDate = null,
@@ -458,19 +462,35 @@ namespace Apollo.AIM.SNAP.Model
                 dueDate = getDueDate(approvalType, from, to), //DateTime.Now.AddDays(1),
                 workflowStatusEnum = (byte)to
             };
+
             // for end/close states set the completion date
-            if (to == WorkflowState.Closed_Cancelled || to == WorkflowState.Closed_Completed || to == WorkflowState.Closed_Denied) //||
-            {
-                newState.completedDate = newState.dueDate = DateTime.Now;
-            }
+            checkToCloseWorkflowAdimStates(approvalType, to, newState);
 
             // workflowstate.approved is end state for manger, team approval and techical aproval but not for workflow adim
+            checkToCloseMangerOrTeamOrTechnicalWorkflowStates(approvalType, to, newState);
+
+            // go to new state
+            wf.SNAP_Workflow_States.Add(newState);
+        }
+
+        private void checkToCloseMangerOrTeamOrTechnicalWorkflowStates(ActorApprovalType approvalType, WorkflowState to, SNAP_Workflow_State newState)
+        {
             if (to == WorkflowState.Approved && approvalType != ActorApprovalType.Workflow_Admin)
             {
                 newState.completedDate = newState.dueDate = DateTime.Now;
             }
+        }
 
-            wf.SNAP_Workflow_States.Add(newState);
+        private void checkToCloseWorkflowAdimStates(ActorApprovalType approvalType, WorkflowState to, SNAP_Workflow_State newState)
+        {
+            if (approvalType == ActorApprovalType.Workflow_Admin)
+            {
+                if (to == WorkflowState.Closed_Cancelled || to == WorkflowState.Closed_Completed ||
+                    to == WorkflowState.Closed_Denied)
+                {
+                    newState.completedDate = newState.dueDate = DateTime.Now;
+                }
+            }
         }
 
         private DateTime getDueDate(ActorApprovalType approvalType, WorkflowState fr, WorkflowState to)
