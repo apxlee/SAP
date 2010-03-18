@@ -63,6 +63,9 @@ namespace Apollo.AIM.SNAP.Test
                     {
                         var states = db.SNAP_Workflow_States.Where(x => x.workflowId == wf.pkId);
                         db.SNAP_Workflow_States.DeleteAllOnSubmit(states);
+
+                        var comments = db.SNAP_Workflow_Comments.Where(c => c.workflowId == wf.pkId);
+                        db.SNAP_Workflow_Comments.DeleteAllOnSubmit(comments);
                     }
 
                     db.SNAP_Workflows.DeleteAllOnSubmit(wfs);
@@ -650,39 +653,190 @@ namespace Apollo.AIM.SNAP.Test
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
                 Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate == null);
 
-                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Denied);
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Denied, "Bad Request");
 
-                /*
-                // get team approval
-                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Team_Approver);
-                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
-
-
-                // get technical approval
-                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
-                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
-
-                // create SD ticket
-                accessReq.CreateServiceDeskTicket();
-
-                // finalize it
-                accessReq.FinalizeRequest();
-                */
             }
 
-            /*
+            
             using (var db = new SNAPDatabaseDataContext())
             {
                 var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
                 var accessReq = new AccessRequest(req.pkId);
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
-                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Provisioning).completedDate != null);
-                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Closed_Completed).completedDate != null);
+                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate != null);
+                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Closed_Denied).completedDate != null);
                 Assert.IsTrue(req.statusEnum == (byte)RequestState.Closed);
+                var wf = accessReq.FindApprovalTypeWF(db, (byte) ActorApprovalType.Manager)[0];
+                Assert.IsTrue(wf.SNAP_Workflow_Comments.Count(c => c.commentTypeEnum == (byte) CommentsType.Denied) > 0);
             }
-            */
+            
         }
 
+        [Test]
+        public void ShouldHandleTeamApprovalDeniedRequest()
+        {
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+
+                var accessReq = new AccessRequest(req.pkId);
+                accessReq.Ack();
+                accessReq.CreateWorkflow(new List<int>()
+                                             {
+                                                 managerActorId,
+                                                 teamApprovalActorId,
+                                                 windowsServerActorId,
+                                                 //databaseActorId,
+                                                 //networkShareActorId
+                                             });
+
+                accessReq.InformApproverForAction();
+
+                // get manager approval
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
+                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate == null);
+
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+
+                
+                // get team disapproval
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Team_Approver);
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Denied, "Still Bad");
+
+                /*
+                // get technical approval
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+                */
+
+            }
+
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var accessReq = new AccessRequest(req.pkId);
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
+                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate != null);
+                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Closed_Denied).completedDate != null);
+                Assert.IsTrue(req.statusEnum == (byte)RequestState.Closed);
+                var wf = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Team_Approver)[0];
+                Assert.IsTrue(wf.SNAP_Workflow_Comments.Count(c => c.commentTypeEnum == (byte)CommentsType.Denied) > 0);
+            }
+
+        }
+
+        [Test]
+        public void ShouldHandleTechicalApprovalDeniedRequest()
+        {
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+
+                var accessReq = new AccessRequest(req.pkId);
+                accessReq.Ack();
+                accessReq.CreateWorkflow(new List<int>()
+                                             {
+                                                 managerActorId,
+                                                 teamApprovalActorId,
+                                                 windowsServerActorId,
+                                                 //databaseActorId,
+                                                 //networkShareActorId
+                                             });
+
+                accessReq.InformApproverForAction();
+
+                // get manager approval
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
+                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate == null);
+
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+
+
+                // get team approval
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Team_Approver);
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+
+                
+                // get technical disapproval
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Denied, "Bad!!!");
+                
+            }
+
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var accessReq = new AccessRequest(req.pkId);
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
+                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate != null);
+                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Closed_Denied).completedDate != null);
+                Assert.IsTrue(req.statusEnum == (byte)RequestState.Closed);
+                var wf = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver)[0];
+                Assert.IsTrue(wf.SNAP_Workflow_Comments.Count(c => c.commentTypeEnum == (byte)CommentsType.Denied) > 0);
+            }
+
+        }
+
+        [Test]
+        public void ShouldHandleLastTechicalApprovalDeniedRequest()
+        {
+            int denier = 2;
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+
+                var accessReq = new AccessRequest(req.pkId);
+                accessReq.Ack();
+                accessReq.CreateWorkflow(new List<int>()
+                                             {
+                                                 managerActorId,
+                                                 teamApprovalActorId,
+                                                 windowsServerActorId,
+                                                 databaseActorId,
+                                                 networkShareActorId
+                                             });
+
+                accessReq.InformApproverForAction();
+
+                // get manager approval
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
+                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate == null);
+
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+
+
+                // get team approval
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Team_Approver);
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+
+
+                // get technical approval but last disapproval
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+                accessReq.WorkflowAck(wfs[1].pkId, WorkflowAction.Approved);
+                accessReq.WorkflowAck(wfs[denier].pkId, WorkflowAction.Denied, "Last One Deny");
+
+            }
+
+            
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var accessReq = new AccessRequest(req.pkId);
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
+                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate != null);
+                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Closed_Denied).completedDate != null);
+                Assert.IsTrue(req.statusEnum == (byte)RequestState.Closed);
+                var wfStates = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
+                Assert.IsTrue(wfStates[denier].SNAP_Workflow_Comments.Count(c => c.commentTypeEnum == (byte)CommentsType.Denied) == 1);
+            }
+            
+        }
 
     }
 }

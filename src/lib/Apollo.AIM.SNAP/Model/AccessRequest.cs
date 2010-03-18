@@ -98,6 +98,11 @@ namespace Apollo.AIM.SNAP.Model
 
         public void WorkflowAck(int wid, WorkflowAction action)
         {
+            WorkflowAck(wid, action, string.Empty);
+        }
+
+        public void WorkflowAck(int wid, WorkflowAction action, string comment)
+        {
             int approvalType;
 
             using (var db = new SNAPDatabaseDataContext())
@@ -131,7 +136,7 @@ namespace Apollo.AIM.SNAP.Model
                 completeRequestApprovalCheck();
 
             if (action == WorkflowAction.Denied)
-                deny((ActorApprovalType)approvalType);
+                deny((ActorApprovalType)approvalType, comment);
         }
 
         private void handleApproval(WorkflowAction action, ActorApprovalType approvalType, ref WorkflowState newState)
@@ -223,22 +228,59 @@ namespace Apollo.AIM.SNAP.Model
             }
         }
 
-        private void deny(ActorApprovalType type)
+        private void deny(ActorApprovalType type, string comment)
         {
             using (var db = new SNAPDatabaseDataContext())
             {
                 var req = db.SNAP_Requests.Single(r => r.pkId == _id);
-
-                var wf = FindApprovalTypeWF(db, (byte) type)[0];
-                if (wf.SNAP_Workflow_States.Count(s => s.workflowStatusEnum == (byte)WorkflowState.Closed_Denied) == 1)
+                /*
+                if (type != ActorApprovalType.Technical_Approver)
                 {
-                    // set accessTeam WF and request to close-denied
-                    var accessTeamWF = FindApprovalTypeWF(db, (byte) ActorApprovalType.Workflow_Admin)[0];
-                    var state = accessTeamWF.SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte) WorkflowState.Pending_Approval);
-                    stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, state, WorkflowState.Pending_Approval, WorkflowState.Closed_Denied);
-                    req.statusEnum = (byte) RequestState.Closed;
-                }
+                    var wf = FindApprovalTypeWF(db, (byte) type)[0];
+                    if (wf.SNAP_Workflow_States.Count(s => s.workflowStatusEnum == (byte) WorkflowState.Closed_Denied) == 1)
+                    {
+                        wf.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
+                                                          {
+                                                              commentText = comment,
+                                                              createdDate = DateTime.Now,
+                                                              commentTypeEnum = (byte) CommentsType.Denied
+                                                          });
+                        // set accessTeam WF and request to close-denied
+                        var accessTeamWF = FindApprovalTypeWF(db, (byte) ActorApprovalType.Workflow_Admin)[0];
+                        var state =
+                            accessTeamWF.SNAP_Workflow_States.Single(
+                                s => s.workflowStatusEnum == (byte) WorkflowState.Pending_Approval);
+                        stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, state,
+                                        WorkflowState.Pending_Approval, WorkflowState.Closed_Denied);
+                        req.statusEnum = (byte) RequestState.Closed;
+                    }
 
+                }
+                 */
+                var wfs = FindApprovalTypeWF(db, (byte)type);
+                foreach (var wf in wfs)
+                {
+                    if (wf.SNAP_Workflow_States.Count(s => s.workflowStatusEnum == (byte)WorkflowState.Closed_Denied) == 1)
+                    {
+                        wf.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
+                        {
+                            commentText = comment,
+                            createdDate = DateTime.Now,
+                            commentTypeEnum = (byte)CommentsType.Denied
+                        });
+                        // set accessTeam WF and request to close-denied
+                        var accessTeamWF = FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin)[0];
+                        var state =
+                            accessTeamWF.SNAP_Workflow_States.Single(
+                                s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval);
+                        stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, state,
+                                        WorkflowState.Pending_Approval, WorkflowState.Closed_Denied);
+                        req.statusEnum = (byte)RequestState.Closed;
+
+                        break;
+                    }
+
+                }
                 db.SubmitChanges();
             }
         }
