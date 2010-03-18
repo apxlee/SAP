@@ -106,16 +106,15 @@ namespace Apollo.AIM.SNAP.Model
                 var wf = db.SNAP_Workflows.Single(w => w.pkId == wid);
                 var state = wf.SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval);
                 WorkflowState newState=WorkflowState.Not_Active; 
-                switch (approvalType)
+                switch ((ActorApprovalType) approvalType)
                 {
-                    case (byte)ActorApprovalType.Manager:
-                    case (byte)ActorApprovalType.Team_Approver:
-                        handleManagerAndTeamApproval(action, ref newState);
+                    case ActorApprovalType.Manager:
+                    case ActorApprovalType.Team_Approver:
+                        handleApproval(action, (ActorApprovalType)approvalType, ref newState);
                         break;
 
-                    case (byte)ActorApprovalType.Technical_Approver:
-                        handleTechicalApproval(action, ref newState);
-
+                    case ActorApprovalType.Technical_Approver:
+                        handleApproval(action, (ActorApprovalType)approvalType, ref newState);
                         break;
 
                 }
@@ -135,12 +134,14 @@ namespace Apollo.AIM.SNAP.Model
                 deny((ActorApprovalType)approvalType);
         }
 
-        private void handleTechicalApproval(WorkflowAction action, ref WorkflowState newState)
+        private void handleApproval(WorkflowAction action, ActorApprovalType approvalType, ref WorkflowState newState)
         {
             switch (action)
             {
                 case WorkflowAction.Approved:
                     newState = WorkflowState.Approved;
+                    if (approvalType == ActorApprovalType.Team_Approver)
+                        InformApproverForAction();
                     break;
                 case WorkflowAction.Change:
                     newState = WorkflowState.Not_Active;
@@ -155,6 +156,7 @@ namespace Apollo.AIM.SNAP.Model
             }
         }
 
+        /*
         private void handleManagerAndTeamApproval(WorkflowAction action, ref WorkflowState newState)
         {
             switch (action)
@@ -176,7 +178,7 @@ namespace Apollo.AIM.SNAP.Model
 
             }
         }
-
+        */
         private void createFirstNonWorkflowAdminApprovalWorkflow(SNAPDatabaseDataContext db, List<int> actIds)
         {
             List<SNAP_Workflow> wfs;
