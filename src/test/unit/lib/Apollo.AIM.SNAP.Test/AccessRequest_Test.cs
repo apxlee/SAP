@@ -910,6 +910,11 @@ namespace Apollo.AIM.SNAP.Test
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
                 Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate != null);
                 Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Closed_Denied).completedDate != null);
+                
+
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
+                Assert.IsTrue(wfs[denier].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Closed_Denied).completedDate != null);
+
                 Assert.IsTrue(req.statusEnum == (byte)RequestState.Closed);
                 var wfStates = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
                 Assert.IsTrue(wfStates[denier].SNAP_Workflow_Comments.Count(c => c.commentTypeEnum == (byte)CommentsType.Denied) == 1);

@@ -475,9 +475,12 @@ namespace Apollo.AIM.SNAP.Model
 
         private void checkToCloseMangerOrTeamOrTechnicalWorkflowStates(ActorApprovalType approvalType, WorkflowState to, SNAP_Workflow_State newState)
         {
-            if (to == WorkflowState.Approved && approvalType != ActorApprovalType.Workflow_Admin)
+            if (approvalType != ActorApprovalType.Workflow_Admin)
             {
-                newState.completedDate = newState.dueDate = DateTime.Now;
+                if (to == WorkflowState.Approved || to == WorkflowState.Closed_Denied)
+                {
+                    newState.completedDate = newState.dueDate = DateTime.Now;
+                }
             }
         }
 
