@@ -9,9 +9,6 @@ namespace Apollo.AIM.SNAP.Model
     public class AccessRequest
     {
         private int _id;
-        private SNAP_Request _req;
-        private SNAP_Workflow _accessWF, _managerWF, _teamWF;
-        private List<SNAP_Workflow> _technicalWF;
 
         public AccessRequest(int i)
         {
@@ -24,11 +21,14 @@ namespace Apollo.AIM.SNAP.Model
         {
             using (var db = new SNAPDatabaseDataContext())
             {
+                // this wf is created when inserting the request by Store Procedure
                 var wf = db.SNAP_Workflows.Single(x => x.requestId == _id && x.actorId == 1);
 
                 // complete previous state
                 //var state = db.SNAP_Workflow_States.Single(x => x.workflowId == wf.pkId && x.workflowStatusEnum == (byte)WorkflowState.Pending_Acknowlegement);
-                var state = wf.SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte) WorkflowState.Pending_Acknowlegement);
+                var state = wf.SNAP_Workflow_States.Single(
+                    s => s.workflowStatusEnum == (byte) WorkflowState.Pending_Acknowlegement 
+                    && s.completedDate == null);
                 stateTransition(ActorApprovalType.Workflow_Admin,  wf, state, WorkflowState.Pending_Acknowlegement, WorkflowState.Pending_Workflow);
 
                 wf.SNAP_Request.statusEnum = (byte) RequestState.Pending;
@@ -56,27 +56,97 @@ namespace Apollo.AIM.SNAP.Model
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                _accessWF = db.SNAP_Workflows.Single(x => x.requestId == _id && x.actorId == 1);
+                var accessWF = db.SNAP_Workflows.Single(x => x.requestId == _id && x.actorId == 1);
 
                 // complete previous state
-                var state = _accessWF.SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Acknowlegement);
-                stateTransition(ActorApprovalType.Workflow_Admin, _accessWF, state, WorkflowState.Pending_Acknowlegement, wfState);
-                _accessWF.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
+                var state = accessWF.SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Acknowlegement);
+                stateTransition(ActorApprovalType.Workflow_Admin, accessWF, state, WorkflowState.Pending_Acknowlegement, wfState);
+                accessWF.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
                                                          {
                                                              commentText = comment,
                                                              commentTypeEnum = (byte) commentType,
                                                              createdDate = DateTime.Now
                                                          });
-                _accessWF.SNAP_Request.statusEnum = (byte)RequestState.Closed;
+                accessWF.SNAP_Request.statusEnum = (byte)RequestState.Closed;
                 db.SubmitChanges();
             }
             
         }
 
-
-        public void AccessRequestChange()
+        private void handleRequestChanges(string comment, CommentsType cmtType, WorkflowState wfsFr, WorkflowState wfsTo, RequestState reqsFr, RequestState reqsTo)
         {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(r => r.pkId == _id);
+                if (req.statusEnum == (byte)reqsFr)
+                {
+                    req.statusEnum = (byte)reqsTo;
+                    var accessWF = req.SNAP_Workflows.Single(w => w.actorId == 1);
+                    var state = accessWF.SNAP_Workflow_States.Single(
+                        s => s.workflowStatusEnum == (byte)wfsFr
+                        && s.completedDate == null
+                        );
+                    stateTransition(ActorApprovalType.Workflow_Admin, accessWF, state, wfsFr, wfsTo);
+                    accessWF.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
+                    {
+                        commentText = comment,
+                        commentTypeEnum = (byte)cmtType,
+                        createdDate = DateTime.Now
+                    });
+                }
+
+                db.SubmitChanges();
+            }
+
+        }
+        public void RequestToChange(string comment)
+        {
+            //handleRequestChanges(comment, CommentsType.Requested_Change, WorkflowState.Pending_Workflow, WorkflowState.Change_Requested, RequestState.Pending, RequestState.Change_Requested);
             
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(r => r.pkId == _id);
+                if (req.statusEnum == (byte) RequestState.Pending)
+                {
+                    req.statusEnum = (byte) RequestState.Change_Requested;
+                    var accessWF = req.SNAP_Workflows.Single(w => w.actorId == 1);
+                    var state = accessWF.SNAP_Workflow_States.Single(
+                        s => s.workflowStatusEnum == (byte) WorkflowState.Pending_Workflow 
+                        && s.completedDate == null
+                        );
+                    stateTransition(ActorApprovalType.Workflow_Admin, accessWF, state, WorkflowState.Pending_Workflow, WorkflowState.Change_Requested);
+                    accessWF.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
+                                                             {
+                                                                 commentText = comment,
+                                                                 commentTypeEnum = (byte)CommentsType.Requested_Change,
+                                                                 createdDate = DateTime.Now
+                                                             });
+                }
+
+                db.SubmitChanges();
+            }
+            
+        }
+
+        public void RequestChanged()
+        {
+            //handleRequestChanges(string.Empty, CommentsType.Requested_Change, WorkflowState.Pending_Workflow, WorkflowState.Change_Requested, RequestState.Pending, RequestState.Change_Requested);
+            
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(r => r.pkId == _id);
+                if (req.statusEnum == (byte)RequestState.Change_Requested)
+                {
+                    req.statusEnum = (byte)RequestState.Open;
+                    var accessWF = req.SNAP_Workflows.Single(w => w.actorId == 1);
+                    var state = accessWF.SNAP_Workflow_States.Single(
+                        s => s.workflowStatusEnum == (byte)WorkflowState.Change_Requested 
+                        && s.completedDate == null);
+                    stateTransition(ActorApprovalType.Workflow_Admin, accessWF, state, WorkflowState.Change_Requested, WorkflowState.Pending_Acknowlegement);
+                }
+
+                db.SubmitChanges();
+            }
         }
 
         public void CreateWorkflow(List<int> actorIds)
@@ -180,53 +250,6 @@ namespace Apollo.AIM.SNAP.Model
             if (action == WorkflowAction.Denied)
                 deny((ActorApprovalType)approvalType, comment);
         }
-
-
-        /*
-        private void createFirstNonWorkflowAdminApprovalWorkflow(SNAPDatabaseDataContext db, List<int> actIds)
-        {
-            List<SNAP_Workflow> wfs;
-            //var wf = FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager)[0];
-            createrApprovalWorkFlow(db, new List<int>() { actIds[0]});
-        }
-
-        private void createNextApprovalWorkflow(SNAPDatabaseDataContext db,  int type)
-        {
-            List<SNAP_Workflow> wfs;
-            switch (type)
-            {
-                case (byte) ActorApprovalType.Manager:
-                    wfs = FindApprovalTypeWF(db, (byte) ActorApprovalType.Team_Approver);
-                    if (wfs.Count != 0)
-                    {
-                        createrApprovalWorkFlow(db, new List<int>() { wfs[0].SNAP_Actor.pkId });
-                    }
-                    else
-                    {
-                        createTechnicalApprovalWF(db);
-                    }
-                    break;
-                case (byte) ActorApprovalType.Team_Approver:
-                    createTechnicalApprovalWF(db);
-                    break;
-            }
-        }
-        
-        private void createTechnicalApprovalWF(SNAPDatabaseDataContext db)
-        {
-            List<SNAP_Workflow> wfs;
-            wfs = FindApprovalTypeWF(db, (byte) ActorApprovalType.Technical_Approver);
-            if (wfs.Count != 0)
-            {
-                var list = new List<int>();
-                foreach (var wf in wfs)
-                {
-                    list.Add(wf.actorId);
-                }
-                createrApprovalWorkFlow(db, list);
-            }
-        }
-        */
 
 
 

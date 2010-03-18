@@ -154,7 +154,45 @@ namespace Apollo.AIM.SNAP.Test
         }
 
         [Test]
-        public void ShouldCloseCancelByAccessTeam() { }
+        public void ShouldRequestToChangeByAccessTeanMultipleTimes()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                using (var db = new SNAPDatabaseDataContext())
+                {
+                    var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+
+                    var accessReq = new AccessRequest(req.pkId);
+                    accessReq.Ack();
+                    accessReq.RequestToChange("Please change it");
+                }
+
+                using (var db = new SNAPDatabaseDataContext())
+                {
+                    var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                    Assert.IsTrue(req.statusEnum == (byte) RequestState.Change_Requested);
+                    Assert.IsTrue(req.SNAP_Workflows[0].SNAP_Workflow_States.Count(s => s.workflowStatusEnum == (byte) WorkflowState.Change_Requested) > i);
+                    Assert.IsTrue(req.SNAP_Workflows[0].SNAP_Workflow_Comments.Count(c => c.commentTypeEnum == (byte) CommentsType.Requested_Change) > i);
+                }
+
+
+                using (var db = new SNAPDatabaseDataContext())
+                {
+                    var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                    var accessReq = new AccessRequest(req.pkId);
+                    accessReq.RequestChanged();
+                }
+
+
+                using (var db = new SNAPDatabaseDataContext())
+                {
+                    var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                    Assert.IsTrue(req.statusEnum == (byte) RequestState.Open);
+                    var cnt = i + 1;
+                    Assert.IsTrue(req.SNAP_Workflows[0].SNAP_Workflow_States.Count(s => s.workflowStatusEnum == (byte) WorkflowState.Pending_Acknowlegement) > cnt);
+                }
+            }
+        }
 
         
         [Test] public void ShouldCreateWorkflowByAccessTeam()
