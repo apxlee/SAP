@@ -140,7 +140,7 @@ namespace Apollo.AIM.SNAP.Model
             {
                 case WorkflowAction.Approved:
                     newState = WorkflowState.Approved;
-                    if (approvalType == ActorApprovalType.Team_Approver)
+                    if (approvalType == ActorApprovalType.Team_Approver || approvalType == ActorApprovalType.Manager)
                         InformApproverForAction();
                     break;
                 case WorkflowAction.Change:
@@ -319,6 +319,7 @@ namespace Apollo.AIM.SNAP.Model
                         {
                             // TODO - send email
                             state.notifyDate = DateTime.Now;
+                            // TODO - need to update state.dueDate 
                             done = true;
                         }
                     }
