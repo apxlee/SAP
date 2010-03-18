@@ -110,35 +110,11 @@ namespace Apollo.AIM.SNAP.Model
                 {
                     case (byte)ActorApprovalType.Manager:
                     case (byte)ActorApprovalType.Team_Approver:
-                        switch (action)
-                        {
-                            case WorkflowAction.Approved:
-                                InformApproverForAction();
-                                newState = WorkflowState.Approved;
-                                //createNextApprovalWorkflow(db, approvalType);
-                                break;
-                            case WorkflowAction.Change:
-                                break;
-                            case WorkflowAction.Denied:
-                                newState = WorkflowState.Closed_Denied;
-                                // TODO - close denied the who request!
-                                break;
-                        }
+                        handleManagerAndTeamApproval(action, ref newState);
                         break;
 
                     case (byte)ActorApprovalType.Technical_Approver:
-                        switch (action)
-                        {
-                            case WorkflowAction.Approved:
-                                newState = WorkflowState.Approved;
-                                break;
-                            case WorkflowAction.Change:
-                                break;
-                            case WorkflowAction.Denied:
-                                // TODO - close denied the who request!
-                                newState = WorkflowState.Closed_Denied;
-                                break;
-                        }
+                        handleTechicalApproval(action, ref newState);
 
                         break;
 
@@ -157,6 +133,48 @@ namespace Apollo.AIM.SNAP.Model
 
             if (action == WorkflowAction.Denied)
                 deny((ActorApprovalType)approvalType);
+        }
+
+        private void handleTechicalApproval(WorkflowAction action, ref WorkflowState newState)
+        {
+            switch (action)
+            {
+                case WorkflowAction.Approved:
+                    newState = WorkflowState.Approved;
+                    break;
+                case WorkflowAction.Change:
+                    newState = WorkflowState.Not_Active;
+                    break;
+                case WorkflowAction.Denied:
+                    // TODO - close denied the who request!
+                    newState = WorkflowState.Closed_Denied;
+                    break;
+                default:
+                    newState = WorkflowState.Not_Active;
+                    break;
+            }
+        }
+
+        private void handleManagerAndTeamApproval(WorkflowAction action, ref WorkflowState newState)
+        {
+            switch (action)
+            {
+                case WorkflowAction.Approved:
+                    InformApproverForAction();
+                    newState = WorkflowState.Approved;
+                    break;
+                case WorkflowAction.Change:
+                    newState = WorkflowState.Not_Active;
+                    break;
+                case WorkflowAction.Denied:
+                    newState = WorkflowState.Closed_Denied;
+                    // TODO - close denied the who request!
+                    break;
+                default:
+                    newState = WorkflowState.Not_Active;
+                    break;
+
+            }
         }
 
         private void createFirstNonWorkflowAdminApprovalWorkflow(SNAPDatabaseDataContext db, List<int> actIds)
