@@ -53,6 +53,7 @@ namespace Apollo.AIM.SNAP.Model
     {
         Approved = 0,
         Denied = 1,
-        Change = 2
+        Change = 2,
+        Cancel = 3
     }
 }

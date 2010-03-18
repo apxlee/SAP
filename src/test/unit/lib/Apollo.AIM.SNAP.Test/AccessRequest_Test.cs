@@ -110,7 +110,48 @@ namespace Apollo.AIM.SNAP.Test
 
 
         [Test]
-        public void ShouldCloseDeniedByAccessTeam() {}
+        public void ShouldCloseDeniedByAccessTeam()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+
+                var accessReq = new AccessRequest(req.pkId);
+                accessReq.Ack();
+                accessReq.NoAccess(WorkflowAction.Denied, "Deny");
+            }
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                Assert.IsTrue(req.statusEnum == (byte)RequestState.Closed);
+                Assert.IsTrue(req.SNAP_Workflows[0].SNAP_Workflow_States.Count(s => s.workflowStatusEnum == (byte) WorkflowState.Closed_Denied) == 1);
+                Assert.IsTrue(req.SNAP_Workflows[0].SNAP_Workflow_Comments.Count(c => c.commentTypeEnum == (byte)CommentsType.Denied) == 1);
+            }
+            
+        }
+
+        [Test]
+        public void ShouldCloseCancelledByAccessTeam()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+
+                var accessReq = new AccessRequest(req.pkId);
+                accessReq.Ack();
+                accessReq.NoAccess(WorkflowAction.Cancel, "Cancel");
+            }
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                Assert.IsTrue(req.statusEnum == (byte)RequestState.Closed);
+                Assert.IsTrue(req.SNAP_Workflows[0].SNAP_Workflow_States.Count(s => s.workflowStatusEnum == (byte)WorkflowState.Closed_Cancelled) == 1);
+                Assert.IsTrue(req.SNAP_Workflows[0].SNAP_Workflow_Comments.Count(c => c.commentTypeEnum == (byte)CommentsType.Cancelled) == 1);
+            }
+
+        }
 
         [Test]
         public void ShouldCloseCancelByAccessTeam() { }
