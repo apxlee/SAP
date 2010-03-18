@@ -26,10 +26,7 @@ namespace Apollo.AIM.SNAP.Model
 
                 // complete previous state
                 //var state = db.SNAP_Workflow_States.Single(x => x.workflowId == wf.pkId && x.workflowStatusEnum == (byte)WorkflowState.Pending_Acknowlegement);
-                var state = wf.SNAP_Workflow_States.Single(
-                    s => s.workflowStatusEnum == (byte) WorkflowState.Pending_Acknowlegement 
-                    && s.completedDate == null);
-                stateTransition(ActorApprovalType.Workflow_Admin,  wf, state, WorkflowState.Pending_Acknowlegement, WorkflowState.Pending_Workflow);
+                stateTransition(ActorApprovalType.Workflow_Admin, wf, WorkflowState.Pending_Acknowlegement, WorkflowState.Pending_Workflow);
 
                 wf.SNAP_Request.statusEnum = (byte) RequestState.Pending;
                 db.SubmitChanges();
@@ -59,8 +56,7 @@ namespace Apollo.AIM.SNAP.Model
                 var accessWF = db.SNAP_Workflows.Single(x => x.requestId == _id && x.actorId == 1);
 
                 // complete previous state
-                var state = accessWF.SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Acknowlegement);
-                stateTransition(ActorApprovalType.Workflow_Admin, accessWF, state, WorkflowState.Pending_Acknowlegement, wfState);
+                stateTransition(ActorApprovalType.Workflow_Admin, accessWF, WorkflowState.Pending_Acknowlegement, wfState);
                 accessWF.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
                                                          {
                                                              commentText = comment,
@@ -82,11 +78,7 @@ namespace Apollo.AIM.SNAP.Model
                 {
                     req.statusEnum = (byte)reqsTo;
                     var accessWF = req.SNAP_Workflows.Single(w => w.actorId == 1);
-                    var state = accessWF.SNAP_Workflow_States.Single(
-                        s => s.workflowStatusEnum == (byte)wfsFr
-                        && s.completedDate == null
-                        );
-                    stateTransition(ActorApprovalType.Workflow_Admin, accessWF, state, wfsFr, wfsTo);
+                    stateTransition(ActorApprovalType.Workflow_Admin, accessWF, wfsFr, wfsTo);
                     accessWF.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
                     {
                         commentText = comment,
@@ -110,11 +102,7 @@ namespace Apollo.AIM.SNAP.Model
                 {
                     req.statusEnum = (byte) RequestState.Change_Requested;
                     var accessWF = req.SNAP_Workflows.Single(w => w.actorId == 1);
-                    var state = accessWF.SNAP_Workflow_States.Single(
-                        s => s.workflowStatusEnum == (byte) WorkflowState.Pending_Workflow 
-                        && s.completedDate == null
-                        );
-                    stateTransition(ActorApprovalType.Workflow_Admin, accessWF, state, WorkflowState.Pending_Workflow, WorkflowState.Change_Requested);
+                    stateTransition(ActorApprovalType.Workflow_Admin, accessWF, WorkflowState.Pending_Workflow, WorkflowState.Change_Requested);
                     accessWF.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
                                                              {
                                                                  commentText = comment,
@@ -139,10 +127,7 @@ namespace Apollo.AIM.SNAP.Model
                 {
                     req.statusEnum = (byte)RequestState.Open;
                     var accessWF = req.SNAP_Workflows.Single(w => w.actorId == 1);
-                    var state = accessWF.SNAP_Workflow_States.Single(
-                        s => s.workflowStatusEnum == (byte)WorkflowState.Change_Requested 
-                        && s.completedDate == null);
-                    stateTransition(ActorApprovalType.Workflow_Admin, accessWF, state, WorkflowState.Change_Requested, WorkflowState.Pending_Acknowlegement);
+                    stateTransition(ActorApprovalType.Workflow_Admin, accessWF, WorkflowState.Change_Requested, WorkflowState.Pending_Acknowlegement);
                 }
 
                 db.SubmitChanges();
@@ -159,9 +144,7 @@ namespace Apollo.AIM.SNAP.Model
 
                 // complete current state
                 var wf = db.SNAP_Workflows.Single(x => x.requestId == _id && x.actorId == 1);
-                //var state = db.SNAP_Workflow_States.Single(x => x.workflowId == wf.pkId && x.workflowStatusEnum == (byte)WorkflowState.Pending_Workflow);
-                var state = wf.SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Workflow);
-                stateTransition(ActorApprovalType.Workflow_Admin, wf, state, WorkflowState.Pending_Workflow, WorkflowState.Pending_Approval);
+                stateTransition(ActorApprovalType.Workflow_Admin, wf, WorkflowState.Pending_Workflow, WorkflowState.Pending_Approval);
                 db.SubmitChanges();
                  
             }
@@ -225,7 +208,6 @@ namespace Apollo.AIM.SNAP.Model
             {
                 approvalType = workflowApprovalType(db, wid);
                 var wf = db.SNAP_Workflows.Single(w => w.pkId == wid);
-                var state = wf.SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval);
                 WorkflowState newState=WorkflowState.Not_Active; 
                 switch ((ActorApprovalType) approvalType)
                 {
@@ -240,7 +222,7 @@ namespace Apollo.AIM.SNAP.Model
 
                 }
 
-                stateTransition((ActorApprovalType)approvalType, wf, state, WorkflowState.Pending_Approval, newState);
+                stateTransition((ActorApprovalType)approvalType, wf, WorkflowState.Pending_Approval, newState);
                 db.SubmitChanges();
             }
 
@@ -258,9 +240,7 @@ namespace Apollo.AIM.SNAP.Model
             using (var db = new SNAPDatabaseDataContext())
             {
                 var accessTeamWF = FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin)[0];
-                var accessTeamState = accessTeamWF.SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Approved);
-                stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, accessTeamState, WorkflowState.Approved, WorkflowState.Pending_Provisioning);
-
+                stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, WorkflowState.Approved, WorkflowState.Pending_Provisioning);
 
                 // TODO - create SD here, save ticket in the request table
 
@@ -274,8 +254,7 @@ namespace Apollo.AIM.SNAP.Model
             using (var db = new SNAPDatabaseDataContext())
             {
                 var accessTeamWF = FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin)[0];
-                var accessTeamState = accessTeamWF.SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Provisioning);
-                stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, accessTeamState, WorkflowState.Pending_Provisioning, WorkflowState.Closed_Completed);
+                stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, WorkflowState.Pending_Provisioning, WorkflowState.Closed_Completed);
 
 
                 // TODO - Info requester it is done
@@ -331,9 +310,7 @@ namespace Apollo.AIM.SNAP.Model
                         });
                         // set accessTeam WF and request to close-denied
                         var accessTeamWF = FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin)[0];
-                        var state = accessTeamWF.SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval);
-                        stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, state,
-                                        WorkflowState.Pending_Approval, WorkflowState.Closed_Denied);
+                        stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, WorkflowState.Pending_Approval, WorkflowState.Closed_Denied);
                         req.statusEnum = (byte)RequestState.Closed;
 
                         break;
@@ -362,7 +339,7 @@ namespace Apollo.AIM.SNAP.Model
 
                 ActorApprovalType t = (ActorApprovalType) agt; 
 
-                stateTransition(t, newWorkFlow, null, WorkflowState.Not_Active, WorkflowState.Pending_Approval);
+                stateTransition(t, newWorkFlow, WorkflowState.Not_Active, WorkflowState.Pending_Approval);
             }
             // TODO - send out email to the manager approval
         }
@@ -449,10 +426,7 @@ namespace Apollo.AIM.SNAP.Model
                     //var accessTeamWF = req.SNAP_Workflows.Single(w => w.actorId == 1); // actid = 1 => accessTeam
                     var accessTeamWF = FindApprovalTypeWF(db, (byte) ActorApprovalType.Workflow_Admin)[0];
                         // req.SNAP_Workflows.Single(w => w.actorId == 1)); // actid = 1 => accessTeam
-                    var accessTeamState = accessTeamWF.SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte) WorkflowState.Pending_Approval);
-
-                    stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, accessTeamState,
-                                    WorkflowState.Pending_Approval, WorkflowState.Approved);
+                    stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, WorkflowState.Pending_Approval, WorkflowState.Approved);
                     //req.statusEnum = (byte) WorkflowState.Approved;
 
                     db.SubmitChanges();
@@ -461,33 +435,42 @@ namespace Apollo.AIM.SNAP.Model
 
         }
 
-
-
-        private void stateTransition(ActorApprovalType approvalType,  SNAP_Workflow wf, SNAP_Workflow_State prevWFState, WorkflowState from, WorkflowState to)
+        private void stateTransition(ActorApprovalType approvalType, SNAP_Workflow wf, WorkflowState from, WorkflowState to)
         {
-            if (prevWFState != null)
-                prevWFState.completedDate = DateTime.Now;
-
-            var state = new SNAP_Workflow_State()
-                            {
-                                completedDate = null,
-                                notifyDate = DateTime.Now,
-                                dueDate = getDueDate(approvalType, from, to), //DateTime.Now.AddDays(1),
-                                workflowStatusEnum = (byte)to
-                            };
-            // for end/close states set the completion date
-            if (to == WorkflowState.Closed_Cancelled || to == WorkflowState.Closed_Completed || to == WorkflowState.Closed_Denied ) //||
+            try
             {
-                state.completedDate = state.dueDate = DateTime.Now;
+                var prevWFState = wf.SNAP_Workflow_States.Single(
+                    s => s.workflowStatusEnum == (byte)from 
+                    && s.completedDate == null);
+
+                if (prevWFState != null)
+                    prevWFState.completedDate = DateTime.Now;
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+            var newState = new SNAP_Workflow_State()
+            {
+                completedDate = null,
+                notifyDate = DateTime.Now,
+                dueDate = getDueDate(approvalType, from, to), //DateTime.Now.AddDays(1),
+                workflowStatusEnum = (byte)to
+            };
+            // for end/close states set the completion date
+            if (to == WorkflowState.Closed_Cancelled || to == WorkflowState.Closed_Completed || to == WorkflowState.Closed_Denied) //||
+            {
+                newState.completedDate = newState.dueDate = DateTime.Now;
             }
 
             // workflowstate.approved is end state for manger, team approval and techical aproval but not for workflow adim
             if (to == WorkflowState.Approved && approvalType != ActorApprovalType.Workflow_Admin)
             {
-                state.completedDate = state.dueDate = DateTime.Now;
+                newState.completedDate = newState.dueDate = DateTime.Now;
             }
 
-            wf.SNAP_Workflow_States.Add(state);
+            wf.SNAP_Workflow_States.Add(newState);
         }
 
         private DateTime getDueDate(ActorApprovalType approvalType, WorkflowState fr, WorkflowState to)
