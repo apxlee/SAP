@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Linq;
 using System.Linq;
 using System.Text;
@@ -55,7 +56,6 @@ namespace Apollo.AIM.SNAP.Model
             {
                 var accessWF = db.SNAP_Workflows.Single(x => x.requestId == _id && x.actorId == 1);
 
-                // complete previous state
                 stateTransition(ActorApprovalType.Workflow_Admin, accessWF, WorkflowState.Pending_Workflow, wfState);
                 accessWF.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
                                                          {
@@ -138,7 +138,6 @@ namespace Apollo.AIM.SNAP.Model
 
                 //createFirstNonWorkflowAdminApprovalWorkflow(db, actorIds);
 
-                // complete current state
                 var wf = db.SNAP_Workflows.Single(x => x.requestId == _id && x.actorId == 1);
                 stateTransition(ActorApprovalType.Workflow_Admin, wf, WorkflowState.Pending_Workflow, WorkflowState.Pending_Approval);
                 db.SubmitChanges();
@@ -202,33 +201,84 @@ namespace Apollo.AIM.SNAP.Model
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                approvalType = workflowApprovalType(db, wid);
-                var wf = db.SNAP_Workflows.Single(w => w.pkId == wid);
-                WorkflowState newState=WorkflowState.Not_Active; 
-                switch ((ActorApprovalType) approvalType)
+                System.Data.Common.DbTransaction trans = null;
+                try
                 {
-                    case ActorApprovalType.Manager:
-                    case ActorApprovalType.Team_Approver:
-                        handleApproval(action, (ActorApprovalType)approvalType, ref newState);
-                        break;
+                    db.Connection.Open();
+                    trans = db.Connection.BeginTransaction();
+                    db.Transaction = trans;
 
-                    case ActorApprovalType.Technical_Approver:
-                        handleApproval(action, (ActorApprovalType)approvalType, ref newState);
-                        break;
+                    approvalType = workflowApprovalType(db, wid);
+                    var wf = db.SNAP_Workflows.Single(w => w.pkId == wid);
+                    WorkflowState newState = WorkflowState.Not_Active;
+                    switch ((ActorApprovalType)approvalType)
+                    {
+                        case ActorApprovalType.Manager:
+                        case ActorApprovalType.Team_Approver:
+                            handleApproval(action, (ActorApprovalType)approvalType, ref newState);
+                            break;
+
+                        case ActorApprovalType.Technical_Approver:
+                            handleApproval(action, (ActorApprovalType)approvalType, ref newState);
+                            break;
+
+                    }
+                    
+                    stateTransition((ActorApprovalType)approvalType, wf, WorkflowState.Pending_Approval, newState);
+                    db.SubmitChanges();
+
+                    if (approvalType == (byte)ActorApprovalType.Technical_Approver && action == WorkflowAction.Approved)
+                        completeRequestApprovalCheck(db);
+
+                    if (action == WorkflowAction.Denied)
+                        deny(db, (ActorApprovalType)approvalType, comment);
+
+                    if (action == WorkflowAction.Change)
+                        approvalRequestToChange(db);
+                        
+                    db.SubmitChanges();
+                    trans.Commit();
+                }
+                catch (Exception ex)
+                {
+                    //Logger.Error(ex);
+                    if (trans != null)
+                        trans.Rollback();
+                }
+                finally
+                {
+                    //db.SubmitChanges();
+                    
+                    if (db.Connection.State == ConnectionState.Open) 
+                        db.Connection.Close();
 
                 }
-
-                stateTransition((ActorApprovalType)approvalType, wf, WorkflowState.Pending_Approval, newState);
-                db.SubmitChanges();
             }
 
-            if (approvalType == (byte)ActorApprovalType.Technical_Approver && action == WorkflowAction.Approved)
-                completeRequestApprovalCheck();
-
-            if (action == WorkflowAction.Denied)
-                deny((ActorApprovalType)approvalType, comment);
         }
 
+        private void approvalRequestToChange(SNAPDatabaseDataContext db)
+        {
+            var accessTeamWF = FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin)[0];
+            stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, WorkflowState.Pending_Approval, WorkflowState.Change_Requested);
+            db.SubmitChanges();
+
+            var req = db.SNAP_Requests.Single(w => w.pkId == _id);
+            req.statusEnum = (byte)RequestState.Change_Requested;
+
+            // complete date all exitsting wf state
+            foreach (var w in req.SNAP_Workflows)
+            {
+                if (w.actorId != 1) // all non accessteam wfs are completed!
+                    foreach (var s in w.SNAP_Workflow_States)
+                    {
+                        if (s.completedDate == null)
+                            s.completedDate = DateTime.Now;
+                    }
+            }
+
+            // TODO - info submiter or requester
+        }
 
 
         public void CreateServiceDeskTicket()
@@ -276,7 +326,7 @@ namespace Apollo.AIM.SNAP.Model
                         InformApproverForAction();
                     break;
                 case WorkflowAction.Change:
-                    newState = WorkflowState.Not_Active;
+                    newState = WorkflowState.Change_Requested;
                     break;
                 case WorkflowAction.Denied:
                     // TODO - close denied the who request!
@@ -288,10 +338,10 @@ namespace Apollo.AIM.SNAP.Model
             }
         }
 
-        private void deny(ActorApprovalType type, string comment)
+        private void deny(SNAPDatabaseDataContext db, ActorApprovalType type, string comment)
         {
-            using (var db = new SNAPDatabaseDataContext())
-            {
+            //using (var db = new SNAPDatabaseDataContext())
+            //{
                 var req = db.SNAP_Requests.Single(r => r.pkId == _id);
                 var wfs = FindApprovalTypeWF(db, (byte)type);
                 foreach (var wf in wfs)
@@ -313,8 +363,8 @@ namespace Apollo.AIM.SNAP.Model
                     }
 
                 }
-                db.SubmitChanges();
-            }
+                //db.SubmitChanges();
+            //}
         }
 
         private void createrApprovalWorkFlow(SNAPDatabaseDataContext db, List<int> actorIds)
@@ -323,19 +373,22 @@ namespace Apollo.AIM.SNAP.Model
 
             foreach (var actId in actorIds)
             {
-                var newWorkFlow = new SNAP_Workflow()
+                if (req.SNAP_Workflows.Count(w => w.actorId == actId) == 0) // prevent wf already exists due to change request
                 {
-                    actorId = actId,
-                };
+                    var newWorkFlow = new SNAP_Workflow()
+                                          {
+                                              actorId = actId,
+                                          };
 
-                req.SNAP_Workflows.Add(newWorkFlow);
+                    req.SNAP_Workflows.Add(newWorkFlow);
 
-                var actor = db.SNAP_Actors.Single(a => a.pkId == actId);
-                var agt = actor.SNAP_Actor_Group.actorGroupType ?? 3; // default to accessteam if null
+                    var actor = db.SNAP_Actors.Single(a => a.pkId == actId);
+                    var agt = actor.SNAP_Actor_Group.actorGroupType ?? 3; // default to accessteam if null
 
-                ActorApprovalType t = (ActorApprovalType) agt; 
+                    ActorApprovalType t = (ActorApprovalType) agt;
 
-                stateTransition(t, newWorkFlow, WorkflowState.Not_Active, WorkflowState.Pending_Approval);
+                    stateTransition(t, newWorkFlow, WorkflowState.Not_Active, WorkflowState.Pending_Approval);
+                }
             }
             // TODO - send out email to the manager approval
         }
@@ -405,10 +458,10 @@ namespace Apollo.AIM.SNAP.Model
         }
          */
 
-        private void completeRequestApprovalCheck() //SNAPDatabaseDataContext db)
+        private void completeRequestApprovalCheck(SNAPDatabaseDataContext db) //SNAPDatabaseDataContext db)
         {
-            using (var db = new SNAPDatabaseDataContext())
-            {
+            //using (var db = new SNAPDatabaseDataContext())
+            //{
                 var wfs = FindApprovalTypeWF(db, (byte) ActorApprovalType.Technical_Approver);
                 var totalApproved = 0;
                 foreach (var wf in wfs)
@@ -428,9 +481,9 @@ namespace Apollo.AIM.SNAP.Model
                     stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, WorkflowState.Pending_Approval, WorkflowState.Approved);
                     //req.statusEnum = (byte) WorkflowState.Approved;
 
-                    db.SubmitChanges();
+                    //db.SubmitChanges();
                 }
-            }
+            //}
 
         }
 
