@@ -227,6 +227,8 @@ namespace Apollo.AIM.SNAP.Model
                     stateTransition((ActorApprovalType)approvalType, wf, WorkflowState.Pending_Approval, newState);
                     db.SubmitChanges();
 
+                    //throw new Exception("Bad!");
+
                     if (approvalType == (byte)ActorApprovalType.Technical_Approver && action == WorkflowAction.Approved)
                         completeRequestApprovalCheck(db);
 
@@ -234,7 +236,7 @@ namespace Apollo.AIM.SNAP.Model
                         deny(db, (ActorApprovalType)approvalType, comment);
 
                     if (action == WorkflowAction.Change)
-                        approvalRequestToChange(db);
+                        approvalRequestToChange(db, wf, comment);
                         
                     db.SubmitChanges();
                     trans.Commit();
@@ -244,6 +246,7 @@ namespace Apollo.AIM.SNAP.Model
                     //Logger.Error(ex);
                     if (trans != null)
                         trans.Rollback();
+                    throw ex;
                 }
                 finally
                 {
@@ -257,7 +260,7 @@ namespace Apollo.AIM.SNAP.Model
 
         }
 
-        private void approvalRequestToChange(SNAPDatabaseDataContext db)
+        private void approvalRequestToChange(SNAPDatabaseDataContext db, SNAP_Workflow wf, string comment)
         {
             var accessTeamWF = FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin)[0];
             stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, WorkflowState.Pending_Approval, WorkflowState.Change_Requested);
@@ -277,6 +280,12 @@ namespace Apollo.AIM.SNAP.Model
                     }
             }
 
+            wf.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
+                                              {
+                                                  commentText = comment,
+                                                  commentTypeEnum = (byte) CommentsType.Requested_Change,
+                                                  createdDate = DateTime.Now
+                                              });
             // TODO - info submiter or requester
         }
 
@@ -373,22 +382,24 @@ namespace Apollo.AIM.SNAP.Model
 
             foreach (var actId in actorIds)
             {
-                if (req.SNAP_Workflows.Count(w => w.actorId == actId) == 0) // prevent wf already exists due to change request
+
+                SNAP_Workflow wf;
+                if (req.SNAP_Workflows.Count(w => w.actorId == actId) == 0) // 
                 {
-                    var newWorkFlow = new SNAP_Workflow()
-                                          {
-                                              actorId = actId,
-                                          };
+                    wf  = new SNAP_Workflow() {actorId = actId };
+                    req.SNAP_Workflows.Add(wf);
+                }
+                else
+                {
+                    wf = req.SNAP_Workflows.Single(w => w.actorId == actId); // wf already exists due to change request
+                }
 
-                    req.SNAP_Workflows.Add(newWorkFlow);
-
-                    var actor = db.SNAP_Actors.Single(a => a.pkId == actId);
+                var actor = db.SNAP_Actors.Single(a => a.pkId == actId);
                     var agt = actor.SNAP_Actor_Group.actorGroupType ?? 3; // default to accessteam if null
 
                     ActorApprovalType t = (ActorApprovalType) agt;
 
-                    stateTransition(t, newWorkFlow, WorkflowState.Not_Active, WorkflowState.Pending_Approval);
-                }
+                    stateTransition(t, wf, WorkflowState.Not_Active, WorkflowState.Pending_Approval);
             }
             // TODO - send out email to the manager approval
         }
@@ -458,32 +469,76 @@ namespace Apollo.AIM.SNAP.Model
         }
          */
 
+        public SNAP_Workflow_State latestWorkflowAdminMarker()
+        {
+            
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.pkId == _id);
+                var wf = req.SNAP_Workflows.Single(w => w.actorId == 1);
+                var state = wf.SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte) WorkflowState.Pending_Approval
+                                                            && s.dueDate == null);
+                return state;
+            }
+            
+        }
+
+/*
         private void completeRequestApprovalCheck(SNAPDatabaseDataContext db) //SNAPDatabaseDataContext db)
         {
-            //using (var db = new SNAPDatabaseDataContext())
-            //{
-                var wfs = FindApprovalTypeWF(db, (byte) ActorApprovalType.Technical_Approver);
-                var totalApproved = 0;
-                foreach (var wf in wfs)
-                {
-                    totalApproved +=
-                        wf.SNAP_Workflow_States.Count(s => s.workflowStatusEnum == (byte) WorkflowState.Approved);
-                }
+            var wfs = FindApprovalTypeWF(db, (byte) ActorApprovalType.Technical_Approver);
+            var totalApproved = 0;
+            //var iteration = wfs[0].SNAP_Workflow_States.Count;
+            foreach (var wf in wfs)
+            {
+                var cnt = wf.SNAP_Workflow_States.Count(
+                    s => s.workflowStatusEnum == (byte)WorkflowState.Approved
+                    && s.completedDate != null);
+                if (cnt > 1)
+                    cnt = 1; // prevent prev interation, get into currnet iteration total cnt
 
-                if (totalApproved == wfs.Count)
-                {
-                    //search for pending and not complete wf
+                totalApproved += cnt;
+            }
 
-                    //var req = db.SNAP_Requests.Single(x => x.pkId == _id);
-                    //var accessTeamWF = req.SNAP_Workflows.Single(w => w.actorId == 1); // actid = 1 => accessTeam
-                    var accessTeamWF = FindApprovalTypeWF(db, (byte) ActorApprovalType.Workflow_Admin)[0];
-                        // req.SNAP_Workflows.Single(w => w.actorId == 1)); // actid = 1 => accessTeam
-                    stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, WorkflowState.Pending_Approval, WorkflowState.Approved);
-                    //req.statusEnum = (byte) WorkflowState.Approved;
+            if (totalApproved == wfs.Count)
+            {
+                //search for pending and not complete wf
 
-                    //db.SubmitChanges();
-                }
-            //}
+                //var req = db.SNAP_Requests.Single(x => x.pkId == _id);
+                //var accessTeamWF = req.SNAP_Workflows.Single(w => w.actorId == 1); // actid = 1 => accessTeam
+                var accessTeamWF = FindApprovalTypeWF(db, (byte) ActorApprovalType.Workflow_Admin)[0];
+                    // req.SNAP_Workflows.Single(w => w.actorId == 1)); // actid = 1 => accessTeam
+                stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, WorkflowState.Pending_Approval, WorkflowState.Approved);
+                //req.statusEnum = (byte) WorkflowState.Approved;
+
+                //db.SubmitChanges();
+            }
+
+        }
+*/
+        private void completeRequestApprovalCheck(SNAPDatabaseDataContext db)
+        {
+            var accessWF = FindApprovalTypeWF(db, (byte) ActorApprovalType.Workflow_Admin);
+            var wfs = FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
+            var totalApproved = 0;
+            var state = accessWF[0].SNAP_Workflow_States.Single(s=>s.workflowStatusEnum==(byte)WorkflowState.Pending_Approval 
+                && s.completedDate == null); // get lastest 'pending approval' for the workflowadmin state
+
+            foreach (var wf in wfs)
+            {
+                var cnt = wf.SNAP_Workflow_States.Count(
+                    s => s.workflowStatusEnum == (byte)WorkflowState.Approved
+                    && s.completedDate != null
+                    && s.pkId >= state.pkId); // only check approval for the latest iteration, ignore previously approved interateion
+
+                totalApproved += cnt;
+            }
+
+            if (totalApproved == wfs.Count)
+            {
+                //var accessTeamWF = FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin)[0];
+                stateTransition(ActorApprovalType.Workflow_Admin, accessWF[0], WorkflowState.Pending_Approval, WorkflowState.Approved);
+            }
 
         }
 

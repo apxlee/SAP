@@ -95,10 +95,13 @@ namespace Apollo.AIM.SNAP.Web.Controls
             if (userId != string.Empty)
             {
                 ADUserDetail usrDetail = Apollo.AIM.SNAP.CA.DirectoryServices.GetUserByLoginName(userId);
-                if (mgrUsrId == usrDetail.Manager.LoginName)
-                    return usrDetail.ManagerName;
-                
-                return "<span style='color:red'><strong>" + usrDetail.ManagerName + "</strong></span>";
+                if (usrDetail != null)
+                {
+                    if (mgrUsrId == usrDetail.Manager.LoginName)
+                        return usrDetail.ManagerName;
+
+                    return "<span style='color:red'><strong>" + usrDetail.ManagerName + "</strong></span>";
+                }
             }
             return "";
         }
