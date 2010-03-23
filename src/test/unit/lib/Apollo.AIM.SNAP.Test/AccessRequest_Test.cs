@@ -837,7 +837,7 @@ namespace Apollo.AIM.SNAP.Test
         [Test]
         public void ShouldHandleFromManagerToTeamToLastTechicalRequestToChangeLoop()
         {
-
+            // set up for first request to change
             using (var db = new SNAPDatabaseDataContext())
             {
                 var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
@@ -942,9 +942,7 @@ namespace Apollo.AIM.SNAP.Test
 
                     var r = new Random();
                     var last = r.Next(2);
-                    //last = 1;
-                    // get all technical approval
-                    //Console.WriteLine("last = " + last);
+                    // get only one technical request to change
                     wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
                     for (int x = 0; x <= last; x++)
                     {
@@ -964,11 +962,12 @@ namespace Apollo.AIM.SNAP.Test
                                     && s.pkId > state.pkId) == 1);
 
                     /*
-                    Assert.IsTrue(accessWF[0].SNAP_Workflow_States.Count(
+                    Assert.IsTrue(accessWF[0].SNAP_Workflow_States.Single(
                                 s => s.completedDate == null
                                     && s.workflowStatusEnum == (byte)WorkflowState.Change_Requested)
                                    == 1);
-                    */
+                     */
+                    
                 }
         }
 
