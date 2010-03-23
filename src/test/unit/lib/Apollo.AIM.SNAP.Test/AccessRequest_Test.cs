@@ -125,12 +125,27 @@ namespace Apollo.AIM.SNAP.Test
             {
                 var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
                 Assert.IsTrue(req.statusEnum == (byte)RequestState.Closed);
-                Assert.IsTrue(req.SNAP_Workflows[0].SNAP_Workflow_States.Count(s => s.workflowStatusEnum == (byte) WorkflowState.Closed_Denied) == 1);
-                Assert.IsTrue(req.SNAP_Workflows[0].SNAP_Workflow_Comments.Count(c => c.commentTypeEnum == (byte)CommentsType.Denied) == 1);
+                verifyWorkflowState(req.SNAP_Workflows[0], WorkflowState.Closed_Denied);
+                verifyWorkflowComment(req.SNAP_Workflows[0], CommentsType.Denied);
             }
             
         }
 
+        private void verifyWorkflowState(SNAP_Workflow wf, WorkflowState state)
+        {
+            Assert.IsTrue(wf.SNAP_Workflow_States.Count(
+                              s => s.workflowStatusEnum == (byte) state) == 1);
+        }
+
+        private void verifyWorkflowComment(SNAP_Workflow wf, CommentsType type)
+        {
+            Assert.IsTrue(wf.SNAP_Workflow_Comments.Count(c => c.commentTypeEnum == (byte)type) == 1);
+        }
+
+        private void verifyWorkflowStateComplete(SNAP_Workflow wf, WorkflowState state)
+        {
+            Assert.IsTrue(wf.SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)state).completedDate != null);
+        }
         [Test]
         public void ShouldCloseCancelledByAccessTeam()
         {
@@ -147,8 +162,8 @@ namespace Apollo.AIM.SNAP.Test
             {
                 var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
                 Assert.IsTrue(req.statusEnum == (byte)RequestState.Closed);
-                Assert.IsTrue(req.SNAP_Workflows[0].SNAP_Workflow_States.Count(s => s.workflowStatusEnum == (byte)WorkflowState.Closed_Cancelled) == 1);
-                Assert.IsTrue(req.SNAP_Workflows[0].SNAP_Workflow_Comments.Count(c => c.commentTypeEnum == (byte)CommentsType.Cancelled) == 1);
+                verifyWorkflowState(req.SNAP_Workflows[0], WorkflowState.Closed_Cancelled);
+                verifyWorkflowComment(req.SNAP_Workflows[0], CommentsType.Cancelled);
             }
 
         }
@@ -215,16 +230,14 @@ namespace Apollo.AIM.SNAP.Test
                     Console.WriteLine(s.workflowId + "," + s.workflowStatusEnum + "," + ((s.completedDate != null) ? s.completedDate.ToString() : "TBD"));
                 }
 
-                Assert.IsTrue(accessTeamWFStates.Count(s => s.workflowStatusEnum == (byte) WorkflowState.Pending_Approval) == 1);
-
+                verifyWorkflowState(accessTeamWF, WorkflowState.Pending_Approval);
                 var managerWF = db.SNAP_Workflows.Single(x => x.requestId == req.pkId && x.actorId == managerActorId);
                 var managerWFStates = db.SNAP_Workflow_States.Where(x => x.workflowId == managerWF.pkId);
                 foreach (var s in managerWFStates)
                 {
                     Console.WriteLine(s.workflowId + "," + s.workflowStatusEnum + "," + ((s.completedDate != null) ? s.completedDate.ToString() : "TBD"));
                 }
-                Assert.IsTrue(managerWFStates.Count(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval) == 1);
-
+                verifyWorkflowState(managerWF, WorkflowState.Pending_Approval);
             }
         }
          
@@ -342,10 +355,10 @@ namespace Apollo.AIM.SNAP.Test
                 accessReq.CreateWorkflow(new List<int>()
                                              {
                                                  managerActorId,
-                                                 //teamApprovalActorId,
-                                                 //windowsServerActorId,
-                                                 //databaseActorId,
-                                                 //networkShareActorId
+                                                 teamApprovalActorId,
+                                                 windowsServerActorId,
+                                                 databaseActorId,
+                                                 networkShareActorId
                                              });
 
                 accessReq.InformApproverForAction();
@@ -365,8 +378,8 @@ namespace Apollo.AIM.SNAP.Test
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
 
 
-                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte) WorkflowState.Pending_Approval).completedDate != null);
-                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte) WorkflowState.Approved).completedDate != null);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Pending_Approval);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Approved);
             }
 
         }
@@ -384,10 +397,10 @@ namespace Apollo.AIM.SNAP.Test
                 accessReq.CreateWorkflow(new List<int>()
                                              {
                                                  managerActorId,
-                                                 //teamApprovalActorId,
-                                                 //windowsServerActorId,
-                                                 //databaseActorId,
-                                                 //networkShareActorId
+                                                 teamApprovalActorId,
+                                                 windowsServerActorId,
+                                                 databaseActorId,
+                                                 networkShareActorId
                                              });
 
                 accessReq.InformApproverForAction();
@@ -414,9 +427,9 @@ namespace Apollo.AIM.SNAP.Test
 
                 Assert.IsTrue(req.statusEnum == (byte)RequestState.Change_Requested);
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
-                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Change_Requested).completedDate != null);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Change_Requested);
                 wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
-                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Change_Requested).completedDate == null);
+                verifyWorkflowState(wfs[0], WorkflowState.Change_Requested);
             }
 
         }
@@ -459,12 +472,12 @@ namespace Apollo.AIM.SNAP.Test
                 var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
                 var accessReq = new AccessRequest(req.pkId);
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
-                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate != null);
-                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Approved).completedDate != null);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Pending_Approval);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Approved);
 
                 wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Team_Approver);
-                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate != null);
-                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Approved).completedDate != null);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Pending_Approval);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Approved);
 
             }
 
@@ -519,8 +532,10 @@ namespace Apollo.AIM.SNAP.Test
                 Assert.IsTrue(req.statusEnum == (byte)RequestState.Change_Requested);
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Team_Approver);
                 Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Change_Requested).completedDate != null);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Change_Requested);
                 wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
                 Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Change_Requested).completedDate == null);
+                verifyWorkflowState(wfs[0], WorkflowState.Change_Requested);
             }
             
         }
@@ -541,8 +556,8 @@ namespace Apollo.AIM.SNAP.Test
                                                  managerActorId,
                                                  teamApprovalActorId,
                                                  windowsServerActorId,
-                                                 //databaseActorId,
-                                                 //networkShareActorId
+                                                 databaseActorId,
+                                                 networkShareActorId
                                              });
 
                 accessReq.InformApproverForAction();
@@ -569,17 +584,18 @@ namespace Apollo.AIM.SNAP.Test
                 var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
                 var accessReq = new AccessRequest(req.pkId);
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
-                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate != null);
-                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Approved).completedDate != null);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Pending_Approval);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Approved);
+
 
                 wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Team_Approver);
-                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate != null);
-                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Approved).completedDate != null);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Pending_Approval);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Approved);
+
 
                 wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
-                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate != null);
-                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Approved).completedDate != null);
-
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Pending_Approval);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Approved);
 
             }
 
@@ -687,7 +703,7 @@ namespace Apollo.AIM.SNAP.Test
 
                 Assert.IsTrue(req.statusEnum == (byte)RequestState.Change_Requested);
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
-                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Change_Requested).completedDate != null);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Change_Requested);
                 wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
                 Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Change_Requested).completedDate == null);
 
@@ -803,11 +819,13 @@ namespace Apollo.AIM.SNAP.Test
 
                 Assert.IsTrue(req.statusEnum == (byte)RequestState.Change_Requested);
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
-                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Approved).completedDate != null);
-                Assert.IsTrue(wfs[1].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Approved).completedDate != null);
-                Assert.IsTrue(wfs[2].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Change_Requested).completedDate != null);
-                Assert.IsTrue(wfs[2].SNAP_Workflow_Comments.Count(c => c.commentTypeEnum == (byte) CommentsType.Requested_Change) == 
-                    1);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Approved);
+                verifyWorkflowStateComplete(wfs[1], WorkflowState.Approved);
+                verifyWorkflowStateComplete(wfs[2], WorkflowState.Change_Requested);
+
+                //Assert.IsTrue(wfs[2].SNAP_Workflow_Comments.Count(c => c.commentTypeEnum == (byte) CommentsType.Requested_Change) == 
+                //    1);
+                verifyWorkflowComment(wfs[2], CommentsType.Requested_Change);
                 wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
                 Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Change_Requested).completedDate == null);
 
@@ -865,11 +883,11 @@ namespace Apollo.AIM.SNAP.Test
 
                 Assert.IsTrue(req.statusEnum == (byte)RequestState.Change_Requested);
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
-                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Approved).completedDate != null);
-                Assert.IsTrue(wfs[1].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Approved).completedDate != null);
-                Assert.IsTrue(wfs[2].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Change_Requested).completedDate != null);
-                Assert.IsTrue(wfs[2].SNAP_Workflow_Comments.Count(c => c.commentTypeEnum == (byte)CommentsType.Requested_Change) ==
-                    1);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Approved);
+                verifyWorkflowStateComplete(wfs[1], WorkflowState.Approved);
+                verifyWorkflowStateComplete(wfs[2], WorkflowState.Change_Requested);
+
+                verifyWorkflowComment(wfs[2], CommentsType.Requested_Change);
                 wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
                 Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Change_Requested).completedDate == null);
 
@@ -951,11 +969,6 @@ namespace Apollo.AIM.SNAP.Test
                                     && s.workflowStatusEnum == (byte)WorkflowState.Change_Requested)
                                    == 1);
                     */
-                    /*
-                    accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
-                    accessReq.WorkflowAck(wfs[1].pkId, WorkflowAction.Approved);
-                    accessReq.WorkflowAck(wfs[2].pkId, WorkflowAction.Change, "change it");
-                     */
                 }
         }
 
@@ -1005,7 +1018,7 @@ namespace Apollo.AIM.SNAP.Test
                 var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
                 var accessReq = new AccessRequest(req.pkId);
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
-                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Approved).completedDate != null);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Approved);
                 Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Provisioning).completedDate == null);
 
             }
@@ -1061,8 +1074,8 @@ namespace Apollo.AIM.SNAP.Test
                 var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
                 var accessReq = new AccessRequest(req.pkId);
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
-                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Provisioning).completedDate != null);
-                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Closed_Completed).completedDate != null);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Pending_Provisioning);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Closed_Completed);
                 Assert.IsTrue(req.statusEnum == (byte)RequestState.Closed);
             }
 
@@ -1084,8 +1097,8 @@ namespace Apollo.AIM.SNAP.Test
                                                  managerActorId,
                                                  teamApprovalActorId,
                                                  windowsServerActorId,
-                                                 //databaseActorId,
-                                                 //networkShareActorId
+                                                 databaseActorId,
+                                                 networkShareActorId
                                              });
 
                 accessReq.InformApproverForAction();
@@ -1104,11 +1117,13 @@ namespace Apollo.AIM.SNAP.Test
                 var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
                 var accessReq = new AccessRequest(req.pkId);
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
-                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate != null);
-                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Closed_Denied).completedDate != null);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Pending_Approval);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Closed_Denied);
+
                 Assert.IsTrue(req.statusEnum == (byte)RequestState.Closed);
                 var wf = accessReq.FindApprovalTypeWF(db, (byte) ActorApprovalType.Manager)[0];
-                Assert.IsTrue(wf.SNAP_Workflow_Comments.Count(c => c.commentTypeEnum == (byte) CommentsType.Denied) > 0);
+                //Assert.IsTrue(wf.SNAP_Workflow_Comments.Count(c => c.commentTypeEnum == (byte) CommentsType.Denied) > 0);
+                verifyWorkflowComment(wf, CommentsType.Denied);
             }
             
         }
@@ -1128,8 +1143,8 @@ namespace Apollo.AIM.SNAP.Test
                                                  managerActorId,
                                                  teamApprovalActorId,
                                                  windowsServerActorId,
-                                                 //databaseActorId,
-                                                 //networkShareActorId
+                                                 databaseActorId,
+                                                 networkShareActorId
                                              });
 
                 accessReq.InformApproverForAction();
@@ -1159,11 +1174,13 @@ namespace Apollo.AIM.SNAP.Test
                 var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
                 var accessReq = new AccessRequest(req.pkId);
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
-                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate != null);
-                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Closed_Denied).completedDate != null);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Pending_Approval);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Closed_Denied);
+
                 Assert.IsTrue(req.statusEnum == (byte)RequestState.Closed);
                 var wf = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Team_Approver)[0];
                 Assert.IsTrue(wf.SNAP_Workflow_Comments.Count(c => c.commentTypeEnum == (byte)CommentsType.Denied) > 0);
+                verifyWorkflowComment(wf, CommentsType.Denied);
             }
 
         }
@@ -1183,8 +1200,8 @@ namespace Apollo.AIM.SNAP.Test
                                                  managerActorId,
                                                  teamApprovalActorId,
                                                  windowsServerActorId,
-                                                 //databaseActorId,
-                                                 //networkShareActorId
+                                                 databaseActorId,
+                                                 networkShareActorId
                                              });
 
                 accessReq.InformApproverForAction();
@@ -1213,11 +1230,13 @@ namespace Apollo.AIM.SNAP.Test
                 var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
                 var accessReq = new AccessRequest(req.pkId);
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
-                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate != null);
-                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Closed_Denied).completedDate != null);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Pending_Approval);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Closed_Denied);
+
                 Assert.IsTrue(req.statusEnum == (byte)RequestState.Closed);
                 var wf = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver)[0];
                 Assert.IsTrue(wf.SNAP_Workflow_Comments.Count(c => c.commentTypeEnum == (byte)CommentsType.Denied) > 0);
+                verifyWorkflowComment(wf, CommentsType.Denied);
             }
 
         }
@@ -1270,16 +1289,16 @@ namespace Apollo.AIM.SNAP.Test
                 var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
                 var accessReq = new AccessRequest(req.pkId);
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
-                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate != null);
-                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Closed_Denied).completedDate != null);
-                
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Pending_Approval);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Closed_Denied);
+
 
                 wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
-                Assert.IsTrue(wfs[denier].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Closed_Denied).completedDate != null);
+                verifyWorkflowStateComplete(wfs[denier], WorkflowState.Closed_Denied);
 
                 Assert.IsTrue(req.statusEnum == (byte)RequestState.Closed);
                 var wfStates = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
-                Assert.IsTrue(wfStates[denier].SNAP_Workflow_Comments.Count(c => c.commentTypeEnum == (byte)CommentsType.Denied) == 1);
+                verifyWorkflowComment(wfStates[denier], CommentsType.Denied);
             }
             
         }
