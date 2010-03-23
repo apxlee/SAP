@@ -16,6 +16,7 @@ namespace Apollo.AIM.SNAP.Model
         public AccessRequest(int i)
         {
             _id = i;
+
         }
 
         #region public methods
@@ -28,6 +29,19 @@ namespace Apollo.AIM.SNAP.Model
                 using (var db = new SNAPDatabaseDataContext())
                 {
                     var req = db.SNAP_Requests.Single(r => r.pkId == _id);
+                    var accessTeamWF = req.SNAP_Workflows.Single(x => x.actorId == AccessTeamActorId);
+                    result = reqStateTransition(req, RequestState.Open, RequestState.Pending,
+                                                accessTeamWF, WorkflowState.Pending_Acknowlegement,
+                                                WorkflowState.Pending_Workflow);
+
+                    if (result)
+                    {
+                        db.SubmitChanges();
+                    }
+
+
+/*
+
                     if (req.statusEnum == (byte)RequestState.Open)
                     {
                         var wf = req.SNAP_Workflows.Single(w => w.actorId == AccessTeamActorId);
@@ -43,6 +57,7 @@ namespace Apollo.AIM.SNAP.Model
                             result = true;
                         }
                     }
+ */
                 }
             }
             catch (Exception ex)
@@ -77,6 +92,25 @@ namespace Apollo.AIM.SNAP.Model
                 using (var db = new SNAPDatabaseDataContext())
                 {
                     var req = db.SNAP_Requests.Single(r => r.pkId == _id);
+                    var accessTeamWF = req.SNAP_Workflows.Single(x => x.actorId == AccessTeamActorId);
+                    result = reqStateTransition(req, RequestState.Pending, RequestState.Closed,
+                                                accessTeamWF, WorkflowState.Pending_Workflow,
+                                                wfState);
+
+                    if (result)
+                    {
+                        accessTeamWF.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
+                        {
+                            commentText = comment,
+                            commentTypeEnum = (byte)commentType,
+                            createdDate = DateTime.Now
+                        });
+
+                        db.SubmitChanges();
+                    }
+
+
+                    /*
                     if (req.statusEnum == (byte) RequestState.Pending)
                     {
                         var accessWF = req.SNAP_Workflows.Single(x => x.actorId == 1);
@@ -97,6 +131,7 @@ namespace Apollo.AIM.SNAP.Model
                             result = true;
                         }
                     }
+                     */
                 }
             }
             catch (Exception ex)
@@ -107,29 +142,6 @@ namespace Apollo.AIM.SNAP.Model
 
         }
 
-        private void handleRequestChanges(string comment, CommentsType cmtType, WorkflowState wfsFr, WorkflowState wfsTo, RequestState reqsFr, RequestState reqsTo)
-        {
-            using (var db = new SNAPDatabaseDataContext())
-            {
-                var req = db.SNAP_Requests.Single(r => r.pkId == _id);
-                if (req.statusEnum == (byte)reqsFr)
-                {
-                    req.statusEnum = (byte)reqsTo;
-                    var accessWF = req.SNAP_Workflows.Single(w => w.actorId == AccessTeamActorId);
-
-                    stateTransition(ActorApprovalType.Workflow_Admin, accessWF, wfsFr, wfsTo);
-                    accessWF.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
-                    {
-                        commentText = comment,
-                        commentTypeEnum = (byte)cmtType,
-                        createdDate = DateTime.Now
-                    });
-                }
-
-                db.SubmitChanges();
-            }
-
-        }
         public bool RequestToChange(string comment)
         {
             bool result = false;
@@ -139,6 +151,24 @@ namespace Apollo.AIM.SNAP.Model
                 using (var db = new SNAPDatabaseDataContext())
                 {
                     var req = db.SNAP_Requests.Single(r => r.pkId == _id);
+                    var accessTeamWF = req.SNAP_Workflows.Single(x => x.actorId == AccessTeamActorId);
+                    result = reqStateTransition(req, RequestState.Pending, RequestState.Change_Requested,
+                                                accessTeamWF, WorkflowState.Pending_Workflow,
+                                                WorkflowState.Change_Requested);
+
+                    if (result)
+                    {
+                        accessTeamWF.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
+                        {
+                            commentText = comment,
+                            commentTypeEnum = (byte)CommentsType.Requested_Change,
+                            createdDate = DateTime.Now
+                        });
+
+                        db.SubmitChanges();
+                    }
+
+                    /*
                     if (req.statusEnum == (byte)RequestState.Pending)
                     {
                         req.statusEnum = (byte)RequestState.Change_Requested;
@@ -160,6 +190,7 @@ namespace Apollo.AIM.SNAP.Model
                             result = true;
                         }
                     }
+                     */
                 }
             }
             catch (Exception ex)
@@ -179,6 +210,17 @@ namespace Apollo.AIM.SNAP.Model
                 using (var db = new SNAPDatabaseDataContext())
                 {
                     var req = db.SNAP_Requests.Single(r => r.pkId == _id);
+                    var accessTeamWF = req.SNAP_Workflows.Single(x => x.actorId == AccessTeamActorId);
+                    result = reqStateTransition(req, RequestState.Change_Requested, RequestState.Open,
+                                                accessTeamWF, WorkflowState.Change_Requested,
+                                                WorkflowState.Pending_Acknowlegement);
+
+                    if (result)
+                    {
+                        db.SubmitChanges();
+                    }
+
+                    /*
                     if (req.statusEnum == (byte)RequestState.Change_Requested)
                     {
                         req.statusEnum = (byte)RequestState.Open;
@@ -192,6 +234,7 @@ namespace Apollo.AIM.SNAP.Model
                             result = true;
                         }
                     }
+                     */
                 }
             }
             catch (Exception ex)
@@ -211,6 +254,20 @@ namespace Apollo.AIM.SNAP.Model
                 using (var db = new SNAPDatabaseDataContext())
                 {
                     var req = db.SNAP_Requests.Single(r => r.pkId == _id);
+                    var accessTeamWF = req.SNAP_Workflows.Single(x => x.actorId == AccessTeamActorId);
+                    result = reqStateTransition(req, RequestState.Pending, RequestState.Pending,
+                                                accessTeamWF, WorkflowState.Pending_Workflow,
+                                                WorkflowState.Pending_Approval);
+
+                    if (result)
+                    {
+                        createrApprovalWorkFlow(db, actorIds);
+
+                        db.SubmitChanges();
+                    }
+
+                    /*
+                    var req = db.SNAP_Requests.Single(r => r.pkId == _id);
                     if (req.statusEnum == (byte) RequestState.Pending)
                     {
                         var accessWF = req.SNAP_Workflows.Single(w => w.actorId == AccessTeamActorId);
@@ -225,6 +282,7 @@ namespace Apollo.AIM.SNAP.Model
                         }
 
                     }
+                     */
                 }
             }
             catch (Exception ex) {
@@ -397,7 +455,20 @@ namespace Apollo.AIM.SNAP.Model
             {
                 using (var db = new SNAPDatabaseDataContext())
                 {
+
                     var req = db.SNAP_Requests.Single(r => r.pkId == _id);
+                    var accessTeamWF = req.SNAP_Workflows.Single(x => x.actorId == AccessTeamActorId); 
+                    result = reqStateTransition(req, RequestState.Pending, RequestState.Pending,
+                                                accessTeamWF, WorkflowState.Approved,
+                                                WorkflowState.Pending_Provisioning);
+
+                    if (result)
+                    {
+                        // TODO - create SD here, save ticket in the request table
+
+                        db.SubmitChanges();
+                    }
+                    /*
                     if (req.statusEnum == (byte)RequestState.Pending)
                     {
 
@@ -415,6 +486,7 @@ namespace Apollo.AIM.SNAP.Model
                             result = true;
                         }
                     }
+                     */
                 }
             }
             catch (Exception ex)
@@ -431,6 +503,19 @@ namespace Apollo.AIM.SNAP.Model
             {
                 using (var db = new SNAPDatabaseDataContext())
                 {
+                    var req = db.SNAP_Requests.Single(r => r.pkId == _id);
+                    var accessTeamWF = req.SNAP_Workflows.Single(x => x.actorId == AccessTeamActorId);
+                    result = reqStateTransition(req, RequestState.Pending, RequestState.Closed,
+                                                accessTeamWF, WorkflowState.Pending_Provisioning,
+                                                WorkflowState.Closed_Completed);
+
+                    if (result)
+                    {
+                        // TODO - Info requester it is done
+
+                        db.SubmitChanges();
+                    }
+                    /*
                     var req = db.SNAP_Requests.Single(r => r.pkId == _id);
                     if (req.statusEnum == (byte)RequestState.Pending)
                     {
@@ -450,6 +535,7 @@ namespace Apollo.AIM.SNAP.Model
                             result = true;
                         }
                     }
+                     */
                 }
             }
             catch (Exception ex)
@@ -464,6 +550,27 @@ namespace Apollo.AIM.SNAP.Model
 
         #region private methods
 
+        private bool reqStateTransition(SNAP_Request req, RequestState reqFr, RequestState reqTo, SNAP_Workflow accessTeamWF,  WorkflowState wfFr, WorkflowState wfTo)
+        {
+            var result = false;
+            if (req.statusEnum == (byte)reqFr)
+            {
+                //var accessTeamWF = FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin)[0];
+                var accessTeamWFState = accessTeamWF.SNAP_Workflow_States.Single(s => s.completedDate == null);
+                if (accessTeamWFState.workflowStatusEnum == (byte)wfFr)
+                {
+                    stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF,wfFr,wfTo);
+
+                    if (reqFr != reqTo)
+                    {
+                        req.statusEnum = (byte) reqTo;
+
+                    }
+                    result = true;
+                }
+            }
+            return result;
+        }
 
         private void handleApproval(WorkflowAction action, ActorApprovalType approvalType, ref WorkflowState newState)
         {
@@ -581,47 +688,6 @@ namespace Apollo.AIM.SNAP.Model
 
         }
 
-        /*
-        private SNAP_Workflow_State createState(WorkflowState s)
-        {
-            var state = new SNAP_Workflow_State()
-            {
-                completedDate = DateTime.Now,
-                dueDate = DateTime.Now,
-                notifyDate = DateTime.Now,
-                workflowStatusEnum = (byte)s
-            };
-            return state;
-
-        }
-
-        private SNAP_Workflow_State createState(DateTime complete, DateTime due, DateTime notify, WorkflowState s)
-        {
-            var state = new SNAP_Workflow_State()
-            {
-                completedDate = complete,
-                dueDate = due,
-                notifyDate = notify,
-                workflowStatusEnum = (byte)s
-            };
-            return state;
-            
-        }
-         */
-
-        public SNAP_Workflow_State latestWorkflowAdminMarker()
-        {
-            
-            using (var db = new SNAPDatabaseDataContext())
-            {
-                var req = db.SNAP_Requests.Single(x => x.pkId == _id);
-                var wf = req.SNAP_Workflows.Single(w => w.actorId == 1);
-                var state = wf.SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte) WorkflowState.Pending_Approval
-                                                            && s.dueDate == null);
-                return state;
-            }
-            
-        }
 
 /*
         private void completeRequestApprovalCheck(SNAPDatabaseDataContext db) //SNAPDatabaseDataContext db)
