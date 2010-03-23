@@ -257,7 +257,6 @@ namespace Apollo.AIM.SNAP.Model
 
                 }
             }
-
         }
 
         private void approvalRequestToChange(SNAPDatabaseDataContext db, SNAP_Workflow wf, string comment)
@@ -555,7 +554,7 @@ namespace Apollo.AIM.SNAP.Model
 
                 var prevWFState = wf.SNAP_Workflow_States.Single(
                     s => s.workflowStatusEnum == (byte)from
-                    && s.completedDate == null); // o prevent looping in old state, null date is the latest state
+                    && s.completedDate == null); // To prevent looping in old state, null date is the latest state
 
                 if (prevWFState != null)
                     prevWFState.completedDate = DateTime.Now;

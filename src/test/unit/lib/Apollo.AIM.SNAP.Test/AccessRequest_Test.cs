@@ -875,7 +875,7 @@ namespace Apollo.AIM.SNAP.Test
 
             }
 
-            for (int i = 0; i < 1; i++ )
+            for (int i = 0; i < 5; i++ )
                 using (var db = new SNAPDatabaseDataContext())
                 {
                     var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
@@ -896,22 +896,66 @@ namespace Apollo.AIM.SNAP.Test
 
                     accessReq.InformApproverForAction();
 
+                    var accessWF = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
+                    var state = accessWF[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval
+                        && s.completedDate == null); // get lastest 'pending approval' for the workflowadmin state
+
                     // get manager approal
                     var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
                     //Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate == null);
 
                     accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+                    Assert.IsTrue(
+                        wfs[0].SNAP_Workflow_States.Count(
+                            s => s.completedDate != null 
+                                && s.workflowStatusEnum == (byte) WorkflowState.Approved
+                                && s.pkId > state.pkId) == 1 );
 
                     // get team approval
                     wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Team_Approver);
+
                     accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
 
+                    Assert.IsTrue(
+                            wfs[0].SNAP_Workflow_States.Count(
+                                s => s.completedDate != null
+                                    && s.workflowStatusEnum == (byte)WorkflowState.Approved
+                                    && s.pkId > state.pkId) == 1);
 
+                    var r = new Random();
+                    var last = r.Next(2);
+                    //last = 1;
                     // get all technical approval
+                    //Console.WriteLine("last = " + last);
                     wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
+                    for (int x = 0; x <= last; x++)
+                    {
+                        accessReq.WorkflowAck(wfs[x].pkId, WorkflowAction.Approved);
+                        Assert.IsTrue(
+                            wfs[0].SNAP_Workflow_States.Count(
+                                s => s.completedDate != null
+                                    && s.workflowStatusEnum == (byte)WorkflowState.Approved
+                                    && s.pkId > state.pkId) == 1);
+                    }
+
+                    accessReq.WorkflowAck(wfs[++last].pkId, WorkflowAction.Change, "change it");
+                    Assert.IsTrue(
+                            wfs[last].SNAP_Workflow_States.Count(
+                                s => s.completedDate != null
+                                    && s.workflowStatusEnum == (byte)WorkflowState.Change_Requested
+                                    && s.pkId > state.pkId) == 1);
+
+                    /*
+                    Assert.IsTrue(accessWF[0].SNAP_Workflow_States.Count(
+                                s => s.completedDate == null
+                                    && s.workflowStatusEnum == (byte)WorkflowState.Change_Requested)
+                                   == 1);
+                    */
+                    /*
                     accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
                     accessReq.WorkflowAck(wfs[1].pkId, WorkflowAction.Approved);
-                    //accessReq.WorkflowAck(wfs[2].pkId, WorkflowAction.Change, "change it");
+                    accessReq.WorkflowAck(wfs[2].pkId, WorkflowAction.Change, "change it");
+                     */
                 }
         }
 
