@@ -99,13 +99,15 @@ namespace Apollo.AIM.SNAP.Model
 
                     if (result)
                     {
+                        addAccessTeamComment(accessTeamWF, comment, commentType);
+                        /*
                         accessTeamWF.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
                         {
                             commentText = comment,
                             commentTypeEnum = (byte)commentType,
                             createdDate = DateTime.Now
                         });
-
+                        */
                         db.SubmitChanges();
                     }
 
@@ -158,13 +160,15 @@ namespace Apollo.AIM.SNAP.Model
 
                     if (result)
                     {
+                        addAccessTeamComment(accessTeamWF, comment, CommentsType.Requested_Change);
+                        /*
                         accessTeamWF.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
                         {
                             commentText = comment,
                             commentTypeEnum = (byte)CommentsType.Requested_Change,
                             createdDate = DateTime.Now
                         });
-
+                        */
                         db.SubmitChanges();
                     }
 
@@ -572,6 +576,16 @@ namespace Apollo.AIM.SNAP.Model
             return result;
         }
 
+        private void addAccessTeamComment(SNAP_Workflow accessTeamWF, string comment, CommentsType type)
+        {
+            accessTeamWF.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
+            {
+                commentText = comment,
+                commentTypeEnum = (byte)type,
+                createdDate = DateTime.Now
+            });
+
+        }
         private void handleApproval(WorkflowAction action, ActorApprovalType approvalType, ref WorkflowState newState)
         {
             switch (action)
