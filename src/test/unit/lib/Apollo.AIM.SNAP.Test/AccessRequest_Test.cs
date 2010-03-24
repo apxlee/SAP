@@ -11,12 +11,38 @@ namespace Apollo.AIM.SNAP.Test
     [TestFixture]
     public class AccessRequest_Test
     {
+        // this is from actor group table
+        private static int TEAMAPPROVALGROUP = 2;
+        private static int TECHNICALAPPROVALGROUP = 3;
+        private static int MANAGERGROUP = 4;
+
+
+
         private int accessTeamActorId = 1;
-        private int managerActorId = 29;
-        private int teamApprovalActorId = 17;
-        private int windowsServerActorId = 19;
-        private int networkShareActorId = 20;
-        private int databaseActorId = 21;
+        private int managerActorId = 0;
+        private int teamApprovalActorId = 0;
+        private int windowsServerActorId = 0;
+        private int networkShareActorId = 0;
+        private int databaseActorId = 0;
+
+        
+        [TestFixtureSetUp]
+        public void Init()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var actors = db.SNAP_Actors.Where(a => a.actor_groupId == TEAMAPPROVALGROUP).ToList();
+                teamApprovalActorId = actors[0].pkId;
+                actors = db.SNAP_Actors.Where(a => a.actor_groupId == TECHNICALAPPROVALGROUP).ToList();
+                windowsServerActorId = actors[0].pkId;
+                networkShareActorId = actors[1].pkId;
+                databaseActorId = actors[2].pkId;
+                actors = db.SNAP_Actors.Where(a => a.actor_groupId == MANAGERGROUP).ToList();
+                managerActorId = actors[0].pkId;
+
+            }
+        }
+
 
         [SetUp]
         public void SetUp()
