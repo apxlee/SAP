@@ -309,34 +309,6 @@ namespace Apollo.AIM.SNAP.Model
             }
         }
 
-        private void approvalRequestToChange(SNAPDatabaseDataContext db, SNAP_Workflow wf, string comment)
-        {
-            var accessTeamWF = FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin)[0];
-            stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, WorkflowState.Pending_Approval, WorkflowState.Change_Requested);
-            db.SubmitChanges();
-
-            var req = db.SNAP_Requests.Single(w => w.pkId == _id);
-            req.statusEnum = (byte)RequestState.Change_Requested;
-
-            // complete date all exitsting wf state
-            foreach (var w in req.SNAP_Workflows)
-            {
-                if (w.actorId != 1) // all non accessteam wfs are completed!
-                    foreach (var s in w.SNAP_Workflow_States)
-                    {
-                        if (s.completedDate == null)
-                            s.completedDate = DateTime.Now;
-                    }
-            }
-
-            wf.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
-                                              {
-                                                  commentText = comment,
-                                                  commentTypeEnum = (byte) CommentsType.Requested_Change,
-                                                  createdDate = DateTime.Now
-                                              });
-            // TODO - info submiter or requester
-        }
 
 
         public bool CreateServiceDeskTicket()
@@ -415,6 +387,7 @@ namespace Apollo.AIM.SNAP.Model
                     if (reqFr != reqTo)
                     {
                         req.statusEnum = (byte) reqTo;
+                        req.lastModifiedDate = DateTime.Now;
 
                     }
                     result = true;
@@ -433,6 +406,36 @@ namespace Apollo.AIM.SNAP.Model
             });
 
         }
+
+        private void approvalRequestToChange(SNAPDatabaseDataContext db, SNAP_Workflow wf, string comment)
+        {
+            var accessTeamWF = FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin)[0];
+            stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, WorkflowState.Pending_Approval, WorkflowState.Change_Requested);
+            db.SubmitChanges();
+
+            var req = db.SNAP_Requests.Single(w => w.pkId == _id);
+            req.statusEnum = (byte)RequestState.Change_Requested;
+
+            // complete date all exitsting wf state
+            foreach (var w in req.SNAP_Workflows)
+            {
+                if (w.actorId != 1) // all non accessteam wfs are completed!
+                    foreach (var s in w.SNAP_Workflow_States)
+                    {
+                        if (s.completedDate == null)
+                            s.completedDate = DateTime.Now;
+                    }
+            }
+
+            wf.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
+            {
+                commentText = comment,
+                commentTypeEnum = (byte)CommentsType.Requested_Change,
+                createdDate = DateTime.Now
+            });
+            // TODO - info submiter or requester
+        }
+
         private void handleApproval(WorkflowAction action, ActorApprovalType approvalType, ref WorkflowState newState)
         {
             switch (action)

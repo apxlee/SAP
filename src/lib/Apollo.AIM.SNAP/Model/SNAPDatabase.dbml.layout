@@ -2,138 +2,144 @@
 <ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 16.75" name="SNAPDatabase">
   <DataContextMoniker Name="/SNAPDatabaseDataContext" />
   <nestedChildShapes>
-    <classShape Id="9e8633fe-9c62-47be-b56b-16ddc0d82263" absoluteBounds="0.75, 1.75, 2, 1.7535424804687503">
+    <classShape Id="02967bc2-cd68-4ea6-82fb-ce5f69b460c1" absoluteBounds="0.75, 1.75, 2, 1.7535424804687503">
       <DataClassMoniker Name="/SNAPDatabaseDataContext/SNAP_Access_Details_Form" />
       <nestedChildShapes>
-        <elementListCompartment Id="47926eec-7ac4-47a0-8f7b-ccc78690ed2b" absoluteBounds="0.765, 2.21, 1.9700000000000002, 1.19354248046875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="c18f5f46-6a38-459d-9e82-54f9319b992b" absoluteBounds="0.765, 2.21, 1.9700000000000002, 1.19354248046875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="88f4d346-31f1-4a2c-9abc-0da2f0f0a931" absoluteBounds="6.75, 0.75, 2, 1.0961531575520835">
+    <classShape Id="7a45aa27-3e7b-4dd2-9cc6-79242a3e554f" absoluteBounds="6.75, 0.75, 2, 1.0961531575520835">
       <DataClassMoniker Name="/SNAPDatabaseDataContext/SNAP_Workflow_State_Type" />
       <nestedChildShapes>
-        <elementListCompartment Id="b053c504-f141-431b-b643-381baefccc27" absoluteBounds="6.765, 1.21, 1.9700000000000002, 0.53615315755208326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="19d4c954-a90e-4d48-aa9b-edd81633cfef" absoluteBounds="6.765, 1.21, 1.9700000000000002, 0.53615315755208326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="1b48411b-4cf9-4750-9f16-2c497e72147d" absoluteBounds="3.5, 1.875, 2, 1.5891951497395829">
+    <classShape Id="762255bc-e48f-4e46-acf9-64ca683b8c62" absoluteBounds="3.5, 1.875, 2, 1.5891951497395829">
       <DataClassMoniker Name="/SNAPDatabaseDataContext/SNAP_Access_User_Text" />
       <nestedChildShapes>
-        <elementListCompartment Id="cbf8c5e8-539c-4d7b-8582-455999af40da" absoluteBounds="3.515, 2.335, 1.9700000000000002, 1.0291951497395833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="aabd4671-639a-437c-bbd0-3135df3aaf1f" absoluteBounds="3.515, 2.335, 1.9700000000000002, 1.0291951497395833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="ef45000c-14de-499b-bd50-0348d62151d5" absoluteBounds="1.5, 14.875, 2, 1.5891951497395844">
+    <classShape Id="dd6fbf2b-c6ea-4979-93be-a6532d050634" absoluteBounds="1.5, 14.875, 2, 1.5891951497395844">
       <DataClassMoniker Name="/SNAPDatabaseDataContext/SNAP_Actor_Group" />
       <nestedChildShapes>
-        <elementListCompartment Id="874cc385-d999-44b9-9094-560a30b4f33a" absoluteBounds="1.5150000000000001, 15.335, 1.9700000000000002, 1.0291951497395833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="ab89d1c8-d732-487d-82f2-92853ae3dca5" absoluteBounds="1.5150000000000001, 15.335, 1.9700000000000002, 1.0291951497395833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="6101bb0c-172e-4d84-bdaf-ebdd351b3ccc" absoluteBounds="8.75, 2.75, 2, 1.0961531575520835">
+    <classShape Id="96f5b72c-5c98-44b7-8024-4249679d718c" absoluteBounds="8.75, 2.75, 2, 1.0961531575520835">
       <DataClassMoniker Name="/SNAPDatabaseDataContext/SNAP_Actor_Group_Type" />
       <nestedChildShapes>
-        <elementListCompartment Id="1317208e-9236-4280-99b9-c236a93018c1" absoluteBounds="8.765, 3.21, 1.9700000000000002, 0.53615315755208326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="622730e7-4b51-4f5c-a6e2-025e4d74075b" absoluteBounds="8.765, 3.21, 1.9700000000000002, 0.53615315755208326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="da77c6d0-9dde-4885-bd9c-6d303f09b9ad" absoluteBounds="0.75, 7.75, 2, 1.9178898111979166">
+    <classShape Id="5b242711-9925-4eba-a7f2-7de57655c331" absoluteBounds="0.75, 8.75, 2, 1.9178898111979166">
       <DataClassMoniker Name="/SNAPDatabaseDataContext/SNAP_Actor" />
       <nestedChildShapes>
-        <elementListCompartment Id="35b490d2-ece8-4189-9ac3-06fed99cce8c" absoluteBounds="0.765, 8.21, 1.9700000000000002, 1.3578898111979165" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="759189f4-a7d2-433a-bbde-0749dfe96036" absoluteBounds="0.765, 9.21, 1.9700000000000002, 1.3578898111979165" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="c6ad4b17-2fed-44c9-8020-ec579bdd621a" absoluteBounds="3.75, 8.75, 2, 1.2605004882812487">
+    <classShape Id="add9ff50-3384-4af9-a129-d8680dd44ce4" absoluteBounds="3.75, 8.75, 2, 1.2605004882812487">
       <DataClassMoniker Name="/SNAPDatabaseDataContext/SNAP_Comments_Type" />
       <nestedChildShapes>
-        <elementListCompartment Id="fd15c040-4723-41f3-a200-e07c5e715d90" absoluteBounds="3.765, 9.21, 1.9700000000000002, 0.70050048828125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="ab025ecc-0a0c-47ee-b1ec-54682c9bd5a5" absoluteBounds="3.765, 9.21, 1.9700000000000002, 0.70050048828125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="d2ac90da-bbfa-478a-9433-2f5ae32812a5" absoluteBounds="3.5, 12, 2, 1.5891951497395844">
+    <classShape Id="1e9e97bc-c82a-4939-9046-922d3276e406" absoluteBounds="3.5, 12, 2, 1.5891951497395844">
       <DataClassMoniker Name="/SNAPDatabaseDataContext/SNAP_Request_Comment" />
       <nestedChildShapes>
-        <elementListCompartment Id="93d09153-52fc-4c26-80ac-40fb20f5d68f" absoluteBounds="3.515, 12.46, 1.9700000000000002, 1.0291951497395833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="4010c27e-acf6-4f92-aa82-38f8518a7041" absoluteBounds="3.515, 12.46, 1.9700000000000002, 1.0291951497395833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="a3a852f1-8f7d-4a17-98e3-fe7e76e61691" absoluteBounds="8.75, 4.75, 2, 1.0961531575520844">
+    <classShape Id="f76e4b6a-9091-4180-a1b9-949cef8d6241" absoluteBounds="8.75, 4.75, 2, 1.0961531575520844">
       <DataClassMoniker Name="/SNAPDatabaseDataContext/SNAP_Request_State_Type" />
       <nestedChildShapes>
-        <elementListCompartment Id="be9b7abc-8171-4318-9198-941eb67733a6" absoluteBounds="8.765, 5.21, 1.9700000000000002, 0.53615315755208326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="a1214a19-6387-46ee-a00f-bd20cf84c8b0" absoluteBounds="8.765, 5.21, 1.9700000000000002, 0.53615315755208326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="a484b3f6-a5f2-4aad-b493-39a6b603ba35" absoluteBounds="0.75, 4.375, 2, 2.5752791341145826">
+    <classShape Id="ca89aa84-5546-453c-8e1c-649ab8e94c97" absoluteBounds="0.75, 4.25, 2, 2.7396264648437505">
       <DataClassMoniker Name="/SNAPDatabaseDataContext/SNAP_Request" />
       <nestedChildShapes>
-        <elementListCompartment Id="0fcd3b86-a570-4c36-8a87-24d05f05fd9f" absoluteBounds="0.765, 4.835, 1.9700000000000002, 2.015279134114583" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="df2bff48-8146-4334-8e24-43e79a2c6481" absoluteBounds="0.765, 4.71, 1.9700000000000002, 2.17962646484375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="d60c0567-f751-48cf-a357-fd2e36867b18" absoluteBounds="3.5, 5, 2, 1.2605004882812505">
+    <classShape Id="24d519ef-0473-47c4-9661-67aa106ebc8e" absoluteBounds="8.75, 6.75, 2, 1.0961531575520844">
+      <DataClassMoniker Name="/SNAPDatabaseDataContext/SNAP_Weekends_and_Holiday" />
+      <nestedChildShapes>
+        <elementListCompartment Id="971dff09-faff-4122-a01a-d8d9f96a0031" absoluteBounds="8.765, 7.21, 1.9700000000000002, 0.53615315755208326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="fac013f3-7496-43e1-86bb-5e731f106339" absoluteBounds="3.5, 5, 2, 1.2605004882812505">
       <DataClassMoniker Name="/SNAPDatabaseDataContext/SNAP_Workflow" />
       <nestedChildShapes>
-        <elementListCompartment Id="b45256ba-6fcf-40e3-9f75-bb00d538a689" absoluteBounds="3.515, 5.46, 1.9700000000000002, 0.70050048828125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="09f0398a-8e40-4797-a204-fb7af8ab225b" absoluteBounds="3.515, 5.46, 1.9700000000000002, 0.70050048828125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="fa4a1678-d679-4c62-b071-6aee0e869c06" absoluteBounds="6.25, 3.625, 2, 1.5891951497395827">
+    <classShape Id="51534892-6802-401e-9a87-d0e2322400d3" absoluteBounds="6.25, 3.625, 2, 1.5891951497395827">
       <DataClassMoniker Name="/SNAPDatabaseDataContext/SNAP_Workflow_Comment" />
       <nestedChildShapes>
-        <elementListCompartment Id="e910e9e4-203e-41d6-9126-9cd8391bf3c3" absoluteBounds="6.265, 4.085, 1.9700000000000002, 1.0291951497395833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="ffe33578-9391-484e-968d-5eb4f3aa06ee" absoluteBounds="6.265, 4.085, 1.9700000000000002, 1.0291951497395833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="a1f97902-17b0-4a8e-946d-d09dec47210a" absoluteBounds="6.25, 6, 2, 1.7535424804687505">
+    <classShape Id="6d834c54-bad1-4353-8e8c-5466d910c455" absoluteBounds="6.25, 6, 2, 1.7535424804687505">
       <DataClassMoniker Name="/SNAPDatabaseDataContext/SNAP_Workflow_State" />
       <nestedChildShapes>
-        <elementListCompartment Id="0c009018-2090-42df-b289-a239121e0d20" absoluteBounds="6.265, 6.46, 1.9700000000000002, 1.19354248046875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="5775e3eb-5d99-4f48-b01a-70fc69d9a022" absoluteBounds="6.265, 6.46, 1.9700000000000002, 1.19354248046875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(2.75 : 2.66959757486979); (3.5 : 2.66959757486979)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.75 : 2.66959757486979); (3.5 : 2.66959757486979)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/SNAPDatabaseDataContext/SNAP_Access_Details_Form/SNAP_Access_Details_Form_SNAP_Access_User_Text" />
       <nodes>
-        <classShapeMoniker Id="9e8633fe-9c62-47be-b56b-16ddc0d82263" />
-        <classShapeMoniker Id="1b48411b-4cf9-4750-9f16-2c497e72147d" />
+        <classShapeMoniker Id="02967bc2-cd68-4ea6-82fb-ce5f69b460c1" />
+        <classShapeMoniker Id="762255bc-e48f-4e46-acf9-64ca683b8c62" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.125 : 14.875); (2.125 : 9.66788981119792)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.125 : 14.875); (2.125 : 10.6678898111979)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/SNAPDatabaseDataContext/SNAP_Actor_Group/SNAP_Actor_Group_SNAP_Actor" />
       <nodes>
-        <classShapeMoniker Id="ef45000c-14de-499b-bd50-0348d62151d5" />
-        <classShapeMoniker Id="da77c6d0-9dde-4885-bd9c-6d303f09b9ad" />
+        <classShapeMoniker Id="dd6fbf2b-c6ea-4979-93be-a6532d050634" />
+        <classShapeMoniker Id="5b242711-9925-4eba-a7f2-7de57655c331" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 4.37653746153846); (3.125 : 4.00153746153846); (3.125 : 3.09814836230469); (3.5 : 3.09814836230469)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.75 : 4.25153746153846); (3.125 : 3.87653746153846); (3.125 : 3.09814836230469); (3.5 : 3.09814836230469)]" fixedFrom="NotFixed" fixedTo="Algorithm">
       <AssociationMoniker Name="/SNAPDatabaseDataContext/SNAP_Request/SNAP_Request_SNAP_Access_User_Text" />
       <nodes>
-        <classShapeMoniker Id="a484b3f6-a5f2-4aad-b493-39a6b603ba35" />
-        <classShapeMoniker Id="1b48411b-4cf9-4750-9f16-2c497e72147d" />
+        <classShapeMoniker Id="ca89aa84-5546-453c-8e1c-649ab8e94c97" />
+        <classShapeMoniker Id="762255bc-e48f-4e46-acf9-64ca683b8c62" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 6.95027913411458); (3.125 : 7.32527913411458); (3.125 : 12.7945975748698); (3.5 : 12.7945975748698)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.75 : 6.98962646484375); (3.125 : 7.36462646484375); (3.125 : 12.7945975748698); (3.5 : 12.7945975748698)]" fixedFrom="NotFixed" fixedTo="Algorithm">
       <AssociationMoniker Name="/SNAPDatabaseDataContext/SNAP_Request/SNAP_Request_SNAP_Request_Comment" />
       <nodes>
-        <classShapeMoniker Id="a484b3f6-a5f2-4aad-b493-39a6b603ba35" />
-        <classShapeMoniker Id="d2ac90da-bbfa-478a-9433-2f5ae32812a5" />
+        <classShapeMoniker Id="ca89aa84-5546-453c-8e1c-649ab8e94c97" />
+        <classShapeMoniker Id="1e9e97bc-c82a-4939-9046-922d3276e406" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 8.21875); (3.59375 : 8.21875); (3.59375 : 6.26050048828125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.75 : 10.3704451497396); (3.04166666666667 : 10.3704451497396 : JumpStart); (3.20833333333333 : 10.3704451497396 : JumpEnd); (3.59375 : 10.3704451497396); (3.59375 : 6.26050048828125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/SNAPDatabaseDataContext/SNAP_Actor/SNAP_Actor_SNAP_Workflow" />
       <nodes>
-        <classShapeMoniker Id="da77c6d0-9dde-4885-bd9c-6d303f09b9ad" />
-        <classShapeMoniker Id="d60c0567-f751-48cf-a357-fd2e36867b18" />
+        <classShapeMoniker Id="5b242711-9925-4eba-a7f2-7de57655c331" />
+        <classShapeMoniker Id="fac013f3-7496-43e1-86bb-5e731f106339" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 5.63025024414063); (3.5 : 5.63025024414063)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.75 : 5.63025024414063); (3.5 : 5.63025024414063)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/SNAPDatabaseDataContext/SNAP_Request/SNAP_Request_SNAP_Workflow" />
       <nodes>
-        <classShapeMoniker Id="a484b3f6-a5f2-4aad-b493-39a6b603ba35" />
-        <classShapeMoniker Id="d60c0567-f751-48cf-a357-fd2e36867b18" />
+        <classShapeMoniker Id="ca89aa84-5546-453c-8e1c-649ab8e94c97" />
+        <classShapeMoniker Id="fac013f3-7496-43e1-86bb-5e731f106339" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(4.5 : 5); (4.5 : 4.3124995); (6.25 : 4.3124995)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(4.5 : 5); (4.5 : 4.3124995); (6.25 : 4.3124995)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/SNAPDatabaseDataContext/SNAP_Workflow/SNAP_Workflow_SNAP_Workflow_Comment" />
       <nodes>
-        <classShapeMoniker Id="d60c0567-f751-48cf-a357-fd2e36867b18" />
-        <classShapeMoniker Id="fa4a1678-d679-4c62-b071-6aee0e869c06" />
+        <classShapeMoniker Id="fac013f3-7496-43e1-86bb-5e731f106339" />
+        <classShapeMoniker Id="51534892-6802-401e-9a87-d0e2322400d3" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(4.5781275 : 6.26050048828125); (4.5781275 : 7.038273984375); (6.25 : 7.038273984375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(4.5781275 : 6.26050048828125); (4.5781275 : 7.038273984375); (6.25 : 7.038273984375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/SNAPDatabaseDataContext/SNAP_Workflow/SNAP_Workflow_SNAP_Workflow_State" />
       <nodes>
-        <classShapeMoniker Id="d60c0567-f751-48cf-a357-fd2e36867b18" />
-        <classShapeMoniker Id="a1f97902-17b0-4a8e-946d-d09dec47210a" />
+        <classShapeMoniker Id="fac013f3-7496-43e1-86bb-5e731f106339" />
+        <classShapeMoniker Id="6d834c54-bad1-4353-8e8c-5466d910c455" />
       </nodes>
     </associationConnector>
   </nestedChildShapes>

@@ -63,7 +63,7 @@ namespace Apollo.AIM.SNAP.Test
         }
 
         [Test]
-        //[Ignore]
+        [Ignore]
         public void ShouldCreateSDTicket()
         {
             var changeRequest = new ServiceDesk.ChangeRequest(SDConfig.Instance.Login, SDConfig.Instance.Password);

@@ -178,6 +178,14 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
+		public System.Data.Linq.Table<SNAP_Weekends_and_Holiday> SNAP_Weekends_and_Holidays
+		{
+			get
+			{
+				return this.GetTable<SNAP_Weekends_and_Holiday>();
+			}
+		}
+		
 		public System.Data.Linq.Table<SNAP_Workflow> SNAP_Workflows
 		{
 			get
@@ -207,13 +215,6 @@ namespace Apollo.AIM.SNAP.Model
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), request_data, submittedBy, userId, userDisplayName, userTitle, managerUserId, managerDisplayName);
 			return ((int)(result.ReturnValue));
-		}
-		
-		[Function(Name="dbo.usp_open_request_tab")]
-		public ISingleResult<usp_open_request_tabResult> usp_open_request_tab([Parameter(DbType="NVarChar(10)")] string userId, [Parameter(DbType="Int")] System.Nullable<int> requestId)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId, requestId);
-			return ((ISingleResult<usp_open_request_tabResult>)(result.ReturnValue));
 		}
 		
 		[Function(Name="dbo.usp_open_my_request_comments")]
@@ -249,6 +250,20 @@ namespace Apollo.AIM.SNAP.Model
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId);
 			return ((ISingleResult<usp_open_my_request_workflow_detailsResult>)(result.ReturnValue));
+		}
+		
+		[Function(Name="dbo.usp_open_request_details")]
+		public ISingleResult<usp_open_request_detailsResult> usp_open_request_details([Parameter(DbType="NVarChar(10)")] string userId, [Parameter(DbType="Int")] System.Nullable<int> requestId)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId, requestId);
+			return ((ISingleResult<usp_open_request_detailsResult>)(result.ReturnValue));
+		}
+		
+		[Function(Name="dbo.usp_open_request_tab")]
+		public ISingleResult<usp_open_request_tabResult> usp_open_request_tab([Parameter(DbType="NVarChar(10)")] string userId, [Parameter(DbType="Int")] System.Nullable<int> requestId)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId, requestId);
+			return ((ISingleResult<usp_open_request_tabResult>)(result.ReturnValue));
 		}
 		
         /*
@@ -1726,6 +1741,8 @@ namespace Apollo.AIM.SNAP.Model
 		
 		private System.DateTime _createdDate;
 		
+		private System.DateTime _lastModifiedDate;
+		
 		private EntitySet<SNAP_Access_User_Text> _SNAP_Access_User_Texts;
 		
 		private EntitySet<SNAP_Request_Comment> _SNAP_Request_Comments;
@@ -1758,6 +1775,8 @@ namespace Apollo.AIM.SNAP.Model
     partial void OnstatusEnumChanged();
     partial void OncreatedDateChanging(System.DateTime value);
     partial void OncreatedDateChanged();
+    partial void OnlastModifiedDateChanging(System.DateTime value);
+    partial void OnlastModifiedDateChanged();
     #endregion
 		
 		public SNAP_Request()
@@ -1988,6 +2007,26 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
+		[Column(Storage="_lastModifiedDate", DbType="SmallDateTime NOT NULL")]
+		public System.DateTime lastModifiedDate
+		{
+			get
+			{
+				return this._lastModifiedDate;
+			}
+			set
+			{
+				if ((this._lastModifiedDate != value))
+				{
+					this.OnlastModifiedDateChanging(value);
+					this.SendPropertyChanging();
+					this._lastModifiedDate = value;
+					this.SendPropertyChanged("lastModifiedDate");
+					this.OnlastModifiedDateChanged();
+				}
+			}
+		}
+		
 		[Association(Name="SNAP_Request_SNAP_Access_User_Text", Storage="_SNAP_Access_User_Texts", ThisKey="pkId", OtherKey="requestId")]
 		public EntitySet<SNAP_Access_User_Text> SNAP_Access_User_Texts
 		{
@@ -2081,6 +2120,51 @@ namespace Apollo.AIM.SNAP.Model
 		{
 			this.SendPropertyChanging();
 			entity.SNAP_Request = null;
+		}
+	}
+	
+	[Table(Name="dbo.SNAP_Weekends_and_Holidays")]
+	public partial class SNAP_Weekends_and_Holiday
+	{
+		
+		private System.DateTime _dayOfWeekDate;
+		
+		private string _dayName;
+		
+		public SNAP_Weekends_and_Holiday()
+		{
+		}
+		
+		[Column(Storage="_dayOfWeekDate", DbType="DateTime NOT NULL")]
+		public System.DateTime dayOfWeekDate
+		{
+			get
+			{
+				return this._dayOfWeekDate;
+			}
+			set
+			{
+				if ((this._dayOfWeekDate != value))
+				{
+					this._dayOfWeekDate = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_dayName", DbType="Char(3) NOT NULL", CanBeNull=false)]
+		public string dayName
+		{
+			get
+			{
+				return this._dayName;
+			}
+			set
+			{
+				if ((this._dayName != value))
+				{
+					this._dayName = value;
+				}
+			}
 		}
 	}
 	
@@ -2754,320 +2838,6 @@ namespace Apollo.AIM.SNAP.Model
 		}
 	}
 	
-	public partial class usp_open_request_tabResult
-	{
-		
-		private int _requestId;
-		
-		private string _submittedBy;
-		
-		private string _userId;
-		
-		private string _userDisplayName;
-		
-		private string _userTitle;
-		
-		private string _managerUserId;
-		
-		private string _managerDisplayName;
-		
-		private int _fieldId;
-		
-		private string _fieldLabel;
-		
-		private string _fieldText;
-		
-		private System.DateTime _modifiedDate;
-		
-		private string _ticketNumber;
-		
-		private bool _isChanged;
-		
-		private byte _statusEnum;
-		
-		private System.DateTime _createdDate;
-		
-		private System.Nullable<byte> _commentTypeEnum;
-		
-		private string _commentText;
-		
-		public usp_open_request_tabResult()
-		{
-		}
-		
-		[Column(Storage="_requestId", DbType="Int NOT NULL")]
-		public int requestId
-		{
-			get
-			{
-				return this._requestId;
-			}
-			set
-			{
-				if ((this._requestId != value))
-				{
-					this._requestId = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_submittedBy", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
-		public string submittedBy
-		{
-			get
-			{
-				return this._submittedBy;
-			}
-			set
-			{
-				if ((this._submittedBy != value))
-				{
-					this._submittedBy = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_userId", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
-		public string userId
-		{
-			get
-			{
-				return this._userId;
-			}
-			set
-			{
-				if ((this._userId != value))
-				{
-					this._userId = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_userDisplayName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
-		public string userDisplayName
-		{
-			get
-			{
-				return this._userDisplayName;
-			}
-			set
-			{
-				if ((this._userDisplayName != value))
-				{
-					this._userDisplayName = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_userTitle", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
-		public string userTitle
-		{
-			get
-			{
-				return this._userTitle;
-			}
-			set
-			{
-				if ((this._userTitle != value))
-				{
-					this._userTitle = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_managerUserId", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
-		public string managerUserId
-		{
-			get
-			{
-				return this._managerUserId;
-			}
-			set
-			{
-				if ((this._managerUserId != value))
-				{
-					this._managerUserId = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_managerDisplayName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
-		public string managerDisplayName
-		{
-			get
-			{
-				return this._managerDisplayName;
-			}
-			set
-			{
-				if ((this._managerDisplayName != value))
-				{
-					this._managerDisplayName = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_fieldId", DbType="Int NOT NULL")]
-		public int fieldId
-		{
-			get
-			{
-				return this._fieldId;
-			}
-			set
-			{
-				if ((this._fieldId != value))
-				{
-					this._fieldId = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_fieldLabel", DbType="NVarChar(50)")]
-		public string fieldLabel
-		{
-			get
-			{
-				return this._fieldLabel;
-			}
-			set
-			{
-				if ((this._fieldLabel != value))
-				{
-					this._fieldLabel = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_fieldText", DbType="NVarChar(MAX)")]
-		public string fieldText
-		{
-			get
-			{
-				return this._fieldText;
-			}
-			set
-			{
-				if ((this._fieldText != value))
-				{
-					this._fieldText = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_modifiedDate", DbType="DateTime NOT NULL")]
-		public System.DateTime modifiedDate
-		{
-			get
-			{
-				return this._modifiedDate;
-			}
-			set
-			{
-				if ((this._modifiedDate != value))
-				{
-					this._modifiedDate = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_ticketNumber", DbType="NVarChar(20)")]
-		public string ticketNumber
-		{
-			get
-			{
-				return this._ticketNumber;
-			}
-			set
-			{
-				if ((this._ticketNumber != value))
-				{
-					this._ticketNumber = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_isChanged", DbType="Bit NOT NULL")]
-		public bool isChanged
-		{
-			get
-			{
-				return this._isChanged;
-			}
-			set
-			{
-				if ((this._isChanged != value))
-				{
-					this._isChanged = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_statusEnum", DbType="TinyInt NOT NULL")]
-		public byte statusEnum
-		{
-			get
-			{
-				return this._statusEnum;
-			}
-			set
-			{
-				if ((this._statusEnum != value))
-				{
-					this._statusEnum = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_createdDate", DbType="SmallDateTime NOT NULL")]
-		public System.DateTime createdDate
-		{
-			get
-			{
-				return this._createdDate;
-			}
-			set
-			{
-				if ((this._createdDate != value))
-				{
-					this._createdDate = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_commentTypeEnum", DbType="TinyInt")]
-		public System.Nullable<byte> commentTypeEnum
-		{
-			get
-			{
-				return this._commentTypeEnum;
-			}
-			set
-			{
-				if ((this._commentTypeEnum != value))
-				{
-					this._commentTypeEnum = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_commentText", DbType="NVarChar(MAX)")]
-		public string commentText
-		{
-			get
-			{
-				return this._commentText;
-			}
-			set
-			{
-				if ((this._commentText != value))
-				{
-					this._commentText = value;
-				}
-			}
-		}
-	}
-	
 	public partial class usp_open_my_request_commentsResult
 	{
 		
@@ -3190,6 +2960,8 @@ namespace Apollo.AIM.SNAP.Model
 		private byte _statusEnum;
 		
 		private System.DateTime _createdDate;
+		
+		private System.DateTime _lastModifiedDate;
 		
 		public usp_open_my_request_detailsResult()
 		{
@@ -3367,6 +3139,22 @@ namespace Apollo.AIM.SNAP.Model
 				if ((this._createdDate != value))
 				{
 					this._createdDate = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_lastModifiedDate", DbType="SmallDateTime NOT NULL")]
+		public System.DateTime lastModifiedDate
+		{
+			get
+			{
+				return this._lastModifiedDate;
+			}
+			set
+			{
+				if ((this._lastModifiedDate != value))
+				{
+					this._lastModifiedDate = value;
 				}
 			}
 		}
@@ -3748,6 +3536,562 @@ namespace Apollo.AIM.SNAP.Model
 		}
 	}
 	
+	public partial class usp_open_request_detailsResult
+	{
+		
+		private int _requestId;
+		
+		private string _submittedBy;
+		
+		private string _userId;
+		
+		private string _userDisplayName;
+		
+		private string _userTitle;
+		
+		private string _managerUserId;
+		
+		private string _managerDisplayName;
+		
+		private int _fieldId;
+		
+		private string _fieldLabel;
+		
+		private string _fieldText;
+		
+		private System.DateTime _modifiedDate;
+		
+		private string _ticketNumber;
+		
+		private bool _isChanged;
+		
+		private byte _statusEnum;
+		
+		private System.DateTime _createdDate;
+		
+		public usp_open_request_detailsResult()
+		{
+		}
+		
+		[Column(Storage="_requestId", DbType="Int NOT NULL")]
+		public int requestId
+		{
+			get
+			{
+				return this._requestId;
+			}
+			set
+			{
+				if ((this._requestId != value))
+				{
+					this._requestId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_submittedBy", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
+		public string submittedBy
+		{
+			get
+			{
+				return this._submittedBy;
+			}
+			set
+			{
+				if ((this._submittedBy != value))
+				{
+					this._submittedBy = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_userId", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
+		public string userId
+		{
+			get
+			{
+				return this._userId;
+			}
+			set
+			{
+				if ((this._userId != value))
+				{
+					this._userId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_userDisplayName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string userDisplayName
+		{
+			get
+			{
+				return this._userDisplayName;
+			}
+			set
+			{
+				if ((this._userDisplayName != value))
+				{
+					this._userDisplayName = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_userTitle", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string userTitle
+		{
+			get
+			{
+				return this._userTitle;
+			}
+			set
+			{
+				if ((this._userTitle != value))
+				{
+					this._userTitle = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_managerUserId", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
+		public string managerUserId
+		{
+			get
+			{
+				return this._managerUserId;
+			}
+			set
+			{
+				if ((this._managerUserId != value))
+				{
+					this._managerUserId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_managerDisplayName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string managerDisplayName
+		{
+			get
+			{
+				return this._managerDisplayName;
+			}
+			set
+			{
+				if ((this._managerDisplayName != value))
+				{
+					this._managerDisplayName = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_fieldId", DbType="Int NOT NULL")]
+		public int fieldId
+		{
+			get
+			{
+				return this._fieldId;
+			}
+			set
+			{
+				if ((this._fieldId != value))
+				{
+					this._fieldId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_fieldLabel", DbType="NVarChar(50)")]
+		public string fieldLabel
+		{
+			get
+			{
+				return this._fieldLabel;
+			}
+			set
+			{
+				if ((this._fieldLabel != value))
+				{
+					this._fieldLabel = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_fieldText", DbType="NVarChar(MAX)")]
+		public string fieldText
+		{
+			get
+			{
+				return this._fieldText;
+			}
+			set
+			{
+				if ((this._fieldText != value))
+				{
+					this._fieldText = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_modifiedDate", DbType="DateTime NOT NULL")]
+		public System.DateTime modifiedDate
+		{
+			get
+			{
+				return this._modifiedDate;
+			}
+			set
+			{
+				if ((this._modifiedDate != value))
+				{
+					this._modifiedDate = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_ticketNumber", DbType="NVarChar(20)")]
+		public string ticketNumber
+		{
+			get
+			{
+				return this._ticketNumber;
+			}
+			set
+			{
+				if ((this._ticketNumber != value))
+				{
+					this._ticketNumber = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_isChanged", DbType="Bit NOT NULL")]
+		public bool isChanged
+		{
+			get
+			{
+				return this._isChanged;
+			}
+			set
+			{
+				if ((this._isChanged != value))
+				{
+					this._isChanged = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_statusEnum", DbType="TinyInt NOT NULL")]
+		public byte statusEnum
+		{
+			get
+			{
+				return this._statusEnum;
+			}
+			set
+			{
+				if ((this._statusEnum != value))
+				{
+					this._statusEnum = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_createdDate", DbType="SmallDateTime NOT NULL")]
+		public System.DateTime createdDate
+		{
+			get
+			{
+				return this._createdDate;
+			}
+			set
+			{
+				if ((this._createdDate != value))
+				{
+					this._createdDate = value;
+				}
+			}
+		}
+	}
+	
+	public partial class usp_open_request_tabResult
+	{
+		
+		private int _requestId;
+		
+		private string _submittedBy;
+		
+		private string _userId;
+		
+		private string _userDisplayName;
+		
+		private string _userTitle;
+		
+		private string _managerUserId;
+		
+		private string _managerDisplayName;
+		
+		private int _fieldId;
+		
+		private string _fieldLabel;
+		
+		private string _fieldText;
+		
+		private System.DateTime _modifiedDate;
+		
+		private string _ticketNumber;
+		
+		private bool _isChanged;
+		
+		private byte _statusEnum;
+		
+		private System.DateTime _createdDate;
+		
+		public usp_open_request_tabResult()
+		{
+		}
+		
+		[Column(Storage="_requestId", DbType="Int NOT NULL")]
+		public int requestId
+		{
+			get
+			{
+				return this._requestId;
+			}
+			set
+			{
+				if ((this._requestId != value))
+				{
+					this._requestId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_submittedBy", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
+		public string submittedBy
+		{
+			get
+			{
+				return this._submittedBy;
+			}
+			set
+			{
+				if ((this._submittedBy != value))
+				{
+					this._submittedBy = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_userId", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
+		public string userId
+		{
+			get
+			{
+				return this._userId;
+			}
+			set
+			{
+				if ((this._userId != value))
+				{
+					this._userId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_userDisplayName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string userDisplayName
+		{
+			get
+			{
+				return this._userDisplayName;
+			}
+			set
+			{
+				if ((this._userDisplayName != value))
+				{
+					this._userDisplayName = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_userTitle", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string userTitle
+		{
+			get
+			{
+				return this._userTitle;
+			}
+			set
+			{
+				if ((this._userTitle != value))
+				{
+					this._userTitle = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_managerUserId", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
+		public string managerUserId
+		{
+			get
+			{
+				return this._managerUserId;
+			}
+			set
+			{
+				if ((this._managerUserId != value))
+				{
+					this._managerUserId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_managerDisplayName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string managerDisplayName
+		{
+			get
+			{
+				return this._managerDisplayName;
+			}
+			set
+			{
+				if ((this._managerDisplayName != value))
+				{
+					this._managerDisplayName = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_fieldId", DbType="Int NOT NULL")]
+		public int fieldId
+		{
+			get
+			{
+				return this._fieldId;
+			}
+			set
+			{
+				if ((this._fieldId != value))
+				{
+					this._fieldId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_fieldLabel", DbType="NVarChar(50)")]
+		public string fieldLabel
+		{
+			get
+			{
+				return this._fieldLabel;
+			}
+			set
+			{
+				if ((this._fieldLabel != value))
+				{
+					this._fieldLabel = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_fieldText", DbType="NVarChar(MAX)")]
+		public string fieldText
+		{
+			get
+			{
+				return this._fieldText;
+			}
+			set
+			{
+				if ((this._fieldText != value))
+				{
+					this._fieldText = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_modifiedDate", DbType="DateTime NOT NULL")]
+		public System.DateTime modifiedDate
+		{
+			get
+			{
+				return this._modifiedDate;
+			}
+			set
+			{
+				if ((this._modifiedDate != value))
+				{
+					this._modifiedDate = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_ticketNumber", DbType="NVarChar(20)")]
+		public string ticketNumber
+		{
+			get
+			{
+				return this._ticketNumber;
+			}
+			set
+			{
+				if ((this._ticketNumber != value))
+				{
+					this._ticketNumber = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_isChanged", DbType="Bit NOT NULL")]
+		public bool isChanged
+		{
+			get
+			{
+				return this._isChanged;
+			}
+			set
+			{
+				if ((this._isChanged != value))
+				{
+					this._isChanged = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_statusEnum", DbType="TinyInt NOT NULL")]
+		public byte statusEnum
+		{
+			get
+			{
+				return this._statusEnum;
+			}
+			set
+			{
+				if ((this._statusEnum != value))
+				{
+					this._statusEnum = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_createdDate", DbType="SmallDateTime NOT NULL")]
+		public System.DateTime createdDate
+		{
+			get
+			{
+				return this._createdDate;
+			}
+			set
+			{
+				if ((this._createdDate != value))
+				{
+					this._createdDate = value;
+				}
+			}
+		}
+	}
+	
 	public partial class usp_requestsResult
 	{
 		
@@ -3772,6 +4116,8 @@ namespace Apollo.AIM.SNAP.Model
 		private byte _statusEnum;
 		
 		private System.DateTime _createdDate;
+		
+		private System.DateTime _lastModifiedDate;
 		
 		public usp_requestsResult()
 		{
@@ -3949,6 +4295,22 @@ namespace Apollo.AIM.SNAP.Model
 				if ((this._createdDate != value))
 				{
 					this._createdDate = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_lastModifiedDate", DbType="SmallDateTime NOT NULL")]
+		public System.DateTime lastModifiedDate
+		{
+			get
+			{
+				return this._lastModifiedDate;
+			}
+			set
+			{
+				if ((this._lastModifiedDate != value))
+				{
+					this._lastModifiedDate = value;
 				}
 			}
 		}
