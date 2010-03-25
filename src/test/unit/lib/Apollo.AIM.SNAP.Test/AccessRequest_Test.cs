@@ -50,6 +50,7 @@ namespace Apollo.AIM.SNAP.Test
             
             cleanUp();
 
+            
             using (var db = new SNAPDatabaseDataContext())
             {
 
@@ -104,6 +105,7 @@ namespace Apollo.AIM.SNAP.Test
             }
 
         }
+
         [Test]
         public void ShouldAckByAccessTeam()
         {
@@ -796,6 +798,28 @@ namespace Apollo.AIM.SNAP.Test
 
         }
 
+
+        [Test]
+        public void ShouldNotEnterToDifferentStateWhenNotReady()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+
+                var accessReq = new AccessRequest(req.pkId);
+                Assert.IsFalse(accessReq.CreateServiceDeskTicket());
+                Assert.IsFalse(accessReq.CreateWorkflow(new List<int>() { 1, 2, 3 }));
+                Assert.IsFalse(accessReq.FinalizeRequest());
+                Assert.IsFalse(accessReq.RequestChanged());
+                accessReq.Ack();
+                Assert.IsFalse(accessReq.CreateServiceDeskTicket());
+                Assert.IsFalse(accessReq.Ack());
+                Assert.IsFalse(accessReq.FinalizeRequest());
+                Assert.IsFalse(accessReq.RequestChanged());
+            }
+
+        }
+
         [Test]
         public void ShouldHandleFromManagerToTeamToLastTechicalRequestToChange()
         {
@@ -1328,5 +1352,89 @@ namespace Apollo.AIM.SNAP.Test
             
         }
 
+        [Ignore]
+        [Test]
+        public  void Test()
+        {
+            
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var unfinishedtasks = db.SNAP_Workflow_States.Where(s => s.completedDate == null);
+                foreach (var state in unfinishedtasks)
+                {
+                    try
+                    {
+                        if (state.SNAP_Workflow.SNAP_Request.statusEnum != (byte) RequestState.Closed)
+                        {
+                            if (state.workflowStatusEnum == (byte) WorkflowState.Pending_Acknowlegement
+                                || state.workflowStatusEnum == (byte) WorkflowState.Pending_Approval
+                                || state.workflowStatusEnum == (byte) WorkflowState.Pending_Provisioning
+                                || state.workflowStatusEnum == (byte) WorkflowState.Pending_Workflow)
+
+                                Console.WriteLine(state.pkId + "-" + state.SNAP_Workflow.SNAP_Actor.displayName +
+                                                  " due on: " +
+                                                  state.dueDate);
+
+                            if (state.dueDate != null && state.completedDate == null)
+                            {
+                                DateTime dueDate = DateTime.Parse(state.dueDate.ToString());
+                                TimeSpan diff = DateTime.Now.AddDays(1).Subtract(dueDate);
+
+
+                                Console.WriteLine("Diff in day: " + diff.Days);
+
+                                if (dueDate.Day == DateTime.Now.Day 
+                                    && dueDate.Month == DateTime.Now.Month
+                                    && dueDate.Year == DateTime.Now.Year)
+
+                                {
+                                    Console.WriteLine("*** Due today, please work on it");
+                                    state.SNAP_Workflow.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
+                                    {
+                                        commentText = "due today!",
+                                        commentTypeEnum = (byte)CommentsType.Email_Reminder,
+                                        createdDate = DateTime.Now,
+                                    });
+
+                                }
+                                else if (diff.Days == 0)
+                                {
+                                    Console.WriteLine("*** due tomorrow! Please work on it!");
+                                    state.SNAP_Workflow.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
+                                                                                        {
+                                                                                            commentText = "due tomorrow!",
+                                                                                            commentTypeEnum = (byte)CommentsType.Email_Reminder,
+                                                                                            createdDate = DateTime.Now,
+                                                                                        });
+
+                                }
+                                else if (diff.Days == 1 || diff.Days == 2)
+                                {
+                                    Console.WriteLine("*** over due! Please work on it!");
+                                    state.SNAP_Workflow.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
+                                    {
+                                        commentText = "one day over due!",
+                                        commentTypeEnum = (byte)CommentsType.Email_Reminder,
+                                        createdDate = DateTime.Now,
+                                    });
+
+
+                                }
+
+                                db.SubmitChanges();
+                            }
+
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        Console.WriteLine("state id = " + state.pkId + " Message: " + ex.Message);
+                    }
+                }
+
+            }
+            
+
+        }
     }
 }
