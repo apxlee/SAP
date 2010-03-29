@@ -681,7 +681,7 @@ namespace Apollo.AIM.SNAP.Model
 
     #region  ApprovalWorkflow class
 
-    public abstract class  ApprovalWorkflow
+    public class  ApprovalWorkflow
     {
         public static ApprovalWorkflow CreateApprovalWorkflow(int wfId)
         {
@@ -824,9 +824,42 @@ namespace Apollo.AIM.SNAP.Model
             }
         }
 
-        public abstract bool Approve();
-        public abstract bool Deny(string comment);
-        public abstract bool RequestToChange(string comment);
+        protected bool denyBy(ActorApprovalType approvalType, string comment)
+        {
+            if (wfStateChange(approvalType, WorkflowState.Closed_Denied))
+            {
+                approvalDeny(approvalType, comment);
+                db.SubmitChanges();
+                return true;
+            }
+            return false;
+        }
+
+        protected bool requestToChangeBy(ActorApprovalType approvalType, string comment)
+        {
+            if (wfStateChange(approvalType, WorkflowState.Change_Requested))
+            {
+                approvalRequestToChange(comment);
+                // TODO - info submiter or requester
+                db.SubmitChanges();
+                return true;
+            }
+
+            return false;
+
+        }
+        public virtual bool Approve()
+        {
+            return true;
+        }
+
+        public virtual bool Deny(string comment) {
+            return true;
+        }
+        public virtual bool RequestToChange(string comment)
+        {
+            return true;
+        }
 
     }
 
@@ -838,8 +871,6 @@ namespace Apollo.AIM.SNAP.Model
 
         public override bool Approve()
         {
-            if (req.statusEnum != (byte)RequestState.Pending)
-                return false;
 
             using (TransactionScope ts = new TransactionScope())
             {
@@ -862,6 +893,12 @@ namespace Apollo.AIM.SNAP.Model
 
             using (TransactionScope ts = new TransactionScope())
             {
+                if (denyBy(ActorApprovalType.Manager, comment))
+                {
+                    ts.Complete();
+                    return true;
+                }
+                /*
                 if (wfStateChange(ActorApprovalType.Manager, WorkflowState.Closed_Denied))
                 {
                     approvalDeny(ActorApprovalType.Manager, comment);
@@ -869,6 +906,7 @@ namespace Apollo.AIM.SNAP.Model
                     ts.Complete();
                     return true;
                 }
+                 */
             }
             return false;
         }
@@ -880,6 +918,12 @@ namespace Apollo.AIM.SNAP.Model
 
             using (TransactionScope ts = new TransactionScope())
             {
+                if (requestToChangeBy(ActorApprovalType.Manager, comment))
+                {
+                    ts.Complete();
+                    return true;
+                }
+                /*
                 if (wfStateChange(ActorApprovalType.Manager, WorkflowState.Change_Requested))
                 {
                     approvalRequestToChange(comment);
@@ -888,6 +932,7 @@ namespace Apollo.AIM.SNAP.Model
                     ts.Complete();
                     return true;
                 }
+                 */
             }
             return false;
         }
@@ -925,7 +970,16 @@ namespace Apollo.AIM.SNAP.Model
 
             using (TransactionScope ts = new TransactionScope())
             {
+                
+                if (denyBy(ActorApprovalType.Team_Approver, comment))
+                {
+                    ts.Complete();
+                    return true;
+                }
+                 
 
+                
+                /*
                 if (wfStateChange(ActorApprovalType.Team_Approver, WorkflowState.Closed_Denied))
                 {
                     approvalDeny(ActorApprovalType.Team_Approver, comment);
@@ -933,6 +987,8 @@ namespace Apollo.AIM.SNAP.Model
                     ts.Complete();
                     return true;
                 }
+                 */
+                
             }
 
             return false;
@@ -945,6 +1001,12 @@ namespace Apollo.AIM.SNAP.Model
 
             using (TransactionScope ts = new TransactionScope())
             {
+                if (requestToChangeBy(ActorApprovalType.Team_Approver, comment))
+                {
+                    ts.Complete();
+                    return true;
+                }
+                /*
 
                 if (wfStateChange(ActorApprovalType.Team_Approver, WorkflowState.Change_Requested))
                 {
@@ -954,6 +1016,7 @@ namespace Apollo.AIM.SNAP.Model
                     ts.Complete();
                     return true;
                 }
+                 */
             }
             return false;
         }
@@ -990,6 +1053,15 @@ namespace Apollo.AIM.SNAP.Model
 
             using (TransactionScope ts = new TransactionScope())
             {
+                
+                if (denyBy(ActorApprovalType.Technical_Approver, comment))
+                {
+                    ts.Complete();
+                    return true;
+                }
+                 
+
+                /*
                 if (wfStateChange(ActorApprovalType.Technical_Approver, WorkflowState.Closed_Denied))
                 {
                     approvalDeny(ActorApprovalType.Technical_Approver, comment);
@@ -997,6 +1069,8 @@ namespace Apollo.AIM.SNAP.Model
                     ts.Complete();
                     return true;
                 }
+                 */
+                 
             }
             return false;
         }
@@ -1009,6 +1083,13 @@ namespace Apollo.AIM.SNAP.Model
 
             using (TransactionScope ts = new TransactionScope())
             {
+                if (requestToChangeBy(ActorApprovalType.Technical_Approver, comment))
+                {
+                    ts.Complete();
+                    return true;
+                }
+
+                /*
                 if (wfStateChange(ActorApprovalType.Technical_Approver, WorkflowState.Change_Requested))
                 {
                     approvalRequestToChange(comment);
@@ -1018,7 +1099,9 @@ namespace Apollo.AIM.SNAP.Model
                     ts.Complete();
                     return true;
                 }
+                 */
             }
+
             return false;
         }
     }
