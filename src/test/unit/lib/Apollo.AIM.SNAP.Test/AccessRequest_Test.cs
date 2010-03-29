@@ -1436,5 +1436,40 @@ namespace Apollo.AIM.SNAP.Test
             
 
         }
+
+
+        [Test] public void SouldReturnApprovalTypeObject()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+
+                var accessReq = new AccessRequest(req.pkId);
+                accessReq.Ack();
+                accessReq.CreateWorkflow(new List<int>()
+                                             {
+                                                 managerActorId,
+                                                 teamApprovalActorId,
+                                                 windowsServerActorId,
+                                                 databaseActorId,
+                                                 networkShareActorId
+                                             });
+
+                var wf = accessReq.FindApprovalTypeWF(db, (byte) ActorApprovalType.Manager)[0];
+
+                var testWf = ApprovalWorkflow.CreateApprovalWorkflow(wf.pkId);
+                Assert.IsTrue(testWf.GetType() == (typeof(ManagerApprovalWorkflow)));
+
+                wf = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Team_Approver)[0];
+
+                testWf = ApprovalWorkflow.CreateApprovalWorkflow(wf.pkId);
+                Assert.IsTrue(testWf.GetType() == (typeof(TeamApprovalWorkflow)));
+
+                wf = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver)[0];
+                testWf = ApprovalWorkflow.CreateApprovalWorkflow(wf.pkId);
+                Assert.IsTrue(testWf.GetType() == (typeof(TechnicalApprovalWorkflow)));
+
+            }
+        }
     }
 }

@@ -5,9 +5,14 @@ using System.Data.Linq;
 using System.Linq;
 
 using System.Text;
+using System.Transactions;
+using Apollo.AIM.SNAP.Model;
 
 namespace Apollo.AIM.SNAP.Model
 {
+
+    #region AccessReqeust class
+
     public class AccessRequest
     {
         private int _id;
@@ -188,7 +193,7 @@ namespace Apollo.AIM.SNAP.Model
             var wfs = db.SNAP_Workflows.Where(w => w.requestId == _id);
             foreach (var wf in wfs)
             {
-                var t = workflowApprovalType(db, wf.pkId);
+                var t = WorkflowApprovalType(db, wf.pkId);
                 if (t != -1 && t == wfType)
                     wfList.Add(wf);
             }
@@ -231,83 +236,101 @@ namespace Apollo.AIM.SNAP.Model
             return WorkflowAck(wid, action, string.Empty);
         }
 
+
         public bool WorkflowAck(int wid, WorkflowAction action, string comment)
         {
-            var result = false;
-            int approvalType;
+            ApprovalWorkflow wf = ApprovalWorkflow.CreateApprovalWorkflow(wid);
+            if (wf == null)
+                return false;
 
-
-            using (var db = new SNAPDatabaseDataContext())
+            switch (action)
             {
-               var req = db.SNAP_Requests.Single(r => r.pkId == _id);
-               if (req.statusEnum != (byte)RequestState.Pending)
-                   return result;
-                    
-                System.Data.Common.DbTransaction trans = null;
-                try
-                {
-                    db.Connection.Open();
-                    trans = db.Connection.BeginTransaction();
-                    db.Transaction = trans;
-
-                    approvalType = workflowApprovalType(db, wid);
-                    var wf = db.SNAP_Workflows.Single(w => w.pkId == wid);
-                    var currentState = wf.SNAP_Workflow_States.Single(s => s.completedDate == null);
-
-                    WorkflowState newState = WorkflowState.Not_Active;
-                    switch ((ActorApprovalType)approvalType)
-                    {
-                        case ActorApprovalType.Manager:
-                        case ActorApprovalType.Team_Approver:
-                            handleApproval(action, (ActorApprovalType)approvalType, ref newState);
-                            break;
-
-                        case ActorApprovalType.Technical_Approver:
-                            handleApproval(action, (ActorApprovalType)approvalType, ref newState);
-                            break;
-
-                    }
-
-                    if (currentState.workflowStatusEnum == (byte)WorkflowState.Pending_Approval)
-                    {
-                        stateTransition((ActorApprovalType) approvalType, wf, WorkflowState.Pending_Approval, newState);
-                        db.SubmitChanges();
-
-                        //throw new Exception("Bad!");
-
-                        if (approvalType == (byte) ActorApprovalType.Technical_Approver &&
-                            action == WorkflowAction.Approved)
-                            completeRequestApprovalCheck(db);
-
-                        if (action == WorkflowAction.Denied)
-                            deny(db, (ActorApprovalType) approvalType, comment);
-
-                        if (action == WorkflowAction.Change)
-                            approvalRequestToChange(db, wf, comment);
-
-                        db.SubmitChanges();
-                        trans.Commit();
-                        result = true;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    //Logger.Error(ex);
-                    if (trans != null)
-                        trans.Rollback();
-                    throw ex;
-                }
-                finally
-                {
-                    //db.SubmitChanges();
-                    
-                    if (db.Connection.State == ConnectionState.Open) 
-                        db.Connection.Close();
-
-                }
-                return result; 
+                case WorkflowAction.Approved : return wf.Approve();
+                case WorkflowAction.Change : return wf.RequestToChange(comment);
+                case WorkflowAction.Denied : return wf.Deny(comment);
             }
+
+            return false;
         }
+        //public bool WorkflowAck(int wid, WorkflowAction action, string comment)
+        //{
+        //    var result = false;
+        //    int approvalType;
+
+
+        //    using (var db = new SNAPDatabaseDataContext())
+        //    {
+        //       var req = db.SNAP_Requests.Single(r => r.pkId == _id);
+        //       if (req.statusEnum != (byte)RequestState.Pending)
+        //           return result;
+                    
+        //        System.Data.Common.DbTransaction trans = null;
+        //        try
+        //        {
+        //            db.Connection.Open();
+        //            trans = db.Connection.BeginTransaction();
+        //            db.Transaction = trans;
+
+        //            approvalType = WorkflowApprovalType(db, wid);
+        //            var wf = db.SNAP_Workflows.Single(w => w.pkId == wid);
+        //            var currentState = wf.SNAP_Workflow_States.Single(s => s.completedDate == null);
+
+        //            WorkflowState newState = WorkflowState.Not_Active;
+        //            handleApproval(action, (ActorApprovalType)approvalType, ref newState);
+        //            /*
+        //            switch ((ActorApprovalType)approvalType)
+        //            {
+        //                case ActorApprovalType.Manager:
+        //                case ActorApprovalType.Team_Approver:
+        //                    handleApproval(action, (ActorApprovalType)approvalType, ref newState);
+        //                    break;
+
+        //                case ActorApprovalType.Technical_Approver:
+        //                    handleApproval(action, (ActorApprovalType)approvalType, ref newState);
+        //                    break;
+
+        //            }
+        //            */
+        //            if (currentState.workflowStatusEnum == (byte)WorkflowState.Pending_Approval)
+        //            {
+        //                stateTransition((ActorApprovalType) approvalType, wf, WorkflowState.Pending_Approval, newState);
+        //                db.SubmitChanges();
+
+        //                //throw new Exception("Bad!");
+
+        //                if (approvalType == (byte) ActorApprovalType.Technical_Approver &&
+        //                    action == WorkflowAction.Approved)
+        //                    completeRequestApprovalCheck(db);
+
+        //                if (action == WorkflowAction.Denied)
+        //                    deny(db, (ActorApprovalType) approvalType, comment);
+
+        //                if (action == WorkflowAction.Change)
+        //                    approvalRequestToChange(db, wf, comment);
+
+        //                db.SubmitChanges();
+        //                trans.Commit();
+        //                result = true;
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            //Logger.Error(ex);
+        //            if (trans != null)
+        //                trans.Rollback();
+        //            throw ex;
+        //        }
+        //        finally
+        //        {
+        //            //db.SubmitChanges();
+                    
+        //            if (db.Connection.State == ConnectionState.Open) 
+        //                db.Connection.Close();
+
+        //        }
+        //        return result; 
+        //    }
+        //}
 
 
 
@@ -407,6 +430,7 @@ namespace Apollo.AIM.SNAP.Model
 
         }
 
+        /*
         private void approvalRequestToChange(SNAPDatabaseDataContext db, SNAP_Workflow wf, string comment)
         {
             var accessTeamWF = FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin)[0];
@@ -487,6 +511,7 @@ namespace Apollo.AIM.SNAP.Model
             //}
         }
 
+        */
         private void createrApprovalWorkFlow(SNAPDatabaseDataContext db, List<int> actorIds)
         {
             var req = db.SNAP_Requests.Single(x => x.pkId == _id);
@@ -540,7 +565,7 @@ namespace Apollo.AIM.SNAP.Model
             return done;
         }
 
-        private int workflowApprovalType(SNAPDatabaseDataContext db, int wid)
+        internal static int WorkflowApprovalType(SNAPDatabaseDataContext db, int wid)
         {
 
             var wf = db.SNAP_Workflows.Single(w => w.pkId == wid);
@@ -552,6 +577,7 @@ namespace Apollo.AIM.SNAP.Model
 
         }
 
+        /*
         private void completeRequestApprovalCheck(SNAPDatabaseDataContext db)
         {
             var accessWF = FindApprovalTypeWF(db, (byte) ActorApprovalType.Workflow_Admin);
@@ -577,8 +603,9 @@ namespace Apollo.AIM.SNAP.Model
             }
 
         }
+        */
 
-        private void stateTransition(ActorApprovalType approvalType, SNAP_Workflow wf, WorkflowState from, WorkflowState to)
+        internal static void stateTransition(ActorApprovalType approvalType, SNAP_Workflow wf, WorkflowState from, WorkflowState to)
         {
             //
             // !!! if the state completion date is null, it is the WF current state !!!
@@ -617,7 +644,7 @@ namespace Apollo.AIM.SNAP.Model
             wf.SNAP_Workflow_States.Add(newState);
         }
 
-        private void checkToCloseMangerOrTeamOrTechnicalWorkflowStates(ActorApprovalType approvalType, WorkflowState to, SNAP_Workflow_State newState)
+        private static void checkToCloseMangerOrTeamOrTechnicalWorkflowStates(ActorApprovalType approvalType, WorkflowState to, SNAP_Workflow_State newState)
         {
             if (approvalType != ActorApprovalType.Workflow_Admin)
             {
@@ -628,7 +655,7 @@ namespace Apollo.AIM.SNAP.Model
             }
         }
 
-        private void checkToCloseWorkflowAdimStates(ActorApprovalType approvalType, WorkflowState to, SNAP_Workflow_State newState)
+        private static void checkToCloseWorkflowAdimStates(ActorApprovalType approvalType, WorkflowState to, SNAP_Workflow_State newState)
         {
             if (approvalType == ActorApprovalType.Workflow_Admin)
             {
@@ -640,7 +667,7 @@ namespace Apollo.AIM.SNAP.Model
             }
         }
 
-        private DateTime getDueDate(ActorApprovalType approvalType, WorkflowState fr, WorkflowState to)
+        private static DateTime getDueDate(ActorApprovalType approvalType, WorkflowState fr, WorkflowState to)
         {
             return DateTime.Now.AddDays(1);
         }
@@ -648,4 +675,353 @@ namespace Apollo.AIM.SNAP.Model
         #endregion
     }
 
+
+    #endregion
+
+
+    #region  ApprovalWorkflow class
+
+    public abstract class  ApprovalWorkflow
+    {
+        public static ApprovalWorkflow CreateApprovalWorkflow(int wfId)
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var t = AccessRequest.WorkflowApprovalType(db, wfId);
+                if (t != -1)
+                {
+                    switch ((ActorApprovalType) t)
+                    {
+                        case ActorApprovalType.Manager:
+                            return new ManagerApprovalWorkflow(wfId);
+                        case ActorApprovalType.Team_Approver:
+                            return new TeamApprovalWorkflow(wfId);
+                        case ActorApprovalType.Technical_Approver:
+                            return new TechnicalApprovalWorkflow(wfId);
+                    }
+                }
+
+                return null;
+            }
+        }
+
+
+        public int Id { get; set; }
+
+        protected SNAPDatabaseDataContext db;
+        protected SNAP_Request req;
+        protected AccessRequest accessReq;
+        protected SNAP_Workflow wf;
+        protected SNAP_Workflow accessTeamWF;
+
+        protected ApprovalWorkflow() {}
+        protected ApprovalWorkflow(int id)
+        {
+            Id = id;
+            db = new SNAPDatabaseDataContext();
+
+            wf = db.SNAP_Workflows.Single(w => w.pkId == Id);
+            req = wf.SNAP_Request;
+            accessReq = new AccessRequest(req.pkId);
+            accessTeamWF = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin)[0];
+        }
+
+        protected bool wfStateChange(ActorApprovalType approvalType, WorkflowState toState)
+        {
+            var wf = db.SNAP_Workflows.Single(w => w.pkId == Id);
+            if (wf.SNAP_Request.statusEnum != (byte)RequestState.Pending)
+                return false;
+
+            var currentState = wf.SNAP_Workflow_States.Single(s => s.completedDate == null);
+
+            AccessRequest.stateTransition(ActorApprovalType.Manager, wf, (WorkflowState)currentState.workflowStatusEnum, toState);
+
+            db.SubmitChanges();
+
+            return true;
+        }
+
+        protected void informApproverForAction()
+        {
+            accessReq.InformApproverForAction();
+        }
+
+        protected void completeRequestApprovalCheck()
+        {
+            var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
+            var totalApproved = 0;
+            var state = accessTeamWF.SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval
+                && s.completedDate == null); // get lastest 'pending approval' for the workflowadmin state
+
+            foreach (var w in wfs)
+            {
+                var cnt = w.SNAP_Workflow_States.Count(
+                    s => s.workflowStatusEnum == (byte)WorkflowState.Approved
+                    && s.completedDate != null
+                    && s.pkId >= state.pkId); // only check approval for the latest iteration, ignore previously approved interateion
+
+                totalApproved += cnt;
+            }
+
+            if (totalApproved == wfs.Count)
+            {
+                AccessRequest.stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, WorkflowState.Pending_Approval, WorkflowState.Approved);
+            }
+
+        }
+
+
+        protected void approvalRequestToChange(string comment)
+        {
+            AccessRequest.stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, WorkflowState.Pending_Approval, WorkflowState.Change_Requested);
+            db.SubmitChanges();
+
+            //var req = db.SNAP_Requests.Single(w => w.pkId == _id);
+            req.statusEnum = (byte)RequestState.Change_Requested;
+
+            // complete date all exitsting wf state
+            foreach (var w in req.SNAP_Workflows)
+            {
+                if (w.actorId != 1) // all non accessteam wfs are completed!
+                    foreach (var s in w.SNAP_Workflow_States)
+                    {
+                        if (s.completedDate == null)
+                            s.completedDate = DateTime.Now;
+                    }
+            }
+
+            wf.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
+            {
+                commentText = comment,
+                commentTypeEnum = (byte)CommentsType.Requested_Change,
+                createdDate = DateTime.Now
+            });
+            // TODO - info submiter or requester
+        }
+
+
+        protected void approvalDeny(ActorApprovalType type, string comment)
+        {
+            var wfs = accessReq.FindApprovalTypeWF(db, (byte)type);
+            foreach (var f in wfs)
+            {
+                if (f.SNAP_Workflow_States.Count(s => s.workflowStatusEnum == (byte)WorkflowState.Closed_Denied) == 1)
+                {
+                    f.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
+                    {
+                        commentText = comment,
+                        createdDate = DateTime.Now,
+                        commentTypeEnum = (byte)CommentsType.Denied
+                    });
+                    // set accessTeam WF and request to close-denied
+                    //var accessTeamWF = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin)[0];
+                    AccessRequest.stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, WorkflowState.Pending_Approval, WorkflowState.Closed_Denied);
+                    req.statusEnum = (byte)RequestState.Closed;
+
+                    break;
+                }
+
+            }
+        }
+
+        public abstract bool Approve();
+        public abstract bool Deny(string comment);
+        public abstract bool RequestToChange(string comment);
+
+    }
+
+    public class ManagerApprovalWorkflow : ApprovalWorkflow
+    {
+        public ManagerApprovalWorkflow(int id) : base(id)
+        {
+        }
+
+        public override bool Approve()
+        {
+            if (req.statusEnum != (byte)RequestState.Pending)
+                return false;
+
+            using (TransactionScope ts = new TransactionScope())
+            {
+                if (wfStateChange(ActorApprovalType.Manager, WorkflowState.Approved))
+                {
+                    informApproverForAction();
+                    db.SubmitChanges();
+                    ts.Complete();
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public override bool Deny(string comment)
+        {
+            if (req.statusEnum != (byte)RequestState.Pending)
+                return false;
+
+            using (TransactionScope ts = new TransactionScope())
+            {
+                if (wfStateChange(ActorApprovalType.Manager, WorkflowState.Closed_Denied))
+                {
+                    approvalDeny(ActorApprovalType.Manager, comment);
+                    db.SubmitChanges();
+                    ts.Complete();
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public override bool RequestToChange(string comment)
+        {
+            if (req.statusEnum != (byte)RequestState.Pending)
+                return false;
+
+            using (TransactionScope ts = new TransactionScope())
+            {
+                if (wfStateChange(ActorApprovalType.Manager, WorkflowState.Change_Requested))
+                {
+                    approvalRequestToChange(comment);
+                    // TODO - info submiter or requester
+                    db.SubmitChanges();
+                    ts.Complete();
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
+
+    public class TeamApprovalWorkflow : ApprovalWorkflow
+    {
+        public TeamApprovalWorkflow(int id): base(id){}
+
+        public override bool Approve()
+        {
+
+            if (req.statusEnum != (byte)RequestState.Pending)
+                return false;
+
+            using (TransactionScope ts = new TransactionScope())
+            {
+                if (wfStateChange(ActorApprovalType.Team_Approver, WorkflowState.Approved))
+                {
+                    informApproverForAction();
+                    db.SubmitChanges();
+                    ts.Complete();
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public override bool Deny(string comment)
+        {
+            if (req.statusEnum != (byte)RequestState.Pending)
+                return false;
+
+            using (TransactionScope ts = new TransactionScope())
+            {
+
+                if (wfStateChange(ActorApprovalType.Team_Approver, WorkflowState.Closed_Denied))
+                {
+                    approvalDeny(ActorApprovalType.Team_Approver, comment);
+                    db.SubmitChanges();
+                    ts.Complete();
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public override bool RequestToChange(string comment)
+        {
+            if (req.statusEnum != (byte)RequestState.Pending)
+                return false;
+
+            using (TransactionScope ts = new TransactionScope())
+            {
+
+                if (wfStateChange(ActorApprovalType.Team_Approver, WorkflowState.Change_Requested))
+                {
+                    approvalRequestToChange(comment);
+                    // TODO - info submiter or requester
+                    db.SubmitChanges();
+                    ts.Complete();
+                    return true;
+                }
+            }
+            return false;
+        }
+
+    }
+
+    public class TechnicalApprovalWorkflow : ApprovalWorkflow
+    {
+        public TechnicalApprovalWorkflow(int id): base(id){}
+
+        public override bool Approve()
+        {
+            if (req.statusEnum != (byte)RequestState.Pending)
+                return false;
+
+            using (TransactionScope ts = new TransactionScope())
+            {
+                if (wfStateChange(ActorApprovalType.Technical_Approver, WorkflowState.Approved))
+                {
+                    completeRequestApprovalCheck();
+                    db.SubmitChanges();
+                    ts.Complete();
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public override bool Deny(string comment)
+        {
+            if (req.statusEnum != (byte)RequestState.Pending)
+                return false;
+
+            using (TransactionScope ts = new TransactionScope())
+            {
+                if (wfStateChange(ActorApprovalType.Technical_Approver, WorkflowState.Closed_Denied))
+                {
+                    approvalDeny(ActorApprovalType.Technical_Approver, comment);
+                    db.SubmitChanges();
+                    ts.Complete();
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public override bool RequestToChange(string comment)
+        {
+
+            if (req.statusEnum != (byte)RequestState.Pending)
+                return false;
+
+            using (TransactionScope ts = new TransactionScope())
+            {
+                if (wfStateChange(ActorApprovalType.Technical_Approver, WorkflowState.Change_Requested))
+                {
+                    approvalRequestToChange(comment);
+
+                    // TODO - info submiter or requester
+                    db.SubmitChanges();
+                    ts.Complete();
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
+#endregion
 }
