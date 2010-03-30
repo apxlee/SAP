@@ -681,7 +681,7 @@ namespace Apollo.AIM.SNAP.Model
 
     #region  ApprovalWorkflow class
 
-    public class  ApprovalWorkflow
+    public abstract class  ApprovalWorkflow
     {
         public static ApprovalWorkflow CreateApprovalWorkflow(int wfId)
         {
@@ -726,40 +726,42 @@ namespace Apollo.AIM.SNAP.Model
             accessTeamWF = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin)[0];
         }
 
+        protected bool approveAndInformOhterSequentialManager()
+        {
+            if (req.statusEnum != (byte)RequestState.Pending)
+                return false;
+
+            //using (TransactionScope ts = new TransactionScope())
+            //{
+                if (wfStateChange(ActorApprovalType.Manager, WorkflowState.Approved))
+                {
+                    informApproverForAction();
+                    //db.SubmitChanges();
+                    //ts.Complete();
+                    return true;
+                }
+            //}
+
+            return false;
+
+        }
+
         protected bool wfStateChange(ActorApprovalType approvalType, WorkflowState toState)
         {
             var wf = db.SNAP_Workflows.Single(w => w.pkId == Id);
+
             if (wf.SNAP_Request.statusEnum != (byte)RequestState.Pending)
                 return false;
 
             var currentState = wf.SNAP_Workflow_States.Single(s => s.completedDate == null);
 
-            AccessRequest.stateTransition(ActorApprovalType.Manager, wf, (WorkflowState)currentState.workflowStatusEnum, toState);
+            AccessRequest.stateTransition(approvalType, wf, (WorkflowState)currentState.workflowStatusEnum, toState);
 
             db.SubmitChanges();
 
             return true;
         }
 
-        protected bool approveAndInformOhterSequentialManager()
-        {
-            if (req.statusEnum != (byte)RequestState.Pending)
-                return false;
-
-            using (TransactionScope ts = new TransactionScope())
-            {
-                if (wfStateChange(ActorApprovalType.Manager, WorkflowState.Approved))
-                {
-                    informApproverForAction();
-                    db.SubmitChanges();
-                    ts.Complete();
-                    return true;
-                }
-            }
-
-            return false;
-
-        }
         protected void informApproverForAction()
         {
             accessReq.InformApproverForAction();
@@ -789,11 +791,33 @@ namespace Apollo.AIM.SNAP.Model
 
         }
 
+        protected bool requestToChangeBy(ActorApprovalType approvalType, string comment)
+        {
+
+            if (req.statusEnum != (byte)RequestState.Pending)
+                return false;
+
+            using (TransactionScope ts = new TransactionScope())
+            {
+                if (wfStateChange(approvalType, WorkflowState.Change_Requested))
+                {
+                    approvalRequestToChange(comment);
+                    // TODO - info submiter or requester
+                    db.SubmitChanges();
+                    ts.Complete();
+                    return true;
+                }
+            }
+            return false;
+
+
+        }
+
 
         protected void approvalRequestToChange(string comment)
         {
             AccessRequest.stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, WorkflowState.Pending_Approval, WorkflowState.Change_Requested);
-            db.SubmitChanges();
+            //db.SubmitChanges();
 
             //var req = db.SNAP_Requests.Single(w => w.pkId == _id);
             req.statusEnum = (byte)RequestState.Change_Requested;
@@ -819,6 +843,28 @@ namespace Apollo.AIM.SNAP.Model
         }
 
 
+        protected bool denyBy(ActorApprovalType approvalType, string comment)
+        {
+
+            if (req.statusEnum != (byte)RequestState.Pending)
+                return false;
+
+            using (TransactionScope ts = new TransactionScope())
+            {
+
+                if (wfStateChange(approvalType, WorkflowState.Closed_Denied))
+                {
+                    approvalDeny(approvalType, comment);
+                    db.SubmitChanges();
+                    ts.Complete();
+                    return true;
+                }
+
+            }
+            return false;
+
+        }
+
         protected void approvalDeny(ActorApprovalType type, string comment)
         {
             var wfs = accessReq.FindApprovalTypeWF(db, (byte)type);
@@ -843,162 +889,30 @@ namespace Apollo.AIM.SNAP.Model
             }
         }
 
-        protected bool denyBy(ActorApprovalType approvalType, string comment)
-        {
-            /*
-            if (wfStateChange(approvalType, WorkflowState.Closed_Denied))
-            {
-                approvalDeny(approvalType, comment);
-                db.SubmitChanges();
-                return true;
-            }
-            return false;
-            */
 
-            if (req.statusEnum != (byte)RequestState.Pending)
-                return false;
-
-            using (TransactionScope ts = new TransactionScope())
-            {
-
-                if (wfStateChange(approvalType, WorkflowState.Closed_Denied))
-                {
-                    approvalDeny(approvalType, comment);
-                    db.SubmitChanges();
-                    ts.Complete();
-                    return true;
-                }
-
-            }
-            return false;
-
-        }
-
-        protected bool requestToChangeBy(ActorApprovalType approvalType, string comment)
-        {
-            /*
-            if (wfStateChange(approvalType, WorkflowState.Change_Requested))
-            {
-                approvalRequestToChange(comment);
-                // TODO - info submiter or requester
-                db.SubmitChanges();
-                return true;
-            }
-
-            return false;
-            */
-
-            if (req.statusEnum != (byte)RequestState.Pending)
-                return false;
-
-            using (TransactionScope ts = new TransactionScope())
-            {
-                if (wfStateChange(approvalType, WorkflowState.Change_Requested))
-                {
-                    approvalRequestToChange(comment);
-                    // TODO - info submiter or requester
-                    db.SubmitChanges();
-                    ts.Complete();
-                    return true;
-                }
-            }
-            return false;
-
-
-        }
-        public virtual bool Approve()
-        {
-            return true;
-        }
-
-        public virtual bool Deny(string comment) {
-            return true;
-        }
-        public virtual bool RequestToChange(string comment)
-        {
-            return true;
-        }
-
+        public abstract bool Approve();
+        public abstract bool Deny(string comment);
+        public abstract bool RequestToChange(string comment);
     }
 
     public class ManagerApprovalWorkflow : ApprovalWorkflow
     {
-        public ManagerApprovalWorkflow(int id) : base(id)
-        {
-        }
+        public ManagerApprovalWorkflow(int id) : base(id){}
 
         public override bool Approve()
         {
             return approveAndInformOhterSequentialManager();
-            /*
-
-            using (TransactionScope ts = new TransactionScope())
-            {
-                if (wfStateChange(ActorApprovalType.Manager, WorkflowState.Approved))
-                {
-                    informApproverForAction();
-                    db.SubmitChanges();
-                    ts.Complete();
-                    return true;
-                }
-            }
-
-            return false;
-             */
         }
 
         public override bool Deny(string comment)
         {
             return denyBy(ActorApprovalType.Manager, comment);
-            //if (req.statusEnum != (byte)RequestState.Pending)
-            //    return false;
-
-            //using (TransactionScope ts = new TransactionScope())
-            //{
-            //    if (denyBy(ActorApprovalType.Manager, comment))
-            //    {
-            //        ts.Complete();
-            //        return true;
-            //    }
-            //    /*
-            //    if (wfStateChange(ActorApprovalType.Manager, WorkflowState.Closed_Denied))
-            //    {
-            //        approvalDeny(ActorApprovalType.Manager, comment);
-            //        db.SubmitChanges();
-            //        ts.Complete();
-            //        return true;
-            //    }
-            //     */
-            //}
-            //return false;
         }
 
         public override bool RequestToChange(string comment)
         {
             return requestToChangeBy(ActorApprovalType.Manager, comment);
 
-            //if (req.statusEnum != (byte)RequestState.Pending)
-            //    return false;
-
-            //using (TransactionScope ts = new TransactionScope())
-            //{
-            //    if (requestToChangeBy(ActorApprovalType.Manager, comment))
-            //    {
-            //        ts.Complete();
-            //        return true;
-            //    }
-            //    /*
-            //    if (wfStateChange(ActorApprovalType.Manager, WorkflowState.Change_Requested))
-            //    {
-            //        approvalRequestToChange(comment);
-            //        // TODO - info submiter or requester
-            //        db.SubmitChanges();
-            //        ts.Complete();
-            //        return true;
-            //    }
-            //     */
-            //}
-            //return false;
         }
     }
 
@@ -1010,84 +924,17 @@ namespace Apollo.AIM.SNAP.Model
         public override bool Approve()
         {
             return approveAndInformOhterSequentialManager();
-            /*
-            if (req.statusEnum != (byte)RequestState.Pending)
-                return false;
-
-            using (TransactionScope ts = new TransactionScope())
-            {
-                if (wfStateChange(ActorApprovalType.Team_Approver, WorkflowState.Approved))
-                {
-                    informApproverForAction();
-                    db.SubmitChanges();
-                    ts.Complete();
-                    return true;
-                }
-            }
-
-            return false;
-             */
         }
 
         public override bool Deny(string comment)
         {
             return denyBy(ActorApprovalType.Team_Approver, comment);
             
-            //if (req.statusEnum != (byte)RequestState.Pending)
-            //    return false;
-
-            //using (TransactionScope ts = new TransactionScope())
-            //{
-                
-            //    if (denyBy(ActorApprovalType.Team_Approver, comment))
-            //    {
-            //        ts.Complete();
-            //        return true;
-            //    }
-                 
-
-                
-            //    /*
-            //    if (wfStateChange(ActorApprovalType.Team_Approver, WorkflowState.Closed_Denied))
-            //    {
-            //        approvalDeny(ActorApprovalType.Team_Approver, comment);
-            //        db.SubmitChanges();
-            //        ts.Complete();
-            //        return true;
-            //    }
-            //     */
-                
-            //}
-
-            //return false;
         }
 
         public override bool RequestToChange(string comment)
         {
             return requestToChangeBy(ActorApprovalType.Team_Approver, comment);
-        //    if (req.statusEnum != (byte)RequestState.Pending)
-        //        return false;
-
-        //    using (TransactionScope ts = new TransactionScope())
-        //    {
-        //        if (requestToChangeBy(ActorApprovalType.Team_Approver, comment))
-        //        {
-        //            ts.Complete();
-        //            return true;
-        //        }
-        //        /*
-
-        //        if (wfStateChange(ActorApprovalType.Team_Approver, WorkflowState.Change_Requested))
-        //        {
-        //            approvalRequestToChange(comment);
-        //            // TODO - info submiter or requester
-        //            db.SubmitChanges();
-        //            ts.Complete();
-        //            return true;
-        //        }
-        //         */
-        //    }
-        //    return false;
         }
 
     }
@@ -1118,61 +965,11 @@ namespace Apollo.AIM.SNAP.Model
         public override bool Deny(string comment)
         {
             return denyBy(ActorApprovalType.Technical_Approver, comment);
-            //if (req.statusEnum != (byte)RequestState.Pending)
-            //    return false;
-
-            //using (TransactionScope ts = new TransactionScope())
-            //{
-                
-            //    if (denyBy(ActorApprovalType.Technical_Approver, comment))
-            //    {
-            //        ts.Complete();
-            //        return true;
-            //    }
-                 
-
-            //    /*
-            //    if (wfStateChange(ActorApprovalType.Technical_Approver, WorkflowState.Closed_Denied))
-            //    {
-            //        approvalDeny(ActorApprovalType.Technical_Approver, comment);
-            //        db.SubmitChanges();
-            //        ts.Complete();
-            //        return true;
-            //    }
-            //     */
-                 
-            //}
-            //return false;
         }
 
         public override bool RequestToChange(string comment)
         {
             return requestToChangeBy(ActorApprovalType.Technical_Approver, comment);
-            //if (req.statusEnum != (byte)RequestState.Pending)
-            //    return false;
-
-            //using (TransactionScope ts = new TransactionScope())
-            //{
-            //    if (requestToChangeBy(ActorApprovalType.Technical_Approver, comment))
-            //    {
-            //        ts.Complete();
-            //        return true;
-            //    }
-
-            //    /*
-            //    if (wfStateChange(ActorApprovalType.Technical_Approver, WorkflowState.Change_Requested))
-            //    {
-            //        approvalRequestToChange(comment);
-
-            //        // TODO - info submiter or requester
-            //        db.SubmitChanges();
-            //        ts.Complete();
-            //        return true;
-            //    }
-            //     */
-            //}
-
-            //return false;
         }
     }
 
