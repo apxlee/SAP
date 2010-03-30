@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="True" CodeBehind="UserCheck.aspx.cs" Inherits="Apollo.AIM.SNAP.Web._UserCheck" %>
-<%@ Register src="includes/ucUserDetails.ascx" tagname="ucUserDetails" tagprefix="uc1" %>
+<!-- <%@ Register src="includes/ucUserDetails.ascx" tagname="ucUserDetails" tagprefix="uc1" %> -->
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -33,7 +33,7 @@
         <h4>This is just to show how to get user details...some functionilities are not supported
             </h4>
             <p>
-                <uc1:ucUserDetails ID="ucUserDetails1" runat="server" />
+                <!--<uc1:ucUserDetails ID="ucUserDetails1" runat="server" />-->
             </p>
             </form>
 </body>

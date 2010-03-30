@@ -16,7 +16,7 @@ namespace Apollo.AIM.SNAP.Web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            /*
+            
             Person p = CurrentSession.LoginPerson;
             ArrayList groups = Apollo.CA.DirectoryServices.getADAMGroups(p.userId);
             var groupInfo = "Groups:\n";
@@ -27,7 +27,7 @@ namespace Apollo.AIM.SNAP.Web
             txtUsrInfo.Text = "Manager: " + p.ManagerLink.userId + "\n" + "User Info: " + p.ToStringAllProperties();
             txtGroupInfo.Text = groupInfo;
             this.ucUserDetails1.init(p.Oid.ToString());
-             */
+            
         }
 
         protected void LogoutButton_Click(object sender, EventArgs e)
@@ -52,7 +52,10 @@ namespace Apollo.AIM.SNAP.Web
                 ADUserDetail userDetail;
                 userDetail = DirectoryServices.GetUserByLoginName(name);
 
-                if (userDetail != null)
+                if (userDetail.LoginName != null && 
+                    userDetail.ManagerName != null && 
+                    userDetail.FirstName != null && 
+                    userDetail.LastName != null)
                 {
                     userManagerInfo.LoginId = userDetail.LoginName;
                     userManagerInfo.ManagerLoginId = DirectoryServices.GetUserByFullName(userDetail.ManagerName).LoginName;
