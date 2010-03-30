@@ -116,5 +116,15 @@ namespace Apollo.AIM.SNAP.Test
             }
         }
 
+        [Test]
+        public void ShouldbeAbleToCallUDF()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+               var newDate = db.udf_get_next_business_day(DateTime.Now, 10);
+                Assert.IsTrue(newDate != null);
+            }
+        }
+
     }
 }

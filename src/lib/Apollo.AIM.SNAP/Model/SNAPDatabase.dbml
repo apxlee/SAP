@@ -269,4 +269,9 @@
       <Column Name="lastModifiedDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
+  <Function Name="dbo.udf_get_next_business_day" Method="udf_get_next_business_day" IsComposable="true">
+    <Parameter Name="startDate" Type="System.DateTime" DbType="SmallDateTime" />
+    <Parameter Name="numDays" Type="System.Int32" DbType="Int" />
+    <Return Type="System.DateTime" />
+  </Function>
 </Database>

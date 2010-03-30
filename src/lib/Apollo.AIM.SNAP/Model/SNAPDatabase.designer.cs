@@ -274,6 +274,12 @@ namespace Apollo.AIM.SNAP.Model
 			return ((ISingleResult<usp_requestsResult>)(result.ReturnValue));
 		}
          */
+		
+		[Function(Name="dbo.udf_get_next_business_day", IsComposable=true)]
+		public System.Nullable<System.DateTime> udf_get_next_business_day([Parameter(DbType="SmallDateTime")] System.Nullable<System.DateTime> startDate, [Parameter(DbType="Int")] System.Nullable<int> numDays)
+		{
+			return ((System.Nullable<System.DateTime>)(this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), startDate, numDays).ReturnValue));
+		}
 	}
 	
 	[Table(Name="dbo.SNAP_Access_Details_Form")]

@@ -83,6 +83,7 @@ namespace Apollo.AIM.SNAP.Test
             {
 
                 var reqs = db.SNAP_Requests.Where(x => x.userId == "UnitTester").ToList();
+                
                 foreach (var r in reqs)
                 {
                     var wfs = db.SNAP_Workflows.Where(x => x.requestId == r.pkId).ToList();
@@ -100,7 +101,11 @@ namespace Apollo.AIM.SNAP.Test
                     var uts = db.SNAP_Access_User_Texts.Where(x => x.requestId == r.pkId);
                     db.SNAP_Access_User_Texts.DeleteAllOnSubmit(uts);
                     db.SNAP_Requests.DeleteOnSubmit(r);
+
+                    var reqComments = db.SNAP_Request_Comments.Where(c => c.requestId == r.pkId);
+                    db.SNAP_Request_Comments.DeleteAllOnSubmit(reqComments);
                 }
+
                 db.SubmitChanges();
             }
 
@@ -136,6 +141,26 @@ namespace Apollo.AIM.SNAP.Test
             }
         }
 
+        [Test]
+        public void ShouldAllowAccessTeamToComment()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var accessReq = new AccessRequest(req.pkId);
+                accessReq.AddComment("This is access team comment", CommentsType.Access_Notes_AccessTeam);
+                accessReq.AddComment("This is access team for approver comment", CommentsType.Access_Notes_ApprovingManager);
+                accessReq.AddComment("This is access team for requestor comment", CommentsType.Access_Notes_Requestor);
+                accessReq.AddComment("This is access team for superuser comment", CommentsType.Access_Notes_SuperUser);
+            }
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                Assert.IsTrue(req.SNAP_Request_Comments.Count == 4);
+            }
+
+        }
 
         [Test]
         public void ShouldCloseDeniedByAccessTeam()

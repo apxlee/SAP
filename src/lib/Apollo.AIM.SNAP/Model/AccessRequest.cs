@@ -7,6 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Transactions;
 using Apollo.AIM.SNAP.Model;
+using System.Collections.Specialized;
+using System.Configuration;
+
 
 namespace Apollo.AIM.SNAP.Model
 {
@@ -51,6 +54,31 @@ namespace Apollo.AIM.SNAP.Model
                 throw ex;
             }
 
+            return result;
+        }
+
+        public bool AddComment(string comment, CommentsType type)
+        {
+            var result = false;
+            try
+            {
+                using (var db = new SNAPDatabaseDataContext())
+                {
+                    var req = db.SNAP_Requests.Single(r => r.pkId == _id);
+                    req.SNAP_Request_Comments.Add(new SNAP_Request_Comment()
+                                                      {
+                                                          commentText = comment,
+                                                          commentTypeEnum = (byte)type,
+                                                          createdDate = DateTime.Now
+                                                       });
+                    db.SubmitChanges();
+                    result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             return result;
         }
 
@@ -612,6 +640,9 @@ namespace Apollo.AIM.SNAP.Model
             //
 
             // a brand new WF has no coming from state, such as when creating a new manager, team and techical approval workflow
+
+            var prevDueDate = DateTime.Now;
+
             if (from != WorkflowState.Not_Active)
             {
                 // complete current/prev state
@@ -621,8 +652,11 @@ namespace Apollo.AIM.SNAP.Model
                     && s.completedDate == null); // To prevent looping in old state, null date is the latest state
 
                 if (prevWFState != null)
+                {
                     prevWFState.completedDate = DateTime.Now;
-                
+                    prevDueDate = prevWFState.dueDate ?? DateTime.Now;
+                }
+
             }
 
             // create new state
@@ -635,41 +669,72 @@ namespace Apollo.AIM.SNAP.Model
             };
 
             // for end/close states set the completion date
-            checkToCloseWorkflowAdimStates(approvalType, to, newState);
+            checkToCloseWorkflowAdimStates(approvalType, to, newState, prevDueDate);
 
             // workflowstate.approved is end state for manger, team approval and techical aproval but not for workflow adim
-            checkToCloseMangerOrTeamOrTechnicalWorkflowStates(approvalType, to, newState);
+            checkToCloseMangerOrTeamOrTechnicalWorkflowStates(approvalType, to, newState, prevDueDate);
 
             // go to new state
             wf.SNAP_Workflow_States.Add(newState);
         }
 
-        private static void checkToCloseMangerOrTeamOrTechnicalWorkflowStates(ActorApprovalType approvalType, WorkflowState to, SNAP_Workflow_State newState)
+        private static void checkToCloseMangerOrTeamOrTechnicalWorkflowStates(ActorApprovalType approvalType, WorkflowState to, SNAP_Workflow_State newState, DateTime dueDate)
         {
             if (approvalType != ActorApprovalType.Workflow_Admin)
             {
                 if (to == WorkflowState.Approved || to == WorkflowState.Closed_Denied)
                 {
-                    newState.completedDate = newState.dueDate = DateTime.Now;
+                    newState.completedDate = DateTime.Now;
+                    newState.dueDate = dueDate;
                 }
             }
         }
 
-        private static void checkToCloseWorkflowAdimStates(ActorApprovalType approvalType, WorkflowState to, SNAP_Workflow_State newState)
+        private static void checkToCloseWorkflowAdimStates(ActorApprovalType approvalType, WorkflowState to, SNAP_Workflow_State newState, DateTime dueDate)
         {
             if (approvalType == ActorApprovalType.Workflow_Admin)
             {
                 if (to == WorkflowState.Closed_Cancelled || to == WorkflowState.Closed_Completed ||
                     to == WorkflowState.Closed_Denied)
                 {
-                    newState.completedDate = newState.dueDate = DateTime.Now;
+                    newState.completedDate = DateTime.Now;
+                    newState.dueDate = dueDate;
                 }
             }
         }
 
         private static DateTime getDueDate(ActorApprovalType approvalType, WorkflowState fr, WorkflowState to)
         {
-            return DateTime.Now.AddDays(1);
+            int day = 1;
+            DateTime due;
+            SLAConfiguration slaCfg = new SLAConfiguration((NameValueCollection)ConfigurationManager.GetSection(
+                "Apollo.AIM.SNAP/Workflow.SLA"));
+
+
+            switch (approvalType)
+                {
+                    case ActorApprovalType.Manager:
+                        day = System.Convert.ToInt16(slaCfg.ManagerApprovalInDays);
+                        break;
+                    case ActorApprovalType.Team_Approver:
+                        day = System.Convert.ToInt16(slaCfg.TeamApprovalInDays);
+                        break;
+                    case ActorApprovalType.Technical_Approver:
+                        day = System.Convert.ToInt16(slaCfg.TechnicalApprovalInDays);
+                        break;
+                    case ActorApprovalType.Workflow_Admin:
+                        if (fr == WorkflowState.Pending_Approval) // same as the due day for technical approval since workflow admin depend on it
+                            day = System.Convert.ToInt16(slaCfg.TechnicalApprovalInDays);
+                        break;
+                }
+
+                using (var db = new SNAPDatabaseDataContext())
+                {
+                    due = db.udf_get_next_business_day(DateTime.Now, day) ?? DateTime.Now.AddDays(-1);
+                }
+
+
+            return due;
         }
 
         #endregion
@@ -757,7 +822,9 @@ namespace Apollo.AIM.SNAP.Model
 
             AccessRequest.stateTransition(approvalType, wf, (WorkflowState)currentState.workflowStatusEnum, toState);
 
-            db.SubmitChanges();
+            // !!! because of this we are force to use TransactionScope
+            // !!! so we can make sure every technical approver has approved which moves the request approved state
+            db.SubmitChanges(); 
 
             return true;
         }
