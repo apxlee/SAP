@@ -741,6 +741,25 @@ namespace Apollo.AIM.SNAP.Model
             return true;
         }
 
+        protected bool approveAndInformOhterSequentialManager()
+        {
+            if (req.statusEnum != (byte)RequestState.Pending)
+                return false;
+
+            using (TransactionScope ts = new TransactionScope())
+            {
+                if (wfStateChange(ActorApprovalType.Manager, WorkflowState.Approved))
+                {
+                    informApproverForAction();
+                    db.SubmitChanges();
+                    ts.Complete();
+                    return true;
+                }
+            }
+
+            return false;
+
+        }
         protected void informApproverForAction()
         {
             accessReq.InformApproverForAction();
@@ -910,6 +929,8 @@ namespace Apollo.AIM.SNAP.Model
 
         public override bool Approve()
         {
+            return approveAndInformOhterSequentialManager();
+            /*
 
             using (TransactionScope ts = new TransactionScope())
             {
@@ -923,6 +944,7 @@ namespace Apollo.AIM.SNAP.Model
             }
 
             return false;
+             */
         }
 
         public override bool Deny(string comment)
@@ -987,7 +1009,8 @@ namespace Apollo.AIM.SNAP.Model
 
         public override bool Approve()
         {
-
+            return approveAndInformOhterSequentialManager();
+            /*
             if (req.statusEnum != (byte)RequestState.Pending)
                 return false;
 
@@ -1003,6 +1026,7 @@ namespace Apollo.AIM.SNAP.Model
             }
 
             return false;
+             */
         }
 
         public override bool Deny(string comment)
