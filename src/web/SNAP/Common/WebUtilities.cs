@@ -9,6 +9,8 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
+
+using OOSPARole = Apollo.AIM.SNAP.Web.Common.Role;
 using Apollo.AIM.SNAP.CA;
 using Apollo.AIM.SNAP.Model;
 using Apollo.CA.Logging;
@@ -52,6 +54,40 @@ namespace Apollo.AIM.SNAP.Web.Common
 			{
 				Page currentPage = HttpContext.Current.Handler as Page;
 				currentPage.Session["OOSPAUserRole"] = value;
+			}
+        }
+        
+        public static ViewIndex DefaultView
+        {
+			get
+			{
+				ViewIndex defaultViewIndex;
+				
+				switch (CurrentRole)
+				{
+					case OOSPARole.ApprovingManager:
+						defaultViewIndex = ViewIndex.my_approvals;
+						break;
+
+					case OOSPARole.AccessTeam:
+						defaultViewIndex = ViewIndex.access_team;
+						break;
+
+					case OOSPARole.SuperUser:
+						defaultViewIndex = ViewIndex.my_requests;
+						break;
+
+					case OOSPARole.Requestor:
+						defaultViewIndex = ViewIndex.my_requests;
+						break;
+
+					case OOSPARole.NotAuthenticated:
+					default:
+						defaultViewIndex = ViewIndex.support;
+						break;
+				}
+				
+				return defaultViewIndex;					
 			}
         }
 
