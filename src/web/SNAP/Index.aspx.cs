@@ -40,16 +40,17 @@ namespace Apollo.AIM.SNAP.Web
 		{
 			// TODO: REMOVE THIS SECTION AFTER DEMO!  or allow based on special AD group?  
 			//
-			if (!string.IsNullOrEmpty(Request.QueryString["role"]))
+			if (!string.IsNullOrEmpty(Request.QueryString[QueryStringConstants.DEMONSTRATION_ROLE]))
 			{
-				WebUtilities.CurrentRole = (OOSPARole)Enum.Parse(typeof(OOSPARole), Request.QueryString["role"]);
+				WebUtilities.CurrentRole = (OOSPARole)Enum.Parse(typeof(OOSPARole), Request.QueryString[QueryStringConstants.DEMONSTRATION_ROLE]);
 			}
 				
 			if (!IsPostBack)
 			{
 				// requestId and viewIndex must BOTH be present in query string
 				//
-				if (string.IsNullOrEmpty(Request.QueryString["requestId"]) && string.IsNullOrEmpty(Request.QueryString["viewIndex"]))
+				if (string.IsNullOrEmpty(Request.QueryString[QueryStringConstants.REQUEST_ID]) 
+					&& string.IsNullOrEmpty(Request.QueryString[QueryStringConstants.REQUESTED_VIEW_INDEX]))
 				{
 					SetDefaultView();
 				}
@@ -73,8 +74,8 @@ namespace Apollo.AIM.SNAP.Web
 		
 		private void SetViewFromQueryString()
 		{
-			RequestId = Request.QueryString["requestId"];
-			RequestedViewIndex = (ViewIndex)Enum.Parse(typeof(ViewIndex), Request.QueryString["viewIndex"]);
+			RequestId = Request.QueryString[QueryStringConstants.REQUEST_ID];
+			RequestedViewIndex = (ViewIndex)Enum.Parse(typeof(ViewIndex), Request.QueryString[QueryStringConstants.REQUESTED_VIEW_INDEX]);
 
 			switch (RequestedViewIndex)
 			{

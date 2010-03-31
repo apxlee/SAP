@@ -77,6 +77,15 @@ namespace Apollo.AIM.SNAP.Web {
         protected global::System.Web.UI.WebControls.View _loginFormView;
         
         /// <summary>
+        /// _loginFormControl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Apollo.AIM.SNAP.Web.Controls.LoginForm _loginFormControl;
+        
+        /// <summary>
         /// _requestFormView control.
         /// </summary>
         /// <remarks>

@@ -20,7 +20,11 @@ namespace Apollo.AIM.SNAP.Web
     public const string RefKey = "ref";
     public const string GUID = "guid";
     public const string IncidentType = "incidentType";
-
+    
+    // SNAP
+    public const string DEMONSTRATION_ROLE = "role";
+    public const string REQUEST_ID = "requestId";
+    public const string REQUESTED_VIEW_INDEX = "viewIndex";
   }
 
   public static class SessionVariables

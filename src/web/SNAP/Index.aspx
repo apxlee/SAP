@@ -35,7 +35,9 @@
 			<asp:MultiView ID="_masterMultiView" runat="server" ActiveViewIndex="0">
 
 				<asp:View ID="_loginFormView" runat="server"><!-- 0 -->
-					<div class="csm_container_center_700"><h1>Login Form</h1></div>
+					<div class="csm_container_center_700">
+						<uc:LoginForm ID="_loginFormControl" runat="server" />
+					</div>
 				</asp:View>
 
 				<asp:View ID="_requestFormView" runat="server"><!-- 1 -->
