@@ -8,8 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Apollo.AIM.SNAP.Web.includes {
-    
+namespace Apollo.AIM.SNAP.Web.includes{    
     
     public partial class ucUserDetails {
         
