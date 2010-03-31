@@ -54,7 +54,7 @@ var userManager = {
 
                 var names = msg.d;
 
-                // no match
+                // no match                
                 if (names.length == 0) {
                     userManager.FillErrorFields(name);
                 }
@@ -111,8 +111,8 @@ var userManager = {
     SubmitHack: function() {
         if (userManager.InputChange()) {
             userManager.mgrName.removeAttr("disabled");
-            //userManager.acknowledgmentDiv.dialog('open');
-            return true;
+            userManager.acknowledgmentDiv.dialog('open');
+            return false;
         }
         return false;
     },
@@ -439,18 +439,18 @@ var userManager = {
                 dialogClass: 'ui-dialogB ui-widget ui-widget-contentB ui-corner-all',
                 overlay: {
                     backgroundColor: '#ff0000', opacity: 0.5
-
                 },
                 buttons: {
                     Acknowledge: function() {
+                        $("#_requestFormControl__submit_form").trigger('click');
                         $(this).dialog('close');
-                        __doPostBack = newDoPostBack;
                     },
                     Cancel: function() {
                         $(this).dialog('close');
                     }
                 }
             });
+            obj.parent().appendTo(jQuery("form:first"));
         }
 
     },
@@ -477,20 +477,6 @@ var userManager = {
         this.HandleClearClick();
         this.HandleSubmitClick();
         this.Clear();
-    }
-}
-
-function newDoPostBack(eventTarget, eventArgument) {
-    var theForm = document.forms[0];
-
-    if (!theForm) {
-        theForm = document._defaultForm;
-    }
-
-    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
-        document.getElementById("__EVENTTARGET").value = eventTarget;
-        document.getElementById("__EVENTARGUMENT").value = eventArgument;
-        theForm.submit();
     }
 }
 

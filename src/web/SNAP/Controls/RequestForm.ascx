@@ -87,7 +87,7 @@
 		
 		<div class="csm_input_buttons_container">
 			<input type="button" value="Clear Form" class="csm_html_button" id='_clearForm_lower'/>
-			<asp:Button ID="_submitForm_lower" Text="Submit" CssClass="csm_html_button" runat="server" onclick="_submitForm_Click" />
+			<asp:Button ID="_submitForm_lower" Text="Submit" CssClass="csm_html_button" runat="server"/>
 		</div>				
 		
 		</fieldset>
@@ -120,4 +120,7 @@
                 copying of software or data, and any misuse of Apollo Group, Inc. equipment may result in disciplinary action up to and 
                 including termination and possible legal action.</li>
         </ul>
+        <div style="display:none;">
+            <asp:Button ID="_submit_form" Text="submit form" CssClass="csm_html_button" runat="server" onclick="_submitForm_Click" />
+        </div>
      </div>
