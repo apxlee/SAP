@@ -26,6 +26,8 @@ using Apollo.AIM.SNAP.Web.Common;
 // TODO: build footer links based on role
 // TODO: make 404 page and/or error page and/or error panels on page?
 // TODO: masterblade reads requestId from index and uses to make that request the expanded view
+// TODO: clean up commented code and logic bombs in index/request form
+// TODO: masterblade.js loads for every blade
 
 namespace Apollo.AIM.SNAP.Web
 {
@@ -45,91 +47,67 @@ namespace Apollo.AIM.SNAP.Web
 				
 			if (!IsPostBack)
 			{
-				SetViewFromQueryString();
+				// requestId and viewIndex must BOTH be present in query string
+				//
+				if (string.IsNullOrEmpty(Request.QueryString["requestId"]) && string.IsNullOrEmpty(Request.QueryString["viewIndex"]))
+				{
+					SetDefaultView();
+				}
+				else
+				{			
+					SetViewFromQueryString();
+				}
 			}
 			else
 			{
 				// If user isn't following email link (with requestId and viewIndex) then drop them based on their role
 				//
-				SetViewFromRole();
+				SetDefaultView();
 			}
 		}
 		
-		private void SetViewFromRole()
+		private void SetDefaultView()
 		{
-			// TODO: move this to utilities?
-			
-			switch (WebUtilities.CurrentRole)
-			{
-				case OOSPARole.ApprovingManager:
-					WebUtilities.SetActiveView((int)ViewIndex.my_approvals);
-					break;
-
-				case OOSPARole.AccessTeam:
-					WebUtilities.SetActiveView((int)ViewIndex.access_team);
-					break;
-
-				case OOSPARole.SuperUser:
-					WebUtilities.SetActiveView((int)ViewIndex.my_requests);
-					break;
-
-				case OOSPARole.Requestor:
-					WebUtilities.SetActiveView((int)ViewIndex.my_requests);
-					break;
-
-				case OOSPARole.NotAuthenticated:
-				default:
-					WebUtilities.SetActiveView((int)ViewIndex.support);
-					break;
-			}		
+			WebUtilities.SetActiveView((int)WebUtilities.DefaultView);
 		}
 		
 		private void SetViewFromQueryString()
 		{
-			// requestId and viewIndex must BOTH be present in query string
-			//
-			if (string.IsNullOrEmpty(Request.QueryString["requestId"]) && string.IsNullOrEmpty(Request.QueryString["viewIndex"]))
+			RequestId = Request.QueryString["requestId"];
+			RequestedViewIndex = (ViewIndex)Enum.Parse(typeof(ViewIndex), Request.QueryString["viewIndex"]);
+
+			switch (RequestedViewIndex)
 			{
-				SetViewFromRole();
-			}
-			else
-			{
-				RequestId = Request.QueryString["requestId"];
-				RequestedViewIndex = (ViewIndex)Enum.Parse(typeof(ViewIndex), Request.QueryString["viewIndex"]);
+				case ViewIndex.my_requests:
+					WebUtilities.SetActiveView((int)ViewIndex.my_requests);
+					break;
 
-				switch (RequestedViewIndex)
-				{
-					case ViewIndex.my_requests:
-						WebUtilities.SetActiveView((int)ViewIndex.my_requests);
-						break;
+				case ViewIndex.my_approvals:
+					if (WebUtilities.CurrentRole == OOSPARole.ApprovingManager || WebUtilities.CurrentRole == OOSPARole.SuperUser)
+					{
+						WebUtilities.SetActiveView((int)ViewIndex.my_approvals);
+					}
+					else { goto default; }
+					break;
 
-					case ViewIndex.my_approvals:
-						if (WebUtilities.CurrentRole == OOSPARole.ApprovingManager || WebUtilities.CurrentRole == OOSPARole.SuperUser)
-						{
-							WebUtilities.SetActiveView((int)ViewIndex.my_approvals);
-						}
-						else { goto default; }
-						break;
+				case ViewIndex.access_team:
+					if (WebUtilities.CurrentRole == OOSPARole.AccessTeam || WebUtilities.CurrentRole == OOSPARole.SuperUser)
+					{
+						WebUtilities.SetActiveView((int)ViewIndex.access_team);
+					}
+					else { goto default; }
+					break;
 
-					case ViewIndex.access_team:
-						if (WebUtilities.CurrentRole == OOSPARole.AccessTeam || WebUtilities.CurrentRole == OOSPARole.SuperUser)
-						{
-							WebUtilities.SetActiveView((int)ViewIndex.access_team);
-						}
-						else { goto default; }
-						break;
+				case ViewIndex.request_form:
+					// TODO: request must be in "change_requested" state for this view
+					// TODO: current role will be set at login page (header links don't work right now)
+					WebUtilities.SetActiveView((int)ViewIndex.request_form);
+					break;
 
-					case ViewIndex.request_form:
-						// TODO: request must be in "change_requested" state for this view
-						// TODO: current role will be set at login page (header links don't work right now)
-						WebUtilities.SetActiveView((int)ViewIndex.request_form);
-						break;
-
-					default:
-						// TODO: make 404 and direct there?
-						WebUtilities.SetActiveView((int)ViewIndex.support);
-						break;
-				}
+				default:
+					// TODO: make 404 and direct there?
+					WebUtilities.SetActiveView((int)ViewIndex.support);
+					break;
 			}
 		}
 	}
