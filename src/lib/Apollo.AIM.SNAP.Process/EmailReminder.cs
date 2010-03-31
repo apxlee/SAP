@@ -8,6 +8,7 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Text;
 using System.Timers;
+using Apollo.AIM.SNAP.Model;
 
 namespace Apollo.AIM.SNAP.Process
 {
@@ -101,6 +102,8 @@ namespace Apollo.AIM.SNAP.Process
                 m_streamWriter.Flush();
                 m_streamWriter.Close();
 
+                emailApproverForOverdueTask();
+
                 done = true;
             }
 
@@ -119,6 +122,59 @@ namespace Apollo.AIM.SNAP.Process
             evt.WriteEntry(message, EventLogEntryType.Information);
              */
 
+        }
+
+        private void emailApproverForOverdueTask()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var unfinishedtasks = db.SNAP_Workflow_States.Where(s => s.completedDate == null);
+                foreach (var state in unfinishedtasks)
+                {
+                    try
+                    {
+                        if (state.SNAP_Workflow.SNAP_Request.statusEnum != (byte) RequestState.Closed)
+                        {
+                            // TODO - should be remind submitter to work on 'request to change', SLA is 3 days or does that matter
+                            if (state.workflowStatusEnum == (byte) WorkflowState.Pending_Approval 
+                                && state.SNAP_Workflow.SNAP_Actor.SNAP_Actor_Group.actorGroupType != (byte)ActorApprovalType.Workflow_Admin)
+                                // only remind approvers, not access team
+
+                                Console.WriteLine(state.pkId + "-" + state.SNAP_Workflow.SNAP_Actor.displayName +
+                                                  " due on: " +
+                                                  state.dueDate);
+
+                            if (state.dueDate != null)
+                            {
+                                DateTime dueDate = DateTime.Parse(state.dueDate.ToString());
+                                TimeSpan diff = DateTime.Now.Subtract(dueDate);
+
+                                if (diff.Days == 1) // more than 24 hours over due
+                                {
+                                    state.SNAP_Workflow.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
+                                                                                       {
+                                                                                           commentText = "over due!",
+                                                                                           commentTypeEnum =
+                                                                                               (byte)
+                                                                                               CommentsType.
+                                                                                                   Email_Reminder,
+                                                                                           createdDate = DateTime.Now,
+                                                                                       });
+
+                                }
+
+
+                                db.SubmitChanges();
+                            }
+
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("state id = " + state.pkId + " Message: " + ex.Message);
+                    }
+                }
+            }
         }
 
     }

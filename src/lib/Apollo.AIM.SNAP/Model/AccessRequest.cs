@@ -9,6 +9,7 @@ using System.Transactions;
 using Apollo.AIM.SNAP.Model;
 using System.Collections.Specialized;
 using System.Configuration;
+using Apollo.CA.Logging;
 
 
 namespace Apollo.AIM.SNAP.Model
@@ -51,7 +52,7 @@ namespace Apollo.AIM.SNAP.Model
             }
             catch (Exception ex)
             {
-                throw ex;
+                Logger.Error("SNAP - AccessRequst: Ack failed", ex);
             }
 
             return result;
@@ -77,7 +78,7 @@ namespace Apollo.AIM.SNAP.Model
             }
             catch (Exception ex)
             {
-                throw ex;
+                Logger.Error("SNAP - AccessRequst: AddComment failed", ex);
             }
             return result;
         }
@@ -121,7 +122,7 @@ namespace Apollo.AIM.SNAP.Model
             }
             catch (Exception ex)
             {
-                throw ex;
+                Logger.Error("SNAP - AccessRequst: No access failed", ex);
             }
             return result;
 
@@ -144,6 +145,7 @@ namespace Apollo.AIM.SNAP.Model
                     if (result)
                     {
                         addAccessTeamComment(accessTeamWF, comment, CommentsType.Requested_Change);
+                        Email.UpdateRequesterStatus(req.submittedBy, _id.ToString(), "requested to change");
                         db.SubmitChanges();
                     }
 
@@ -151,7 +153,7 @@ namespace Apollo.AIM.SNAP.Model
             }
             catch (Exception ex)
             {
-                throw ex;
+                Logger.Error("SNAP - AccessRequst: Request To Change", ex);
             }
 
             return result;
@@ -180,8 +182,8 @@ namespace Apollo.AIM.SNAP.Model
             }
             catch (Exception ex)
             {
-                
-                throw ex;
+
+                Logger.Error("SNAP - AccessRequst: Request Changed", ex);
             }
 
             return result;
@@ -203,14 +205,15 @@ namespace Apollo.AIM.SNAP.Model
                     if (result)
                     {
                         createrApprovalWorkFlow(db, actorIds);
-
                         db.SubmitChanges();
                     }
 
                 }
+
+                InformApproverForAction();
             }
             catch (Exception ex) {
-                throw ex; 
+                Logger.Error("SNAP - AccessRequst: Create Workflow", ex); 
             }
             return result;
         }
@@ -386,7 +389,7 @@ namespace Apollo.AIM.SNAP.Model
             }
             catch (Exception ex)
             {
-                throw ex;
+                Logger.Error("SNAP - AccessRequst: Create Service Desk Ticket", ex); 
             }
             return result;
         }
@@ -406,15 +409,14 @@ namespace Apollo.AIM.SNAP.Model
 
                     if (result)
                     {
-                        // TODO - Info requester it is done
-
+                        Email.UpdateRequesterStatus(req.submittedBy, _id.ToString(), "processed");
                         db.SubmitChanges();
                     }
                 }
             }
             catch (Exception ex)
             {
-                throw ex;
+                Logger.Error("SNAP - AccessRequst: Finalize Request", ex); 
             }
 
             return result;
@@ -429,7 +431,6 @@ namespace Apollo.AIM.SNAP.Model
             var result = false;
             if (req.statusEnum == (byte)reqFr)
             {
-                //var accessTeamWF = FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin)[0];
                 var accessTeamWFState = accessTeamWF.SNAP_Workflow_States.Single(s => s.completedDate == null);
                 if (accessTeamWFState.workflowStatusEnum == (byte)wfFr)
                 {
@@ -559,13 +560,14 @@ namespace Apollo.AIM.SNAP.Model
                 }
 
                 var actor = db.SNAP_Actors.Single(a => a.pkId == actId);
-                    var agt = actor.SNAP_Actor_Group.actorGroupType ?? 3; // default to accessteam if null
+                var agt = actor.SNAP_Actor_Group.actorGroupType ?? 3; // default to accessteam if null
 
-                    ActorApprovalType t = (ActorApprovalType) agt;
+                ActorApprovalType t = (ActorApprovalType) agt;
 
-                    stateTransition(t, wf, WorkflowState.Not_Active, WorkflowState.Pending_Approval);
+                stateTransition(t, wf, WorkflowState.Not_Active, WorkflowState.Pending_Approval);
+                
             }
-            // TODO - send out email to the manager approval
+            
         }
 
 
@@ -581,9 +583,10 @@ namespace Apollo.AIM.SNAP.Model
                     {
                         if (state.notifyDate == null && state.workflowStatusEnum == (byte)WorkflowState.Pending_Approval)
                         {
-                            // TODO - send email
+                            Email.TaskAssignToApprover(state.SNAP_Workflow.SNAP_Actor.emailAddress, _id.ToString());
                             state.notifyDate = DateTime.Now;
-                            // TODO - need to update state.dueDate 
+                            var actorType = (ActorApprovalType) (wf.SNAP_Actor.SNAP_Actor_Group.actorGroupType ?? 3); // default workflow admin
+                            state.dueDate = getDueDate(actorType, WorkflowState.Pending_Approval, WorkflowState.Pending_Workflow);
                             done = true;
                         }
                     }
@@ -642,12 +645,12 @@ namespace Apollo.AIM.SNAP.Model
             // a brand new WF has no coming from state, such as when creating a new manager, team and techical approval workflow
 
             var prevDueDate = DateTime.Now;
-
+            SNAP_Workflow_State prevWFState=null;
             if (from != WorkflowState.Not_Active)
             {
                 // complete current/prev state
 
-                var prevWFState = wf.SNAP_Workflow_States.Single(
+                prevWFState = wf.SNAP_Workflow_States.Single(
                     s => s.workflowStatusEnum == (byte)from
                     && s.completedDate == null); // To prevent looping in old state, null date is the latest state
 
@@ -655,6 +658,7 @@ namespace Apollo.AIM.SNAP.Model
                 {
                     prevWFState.completedDate = DateTime.Now;
                     prevDueDate = prevWFState.dueDate ?? DateTime.Now;
+
                 }
 
             }
@@ -663,10 +667,19 @@ namespace Apollo.AIM.SNAP.Model
             var newState = new SNAP_Workflow_State()
             {
                 completedDate = null,
-                notifyDate = DateTime.Now,
-                dueDate = getDueDate(approvalType, from, to), //DateTime.Now.AddDays(1),
+                //notifyDate = DateTime.Now,
+                dueDate = getDueDate(approvalType, from, to), 
                 workflowStatusEnum = (byte)to
             };
+
+            // we don't need to notify workflow admin/access team. they have to monitor the open request constantly
+            if (approvalType == ActorApprovalType.Workflow_Admin)
+                newState.notifyDate = DateTime.Now;
+
+            if (prevWFState != null)
+            {
+                newState.notifyDate = prevWFState.notifyDate; // just propergate the notify date to new state...it is primarily for approval manager
+            }
 
             // for end/close states set the completion date
             checkToCloseWorkflowAdimStates(approvalType, to, newState, prevDueDate);
@@ -723,7 +736,7 @@ namespace Apollo.AIM.SNAP.Model
                         day = System.Convert.ToInt16(slaCfg.TechnicalApprovalInDays);
                         break;
                     case ActorApprovalType.Workflow_Admin:
-                        if (fr == WorkflowState.Pending_Approval) // same as the due day for technical approval since workflow admin depend on it
+                        if (to == WorkflowState.Pending_Approval) // same as the due day for technical approval since workflow admin depend on it
                             day = System.Convert.ToInt16(slaCfg.TechnicalApprovalInDays);
                         break;
                 }
@@ -869,7 +882,6 @@ namespace Apollo.AIM.SNAP.Model
                 if (wfStateChange(approvalType, WorkflowState.Change_Requested))
                 {
                     approvalRequestToChange(comment);
-                    // TODO - info submiter or requester
                     db.SubmitChanges();
                     ts.Complete();
                     return true;
@@ -906,7 +918,7 @@ namespace Apollo.AIM.SNAP.Model
                 commentTypeEnum = (byte)CommentsType.Requested_Change,
                 createdDate = DateTime.Now
             });
-            // TODO - info submiter or requester
+            Email.UpdateRequesterStatus(req.submittedBy, req.pkId.ToString(), "requested to change");
         }
 
 
@@ -946,10 +958,9 @@ namespace Apollo.AIM.SNAP.Model
                         commentTypeEnum = (byte)CommentsType.Denied
                     });
                     // set accessTeam WF and request to close-denied
-                    //var accessTeamWF = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin)[0];
                     AccessRequest.stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, WorkflowState.Pending_Approval, WorkflowState.Closed_Denied);
                     req.statusEnum = (byte)RequestState.Closed;
-
+                    Email.UpdateRequesterStatus(req.submittedBy, req.pkId.ToString(), "denied");
                     break;
                 }
 

@@ -385,9 +385,6 @@ namespace Apollo.AIM.SNAP.Test
                                                  networkShareActorId
                                              });
 
-                accessReq.InformApproverForAction();
-
-
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte) ActorApprovalType.Manager);
                 Assert.IsTrue(wfs.Count == 1);
                 Assert.IsTrue(wfs[0].SNAP_Workflow_States[0].notifyDate != null);
@@ -413,8 +410,6 @@ namespace Apollo.AIM.SNAP.Test
                                                  databaseActorId,
                                                  networkShareActorId
                                              });
-
-                accessReq.InformApproverForAction();
 
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte) ActorApprovalType.Manager);
 
@@ -455,8 +450,6 @@ namespace Apollo.AIM.SNAP.Test
                                                  databaseActorId,
                                                  networkShareActorId
                                              });
-
-                accessReq.InformApproverForAction();
 
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
 
@@ -506,8 +499,6 @@ namespace Apollo.AIM.SNAP.Test
                                                  networkShareActorId
                                              });
 
-                accessReq.InformApproverForAction();
-
                 // get manager approal
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
                 Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate == null);
@@ -534,7 +525,6 @@ namespace Apollo.AIM.SNAP.Test
 
             }
 
-
         }
 
 
@@ -556,8 +546,6 @@ namespace Apollo.AIM.SNAP.Test
                                                  databaseActorId,
                                                  networkShareActorId
                                              });
-
-                accessReq.InformApproverForAction();
 
 
                 // get manager approal
@@ -612,8 +600,6 @@ namespace Apollo.AIM.SNAP.Test
                                                  databaseActorId,
                                                  networkShareActorId
                                              });
-
-                accessReq.InformApproverForAction();
 
                 // get manager approal
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
@@ -676,7 +662,6 @@ namespace Apollo.AIM.SNAP.Test
                                                  networkShareActorId
                                              });
 
-                accessReq.InformApproverForAction();
 
                 // get manager approal
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
@@ -730,7 +715,6 @@ namespace Apollo.AIM.SNAP.Test
                                                  networkShareActorId
                                              });
 
-                accessReq.InformApproverForAction();
 
                 // get manager approal
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
@@ -784,7 +768,6 @@ namespace Apollo.AIM.SNAP.Test
                                                  networkShareActorId
                                              });
 
-                accessReq.InformApproverForAction();
 
                 // get manager approal
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
@@ -864,7 +847,6 @@ namespace Apollo.AIM.SNAP.Test
                                                  networkShareActorId
                                              });
 
-                accessReq.InformApproverForAction();
 
                 // get manager approal
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte) ActorApprovalType.Manager);
@@ -928,8 +910,6 @@ namespace Apollo.AIM.SNAP.Test
                                                  networkShareActorId
                                              });
 
-                accessReq.InformApproverForAction();
-
                 // get manager approal
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
                 Assert.IsTrue(
@@ -986,8 +966,6 @@ namespace Apollo.AIM.SNAP.Test
                                                  networkShareActorId
                                              });
 
-
-                    accessReq.InformApproverForAction();
 
                     var accessWF = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
                     var state = accessWF[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval
@@ -1065,7 +1043,6 @@ namespace Apollo.AIM.SNAP.Test
                                                  //networkShareActorId
                                              });
 
-                accessReq.InformApproverForAction();
 
                 // get manager approal
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
@@ -1117,8 +1094,6 @@ namespace Apollo.AIM.SNAP.Test
                                                  //databaseActorId,
                                                  //networkShareActorId
                                              });
-
-                accessReq.InformApproverForAction();
 
                 // get manager approal
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
@@ -1175,8 +1150,6 @@ namespace Apollo.AIM.SNAP.Test
                                                  networkShareActorId
                                              });
 
-                accessReq.InformApproverForAction();
-
                 // get manager disapproval
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
                 Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate == null);
@@ -1220,8 +1193,6 @@ namespace Apollo.AIM.SNAP.Test
                                                  databaseActorId,
                                                  networkShareActorId
                                              });
-
-                accessReq.InformApproverForAction();
 
                 // get manager approval
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
@@ -1278,8 +1249,6 @@ namespace Apollo.AIM.SNAP.Test
                                                  networkShareActorId
                                              });
 
-                accessReq.InformApproverForAction();
-
                 // get manager approval
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
                 Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate == null);
@@ -1335,8 +1304,6 @@ namespace Apollo.AIM.SNAP.Test
                                                  networkShareActorId
                                              });
 
-                accessReq.InformApproverForAction();
-
                 // get manager approval
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
                 Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate == null);
@@ -1377,90 +1344,6 @@ namespace Apollo.AIM.SNAP.Test
             
         }
 
-        [Ignore]
-        [Test]
-        public  void Test()
-        {
-            
-            using (var db = new SNAPDatabaseDataContext())
-            {
-                var unfinishedtasks = db.SNAP_Workflow_States.Where(s => s.completedDate == null);
-                foreach (var state in unfinishedtasks)
-                {
-                    try
-                    {
-                        if (state.SNAP_Workflow.SNAP_Request.statusEnum != (byte) RequestState.Closed)
-                        {
-                            if (state.workflowStatusEnum == (byte) WorkflowState.Pending_Acknowlegement
-                                || state.workflowStatusEnum == (byte) WorkflowState.Pending_Approval
-                                || state.workflowStatusEnum == (byte) WorkflowState.Pending_Provisioning
-                                || state.workflowStatusEnum == (byte) WorkflowState.Pending_Workflow)
-
-                                Console.WriteLine(state.pkId + "-" + state.SNAP_Workflow.SNAP_Actor.displayName +
-                                                  " due on: " +
-                                                  state.dueDate);
-
-                            if (state.dueDate != null && state.completedDate == null)
-                            {
-                                DateTime dueDate = DateTime.Parse(state.dueDate.ToString());
-                                TimeSpan diff = DateTime.Now.AddDays(1).Subtract(dueDate);
-
-
-                                Console.WriteLine("Diff in day: " + diff.Days);
-
-                                if (dueDate.Day == DateTime.Now.Day 
-                                    && dueDate.Month == DateTime.Now.Month
-                                    && dueDate.Year == DateTime.Now.Year)
-
-                                {
-                                    Console.WriteLine("*** Due today, please work on it");
-                                    state.SNAP_Workflow.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
-                                    {
-                                        commentText = "due today!",
-                                        commentTypeEnum = (byte)CommentsType.Email_Reminder,
-                                        createdDate = DateTime.Now,
-                                    });
-
-                                }
-                                else if (diff.Days == 0)
-                                {
-                                    Console.WriteLine("*** due tomorrow! Please work on it!");
-                                    state.SNAP_Workflow.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
-                                                                                        {
-                                                                                            commentText = "due tomorrow!",
-                                                                                            commentTypeEnum = (byte)CommentsType.Email_Reminder,
-                                                                                            createdDate = DateTime.Now,
-                                                                                        });
-
-                                }
-                                else if (diff.Days == 1 || diff.Days == 2)
-                                {
-                                    Console.WriteLine("*** over due! Please work on it!");
-                                    state.SNAP_Workflow.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
-                                    {
-                                        commentText = "one day over due!",
-                                        commentTypeEnum = (byte)CommentsType.Email_Reminder,
-                                        createdDate = DateTime.Now,
-                                    });
-
-
-                                }
-
-                                db.SubmitChanges();
-                            }
-
-                        }
-                    }
-                    catch(Exception ex)
-                    {
-                        Console.WriteLine("state id = " + state.pkId + " Message: " + ex.Message);
-                    }
-                }
-
-            }
-            
-
-        }
 
 
         [Test] public void SouldReturnApprovalTypeObject()
@@ -1495,6 +1378,53 @@ namespace Apollo.AIM.SNAP.Test
                 Assert.IsTrue(testWf.GetType() == (typeof(TechnicalApprovalWorkflow)));
 
             }
+        }
+
+        [Test] public void TestDateDiff()
+        {
+            DateTime dueDate = DateTime.Parse("3/2/2010 1:00:00 AM");
+            DateTime currentDate = DateTime.Parse("3/2/2010 2:05:00 AM");
+            TimeSpan diff = currentDate.Subtract(dueDate);
+            Console.WriteLine(diff.Days);
+
+            currentDate = DateTime.Parse("3/3/2010 2:05:00 AM");
+            diff = currentDate.Subtract(dueDate);
+            Console.WriteLine(diff.Days);
+
+            currentDate = DateTime.Parse("3/4/2010 2:05:00 AM");
+            diff = currentDate.Subtract(dueDate);
+            Console.WriteLine(diff.Days);
+
+
+
+            dueDate = DateTime.Parse("3/2/2010 3:00:00 AM");
+            currentDate = DateTime.Parse("3/2/2010 2:05:00 AM");
+            diff = currentDate.Subtract(dueDate);
+            Console.WriteLine(diff.Days);
+
+            currentDate = DateTime.Parse("3/3/2010 2:05:00 AM");
+            diff = currentDate.Subtract(dueDate);
+            Console.WriteLine(diff.Days);
+
+            currentDate = DateTime.Parse("3/4/2010 2:05:00 AM");
+            diff = currentDate.Subtract(dueDate);
+            Console.WriteLine(diff.Days);
+
+
+            dueDate = DateTime.Parse("3/2/2010 3:00:00 PM");
+            currentDate = DateTime.Parse("3/2/2010 2:05:00 AM");
+            diff = currentDate.Subtract(dueDate);
+            Console.WriteLine(diff.Days);
+
+            currentDate = DateTime.Parse("3/3/2010 2:05:00 AM");
+            diff = currentDate.Subtract(dueDate);
+            Console.WriteLine(diff.Days);
+
+            currentDate = DateTime.Parse("3/4/2010 2:05:00 AM");
+            diff = currentDate.Subtract(dueDate);
+            Console.WriteLine(diff.Days);
+
+
         }
     }
 }
