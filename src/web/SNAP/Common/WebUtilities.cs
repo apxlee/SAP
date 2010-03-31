@@ -83,7 +83,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 
 					case OOSPARole.NotAuthenticated:
 					default:
-						defaultViewIndex = ViewIndex.support;
+						defaultViewIndex = ViewIndex.login;
 						break;
 				}
 				
