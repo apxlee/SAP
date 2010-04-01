@@ -210,13 +210,6 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Function(Name="dbo.usp_insert_request_xml")]
-		public int usp_insert_request_xml([Parameter(DbType="Xml")] System.Xml.Linq.XElement request_data, [Parameter(DbType="NVarChar(10)")] string submittedBy, [Parameter(DbType="NVarChar(10)")] string userId, [Parameter(DbType="NVarChar(100)")] string userDisplayName, [Parameter(DbType="NVarChar(100)")] string userTitle, [Parameter(DbType="NVarChar(10)")] string managerUserId, [Parameter(DbType="NVarChar(100)")] string managerDisplayName)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), request_data, submittedBy, userId, userDisplayName, userTitle, managerUserId, managerDisplayName);
-			return ((int)(result.ReturnValue));
-		}
-		
 		[Function(Name="dbo.usp_open_my_request_comments")]
 		public ISingleResult<usp_open_my_request_commentsResult> usp_open_my_request_comments([Parameter(DbType="NVarChar(10)")] string userId)
 		{
@@ -265,8 +258,7 @@ namespace Apollo.AIM.SNAP.Model
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId, requestId);
 			return ((ISingleResult<usp_open_request_tabResult>)(result.ReturnValue));
 		}
-		
-        /*
+		/*
 		[Function(Name="dbo.usp_requests")]
 		public ISingleResult<usp_requestsResult> usp_requests([Parameter(DbType="NVarChar(10)")] string userId, [Parameter(DbType="NVarChar(10)")] string role)
 		{
@@ -279,6 +271,13 @@ namespace Apollo.AIM.SNAP.Model
 		public System.Nullable<System.DateTime> udf_get_next_business_day([Parameter(DbType="SmallDateTime")] System.Nullable<System.DateTime> startDate, [Parameter(DbType="Int")] System.Nullable<int> numDays)
 		{
 			return ((System.Nullable<System.DateTime>)(this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), startDate, numDays).ReturnValue));
+		}
+		
+		[Function(Name="dbo.usp_insert_request_xml")]
+		public int usp_insert_request_xml([Parameter(DbType="Xml")] System.Xml.Linq.XElement request_data, [Parameter(DbType="NVarChar(10)")] string submittedBy, [Parameter(DbType="NVarChar(10)")] string userId, [Parameter(DbType="NVarChar(100)")] string userDisplayName, [Parameter(DbType="NVarChar(100)")] string userTitle, [Parameter(DbType="NVarChar(10)")] string managerUserId, [Parameter(DbType="NVarChar(100)")] string managerDisplayName)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), request_data, submittedBy, userId, userDisplayName, userTitle, managerUserId, managerDisplayName);
+			return ((int)(result.ReturnValue));
 		}
 	}
 	

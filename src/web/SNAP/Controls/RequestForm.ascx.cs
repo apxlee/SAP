@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Collections.Generic;
+using System.Data.Linq;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -19,10 +20,10 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
         protected void Page_Load(object sender, EventArgs e)
         {
-			if (WebUtilities.CurrentViewIndex == ViewIndex.request_form)
-			{
+			//if (WebUtilities.CurrentViewIndex == ViewIndex.request_form)
+			//{
 				BuildRequestForm();
-			}
+			//}
         }
         
         private void BuildRequestForm()
@@ -116,9 +117,14 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
                     using (var db = new SNAPDatabaseDataContext())
                     {
-                        db.usp_insert_request_xml(xmlInput, WebUtilities.CurrentLoginUserId, UserLoginId, UserName, detail.Title, ManagerLoginId, ManagerName);
+                        int requestID = db.usp_insert_request_xml(xmlInput, WebUtilities.CurrentLoginUserId, UserLoginId, UserName, detail.Title, ManagerLoginId, ManagerName);
+                        if (requestID > 0)
+                        {
+                            //TODO set Session variable to requestID
+                            
+                        }
+                        else { Logger.Fatal("SNAP: Request Form -  Submit failure", "Unknown Error"); }
                     }
-
                 }
                 else
                 {

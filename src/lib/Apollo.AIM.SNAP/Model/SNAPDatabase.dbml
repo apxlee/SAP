@@ -138,16 +138,6 @@
       <Association Name="SNAP_Workflow_SNAP_Workflow_State" Member="SNAP_Workflow" ThisKey="workflowId" OtherKey="pkId" Type="SNAP_Workflow" IsForeignKey="true" />
     </Type>
   </Table>
-  <Function Name="dbo.usp_insert_request_xml" Method="usp_insert_request_xml">
-    <Parameter Name="request_data" Type="System.Xml.Linq.XElement" DbType="Xml" />
-    <Parameter Name="submittedBy" Type="System.String" DbType="NVarChar(10)" />
-    <Parameter Name="userId" Type="System.String" DbType="NVarChar(10)" />
-    <Parameter Name="userDisplayName" Type="System.String" DbType="NVarChar(100)" />
-    <Parameter Name="userTitle" Type="System.String" DbType="NVarChar(100)" />
-    <Parameter Name="managerUserId" Type="System.String" DbType="NVarChar(10)" />
-    <Parameter Name="managerDisplayName" Type="System.String" DbType="NVarChar(100)" />
-    <Return Type="System.Int32" />
-  </Function>
   <Function Name="dbo.usp_open_my_request_comments" Method="usp_open_my_request_comments">
     <Parameter Name="userId" Type="System.String" DbType="NVarChar(10)" />
     <ElementType Name="usp_open_my_request_commentsResult">
@@ -273,5 +263,15 @@
     <Parameter Name="startDate" Type="System.DateTime" DbType="SmallDateTime" />
     <Parameter Name="numDays" Type="System.Int32" DbType="Int" />
     <Return Type="System.DateTime" />
+  </Function>
+  <Function Name="dbo.usp_insert_request_xml" Method="usp_insert_request_xml">
+    <Parameter Name="request_data" Type="System.Xml.Linq.XElement" DbType="Xml" />
+    <Parameter Name="submittedBy" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="userId" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="userDisplayName" Type="System.String" DbType="NVarChar(100)" />
+    <Parameter Name="userTitle" Type="System.String" DbType="NVarChar(100)" />
+    <Parameter Name="managerUserId" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="managerDisplayName" Type="System.String" DbType="NVarChar(100)" />
+    <Return Type="System.Int32" />
   </Function>
 </Database>
