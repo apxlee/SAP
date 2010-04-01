@@ -123,6 +123,9 @@ namespace Apollo.AIM.SNAP.Web.Controls
                 else
                 {
                     RequestData.UpdateRequestData(newRequestDataList, _requestFormData);
+                    var requestId = System.Convert.ToInt32(Request.QueryString["RequestId"]);
+                    var accessReq = new AccessRequest(requestId);
+                    accessReq.RequestChanged();
                 }
 
             }
@@ -165,7 +168,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
         private List<usp_open_request_tabResult> loadRequestFormData()
         {
-			if (!string.IsNullOrEmpty(Request.QueryString["requestId"]))
+			if (!string.IsNullOrEmpty(Request.QueryString["RequestId"]))
 			{
 				var requestId = System.Convert.ToInt32(Request.QueryString["RequestId"]);
 				var db = new SNAPDatabaseDataContext();
