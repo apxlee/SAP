@@ -158,8 +158,10 @@ namespace Apollo.AIM.SNAP.Process
                                                                                            createdDate = DateTime.Now,
                                                                                        });
 
+                                    // TODO - send out reminder email
+                                    db.SubmitChanges();
                                 }
-                                db.SubmitChanges();
+                                
                             }
 
                         }

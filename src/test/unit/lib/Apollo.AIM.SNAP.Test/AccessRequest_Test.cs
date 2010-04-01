@@ -780,6 +780,11 @@ namespace Apollo.AIM.SNAP.Test
 
 
                 // get all technical approval
+
+                // !!! for individual test, please uncommnet it
+                // !!! comment it out to save time
+
+                // System.Threading.Thread.Sleep(90000);
                 wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
                 accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
                 accessReq.WorkflowAck(wfs[1].pkId, WorkflowAction.Approved);
@@ -801,6 +806,14 @@ namespace Apollo.AIM.SNAP.Test
 
                 accessTeamState = accessTeamWF.SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Approved);
                 Assert.IsTrue(accessTeamState.completedDate == null);  // all technical approval received, complete it
+
+                // make sure approving manager wf propergates notify and due date to final state
+                var firstApprover = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver)[0];
+                var firstApproverPendingState = firstApprover.SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval);
+                var firstApproverApproveState = firstApprover.SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Approved);
+                Assert.IsTrue(firstApproverPendingState.notifyDate == firstApproverApproveState.notifyDate);
+                Assert.IsTrue(firstApproverPendingState.dueDate == firstApproverApproveState.dueDate);
+
             }
 
         }
