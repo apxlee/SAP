@@ -40,7 +40,7 @@ var userManager = {
     },
 
     GetNames: function(name, selection, dialogDiv) {
-        var postData = "{'name':'" + name.val() + "'}";
+    var postData = "{'name':'" + name.val().replace("(", "").replace(")", "").replace(/\\/, "").replace("'", "\\'") + "'}";
         userManager.ajaxIndicatorUser.show();
 
         $.ajax({
@@ -53,7 +53,7 @@ var userManager = {
                 userManager.ajaxIndicatorUser.hide();
 
                 var names = msg.d;
-
+               
                 // no match                
                 if (names.length == 0) {
                     userManager.FillErrorFields(name);
@@ -80,7 +80,7 @@ var userManager = {
     },
 
     GetUserManagerInfo: function(flag, fullName) {
-        var postData = "{'fullName':'" + fullName.val() + "'}";
+    var postData = "{'fullName':'" + fullName.val().replace("'", "\\'") + "'}";
         userManager.ajaxIndicatorUser.show();
 
         $.ajax({
