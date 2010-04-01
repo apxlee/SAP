@@ -93,7 +93,7 @@ namespace Apollo.AIM.SNAP.Test
             using (var db = new SNAPDatabaseDataContext())
             {
                 var maxRequestId = db.SNAP_Requests.Max(x => x.pkId);
-                var data = db.RetrieveRequest(++maxRequestId);
+                var data = db.RetrieveRequestUserText(++maxRequestId);
                 Assert.IsTrue(data.Count() == 0);
             }
 
@@ -105,7 +105,7 @@ namespace Apollo.AIM.SNAP.Test
             using (var db = new SNAPDatabaseDataContext())
             {
                 var maxRequestId = db.SNAP_Requests.Max(x => x.pkId);
-                var requestTexts = db.RetrieveRequest(maxRequestId);
+                var requestTexts = db.RetrieveRequestUserText(maxRequestId);
 
                 foreach (var text in requestTexts)
                 {
@@ -126,5 +126,17 @@ namespace Apollo.AIM.SNAP.Test
             }
         }
 
+        [Test]
+        public void ShouldOk()
+        {
+            using(var db = new SNAPDatabaseDataContext())
+            {
+                DateTime current = DateTime.Parse("3/31/2010 1:00:00 PM");
+                for (int i = 1; i < 20; i++)
+                {
+                    Console.WriteLine(db.udf_get_next_business_day(current, i));
+                }
+            }
+        }
     }
 }

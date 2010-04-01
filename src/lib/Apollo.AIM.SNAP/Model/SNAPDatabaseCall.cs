@@ -26,7 +26,7 @@ namespace Apollo.AIM.SNAP.Model
 
         }
 
-        public IEnumerable<SNAP_Access_User_Text> RetrieveRequest(int requestId)
+        public IEnumerable<SNAP_Access_User_Text> RetrieveRequestUserText(int requestId)
         {
             //using (var db = new SNAPDatabaseDataContext())
             //{
