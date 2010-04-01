@@ -64,8 +64,7 @@ namespace Apollo.AIM.SNAP.Test
 
                 var xmlInput = RequestData.ToXml(requestDataList);
 
-                db.usp_insert_request_xml(xmlInput, "UnitTester", "UnitTester", "Pong Lee", "Programmer", "gjbelang", "Greg Belanger");
-
+                db.usp_insert_request_xml(xmlInput, "UnitTester", "pxlee", "Pong Lee", "Programmer", "gjbelang", "Greg Belanger");
             }
             
             
@@ -82,7 +81,7 @@ namespace Apollo.AIM.SNAP.Test
             using (var db = new SNAPDatabaseDataContext())
             {
 
-                var reqs = db.SNAP_Requests.Where(x => x.userId == "UnitTester").ToList();
+                var reqs = db.SNAP_Requests.Where(x => x.submittedBy == "UnitTester").ToList();
                 
                 foreach (var r in reqs)
                 {
@@ -117,7 +116,7 @@ namespace Apollo.AIM.SNAP.Test
             
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
 
                 var accessReq = new AccessRequest(req.pkId);
                 accessReq.Ack();
@@ -136,7 +135,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
                 Assert.IsTrue(req.statusEnum == (byte)RequestState.Pending);
             }
         }
@@ -146,7 +145,7 @@ namespace Apollo.AIM.SNAP.Test
         {
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
                 var accessReq = new AccessRequest(req.pkId);
                 accessReq.AddComment("This is access team comment", CommentsType.Access_Notes_AccessTeam);
                 accessReq.AddComment("This is access team for approver comment", CommentsType.Access_Notes_ApprovingManager);
@@ -156,7 +155,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
                 Assert.IsTrue(req.SNAP_Request_Comments.Count == 4);
             }
 
@@ -167,7 +166,7 @@ namespace Apollo.AIM.SNAP.Test
         {
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
 
                 var accessReq = new AccessRequest(req.pkId);
                 accessReq.Ack();
@@ -176,7 +175,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
                 Assert.IsTrue(req.statusEnum == (byte)RequestState.Closed);
                 verifyWorkflowState(req.SNAP_Workflows[0], WorkflowState.Closed_Denied);
                 verifyWorkflowComment(req.SNAP_Workflows[0], CommentsType.Denied);
@@ -204,7 +203,7 @@ namespace Apollo.AIM.SNAP.Test
         {
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
 
                 var accessReq = new AccessRequest(req.pkId);
                 accessReq.Ack();
@@ -213,7 +212,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
                 Assert.IsTrue(req.statusEnum == (byte)RequestState.Closed);
                 verifyWorkflowState(req.SNAP_Workflows[0], WorkflowState.Closed_Cancelled);
                 verifyWorkflowComment(req.SNAP_Workflows[0], CommentsType.Cancelled);
@@ -228,7 +227,7 @@ namespace Apollo.AIM.SNAP.Test
             {
                 using (var db = new SNAPDatabaseDataContext())
                 {
-                    var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                    var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
 
                     var accessReq = new AccessRequest(req.pkId);
                     accessReq.Ack();
@@ -237,7 +236,7 @@ namespace Apollo.AIM.SNAP.Test
 
                 using (var db = new SNAPDatabaseDataContext())
                 {
-                    var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                    var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
                     Assert.IsTrue(req.statusEnum == (byte) RequestState.Change_Requested);
                     Assert.IsTrue(req.SNAP_Workflows[0].SNAP_Workflow_States.Count(s => s.workflowStatusEnum == (byte) WorkflowState.Change_Requested) > i);
                     Assert.IsTrue(req.SNAP_Workflows[0].SNAP_Workflow_Comments.Count(c => c.commentTypeEnum == (byte) CommentsType.Requested_Change) > i);
@@ -246,7 +245,7 @@ namespace Apollo.AIM.SNAP.Test
 
                 using (var db = new SNAPDatabaseDataContext())
                 {
-                    var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                    var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
                     var accessReq = new AccessRequest(req.pkId);
                     accessReq.RequestChanged();
                 }
@@ -254,7 +253,7 @@ namespace Apollo.AIM.SNAP.Test
 
                 using (var db = new SNAPDatabaseDataContext())
                 {
-                    var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                    var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
                     Assert.IsTrue(req.statusEnum == (byte) RequestState.Open);
                     var cnt = i + 1;
                     Assert.IsTrue(req.SNAP_Workflows[0].SNAP_Workflow_States.Count(s => s.workflowStatusEnum == (byte) WorkflowState.Pending_Acknowlegement) > cnt);
@@ -267,7 +266,7 @@ namespace Apollo.AIM.SNAP.Test
         {
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
 
                 var accessReq = new AccessRequest(req.pkId);
 
@@ -299,7 +298,7 @@ namespace Apollo.AIM.SNAP.Test
         {
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
 
                 var accessReq = new AccessRequest(req.pkId);
                 accessReq.Ack();
@@ -323,7 +322,7 @@ namespace Apollo.AIM.SNAP.Test
         {
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
 
                 var accessReq = new AccessRequest(req.pkId);
                 accessReq.Ack();
@@ -348,7 +347,7 @@ namespace Apollo.AIM.SNAP.Test
         {
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
 
                 var accessReq = new AccessRequest(req.pkId);
                 accessReq.Ack();
@@ -372,7 +371,7 @@ namespace Apollo.AIM.SNAP.Test
         {
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
 
                 var accessReq = new AccessRequest(req.pkId);
                 accessReq.Ack();
@@ -398,7 +397,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
 
                 var accessReq = new AccessRequest(req.pkId);
                 accessReq.Ack();
@@ -421,7 +420,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
                 var accessReq = new AccessRequest(req.pkId);
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
 
@@ -438,7 +437,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
 
                 var accessReq = new AccessRequest(req.pkId);
                 accessReq.Ack();
@@ -466,7 +465,7 @@ namespace Apollo.AIM.SNAP.Test
             
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
                 var accessReq = new AccessRequest(req.pkId);
                 
 
@@ -486,7 +485,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
 
                 var accessReq = new AccessRequest(req.pkId);
                 accessReq.Ack();
@@ -513,7 +512,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
                 var accessReq = new AccessRequest(req.pkId);
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
                 verifyWorkflowStateComplete(wfs[0], WorkflowState.Pending_Approval);
@@ -534,7 +533,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
 
                 var accessReq = new AccessRequest(req.pkId);
                 accessReq.Ack();
@@ -567,7 +566,7 @@ namespace Apollo.AIM.SNAP.Test
             
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
                 var accessReq = new AccessRequest(req.pkId);
 
                 Assert.IsTrue(req.statusEnum == (byte)RequestState.Change_Requested);
@@ -588,7 +587,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
 
                 var accessReq = new AccessRequest(req.pkId);
                 accessReq.Ack();
@@ -620,7 +619,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
                 var accessReq = new AccessRequest(req.pkId);
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
                 verifyWorkflowStateComplete(wfs[0], WorkflowState.Pending_Approval);
@@ -649,7 +648,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
 
                 var accessReq = new AccessRequest(req.pkId);
                 accessReq.Ack();
@@ -682,7 +681,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
                 var accessReq = new AccessRequest(req.pkId);
 
                 var accessTeamWF = req.SNAP_Workflows.Single(w => w.actorId == 1); // actid = 1 => accessTeam
@@ -702,7 +701,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
 
                 var accessReq = new AccessRequest(req.pkId);
                 accessReq.Ack();
@@ -735,7 +734,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
                 var accessReq = new AccessRequest(req.pkId);
 
                 Assert.IsTrue(req.statusEnum == (byte)RequestState.Change_Requested);
@@ -755,7 +754,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
 
                 var accessReq = new AccessRequest(req.pkId);
                 accessReq.Ack();
@@ -791,7 +790,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
                 var accessReq = new AccessRequest(req.pkId);
 
                 //var accessTeamWF = req.SNAP_Workflows.Single(w => w.actorId == 1); // actid = 1 => accessTeam
@@ -812,7 +811,7 @@ namespace Apollo.AIM.SNAP.Test
         {
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
 
                 var accessReq = new AccessRequest(req.pkId);
                 Assert.IsFalse(accessReq.CreateServiceDeskTicket());
@@ -834,7 +833,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
 
                 var accessReq = new AccessRequest(req.pkId);
                 accessReq.Ack();
@@ -871,7 +870,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
                 var accessReq = new AccessRequest(req.pkId);
 
                 Assert.IsTrue(req.statusEnum == (byte)RequestState.Change_Requested);
@@ -897,7 +896,7 @@ namespace Apollo.AIM.SNAP.Test
             // set up for first request to change
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
 
                 var accessReq = new AccessRequest(req.pkId);
                 accessReq.Ack();
@@ -933,7 +932,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
                 var accessReq = new AccessRequest(req.pkId);
 
                 Assert.IsTrue(req.statusEnum == (byte)RequestState.Change_Requested);
@@ -951,7 +950,7 @@ namespace Apollo.AIM.SNAP.Test
             for (int i = 0; i < 5; i++ )
                 using (var db = new SNAPDatabaseDataContext())
                 {
-                    var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                    var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
 
                     var accessReq = new AccessRequest(req.pkId);
 
@@ -1030,7 +1029,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
 
                 var accessReq = new AccessRequest(req.pkId);
                 accessReq.Ack();
@@ -1062,15 +1061,21 @@ namespace Apollo.AIM.SNAP.Test
                 // create SD ticket
                 accessReq.CreateServiceDeskTicket();
 
+                // For dev:
+                // login to to http://awhdht02:8080/CAisd/pdmweb.exe 
+                // sign in as svc_cap
+                // look at Change Orders/Unassinged/all 
+
             }
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
                 var accessReq = new AccessRequest(req.pkId);
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
                 verifyWorkflowStateComplete(wfs[0], WorkflowState.Approved);
                 Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Provisioning).completedDate == null);
+                Assert.IsNotNull(req.ticketNumber);
 
             }
 
@@ -1082,7 +1087,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
 
                 var accessReq = new AccessRequest(req.pkId);
                 accessReq.Ack();
@@ -1120,7 +1125,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
                 var accessReq = new AccessRequest(req.pkId);
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
                 verifyWorkflowStateComplete(wfs[0], WorkflowState.Pending_Provisioning);
@@ -1137,7 +1142,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
 
                 var accessReq = new AccessRequest(req.pkId);
                 accessReq.Ack();
@@ -1161,7 +1166,7 @@ namespace Apollo.AIM.SNAP.Test
             
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
                 var accessReq = new AccessRequest(req.pkId);
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
                 verifyWorkflowStateComplete(wfs[0], WorkflowState.Pending_Approval);
@@ -1181,7 +1186,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
 
                 var accessReq = new AccessRequest(req.pkId);
                 accessReq.Ack();
@@ -1216,7 +1221,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
                 var accessReq = new AccessRequest(req.pkId);
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
                 verifyWorkflowStateComplete(wfs[0], WorkflowState.Pending_Approval);
@@ -1236,7 +1241,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
 
                 var accessReq = new AccessRequest(req.pkId);
                 accessReq.Ack();
@@ -1270,7 +1275,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
                 var accessReq = new AccessRequest(req.pkId);
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
                 verifyWorkflowStateComplete(wfs[0], WorkflowState.Pending_Approval);
@@ -1291,7 +1296,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
 
                 var accessReq = new AccessRequest(req.pkId);
                 accessReq.Ack();
@@ -1327,7 +1332,7 @@ namespace Apollo.AIM.SNAP.Test
             
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
                 var accessReq = new AccessRequest(req.pkId);
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
                 verifyWorkflowStateComplete(wfs[0], WorkflowState.Pending_Approval);
@@ -1350,7 +1355,7 @@ namespace Apollo.AIM.SNAP.Test
         {
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.userId == "UnitTester");
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
 
                 var accessReq = new AccessRequest(req.pkId);
                 accessReq.Ack();

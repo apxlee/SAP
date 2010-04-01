@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -71,7 +72,7 @@ namespace Apollo.AIM.SNAP.Test
             changeRequest.CategoryName = "Server.Systems.Privileged Access";
 
             changeRequest.Submitter.Get("svc_Cap");
-            changeRequest.AffectedUser.Get("svc_Cap");
+            changeRequest.AffectedUser.Get("pxlee");
 
             changeRequest.Attributes["description"] = "Here is the description";
             //changeRequest.Properties.SetPropertyValue("key1", "value");
@@ -107,6 +108,31 @@ namespace Apollo.AIM.SNAP.Test
         public void ShouldSendEmail()
         {
             Emailer.Send("pong.lee@apollogrp.edu", "Pong.Lee@apollogrp.edu", "", "Test", "<h1>Test From Apollo.CA.Emailer</h1>", true);
+        }
+
+        [Test]
+        public void ShouldSendFormattedEmail()
+        {
+            // There are the template keys
+            // APPROVERNAME
+            // SUBJECTFIRSTNAME
+            // SUBJECTLASTNAME
+            // CAPURL
+            // PROCESSNAME
+            // INCIDENT
+
+            Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail("pong.lee@apollogrp.edu",
+                                                                     "Test Formated Email",
+                                                                     @".\newTaskNotification.html",
+                                                                     new Hashtable()
+                                                                         {
+                                                                             {"APPROVERNAME", "approvaer"},
+                                                                             {"SUBJECTFIRSTNAME", "firstName"},
+                                                                             {"SUBJECTLASTNAME", "lastName"},
+                                                                             {"CAPURL", "url"},
+                                                                             {"PROCESSNAME", "processName"},
+                                                                             {"INCIDENT", "incident"}
+                                                                         });
         }
 
         [Test]

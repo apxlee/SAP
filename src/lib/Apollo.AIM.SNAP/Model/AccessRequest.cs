@@ -381,7 +381,19 @@ namespace Apollo.AIM.SNAP.Model
 
                     if (result)
                     {
-                        // TODO - create SD here, save ticket in the request table
+                        var changeRequest = new ServiceDesk.ChangeRequest(Apollo.ServiceDesk.SDConfig.Instance.Login, Apollo.ServiceDesk.SDConfig.Instance.Password);
+
+                        changeRequest.CategoryName = "Server.Systems.Privileged Access";
+
+                        changeRequest.Submitter.Get("svc_Cap");
+                        changeRequest.AffectedUser.Get(req.userId);  // req.userId???
+
+                        changeRequest.Attributes["description"] = requestDescription;
+
+                        changeRequest.Create();
+
+
+                        req.ticketNumber = changeRequest.Number;
 
                         db.SubmitChanges();
                     }
@@ -425,6 +437,27 @@ namespace Apollo.AIM.SNAP.Model
 #endregion
 
         #region private methods
+
+        private string requestDescription
+        {
+            get
+            {
+                StringBuilder sb = new StringBuilder();
+
+                using (var db = new SNAPDatabaseDataContext())
+                {
+                    var requestTexts = db.RetrieveRequestUserText(_id);
+
+                    foreach (var text in requestTexts)
+                    {
+                        sb.AppendLine(text.userText);
+                        sb.AppendLine("");
+                    }
+                }
+
+                return sb.ToString();
+            }
+        }
 
         private bool reqStateTransition(SNAP_Request req, RequestState reqFr, RequestState reqTo, SNAP_Workflow accessTeamWF,  WorkflowState wfFr, WorkflowState wfTo)
         {

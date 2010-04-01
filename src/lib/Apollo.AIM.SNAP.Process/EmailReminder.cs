@@ -144,7 +144,7 @@ namespace Apollo.AIM.SNAP.Process
                                                   " due on: " +
                                                   state.dueDate);
 
-                            if (state.dueDate != null)
+                            if (state.dueDate != null && state.notifyDate != null)
                             {
                                 DateTime dueDate = DateTime.Parse(state.dueDate.ToString());
                                 TimeSpan diff = DateTime.Now.Subtract(dueDate);
@@ -154,16 +154,11 @@ namespace Apollo.AIM.SNAP.Process
                                     state.SNAP_Workflow.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
                                                                                        {
                                                                                            commentText = "over due!",
-                                                                                           commentTypeEnum =
-                                                                                               (byte)
-                                                                                               CommentsType.
-                                                                                                   Email_Reminder,
+                                                                                           commentTypeEnum = (byte)CommentsType.Email_Reminder,
                                                                                            createdDate = DateTime.Now,
                                                                                        });
 
                                 }
-
-
                                 db.SubmitChanges();
                             }
 
