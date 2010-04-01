@@ -182,6 +182,7 @@ namespace Apollo.AIM.SNAP.Web.includes
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void btnSave_Click(object sender, EventArgs e)
         {
+            /*
             if (lblOutput.Text == "Not supported!!!")
             {
                 return;
@@ -275,6 +276,7 @@ namespace Apollo.AIM.SNAP.Web.includes
 
             lblOutput.Text = "Save was successful";
             cs.SavedPerson = PersonTools.GetPersonFromOID(person.Oid);
+             */
         }
 
         /// <summary>
