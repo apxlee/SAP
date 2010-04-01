@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Data;
 using System.Configuration;
 using System.Linq;
@@ -181,6 +182,21 @@ namespace Apollo.AIM.SNAP.Web.Common
                 //return x;
             }
          }
+         
+        public static void Redirect(string redirectUrl)
+        {
+			try
+			{
+				Page currentPage = HttpContext.Current.Handler as Page;
+				currentPage.Response.Redirect(redirectUrl, false);
+			}
+			catch (ThreadAbortException)
+			{
+				// No need to log this silly ThreadAbortException, can't get around this
+			}
+			
+			HttpContext.Current.ApplicationInstance.CompleteRequest();
+        }
      }
         
     public static class ExtensionMethods
