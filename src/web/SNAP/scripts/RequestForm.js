@@ -40,7 +40,7 @@ var userManager = {
     },
 
     GetNames: function(name, selection, dialogDiv) {
-    var postData = "{'name':'" + name.val().replace("(", "").replace(")", "").replace(/\\/, "").replace("'", "\\'") + "'}";
+        var postData = "{'name':'" + name.val().replace("(", "").replace(")", "").replace(/\\/, "").replace("'", "\\'") + "'}";
         userManager.ajaxIndicatorUser.show();
 
         $.ajax({
@@ -53,7 +53,7 @@ var userManager = {
                 userManager.ajaxIndicatorUser.hide();
 
                 var names = msg.d;
-               
+
                 // no match                
                 if (names.length == 0) {
                     userManager.FillErrorFields(name);
@@ -80,7 +80,7 @@ var userManager = {
     },
 
     GetUserManagerInfo: function(flag, fullName) {
-    var postData = "{'fullName':'" + fullName.val().replace("'", "\\'") + "'}";
+        var postData = "{'fullName':'" + fullName.val().replace("'", "\\'") + "'}";
         userManager.ajaxIndicatorUser.show();
 
         $.ajax({
@@ -267,6 +267,7 @@ var userManager = {
 
     UserNameChange: function() {
         userManager.userName.change(function() {
+            userManager.userLoginId.val('');
             userManager.GetNames(userManager.userName, userManager.userSelection, userManager.userSelectionDiv);
         })
     },
@@ -290,6 +291,7 @@ var userManager = {
 
     MgrNameChange: function() {
         userManager.mgrName.change(function() {
+            userManager.mgrLoginId.val('');
             userManager.GetNames(userManager.mgrName, userManager.mgrSelection, userManager.mgrSelectionDiv);
         })
     },
@@ -319,7 +321,6 @@ var userManager = {
             userManager.mgrLoginId.val(names[0].LoginId);
             userManager.AssignManagerName(names[0].Name);
         } else {
-
             userManager.userName.val(names[0].Name);
             userManager.userLoginId.val(names[0].LoginId);
             userManager.AssignManagerName(names[0].ManagerName);
@@ -376,9 +377,19 @@ var userManager = {
     },
 
     FillManagerInfoFromUserSelection: function(userManagerInfo) {
-
-        userManager.AssignManagerName(userManagerInfo.ManagerName);
-        userManager.mgrLoginId.val(userManagerInfo.ManagerLoginId)
+        
+        if (userManagerInfo.ManagerName != 'unknown') {
+            userManager.AssignManagerName(userManagerInfo.ManagerName);
+            userManager.mgrLoginId.val(userManagerInfo.ManagerLoginId);
+        }
+        else {
+            userManager.mgrName.removeAttr('disabled');
+            userManager.mgrNameCheck.removeAttr('disabled');
+            userManager.mgrEdit.attr("disabled", true);
+            userManager.mgrName.val('');
+            userManager.mgrLoginId.val('');
+            userManager.mgrName.focus();
+        }
     },
 
     FillManagerInfoFromManagerSelection: function(userManagerInfo) {
@@ -422,6 +433,12 @@ var userManager = {
                 buttons: {
                     Cancel: function() {
                         $(this).dialog('close');
+                        if ($(this).attr('id').indexOf("name") > -1) {
+                            userManager.userName.focus();
+                        }
+                        if ($(this).attr('id').indexOf("manager") > -1) {
+                            userManager.mgrName.focus();
+                        }
                     }
                 }
             });
@@ -467,11 +484,11 @@ var userManager = {
         this.BuildDialog();
         this.HandleGetUserNames();
         this.HandleGetManagerNames();
-        this.UserNameFocusOut();
         this.UserNameChange();
+        this.UserNameFocusOut();
         this.HandleNameSelectionChange();
-        this.MgrNameFocusOut();
         this.MgrNameChange();
+        this.MgrNameFocusOut();
         this.HandleManagerSelectionChange();
         this.HandleEditManagerName();
         this.HandleClearClick();
