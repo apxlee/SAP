@@ -29,6 +29,7 @@ namespace Apollo.AIM.SNAP.Process
 
             _timer = new Timer(1800000);
 
+            //    _timer = new Timer(10000);
 
             // Now tell the timer when the timer fires
             // (the Elapsed event) call the _timer_Elapsed
@@ -40,22 +41,14 @@ namespace Apollo.AIM.SNAP.Process
 
         protected override void OnStart(string[] args)
         {
-            FileStream fs = new FileStream(fileName,FileMode.OpenOrCreate, FileAccess.Write);
-            StreamWriter m_streamWriter = new StreamWriter(fs);
-            m_streamWriter.BaseStream.Seek(0, SeekOrigin.End);
-            m_streamWriter.WriteLine(" EmailReminderlogger: Service Start \n"); m_streamWriter.Flush();
-            m_streamWriter.Close();
+            outputMessage(" EmailReminderlogger: Service Start \n", EventLogEntryType.Information);
             _timer.Start();
 
         }
 
         protected override void OnStop()
         {
-            FileStream fs = new FileStream(fileName,FileMode.OpenOrCreate, FileAccess.Write);
-            StreamWriter m_streamWriter = new StreamWriter(fs);
-            m_streamWriter.BaseStream.Seek(0, SeekOrigin.End);
-            m_streamWriter.WriteLine(" EmailReminderlogger: Service Stopped \n"); m_streamWriter.Flush();
-            m_streamWriter.Close();
+            outputMessage(" EmailReminderlogger: Service Stop \n", EventLogEntryType.Information);
             _timer.Stop();
 
         }
@@ -85,22 +78,11 @@ namespace Apollo.AIM.SNAP.Process
 
         protected void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-
-            FileStream fs = new FileStream(fileName,FileMode.OpenOrCreate, FileAccess.Write);
-            StreamWriter m_streamWriter = new StreamWriter(fs);
-            m_streamWriter.BaseStream.Seek(0, SeekOrigin.End);
-            m_streamWriter.WriteLine(" EmailReminderlogger: time elapsed " + DateTime.Now + "\n");
-            m_streamWriter.Flush();
-            m_streamWriter.Close();
+            outputMessage(" EmailReminderlogger: time elapsed ", EventLogEntryType.Information);
 
             if (DateTime.Now.Hour >= 2 && !done)
             {
-                fs = new FileStream(fileName,FileMode.OpenOrCreate, FileAccess.Write);
-                m_streamWriter = new StreamWriter(fs);
-                m_streamWriter.BaseStream.Seek(0, SeekOrigin.End);
-                m_streamWriter.WriteLine(" EmailReminderlogger: DO it time " + DateTime.Now + "\n");
-                m_streamWriter.Flush();
-                m_streamWriter.Close();
+                outputMessage(" EmailReminderlogger: DO it time ", EventLogEntryType.Information);
 
                 emailApproverForOverdueTask();
 
@@ -112,15 +94,21 @@ namespace Apollo.AIM.SNAP.Process
                 done = false;
             }
 
-            /*
-            EventLog evt = new EventLog("ArcaneTimeLogger");
+        }
 
-            string message = "Arcane Time:" + DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString();
 
-            evt.Source = "ArcaneTimeLoggerService";
+        private void outputMessage(string msg, EventLogEntryType type)
+        {
+            FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.Write);
+            StreamWriter m_streamWriter = new StreamWriter(fs);
+            m_streamWriter.BaseStream.Seek(0, SeekOrigin.End);
+            m_streamWriter.WriteLine(msg + DateTime.Now + "\n");
+            m_streamWriter.Flush();
+            m_streamWriter.Close();
 
-            evt.WriteEntry(message, EventLogEntryType.Information);
-             */
+            EventLog evt = new EventLog();
+            evt.Source = this.ServiceName;
+            evt.WriteEntry(msg, type);
 
         }
 
@@ -136,40 +124,48 @@ namespace Apollo.AIM.SNAP.Process
                         if (state.SNAP_Workflow.SNAP_Request.statusEnum != (byte) RequestState.Closed)
                         {
                             // TODO - should be remind submitter to work on 'request to change', SLA is 3 days or does that matter
-                            if (state.workflowStatusEnum == (byte) WorkflowState.Pending_Approval 
+                            if (state.workflowStatusEnum == (byte)WorkflowState.Pending_Approval
                                 && state.SNAP_Workflow.SNAP_Actor.SNAP_Actor_Group.actorGroupType != (byte)ActorApprovalType.Workflow_Admin)
+                            {
                                 // only remind approvers, not access team
 
-                                Console.WriteLine(state.pkId + "-" + state.SNAP_Workflow.SNAP_Actor.displayName +
-                                                  " due on: " +
-                                                  state.dueDate);
+                                outputMessage("WF id: " + state.SNAP_Workflow.pkId + "-" + state.SNAP_Workflow.SNAP_Actor.displayName +" due on: " + state.dueDate, EventLogEntryType.Information);
 
-                            if (state.dueDate != null && state.notifyDate != null)
-                            {
-                                DateTime dueDate = DateTime.Parse(state.dueDate.ToString());
-                                TimeSpan diff = DateTime.Now.Subtract(dueDate);
 
-                                if (diff.Days == 1) // more than 24 hours over due
+                                if (state.dueDate != null && state.notifyDate != null)
                                 {
-                                    state.SNAP_Workflow.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
-                                                                                       {
-                                                                                           commentText = "over due!",
-                                                                                           commentTypeEnum = (byte)CommentsType.Email_Reminder,
-                                                                                           createdDate = DateTime.Now,
-                                                                                       });
+                                    DateTime dueDate = DateTime.Parse(state.dueDate.ToString());
+                                    TimeSpan diff = DateTime.Now.Subtract(dueDate);
 
-                                    // TODO - send out reminder email
-                                    db.SubmitChanges();
+                                    if (diff.Days == 1) // more than 24 hours over due
+                                    {
+                                        state.SNAP_Workflow.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
+                                                                                           {
+                                                                                               commentText = "over due!",
+                                                                                               commentTypeEnum =
+                                                                                                   (byte)
+                                                                                                   CommentsType.
+                                                                                                       Email_Reminder,
+                                                                                               createdDate =
+                                                                                                   DateTime.Now,
+                                                                                           });
+
+                                        outputMessage("WF id: " + state.SNAP_Workflow.pkId + " gets email nag",EventLogEntryType.Information);
+
+                                        // TODO - send out reminder email
+                                        db.SubmitChanges();
+                                    }
+
                                 }
-                                
                             }
 
                         }
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine("state id = " + state.pkId + " Message: " + ex.Message);
+                        outputMessage("WF id: " + state.SNAP_Workflow.pkId + ", exception : " + ex, EventLogEntryType.Error);
                     }
+
                 }
             }
         }
