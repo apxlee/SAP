@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Configuration;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
+using Apollo.AIM.SNAP.Model;
 using Apollo.AIM.SNAP.Web.Common;
 
 namespace Apollo.AIM.SNAP.Web.Controls
@@ -16,7 +18,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		
 		protected void Page_Load(object sender, EventArgs e)
 		{
-			BuildRibbon();
+				BuildRibbon();
 		}
 
 		private PlaceHolder WrapControl(WebControl control, string element, string elementID)
@@ -42,33 +44,40 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			//
 			List<string> linkButtons = new List<string>{};
 			string linksContainerWidth = "763";
-			
-			switch ( WebUtilities.CurrentRole )
-			{
-				case Role.ApprovingManager :
-					linkButtons.AddRange(new List<string> { "request_form", "my_requests", "my_approvals", "search", "support" });
-					linksContainerWidth = "600";
-					break;
-					
-				case Role.AccessTeam :
-					linkButtons.AddRange(new List<string> { "request_form", "my_requests", "access_team", "search", "support" });
-					linksContainerWidth = "600";
-					break;
-					
-				case Role.SuperUser :
-					linkButtons.AddRange(new List<string> { "request_form", "my_requests", "my_approvals", "access_team", "search", "support" });
-					linksContainerWidth = "763";
-					break;
 
-				case Role.Requestor :
-					linkButtons.AddRange(new List<string> { "request_form", "my_requests", "search", "support" });
-					linksContainerWidth = "430";
-					break;
-				
-				case Role.NotAuthenticated :
-				default :
-					linkButtons.AddRange(new List<string>{ "login", "support" });
-					break;
+			if (Convert.ToBoolean(ConfigurationManager.AppSettings["SNAPMaintenanceOn"].ToString()))
+			{
+				linkButtons.AddRange(new List<string> { "support" });
+			}
+			else
+			{
+				switch ( WebUtilities.CurrentRole )
+				{
+					case Role.ApprovingManager :
+						linkButtons.AddRange(new List<string> { "request_form", "my_requests", "my_approvals", "search", "support" });
+						linksContainerWidth = "600";
+						break;
+						
+					case Role.AccessTeam :
+						linkButtons.AddRange(new List<string> { "request_form", "my_requests", "access_team", "search", "support" });
+						linksContainerWidth = "600";
+						break;
+						
+					case Role.SuperUser :
+						linkButtons.AddRange(new List<string> { "request_form", "my_requests", "my_approvals", "access_team", "search", "support" });
+						linksContainerWidth = "763";
+						break;
+
+					case Role.Requestor :
+						linkButtons.AddRange(new List<string> { "request_form", "my_requests", "search", "support" });
+						linksContainerWidth = "430";
+						break;
+					
+					case Role.NotAuthenticated :
+					default :
+						linkButtons.AddRange(new List<string>{ "login", "support" });
+						break;
+				}
 			}
 
 			Literal openElements = new Literal();
