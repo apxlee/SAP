@@ -1036,6 +1036,7 @@ namespace Apollo.AIM.SNAP.Test
                 }
         }
 
+        [Ignore]
         [Test]
         public void ShouldHandleCreateSDTicket()
         {
@@ -1094,6 +1095,7 @@ namespace Apollo.AIM.SNAP.Test
 
         }
 
+        [Ignore]
         [Test]
         public void ShouldHandleFinalizeRequest()
         {

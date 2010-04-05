@@ -82,7 +82,7 @@ namespace Apollo.AIM.SNAP.Process
 
             if (DateTime.Now.Hour >= 2 && !done)
             {
-                outputMessage(" EmailReminderlogger: DO it time ", EventLogEntryType.Information);
+                //outputMessage(" EmailReminderlogger: DO it time ", EventLogEntryType.Information);
 
                 emailApproverForOverdueTask();
 
@@ -99,12 +99,14 @@ namespace Apollo.AIM.SNAP.Process
 
         private void outputMessage(string msg, EventLogEntryType type)
         {
+            /*
             FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.Write);
             StreamWriter m_streamWriter = new StreamWriter(fs);
             m_streamWriter.BaseStream.Seek(0, SeekOrigin.End);
             m_streamWriter.WriteLine(msg + DateTime.Now + "\n");
             m_streamWriter.Flush();
             m_streamWriter.Close();
+             */
 
             EventLog evt = new EventLog();
             evt.Source = this.ServiceName;
@@ -163,7 +165,7 @@ namespace Apollo.AIM.SNAP.Process
                     }
                     catch (Exception ex)
                     {
-                        outputMessage("WF id: " + state.SNAP_Workflow.pkId + ", exception : " + ex, EventLogEntryType.Error);
+                        outputMessage("WF id: " + state.SNAP_Workflow.pkId + ", Stack Trace : " + ex.StackTrace, EventLogEntryType.Error);
                     }
 
                 }
