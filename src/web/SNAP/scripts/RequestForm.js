@@ -283,16 +283,18 @@ var userManager = {
 
     MgrNameFocusOut: function() {
         userManager.mgrName.focusout(function() {
-            if (userManager.mgrLoginId.val() == "") {
-                userManager.GetNames(userManager.mgrName, userManager.mgrSelection, userManager.mgrSelectionDiv);
-            }
+            alert("Mgr FocusOut");
+            //if (userManager.mgrLoginId.val() == "") {
+            //    userManager.GetNames(userManager.mgrName, userManager.mgrSelection, userManager.mgrSelectionDiv);
+            //}
         })
     },
 
     MgrNameChange: function() {
         userManager.mgrName.change(function() {
-            userManager.mgrLoginId.val('');
-            userManager.GetNames(userManager.mgrName, userManager.mgrSelection, userManager.mgrSelectionDiv);
+            alert("Mgr Change");
+            //userManager.mgrLoginId.val('');
+            //userManager.GetNames(userManager.mgrName, userManager.mgrSelection, userManager.mgrSelectionDiv);
         })
     },
 
@@ -377,7 +379,7 @@ var userManager = {
     },
 
     FillManagerInfoFromUserSelection: function(userManagerInfo) {
-        
+
         if (userManagerInfo.ManagerName != 'unknown') {
             userManager.AssignManagerName(userManagerInfo.ManagerName);
             userManager.mgrLoginId.val(userManagerInfo.ManagerLoginId);
@@ -494,6 +496,7 @@ var userManager = {
         this.HandleClearClick();
         this.HandleSubmitClick();
         this.Clear();
+        
     }
 }
 

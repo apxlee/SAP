@@ -15,16 +15,6 @@
 		</div>
 		
 		<fieldset><!-- use fieldset for standards & compliance -->
-		
-		<!-- TODO use javascript to write page validation to the container
-		<div class="csm_input_validation_summary">
-            <span>Required Fields Are Missing</span>
-            <ul>
-                <li><label for="_userId">Please enter your name.</label></li>
-                <li><label for="_justification">Please complete the justification section.</label></li>
-            </ul>
-        </div>
-        -->
         
         <div id="_formValidationTop"></div>
         

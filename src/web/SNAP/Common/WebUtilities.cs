@@ -3,6 +3,7 @@ using System.Threading;
 using System.Data;
 using System.Configuration;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
@@ -32,8 +33,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 		
 		public static string CurrentServer
 		{
-			// TODO
-			get { return "AWACPXS01"; }
+			get { return HttpContext.Current.Server.MachineName; }
 		}
         
         public static Role CurrentRole
@@ -117,10 +117,12 @@ namespace Apollo.AIM.SNAP.Web.Common
                 }
                 catch (Exception ex)
                 {
-					// TODO: reenable logger, doesn't work on localhost (jds)
-					//
-                    //Logger.Error("WebUtilities - DetermineRole failed", ex);
-                    return Role.NotAuthenticated;
+                    #if DEBUG
+                        return Role.NotAuthenticated;
+                    #else
+                        Logger.Error("WebUtilities - DetermineRole failed", ex);
+                        return Role.NotAuthenticated;
+                    #endif
                 }
             }
         }
