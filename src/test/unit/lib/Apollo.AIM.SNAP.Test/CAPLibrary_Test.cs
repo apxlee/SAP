@@ -123,7 +123,7 @@ namespace Apollo.AIM.SNAP.Test
 
             Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail("pong.lee@apollogrp.edu",
                                                                      "Test Formated Email",
-                                                                     @".\newTaskNotification.html",
+                                                                     @".\approval.html", // newTaskNotification.html",
                                                                      new Hashtable()
                                                                          {
                                                                              {"APPROVERNAME", "approvaer"},
@@ -268,6 +268,81 @@ namespace Apollo.AIM.SNAP.Test
 
                 }
             }   
-        }   
+        }
+
+        [Test] public void ShouldSendEmbededEmail()
+        {
+            
+        }
+
+        /*
+
+        static void EmbedImages()
+        {
+            //create the mail message
+            MailMessage mail = new MailMessage();
+
+            //set the addresses
+            mail.From = new MailAddress("me@mycompany.com");
+            mail.To.Add("you@yourcompany.com");
+
+            //set the content
+            mail.Subject = "This is an email";
+
+            //first we create the Plain Text part
+            AlternateView plainView = AlternateView.CreateAlternateViewFromString("This is my plain text content, viewable by those clients that don't support html", null, "text/plain");
+
+            //then we create the Html part
+            //to embed images, we need to use the prefix 'cid' in the img src value
+            //the cid value will map to the Content-Id of a Linked resource.
+            //thus <img src='cid:companylogo'> will map to a LinkedResource with a ContentId of 'companylogo'
+            AlternateView htmlView = AlternateView.CreateAlternateViewFromString("Here is an embedded image.<img src=cid:companylogo>", null, "text/html");
+
+            //create the LinkedResource (embedded image)
+            LinkedResource logo = new LinkedResource("c:\\temp\\logo.gif");
+            logo.ContentId = "companylogo";
+            //add the LinkedResource to the appropriate view
+            htmlView.LinkedResources.Add(logo);
+
+            //add the views
+            mail.AlternateViews.Add(plainView);
+            mail.AlternateViews.Add(htmlView);
+
+
+            //send the message
+            SmtpClient smtp = new SmtpClient("127.0.0.1"); //specify the mail server address
+            smtp.Send(mail);
+        }
+
+          protected void yourButton_Click(object sender, EventArgs e)
+    {
+            
+            string strMailContent = "Welcome new user";
+            string fromAddress = "yourname@yoursite.com";
+            string toAddress = "newuser@hisdomain.com";
+            string contentId  = "image1";
+            string path = Server.MapPath(@"images/Logo.jpg"); // my logo is placed in images folder
+            MailMessage mailMessage = new MailMessage( fromAddress, toAddress );
+            mailMessage.Bcc.Add("inkrajesh@hotmail.com"); // put your id here
+            mailMessage.Subject = "Welcome new User";
+          
+
+            LinkedResource logo = new LinkedResource(path);
+            logo.ContentId = "companylogo";
+     // done HTML formatting in the next line to display my logo
+            AlternateView av1 = AlternateView.CreateAlternateViewFromString("<html><body><img src=cid:companylogo/><br></body></html>" + strMailContent, null, MediaTypeNames.Text.Html);
+            av1.LinkedResources.Add(logo);
+
+
+            mailMessage.AlternateViews.Add(av1);
+            mailMessage.IsBodyHtml = true;
+            SmtpClient mailSender = new SmtpClient("localhost"); //use this if you are in the development server
+                        mailSender.Send(mailMessage);
+           
+        }    
+         * 
+         * 
+         * 
+         */
     }
 }
