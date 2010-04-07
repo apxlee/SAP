@@ -113,26 +113,7 @@ namespace Apollo.AIM.SNAP.Test
         [Test]
         public void ShouldSendFormattedEmail()
         {
-            // There are the template keys
-            // APPROVERNAME
-            // SUBJECTFIRSTNAME
-            // SUBJECTLASTNAME
-            // CAPURL
-            // PROCESSNAME
-            // INCIDENT
-
-            Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail("pong.lee@apollogrp.edu",
-                                                                     "Test Formated Email",
-                                                                     @".\approval.html", // newTaskNotification.html",
-                                                                     new Hashtable()
-                                                                         {
-                                                                             {"APPROVERNAME", "approvaer"},
-                                                                             {"SUBJECTFIRSTNAME", "firstName"},
-                                                                             {"SUBJECTLASTNAME", "lastName"},
-                                                                             {"CAPURL", "url"},
-                                                                             {"PROCESSNAME", "processName"},
-                                                                             {"INCIDENT", "incident"}
-                                                                         });
+            Email.RequestAsssignToAccessTeam(1, "submiter_first_name", "submitter last_name");
         }
 
         [Test]

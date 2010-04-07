@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using Apollo.AIM.SNAP.CA;
 using Apollo.AIM.SNAP.Model;
 using NUnit.Framework;
 
@@ -1416,7 +1417,6 @@ namespace Apollo.AIM.SNAP.Test
             Console.WriteLine(diff.Days);
 
 
-
             dueDate = DateTime.Parse("3/2/2010 3:00:00 AM");
             currentDate = DateTime.Parse("3/2/2010 2:05:00 AM");
             diff = currentDate.Subtract(dueDate);
@@ -1443,7 +1443,95 @@ namespace Apollo.AIM.SNAP.Test
             currentDate = DateTime.Parse("3/4/2010 2:05:00 AM");
             diff = currentDate.Subtract(dueDate);
             Console.WriteLine(diff.Days);
+        }
 
+        [Test]public void ShouldUpdateRequest()
+        {
+            int id;
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+                Console.WriteLine("Before ...");
+                Console.WriteLine("submitter: " + req.submittedBy);
+                Console.WriteLine("userId : " + req.userId);
+                Console.WriteLine("title: " + req.userTitle);
+                Console.WriteLine("name: " + req.userDisplayName);
+                Console.WriteLine("MgrId: " + req.managerUserId);
+                Console.WriteLine("Mgr Name: " + req.managerDisplayName);
+
+                id = req.pkId;
+                updateRequest(req.pkId, "NewTester", "jdsteele", "Steeler", "clschwim", "Swimmer");
+            }
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.pkId == id);
+                Console.WriteLine("After ...");
+                Console.WriteLine("submitter: " + req.submittedBy);
+                Console.WriteLine("userId : " + req.userId);
+                Console.WriteLine("title: " + req.userTitle);
+                Console.WriteLine("name: " + req.userDisplayName);
+                Console.WriteLine("MgrId: " + req.managerUserId);
+                Console.WriteLine("Mgr Name: " + req.managerDisplayName);
+            }
+
+        }
+
+        private void updateRequest(long requestId, 
+                                string submitterId, 
+                                string userId, 
+                                string userName,
+                                string mgrId,
+                                string mgrName)
+        {
+            var change = false;
+            ADUserDetail usrDetail = null;
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.pkId == requestId);
+
+                
+                if (req.submittedBy != submitterId)
+                {
+                    req.submittedBy = submitterId;
+                    change = true;
+                }
+
+                
+                if (req.userId != userId)
+                {
+                    req.userId = userId;
+                    usrDetail = Apollo.AIM.SNAP.CA.DirectoryServices.GetUserByLoginName(userId);
+                    req.userTitle = usrDetail.Title;
+                    change = true;
+                }
+                
+                if (req.userDisplayName != userName)
+                {
+                    req.userDisplayName = userName;
+                    change = true;
+                }
+
+                if (req.managerUserId != mgrId)
+                {
+                    req.managerUserId = mgrId;
+                    change = true;
+                }
+
+                if (req.managerDisplayName != mgrName)
+                {
+                    req.managerDisplayName = mgrName;
+                    change = true;
+                }
+                
+
+                if (change)
+                {
+                    req.lastModifiedDate = DateTime.Now;
+                    db.SubmitChanges();
+                }
+            }
 
         }
 

@@ -6,7 +6,7 @@ using System.Text;
 
 using System.DirectoryServices;
 using System.Configuration;
-using Apollo.AIM.SNAP.Model;
+//using Apollo.AIM.SNAP.Model;
 using Apollo.CA;
 
 namespace Apollo.AIM.SNAP.CA

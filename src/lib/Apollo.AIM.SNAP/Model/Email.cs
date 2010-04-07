@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,31 +9,95 @@ namespace Apollo.AIM.SNAP.Model
 {
     public class Email
     {
-        public static string link = @"http://access/snap/index.aspx?Requestid=";
-        public static string OverdueTask(string to, string id)
+        //private static string link = @"http://access/snap/index.aspx?Requestid=";
+        private static string prefix = @"http://";
+        private static string url = @"http://";
+        private static string fromEmail = "aim@apollogrp.edu";
+        private static string aimDG = "pong.lee@apollogrp.edu";
+
+        public static string OverdueTask(string to, long id)
         {
-            var subject = "Overdue - A workflow task has been assigned to you";
-            var body = "A task is waiting for your approval. For detail, <a href='" + link + id + "'>visit our site</a>";
+
+            var subject = "Supplemental Network Access Process-Overdue Alert";
+            var body = "A task is waiting for your approval. For detail, <a href='" + url + id + "'>visit our site</a>";
+             
             return body;
         }
 
-        public static string UpdateRequesterStatus(string toUsrId, string id, string status)
+        public static void UpdateRequesterStatus(string toEmail, string firstName, string lastName, long id, WorkflowState status, string reason)
         {
-            var subjecct = "Access Request Status";
-            var body = "Your request has been " + status + ". For detail, <a href='" + link + id + "'>visit our site</a>"; // processed, denied, requested to change
+            string subject;
+            string emailTemplateKey;
+            switch (status)
+            {
+                case WorkflowState.Pending_Acknowlegement:
+                    subject = "Supplemental Network Access Process-Submitted";
+                    emailTemplateKey = "confirmSubmitToSubmitter";
+                    break;
+                case WorkflowState.Closed_Completed:
+                    subject = "Supplemental Network Access Process-Complete";
+                    emailTemplateKey = "confirmSubmitToSubmitter";
+                    break;
+                case WorkflowState.Change_Requested:
+                    subject = "Supplemental Network Access Process-Request Change";
+                    emailTemplateKey = "confirmSubmitToSubmitter";
+                    break;
+                case WorkflowState.Closed_Denied:
+                    subject = "Supplemental Network Access Process-Denied";
+                    emailTemplateKey = "denyToSubmitter";
+                    break;
+            }
+        }
+
+        public static string TaskAssignToApprover(string toEmailAddress, long id)
+        {
+            var subject = "Supplemental Network Access Process-Approval Needed";
+            var body = "A task is waiting for your approval. For detail, <a href='" + url + id + "'>visit our site</a>";
             return body;
         }
 
-        public static string TaskAssignToApprover(string toEmailAddress, string id)
+        public static void RequestAsssignToAccessTeam(long id, string firstName, string lastName)
         {
-            var subject = "New - A workflow task has been assigned to you";
-            var body = "A task is waiting for your approval. For detail, <a href='" + link + id + "'>visit our site</a>";
-            return body;
+            configPerEnvironment(id);
+
+            Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(aimDG,
+                                                                     "Test Formated Email",
+                                                                     @".\approval.html", // newTaskNotification.html",
+                                                                     new Hashtable()
+                                                                         {
+                                                                             {"APPROVERNAME", "Access Team"},
+                                                                             {"SUBJECTFIRSTNAME", firstName},
+                                                                             {"SUBJECTLASTNAME", lastName},
+                                                                             {"SNAPURL", url},
+                                                                             {"PREFIX", prefix},
+                                                                             {"PROCESSNAME", "processName"},
+                                                                             {"INCIDENT", "incident"}
+                                                                         });
+
         }
 
         private static string emailAddress(string usrId)
         {
             return "x.apollogrp.edu";
+        }
+
+        private static void configPerEnvironment(long id)
+        {
+            if (Environment.UserDomainName.ToUpper().Contains("DEVAPOLLO"))
+            {
+                prefix += "localhost/snap/images";
+                url += ("localhost/snap/index.aspx?RequestId=" + id);
+            }
+            else if (Environment.UserDomainName.ToUpper().Contains("QAAPOLLO"))
+            {
+                prefix += "access.qaapollogrp.edu/snap/images";
+                url += ("access.qaapollogrp.edu/snap/index.aspx?RequestId=" + id);
+            }
+            else
+            {
+                prefix += "access.apollogrp.edu/snap/images";
+                url += ("access.apollogrp.edu/snap/index.aspx?RequestId=" + id);
+            }
         }
     }
 }

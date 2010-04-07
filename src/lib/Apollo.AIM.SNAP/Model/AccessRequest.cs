@@ -145,7 +145,7 @@ namespace Apollo.AIM.SNAP.Model
                     if (result)
                     {
                         addAccessTeamComment(accessTeamWF, comment, CommentsType.Requested_Change);
-                        Email.UpdateRequesterStatus(req.submittedBy, _id.ToString(), "requested to change");
+                        Email.UpdateRequesterStatus(req.submittedBy, "", "", _id, WorkflowState.Change_Requested, comment);
                         db.SubmitChanges();
                     }
 
@@ -421,7 +421,7 @@ namespace Apollo.AIM.SNAP.Model
 
                     if (result)
                     {
-                        Email.UpdateRequesterStatus(req.submittedBy, _id.ToString(), "processed");
+                        Email.UpdateRequesterStatus(req.submittedBy, "firstName", "lsatName", _id, WorkflowState.Closed_Completed, string.Empty);
                         db.SubmitChanges();
                     }
                 }
@@ -616,7 +616,7 @@ namespace Apollo.AIM.SNAP.Model
                     {
                         if (state.notifyDate == null && state.workflowStatusEnum == (byte)WorkflowState.Pending_Approval)
                         {
-                            Email.TaskAssignToApprover(state.SNAP_Workflow.SNAP_Actor.emailAddress, _id.ToString());
+                            Email.TaskAssignToApprover(state.SNAP_Workflow.SNAP_Actor.emailAddress, _id);
                             state.notifyDate = DateTime.Now;
                             var actorType = (ActorApprovalType) (wf.SNAP_Actor.SNAP_Actor_Group.actorGroupType ?? 3); // default workflow admin
                             state.dueDate = getDueDate(actorType, WorkflowState.Pending_Approval, WorkflowState.Pending_Workflow);
@@ -951,7 +951,7 @@ namespace Apollo.AIM.SNAP.Model
                 commentTypeEnum = (byte)CommentsType.Requested_Change,
                 createdDate = DateTime.Now
             });
-            Email.UpdateRequesterStatus(req.submittedBy, req.pkId.ToString(), "requested to change");
+            Email.UpdateRequesterStatus(req.submittedBy, "firstName", "LastName", req.pkId, WorkflowState.Change_Requested, comment);
         }
 
 
@@ -993,7 +993,7 @@ namespace Apollo.AIM.SNAP.Model
                     // set accessTeam WF and request to close-denied
                     AccessRequest.stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, WorkflowState.Pending_Approval, WorkflowState.Closed_Denied);
                     req.statusEnum = (byte)RequestState.Closed;
-                    Email.UpdateRequesterStatus(req.submittedBy, req.pkId.ToString(), "denied");
+                    Email.UpdateRequesterStatus(req.submittedBy, "firstName", "lastName", req.pkId, WorkflowState.Closed_Denied, comment);
                     break;
                 }
 
