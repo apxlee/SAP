@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Apollo.AIM.SNAP.CA;
 
 namespace Apollo.AIM.SNAP.Model
 {
@@ -24,7 +25,7 @@ namespace Apollo.AIM.SNAP.Model
             return body;
         }
 
-        public static void UpdateRequesterStatus(string toEmail, string firstName, string lastName, long id, WorkflowState status, string reason)
+        public static void UpdateRequesterStatus(string submitterUserId, string name, long id, WorkflowState status, string reason)
         {
             string subject;
             string emailTemplateKey;
@@ -78,7 +79,8 @@ namespace Apollo.AIM.SNAP.Model
 
         private static string emailAddress(string usrId)
         {
-            return "x.apollogrp.edu";
+            ADUserDetail detail = Apollo.AIM.SNAP.CA.DirectoryServices.GetUserByLoginName(usrId);
+            return detail.EmailAddress;
         }
 
         private static void configPerEnvironment(long id)

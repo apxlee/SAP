@@ -145,7 +145,7 @@ namespace Apollo.AIM.SNAP.Model
                     if (result)
                     {
                         addAccessTeamComment(accessTeamWF, comment, CommentsType.Requested_Change);
-                        Email.UpdateRequesterStatus(req.submittedBy, "", "", _id, WorkflowState.Change_Requested, comment);
+                        Email.UpdateRequesterStatus(req.submittedBy, req.userDisplayName, _id, WorkflowState.Change_Requested, comment);
                         db.SubmitChanges();
                     }
 
@@ -421,7 +421,7 @@ namespace Apollo.AIM.SNAP.Model
 
                     if (result)
                     {
-                        Email.UpdateRequesterStatus(req.submittedBy, "firstName", "lsatName", _id, WorkflowState.Closed_Completed, string.Empty);
+                        Email.UpdateRequesterStatus(req.submittedBy, req.userDisplayName, _id, WorkflowState.Closed_Completed, string.Empty);
                         db.SubmitChanges();
                     }
                 }
@@ -951,7 +951,7 @@ namespace Apollo.AIM.SNAP.Model
                 commentTypeEnum = (byte)CommentsType.Requested_Change,
                 createdDate = DateTime.Now
             });
-            Email.UpdateRequesterStatus(req.submittedBy, "firstName", "LastName", req.pkId, WorkflowState.Change_Requested, comment);
+            Email.UpdateRequesterStatus(req.submittedBy, req.userDisplayName, req.pkId, WorkflowState.Change_Requested, comment);
         }
 
 
@@ -993,7 +993,7 @@ namespace Apollo.AIM.SNAP.Model
                     // set accessTeam WF and request to close-denied
                     AccessRequest.stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, WorkflowState.Pending_Approval, WorkflowState.Closed_Denied);
                     req.statusEnum = (byte)RequestState.Closed;
-                    Email.UpdateRequesterStatus(req.submittedBy, "firstName", "lastName", req.pkId, WorkflowState.Closed_Denied, comment);
+                    Email.UpdateRequesterStatus(req.submittedBy, req.userDisplayName, req.pkId, WorkflowState.Closed_Denied, comment);
                     break;
                 }
 
