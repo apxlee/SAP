@@ -5,6 +5,15 @@ using System.Text;
 
 namespace Apollo.AIM.SNAP.Model
 {
+	public enum Role
+	{
+		NotAuthorized,
+		Requestor,
+		ApprovingManager,
+		AccessTeam,
+		SuperUser
+	}
+	
     public enum RequestState
     {
         Open = 0,
@@ -40,13 +49,21 @@ namespace Apollo.AIM.SNAP.Model
         Access_Notes_SuperUser = 9
     }
 
-    public enum ActorApprovalType
+	// TODO: rename this enum to match database table
+	public enum ActorApprovalType
+	{
+		Team_Approver = 0,
+		Technical_Approver = 1,
+		Manager = 2,
+		Workflow_Admin = 3
+	}
+    
+    public enum ActorGroupType
     {
-        Team_Approver = 0,
-        Technical_Approver = 1,
-        Manager = 2,
-        Workflow_Admin = 3
-
+		Team_Approver = 0,
+		Technical_Approver = 1,
+		Manager = 2,
+		Workflow_Admin = 3
     }
 
     public enum WorkflowAction
