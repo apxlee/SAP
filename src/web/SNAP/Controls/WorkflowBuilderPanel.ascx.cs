@@ -15,47 +15,165 @@ namespace Apollo.AIM.SNAP.Web.Controls
     {
 		public string RequestId { get; set; }
         public RequestState RequestState { get; set; }
-    
+        public List<AccessApprover> AvailableApprovers { get; set; }
+
         protected void Page_Load(object sender, EventArgs e)
         {
 			_requiredApproverFullName.Text = "Greg Belanger";
-        }
 
-        static DataTable GetTable(string dataCollection)
-        {
-            DataTable groupTable = new DataTable();
-            groupTable.Columns.Add("groupName", typeof(string));
-            groupTable.Columns.Add("description", typeof(string));
-            groupTable.Columns.Add("typeName", typeof(string));
+            WorkflowApprover primaryApprover;
+            primaryApprover = LoadControl("~/Controls/WorkflowApprover.ascx") as WorkflowApprover;
 
-            DataTable approverTable = new DataTable();
-            approverTable.Columns.Add("groupName", typeof(string));
-            approverTable.Columns.Add("displayName", typeof(string));
-            approverTable.Columns.Add("isDefault", typeof(bool));
+            Literal primaryLit = new Literal();
+            primaryLit.Text = "<label>Primary Approvers</label>";
 
-            switch(dataCollection)
+            PlaceHolder primarySectionName;
+            primarySectionName = (PlaceHolder)WebUtilities.FindControlRecursive(primaryApprover, "_approverSectionName");
+            primarySectionName.Controls.Add(primaryLit);
+
+            WorkflowApprover secondaryApprover;
+            secondaryApprover = LoadControl("~/Controls/WorkflowApprover.ascx") as WorkflowApprover;
+
+            Literal secondaryLit = new Literal();
+            secondaryLit.Text = "<label>Secondary Approvers</label>";
+
+            PlaceHolder secondarySectionName;
+            secondarySectionName = (PlaceHolder)WebUtilities.FindControlRecursive(secondaryApprover, "_approverSectionName");
+            secondarySectionName.Controls.Add(secondaryLit);
+
+            PlaceHolder approverCheckBoxSection;
+            Label approverGroupName;
+            Label approverGroupDescription;
+            int groupId = 0;
+
+            foreach(AccessApprover approver in AvailableApprovers)
             {
-                case "Team Groups":
-                    groupTable.Rows.Add("Software Group", "The Software Group includes all the people who make the softwares.", "Team Approver");
-                    return groupTable;
-                case "Technical Groups":
-                    groupTable.Rows.Add("UnixLinux", "Technical Group Description", "Technical Approver");
-                    groupTable.Rows.Add("Windows", "Exchange, Windows Network Shares, Collaboration", "Technical Approver");
-                    return groupTable;
-                case "Software Group":
-                    approverTable.Rows.Add("Software Group", "Pong Lee", false);
-                    approverTable.Rows.Add("Software Group", "Mark Garrigan", true);
-                    return approverTable;
-                case "UnixLinux":
-                    approverTable.Rows.Add("UnixLinux", "Pong Lee", true);
-                    approverTable.Rows.Add("UnixLinux", "Chris Schwimmer", false);
-                    return approverTable;
-                case "Windows":
-                    approverTable.Rows.Add("Windows", "Jonathan Steele", true);
-                    approverTable.Rows.Add("Windows", "Chris Schwimmer", false);
-                    return approverTable;
-                default:
-                    return null;
+                switch (approver.ActorApprovalType)
+                {
+                    case ActorApprovalType.Team_Approver:
+                        if (groupId != approver.GroupId)
+                        {
+                            Literal approverGroupLit = new Literal();
+                            approverGroupLit.Text = "<input type=\"checkbox\" ID=\"_approverGroupCheckbox\" onclick=\"approverGroupChecked(this,'" + RequestId.ToString() + "');\" class=\"csm_input_checkradio\" />";
+
+                            approverCheckBoxSection = (PlaceHolder)WebUtilities.FindControlRecursive(primaryApprover, "_approverCheckBoxSection");
+                            approverCheckBoxSection.Controls.Add(approverGroupLit);
+
+                            approverGroupName = (Label)WebUtilities.FindControlRecursive(primaryApprover, "_approverGroupName");
+                            approverGroupName.Text = approver.GroupName;
+
+                            approverGroupDescription = (Label)WebUtilities.FindControlRecursive(primaryApprover, "_approverGroupDescription");
+                            approverGroupDescription.Text = approver.Description;
+
+                            PlaceHolder approverGroupMemebers;
+                            approverGroupMemebers = (PlaceHolder)WebUtilities.FindControlRecursive(primaryApprover, "_approverGroupMemebers");
+
+                            Literal selectMember = new Literal();
+
+                            selectMember.Text = "<tr><td>&nbsp;</td><td colspan=\"3\">";
+                            if (approver.IsDefault)
+                            {
+                                selectMember.Text += "<input type=\"radio\" id=\"" + approver.ActorId + "\" name=\"radio" + RequestId + "_" + approver.GroupId + "\" checked=\"checked\" class=\"csm_input_checkradio\" />";
+                                selectMember.Text += "<span class=\"csm_inline\">" + approver.DisplayName + " (Default)</span>";
+                            }
+                            else
+                            {
+                                selectMember.Text += "<input type=\"radio\" id=\"" + approver.ActorId + "\" name=\"radio" + RequestId + "_" + approver.GroupId + "\" class=\"csm_input_checkradio\" />";
+                                selectMember.Text += "<span class=\"csm_inline\">" + approver.DisplayName + " (Secondary)</span>";
+                            }
+                            selectMember.Text += "</td></tr>";
+
+                            approverGroupMemebers.Controls.Add(selectMember);
+
+                            groupId = approver.GroupId;
+                        }
+                        else
+                        {
+                            PlaceHolder approverGroupMemebers;
+                            approverGroupMemebers = (PlaceHolder)WebUtilities.FindControlRecursive(primaryApprover, "_approverGroupMemebers");
+
+                            Literal selectMember = new Literal();
+
+                            selectMember.Text = "<tr><td>&nbsp;</td><td colspan=\"3\">";
+                            if (approver.IsDefault)
+                            {
+                                selectMember.Text += "<input type=\"radio\" id=\"" + approver.ActorId + "\" name=\"radio" + RequestId + "_" + approver.GroupId + "\" checked=\"checked\" class=\"csm_input_checkradio\" />";
+                                selectMember.Text += "<span class=\"csm_inline\">" + approver.DisplayName + " (Default)</span>";
+                            }
+                            else
+                            {
+                                selectMember.Text += "<input type=\"radio\" id=\"" + approver.ActorId + "\" name=\"radio" + RequestId + "_" + approver.GroupId + "\" class=\"csm_input_checkradio\" />";
+                                selectMember.Text += "<span class=\"csm_inline\">" + approver.DisplayName + " (Secondary)</span>";
+                            }
+                            selectMember.Text += "</td></tr>";
+
+                            approverGroupMemebers.Controls.Add(selectMember);
+                        }
+                        break;
+                    case ActorApprovalType.Technical_Approver:
+                        if (groupId != approver.GroupId)
+                        {
+                            Literal approverGroupLit = new Literal();
+                            approverGroupLit.Text = "<input type=\"checkbox\" ID=\"_approverGroupCheckbox\" onclick=\"approverGroupChecked(this,'" + RequestId.ToString() + "');\" class=\"csm_input_checkradio\" />";
+
+                            approverCheckBoxSection = (PlaceHolder)WebUtilities.FindControlRecursive(secondaryApprover, "_approverCheckBoxSection");
+                            approverCheckBoxSection.Controls.Add(approverGroupLit);
+
+                            approverGroupName = (Label)WebUtilities.FindControlRecursive(secondaryApprover, "_approverGroupName");
+                            approverGroupName.Text = approver.GroupName;
+
+                            approverGroupDescription = (Label)WebUtilities.FindControlRecursive(secondaryApprover, "_approverGroupDescription");
+                            approverGroupDescription.Text = approver.Description;
+                            
+                            PlaceHolder approverGroupMemebers;
+                            approverGroupMemebers = (PlaceHolder)WebUtilities.FindControlRecursive(secondaryApprover, "_approverGroupMemebers");
+
+                            Literal selectMember = new Literal();
+
+                            selectMember.Text = "<tr><td>&nbsp;</td><td colspan=\"3\">";
+                            if (approver.IsDefault)
+                            {
+                                selectMember.Text += "<input type=\"radio\" id=\"" + approver.ActorId + "\" name=\"radio" + RequestId + "_" + approver.GroupId + "\" checked=\"checked\" class=\"csm_input_checkradio\" />";
+                                selectMember.Text += "<span class=\"csm_inline\">" + approver.DisplayName + " (Default)</span>";
+                            }
+                            else
+                            {
+                                selectMember.Text += "<input type=\"radio\" id=\"" + approver.ActorId + "\" name=\"radio" + RequestId + "_" + approver.GroupId + "\" class=\"csm_input_checkradio\" />";
+                                selectMember.Text += "<span class=\"csm_inline\">" + approver.DisplayName + " (Secondary)</span>";
+                            }
+                            selectMember.Text += "</td></tr>";
+
+                            approverGroupMemebers.Controls.Add(selectMember);
+
+                            groupId = approver.GroupId;
+                        }
+                        else
+                        {
+                            PlaceHolder approverGroupMemebers;
+                            approverGroupMemebers = (PlaceHolder)WebUtilities.FindControlRecursive(secondaryApprover, "_approverGroupMemebers");
+
+                            Literal selectMember = new Literal();
+
+                            selectMember.Text = "<tr><td>&nbsp;</td><td colspan=\"3\">";
+                            if (approver.IsDefault)
+                            {
+                                selectMember.Text += "<input type=\"radio\" id=\"" + approver.ActorId + "\" name=\"radio" + RequestId + "_" + approver.GroupId + "\" checked=\"checked\" class=\"csm_input_checkradio\" />";
+                                selectMember.Text += "<span class=\"csm_inline\">" + approver.DisplayName + " (Default)</span>";
+                            }
+                            else
+                            {
+                                selectMember.Text += "<input type=\"radio\" id=\"" + approver.ActorId + "\" name=\"radio" + RequestId + "_" + approver.GroupId + "\" class=\"csm_input_checkradio\" />";
+                                selectMember.Text += "<span class=\"csm_inline\">" + approver.DisplayName + " (Secondary)</span>";
+                            }
+                            selectMember.Text += "</td></tr>";
+
+                            approverGroupMemebers.Controls.Add(selectMember);
+                        }
+                    break;     
+                }
+
+                _dynamicApproversContainer.Controls.Add(primaryApprover);
+                _dynamicApproversContainer.Controls.Add(secondaryApprover);
             }
         }
     }

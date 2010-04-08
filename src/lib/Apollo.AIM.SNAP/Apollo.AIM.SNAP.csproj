@@ -64,6 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\AccessApprover.cs" />
     <Compile Include="Model\AccessRequest.cs" />
     <Compile Include="Model\Email.cs" />
     <Compile Include="Model\Enumeration.cs" />

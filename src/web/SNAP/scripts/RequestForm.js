@@ -46,7 +46,7 @@ var userManager = {
         $.ajax({
             type: "POST",
             contentType: "application/json; character=utf-8",
-            url: "UserCheck.aspx/GetNames",
+            url: "AjaxCalls.aspx/GetNames",
             data: postData,
             dataType: "json",
             success: function(msg) {
@@ -86,7 +86,7 @@ var userManager = {
         $.ajax({
             type: "POST",
             contentType: "application/json; character=utf-8",
-            url: "UserCheck.aspx/GetUserManagerInfoByFullName",
+            url: "AjaxCalls.aspx/GetUserManagerInfoByFullName",
             data: postData,
             dataType: "json",
             success: function(msg) {
@@ -283,18 +283,18 @@ var userManager = {
 
     MgrNameFocusOut: function() {
         userManager.mgrName.focusout(function() {
-            alert("Mgr FocusOut");
-            //if (userManager.mgrLoginId.val() == "") {
-            //    userManager.GetNames(userManager.mgrName, userManager.mgrSelection, userManager.mgrSelectionDiv);
-            //}
+            //alert("Mgr FocusOut");
+            if (userManager.mgrLoginId.val() == "") {
+                userManager.GetNames(userManager.mgrName, userManager.mgrSelection, userManager.mgrSelectionDiv);
+            }
         })
     },
 
     MgrNameChange: function() {
         userManager.mgrName.change(function() {
-            alert("Mgr Change");
-            //userManager.mgrLoginId.val('');
-            //userManager.GetNames(userManager.mgrName, userManager.mgrSelection, userManager.mgrSelectionDiv);
+            //alert("Mgr Change");
+            userManager.mgrLoginId.val('');
+            userManager.GetNames(userManager.mgrName, userManager.mgrSelection, userManager.mgrSelectionDiv);
         })
     },
 

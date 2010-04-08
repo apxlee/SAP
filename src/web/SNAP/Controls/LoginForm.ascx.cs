@@ -52,7 +52,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
 		private void checkMaintenance(string message)
 		{
-			if (ConfigurationManager.AppSettings["MaintenanceOn"].ToString() == "true" &&
+            if (ConfigurationManager.AppSettings["SNAPMaintenanceOn"].ToString() == "true" &&
 		(message == null || (message != null && message != "MAINT")))
 			{
 				Server.Transfer("maintenance.html");

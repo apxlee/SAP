@@ -39,7 +39,7 @@ namespace Apollo.AIM.SNAP.Model
                 {
                     var req = db.SNAP_Requests.Single(r => r.pkId == _id);
                     var accessTeamWF = req.SNAP_Workflows.Single(x => x.actorId == AccessTeamActorId);
-                    result = reqStateTransition(req, RequestState.Open, RequestState.Pending,
+                    result = reqStateTransition(req, RequestState.Open, RequestState.Open,
                                                 accessTeamWF, WorkflowState.Pending_Acknowlegement,
                                                 WorkflowState.Pending_Workflow);
 
@@ -198,7 +198,7 @@ namespace Apollo.AIM.SNAP.Model
                 {
                     var req = db.SNAP_Requests.Single(r => r.pkId == _id);
                     var accessTeamWF = req.SNAP_Workflows.Single(x => x.actorId == AccessTeamActorId);
-                    result = reqStateTransition(req, RequestState.Pending, RequestState.Pending,
+                    result = reqStateTransition(req, RequestState.Open, RequestState.Pending,
                                                 accessTeamWF, WorkflowState.Pending_Workflow,
                                                 WorkflowState.Pending_Approval);
 
@@ -261,12 +261,10 @@ namespace Apollo.AIM.SNAP.Model
             }
         }
 
-
         public bool WorkflowAck(int wid, WorkflowAction action)
         {
             return WorkflowAck(wid, action, string.Empty);
         }
-
 
         public bool WorkflowAck(int wid, WorkflowAction action, string comment)
         {
@@ -362,8 +360,6 @@ namespace Apollo.AIM.SNAP.Model
         //        return result; 
         //    }
         //}
-
-
 
         public bool CreateServiceDeskTicket()
         {
@@ -786,7 +782,6 @@ namespace Apollo.AIM.SNAP.Model
         #endregion
     }
 
-
     #endregion
 
 
@@ -816,6 +811,41 @@ namespace Apollo.AIM.SNAP.Model
             }
         }
 
+        public static List<AccessApprover> GetActiveApprovers(SNAPDatabaseDataContext db)
+        {
+            List<AccessApprover> approverList = new List<AccessApprover>();
+            var query = from sa in db.SNAP_Actors
+                        join sag in db.SNAP_Actor_Groups on sa.actor_groupId equals sag.pkId
+                        where sa.isActive == true && sag.isActive == true
+                        orderby sag.actorGroupType, sag.groupName ascending
+                        select new
+                        {
+                            ActorId = sa.pkId,
+                            UserId = sa.userId,
+                            DisplayName = sa.displayName,
+                            IsDefault = sa.isDefault,
+                            GroupId = sag.pkId,
+                            GroupName = sag.groupName,
+                            Description = sag.description,
+                            ActorGroupType = sag.actorGroupType
+                        };
+
+            foreach (var approver in query)
+            {
+                AccessApprover newApprover = new AccessApprover();
+                newApprover.ActorId = approver.ActorId;
+                newApprover.UserId = approver.UserId;
+                newApprover.DisplayName = approver.DisplayName;
+                newApprover.IsDefault = approver.IsDefault;
+                newApprover.GroupId = approver.GroupId;
+                newApprover.GroupName = approver.GroupName;
+                newApprover.Description = approver.Description;
+                newApprover.ActorApprovalType = (ActorApprovalType)approver.ActorGroupType;
+                approverList.Add(newApprover);
+            }
+
+            return approverList;
+        }
 
         public int Id { get; set; }
 
@@ -954,7 +984,6 @@ namespace Apollo.AIM.SNAP.Model
             Email.UpdateRequesterStatus(req.submittedBy, req.userDisplayName, req.pkId, WorkflowState.Change_Requested, comment);
         }
 
-
         protected bool denyBy(ActorApprovalType approvalType, string comment)
         {
 
@@ -1085,4 +1114,5 @@ namespace Apollo.AIM.SNAP.Model
     }
 
 #endregion
+
 }

@@ -24,17 +24,14 @@
 				</table>							
 			</td>
 		</tr>
-		<tr>
-			<!-- APPROVERS SECTION -->
-			<asp:PlaceHolder ID="_dynamicApproversContainer" runat="server"></asp:PlaceHolder>
-		</tr>																				
+		
+		<!-- APPROVERS SECTION -->
+		<asp:PlaceHolder ID="_dynamicApproversContainer" runat="server"></asp:PlaceHolder>
+																						
 	</table>
 	
 	<div class="csm_input_buttons_container">
-		<input type="button" value="Close Completed" class="csm_html_button"/>
-		<input type="button" value="Create Ticket" class="csm_html_button"/>
-		<input type="button" value="Edit Workflow" class="csm_html_button"/>
-		<input type="button" value="Build Workflow | Continue" class="csm_html_button"/>
+	    <asp:PlaceHolder ID="_dynamicButtonsContainer" runat="server"></asp:PlaceHolder>
 	</div>			
 	
 	</fieldset>		        
