@@ -144,17 +144,16 @@ namespace Apollo.AIM.SNAP.Process
                                         state.SNAP_Workflow.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
                                                                                            {
                                                                                                commentText = "over due!",
-                                                                                               commentTypeEnum =
-                                                                                                   (byte)
-                                                                                                   CommentsType.
-                                                                                                       Email_Reminder,
-                                                                                               createdDate =
-                                                                                                   DateTime.Now,
+                                                                                               commentTypeEnum = (byte)CommentsType.Email_Reminder,
+                                                                                               createdDate = DateTime.Now,
                                                                                            });
 
                                         outputMessage("WF id: " + state.SNAP_Workflow.pkId + " gets email nag",EventLogEntryType.Information);
 
                                         // TODO - send out reminder email
+                                        Email.OverdueTask(state.SNAP_Workflow.SNAP_Actor.displayName,
+                                                          state.SNAP_Workflow.SNAP_Request.pkId,
+                                                          state.SNAP_Workflow.SNAP_Request.userDisplayName);
                                         db.SubmitChanges();
                                     }
 

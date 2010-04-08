@@ -616,7 +616,7 @@ namespace Apollo.AIM.SNAP.Model
                     {
                         if (state.notifyDate == null && state.workflowStatusEnum == (byte)WorkflowState.Pending_Approval)
                         {
-                            Email.TaskAssignToApprover(state.SNAP_Workflow.SNAP_Actor.emailAddress, _id);
+                            Email.TaskAssignToApprover(state.SNAP_Workflow.SNAP_Actor.emailAddress, state.SNAP_Workflow.SNAP_Actor.displayName, _id, state.SNAP_Workflow.SNAP_Request.userDisplayName);
                             state.notifyDate = DateTime.Now;
                             var actorType = (ActorApprovalType) (wf.SNAP_Actor.SNAP_Actor_Group.actorGroupType ?? 3); // default workflow admin
                             state.dueDate = getDueDate(actorType, WorkflowState.Pending_Approval, WorkflowState.Pending_Workflow);
