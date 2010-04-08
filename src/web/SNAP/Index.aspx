@@ -2,7 +2,7 @@
 <%@ Register src="~/Controls/DefaultIncludes.ascx" tagname="DefaultIncludes" tagprefix="uc" %>
 <%@ Register src="~/Controls/Header.ascx" tagname="Header" tagprefix="uc" %>
 <%@ Register src="~/Controls/Footer.ascx" tagname="Footer" tagprefix="uc" %>
-<%@ Register src="~/Controls/LoginForm.ascx" tagname="LoginForm" tagprefix="uc" %>
+<%@ Register src="~/Controls/LoginView.ascx" tagname="LoginView" tagprefix="uc" %>
 <%@ Register src="~/Controls/UserView.ascx" tagname="UserView" tagprefix="uc" %>
 <%@ Register src="~/Controls/ApprovingManagerView.ascx" tagname="ApprovingManagerView" tagprefix="uc" %>
 <%@ Register src="~/Controls/AccessTeamView.ascx" tagname="AccessTeamView" tagprefix="uc" %>
@@ -14,7 +14,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head id="_head" runat="server">
-    <title>Out-Of-Scope Privileged Access</title>
+    <title>Supplemental Network Access Process</title>
 </head>
 <body> 
 	<form runat="server" id="_defaultForm">
@@ -34,10 +34,8 @@
 			<!-- BEGIN MULTIVIEW CONTROL -->
 			<asp:MultiView ID="_masterMultiView" runat="server" ActiveViewIndex="0">
 
-				<asp:View ID="_loginFormView" runat="server"><!-- 0 -->
-					<div class="csm_container_center_700">
-						<uc:LoginForm ID="_loginFormControl" runat="server" />
-					</div>
+				<asp:View ID="_loginView" runat="server"><!-- 0 -->
+					<uc:LoginView id='_loginViewControl' runat="server" />
 				</asp:View>
 
 				<asp:View ID="_requestFormView" runat="server"><!-- 1 -->

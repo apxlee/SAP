@@ -1,21 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Threading;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using Apollo.AIM.SNAP.Model;
-using Apollo.CA.Logging;
-using Apollo.Ultimus.CAP;
-using Apollo.Ultimus.CAP.Model;
-using Apollo.Ultimus.Web;
 
-// need to alias namespace because CAP had 'Role' class also
-//
-using OOSPARole = Apollo.AIM.SNAP.Web.Common.Role;
-using SNAPControls = Apollo.AIM.SNAP.Web.Controls;
+using Apollo.AIM.SNAP.Model;
 using Apollo.AIM.SNAP.Web.Common;
 
 // TODO: grab requests based on role + view and pass to next page?
@@ -31,60 +18,70 @@ using Apollo.AIM.SNAP.Web.Common;
 
 namespace Apollo.AIM.SNAP.Web
 {
-	public partial class Index : Page
+	public partial class Index : SnapPage
 	{
-		public string RequestId { get; set; }
+		public string ExpandedRequestId { get; set; }
 		public ViewIndex RequestedViewIndex { get; set; }
 		
 		protected void Page_Load(object sender, EventArgs e)	
 		{
-			// TODO: REMOVE THIS SECTION AFTER DEMO!  or allow based on special AD group?  
+			// NOTE: Allows user to view support page without logging in.
 			//
-			if (!string.IsNullOrEmpty(Request.QueryString[QueryStringConstants.DEMONSTRATION_ROLE]))
+			if (!SnapSession.IsUserCreated && (WebUtilities.CurrentViewIndex != ViewIndex.support))
 			{
-				WebUtilities.CurrentRole = (OOSPARole)Enum.Parse(typeof(OOSPARole), Request.QueryString[QueryStringConstants.DEMONSTRATION_ROLE]);
-			}
+				if (string.IsNullOrEmpty(Request.QueryString[QueryStringConstants.REQUESTED_VIEW_INDEX]))
+				{
+					WebUtilities.SetActiveView((int)ViewIndex.login);
+				}
+				else 
+				{
+					if (Convert.ToInt32(Request.QueryString[QueryStringConstants.REQUESTED_VIEW_INDEX]) == (int)ViewIndex.support)
+					{
+						WebUtilities.SetActiveView((int)ViewIndex.support);
+					}
+				}
 				
-			if (!IsPostBack)
+				return;
+			} 
+				
+			if (!IsPostBack && SnapSession.IsUserCreated)
 			{
-				// requestId and viewIndex must BOTH be present in query string
-				//
-				if (string.IsNullOrEmpty(Request.QueryString[QueryStringConstants.REQUEST_ID]) 
+				if (string.IsNullOrEmpty(Request.QueryString[QueryStringConstants.REQUEST_ID])
 					&& string.IsNullOrEmpty(Request.QueryString[QueryStringConstants.REQUESTED_VIEW_INDEX]))
 				{
-					SetDefaultView();
+					WebUtilities.SetActiveView((int)SnapSession.CurrentUser.DefaultView);
 				}
 				else
-				{			
+				{
 					SetViewFromQueryString();
 				}
 			}
-			else
+			
+			if (IsPostBack && !SnapSession.IsUserCreated)
 			{
-				// If user isn't following email link (with requestId and viewIndex) then drop them based on their role
-				//
-				SetDefaultView();
+				// this SHOULD never fire because postback requires logged in user
+				// NOTE: fires when going from Support to Login for unauth'd user.
+				bool IsThisStupid = true;
 			}
-		}
-		
-		private void SetDefaultView()
-		{
-			WebUtilities.SetActiveView((int)WebUtilities.DefaultView);
 		}
 		
 		private void SetViewFromQueryString()
 		{
-			RequestId = Request.QueryString[QueryStringConstants.REQUEST_ID];
+			ExpandedRequestId = Request.QueryString[QueryStringConstants.REQUEST_ID];
 			RequestedViewIndex = (ViewIndex)Enum.Parse(typeof(ViewIndex), Request.QueryString[QueryStringConstants.REQUESTED_VIEW_INDEX]);
+			Role currentRole = SnapSession.CurrentUser.CurrentRole;
 
 			switch (RequestedViewIndex)
 			{
+				case ViewIndex.request_form:
 				case ViewIndex.my_requests:
-					WebUtilities.SetActiveView((int)ViewIndex.my_requests);
+				case ViewIndex.search:
+				case ViewIndex.support:
+					WebUtilities.SetActiveView((int)RequestedViewIndex);
 					break;
-
+			
 				case ViewIndex.my_approvals:
-					if (WebUtilities.CurrentRole == OOSPARole.ApprovingManager || WebUtilities.CurrentRole == OOSPARole.SuperUser)
+					if (currentRole == Role.ApprovingManager || currentRole == Role.SuperUser)
 					{
 						WebUtilities.SetActiveView((int)ViewIndex.my_approvals);
 					}
@@ -92,22 +89,15 @@ namespace Apollo.AIM.SNAP.Web
 					break;
 
 				case ViewIndex.access_team:
-					if (WebUtilities.CurrentRole == OOSPARole.AccessTeam || WebUtilities.CurrentRole == OOSPARole.SuperUser)
+					if (currentRole == Role.AccessTeam || currentRole == Role.SuperUser)
 					{
 						WebUtilities.SetActiveView((int)ViewIndex.access_team);
 					}
 					else { goto default; }
 					break;
 
-				case ViewIndex.request_form:
-					// TODO: request must be in "change_requested" state for this view
-					// TODO: current role will be set at login page (header links don't work right now)
-					WebUtilities.SetActiveView((int)ViewIndex.request_form);
-					break;
-
 				default:
-					// TODO: make 404 and direct there?
-					WebUtilities.SetActiveView((int)ViewIndex.support);
+					WebUtilities.Redirect("AppError.aspx?errorReason=wrongRole", true);
 					break;
 			}
 		}

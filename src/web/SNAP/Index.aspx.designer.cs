@@ -68,22 +68,22 @@ namespace Apollo.AIM.SNAP.Web {
         protected global::System.Web.UI.WebControls.MultiView _masterMultiView;
         
         /// <summary>
-        /// _loginFormView control.
+        /// _loginView control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.View _loginFormView;
+        protected global::System.Web.UI.WebControls.View _loginView;
         
         /// <summary>
-        /// _loginFormControl control.
+        /// _loginViewControl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Apollo.AIM.SNAP.Web.Controls.LoginForm _loginFormControl;
+        protected global::Apollo.AIM.SNAP.Web.Controls.LoginView _loginViewControl;
         
         /// <summary>
         /// _requestFormView control.
