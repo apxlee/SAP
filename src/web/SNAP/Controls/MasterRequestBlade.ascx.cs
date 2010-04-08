@@ -25,6 +25,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			PopulateUserInfo();
 			LoadReadOnlyRequestPanel();
 			LoadRequestTrackingPanel();
+            //TODO : testing Access Team Panels until John finishes his login work
             LoadAccessTeamPanels();
 			try
 			{
