@@ -74,39 +74,11 @@ namespace Apollo.AIM.SNAP.Web.Common
 				MultiView multiView = (MultiView)WebUtilities.FindControlRecursive(currentPage, "_masterMultiView");
 			
 				return (ViewIndex)multiView.ActiveViewIndex;
-
-				//MultiView requestedView;
-				//Int32 requestedViewIndex;
-				//requestedView = (MultiView)WebUtilities.FindControlRecursive(Page, "_masterMultiView");
-				//requestedViewIndex = requestedView.ActiveViewIndex;				
 			}
 		}
 
 		// TODO: refactor into SNAPUser
-		public static string CurrentLoginUserId
-		{ get; set; }
-		//    get
-		//    {
-		//        Page currentPage = HttpContext.Current.Handler as Page;
-		//        SnapSession currentSession = new SnapSession(currentPage.Session);
-		//        SNAPUser currentUser;
-		//        currentUser = currentSession.CurrentUser;
-		//        if (currentUser != null)
-		//        {
-		//            return currentUser.LoginId;				
-		//        }
-		//        else
-		//        {
-		//            return null;
-		//        }
-
-		//        // To-do: Should use CAP login user object here
-		//        //var x = currentPage.Request.ServerVariables["AUTH_USER"].Split('\\')[1]; // remove domain name
-
-		//        //return "clschwim";
-		//        //return x;
-		//    }
-		//}
+		public static string CurrentLoginUserId { get; set; }
          
         public static void Redirect(string redirectUrl, bool endResponse)
         {
