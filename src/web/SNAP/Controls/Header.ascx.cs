@@ -1,20 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Configuration;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 
 using Apollo.AIM.SNAP.Model;
 using Apollo.AIM.SNAP.Web.Common;
 
+// TODO: header links don't work on non-multiview pages
+
 namespace Apollo.AIM.SNAP.Web.Controls
 {
 	public partial class Header : System.Web.UI.UserControl
 	{
+		private bool _isStandalonePage = false;
+		public bool IsStandalonePage {set { _isStandalonePage = value; }}
+		
 		public int PendingApprovals { get; set; }
 		public int PendingAccessTeam { get; set; }
+		
+		private Role CurrentRole 
+		{
+			// NOTE: Header renders before Session created and CurrentUser instantiated
+			get { return (SnapSession.IsUserCreated) ? SnapSession.CurrentUser.CurrentRole : Role.NotAuthorized; }
+		}
 		
 		protected void Page_Load(object sender, EventArgs e)
 		{
@@ -40,7 +48,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		
 		private void BuildRibbon()
 		{
-			// TODO: build from xml?  make List of objects (link buttons?) that have url pre-populated?
+			// TODO: (Phase x) -- build from xml?  make List of objects (link buttons?) that have url pre-populated?
 			//
 			List<string> linkButtons = new List<string>{};
 			string linksContainerWidth = "763";
@@ -51,7 +59,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			}
 			else
 			{
-				switch ( WebUtilities.CurrentRole )
+				switch (this.CurrentRole)
 				{
 					case Role.ApprovingManager :
 						linkButtons.AddRange(new List<string> { "request_form", "my_requests", "my_approvals", "search", "support" });
@@ -73,7 +81,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 						linksContainerWidth = "430";
 						break;
 					
-					case Role.NotAuthenticated :
+					case Role.NotAuthorized :
 					default :
 						linkButtons.AddRange(new List<string>{ "login", "support" });
 						break;
@@ -118,8 +126,17 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		
         protected void RibbonLink_Click(object sender, CommandEventArgs e)
         {
-			WebUtilities.SetActiveView( (int)Enum.Parse(typeof(ViewIndex), e.CommandName) );
-			_ribbonContainerOuter.CssClass = e.CommandName;
+			if (!_isStandalonePage)
+			{
+				WebUtilities.SetActiveView( (int)Enum.Parse(typeof(ViewIndex), e.CommandName) );
+				_ribbonContainerOuter.CssClass = e.CommandName;
+			}
+			else
+			{
+				WebUtilities.Redirect(string.Format("index.aspx?{0}={1}"
+					, QueryStringConstants.REQUESTED_VIEW_INDEX
+					, (int)Enum.Parse(typeof(ViewIndex), e.CommandName)), true);
+			}
         }
 	}
 }
