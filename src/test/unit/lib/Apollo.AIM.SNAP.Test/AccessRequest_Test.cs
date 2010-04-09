@@ -303,13 +303,13 @@ namespace Apollo.AIM.SNAP.Test
 
                 var accessReq = new AccessRequest(req.pkId);
                 accessReq.Ack();
-                accessReq.CreateWorkflow(new List<int>() { managerActorId });
+                accessReq.CreateWorkflow(new List<int>() { teamApprovalActorId, managerActorId });
 
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte) ActorApprovalType.Manager);
                 Assert.IsTrue(wfs.Count == 1);
 
                 wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Team_Approver);
-                Assert.IsTrue(wfs.Count == 0);
+                Assert.IsTrue(wfs.Count == 1);
 
                 wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
                 Assert.IsTrue(wfs.Count == 0);

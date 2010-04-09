@@ -151,7 +151,8 @@ namespace Apollo.AIM.SNAP.Process
                                         outputMessage("WF id: " + state.SNAP_Workflow.pkId + " gets email nag",EventLogEntryType.Information);
 
                                         // TODO - send out reminder email
-                                        Email.OverdueTask(state.SNAP_Workflow.SNAP_Actor.displayName,
+                                        Email.OverdueTask(state.SNAP_Workflow.SNAP_Actor.emailAddress,
+                                                          state.SNAP_Workflow.SNAP_Actor.displayName,
                                                           state.SNAP_Workflow.SNAP_Request.pkId,
                                                           state.SNAP_Workflow.SNAP_Request.userDisplayName);
                                         db.SubmitChanges();

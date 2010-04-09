@@ -25,16 +25,16 @@ namespace Apollo.AIM.SNAP.Model
         private static string url = @"http://";
         private static string aimDG = "pong.lee@apollogrp.edu";
 
-        public static void OverdueTask(string to, long id, string userName)
+        public static void OverdueTask(string toEmail, string toName, long id, string userName)
         {
             configPerEnvironment(id);
 
-            Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(aimDG,
+            Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(toEmail,
                                                                      "Supplemental Network Access Process-Overdue Alert",
                                                                      ConfigurationManager.AppSettings["NagApproval"], // newTaskNotification.html",
                                                                      new Hashtable()
                                                                          {
-                                                                             {"APPROVERNAME", to},
+                                                                             {"APPROVERNAME", toName},
                                                                              {"NAME", userName},
                                                                              {"URL", url},
                                                                              {"PREFIX", prefix}
@@ -126,6 +126,10 @@ namespace Apollo.AIM.SNAP.Model
 
         private static string emailAddress(string usrId)
         {
+            // for unit test only
+            if (usrId == "UnitTester")
+                return "pong.lee@apollogrp.edu";
+
             ADUserDetail detail = Apollo.AIM.SNAP.CA.DirectoryServices.GetUserByLoginName(usrId);
             return detail.EmailAddress;
         }
