@@ -162,7 +162,7 @@ namespace Apollo.AIM.SNAP.Model
         public bool RequestChanged()
         {
             var result = false;
-
+             
             try
             {
                 using (var db = new SNAPDatabaseDataContext())
