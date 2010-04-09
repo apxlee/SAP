@@ -23,12 +23,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			if (WebUtilities.CurrentViewIndex == ViewIndex.request_form || Page.IsPostBack)
 			{
 				BuildRequestForm();
-			//}
-			
-			//if (Page.IsPostBack)
-			//{
-			//    // this fires
-			//}
+			}
         }
         
         private void BuildRequestForm()
