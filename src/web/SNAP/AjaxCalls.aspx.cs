@@ -7,14 +7,14 @@ using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Apollo.AIM.SNAP.Model;
-using Apollo.Ultimus.CAP.Model;
 using Apollo.AIM.SNAP.CA;
+using Apollo.AIM.SNAP.Web.Common;
 using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Apollo.AIM.SNAP.Web
 {
-    public partial class _AjaxCalls : CapPage
+    public partial class _AjaxCalls : SnapPage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -30,12 +30,6 @@ namespace Apollo.AIM.SNAP.Web
             txtGroupInfo.Text = groupInfo;
             this.ucUserDetails1.init(p.Oid.ToString());
             */
-        }
-
-        protected void LogoutButton_Click(object sender, EventArgs e)
-        {
-            LoginValidator.SetLoginPerson(Session, null);
-            Response.Redirect("Index.aspx");
         }
 
         [WebMethod]
