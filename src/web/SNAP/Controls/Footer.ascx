@@ -8,12 +8,12 @@
 					<div class="csm_grid_3">
 						<h1>Application Links</h1>
 						<ul>
-							<li><a href="#">Request Form</a></li>
-							<li><a href="#">Search</a></li>
-							<li><a href="#">Support</a></li>
+							<li><a href="Index.aspx?viewIndex=1">Request Form</a></li>
+							<li><a href="Index.aspx?viewIndex=5">Search</a></li>
+							<li><a href="Index.aspx?viewIndex=6">Support</a></li>
 						</ul>
 					</div>
-					<div class="csm_grid_3">
+					<!--<div class="csm_grid_3">
 						<h1>Demonstration Role Change</h1>
 						<ul>
 							<li><a href="index.aspx?role=SuperUser">Super User</a></li>
@@ -22,20 +22,20 @@
 							<li><a href="index.aspx?role=Requestor">Requestor (Default User)</a></li>
 							<li><a href="index.aspx?role=NotAuthenticated">Not Authenticated</a></li>
 						</ul>
-					</div>
+					</div>-->
 					<div class="csm_grid_3">
 						<h1>Feedback</h1>
 						<ul>
-							<li><a href="#">Comments</a></li>
-							<li><a href="#">Report Problem</a></li>
-							<li><a href="#">Statistics</a></li>
+							<li><a href="mailto:DG_TBA">Comments</a></li>
+							<li><a href="mailto:DG_TBA">Report Problem</a></li>
+							<li><span>Statistics (TBD)</span></li>
 						</ul>
 					</div>
 					<div class="csm_clear">&nbsp;</div>
 				</div>
 				<div class="snap_copyright">
 					<span>&copy;2010 Apollo Group, Inc.&nbsp;|&nbsp;Access & Identity Management
-					<br />Out-of-Scope Privileged Access&nbsp;<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.AppVersion %>
+					<br />Supplemental Network Access Process (SNAP)&nbsp;<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.AppVersion %>
 					&nbsp;on&nbsp;<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.CurrentServer %></span>
 				</div>
 				<div class="csm_clear">&nbsp;</div>									
