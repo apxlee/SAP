@@ -29,6 +29,7 @@ namespace Apollo.AIM.SNAP.Model
         {
             configPerEnvironment(id);
 
+            /*
             Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(toEmail,
                                                                      "Supplemental Network Access Process-Overdue Alert",
                                                                      ConfigurationManager.AppSettings["NagApproval"], // newTaskNotification.html",
@@ -40,7 +41,7 @@ namespace Apollo.AIM.SNAP.Model
                                                                              {"PREFIX", prefix}
                                                                          });
 
-             
+             */
         }
 
         public static void UpdateRequesterStatus(string submitterUserId, string name, long id, WorkflowState status, string reason)
@@ -71,6 +72,7 @@ namespace Apollo.AIM.SNAP.Model
 
             configPerEnvironment(id);
 
+            /*
             Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(emailAddress(submitterUserId),
                                                                      subject,
                                                                      emailTemplatePath, // newTaskNotification.html",
@@ -83,6 +85,7 @@ namespace Apollo.AIM.SNAP.Model
                                                                              {"PREFIX", prefix}
                                                                          });
 
+             */
         }
 
         public static void TaskAssignToApprover(string toEmailAddress, string to, long id, string name)
@@ -91,6 +94,7 @@ namespace Apollo.AIM.SNAP.Model
             var body = "A task is waiting for your approval. For detail, <a href='" + url + id + "'>visit our site</a>";
             configPerEnvironment(id);
 
+            /*
             Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(toEmailAddress,
                                                                      "Supplemental Network Access Process-Submit",
                                                                      ConfigurationManager.AppSettings["Approval"], // newTaskNotification.html",
@@ -102,12 +106,14 @@ namespace Apollo.AIM.SNAP.Model
                                                                              {"PREFIX", prefix}
                                                                          });
 
+             */
         }
 
         public static void RequestAsssignToAccessTeam(long id, string firstName, string lastName)
         {
             configPerEnvironment(id);
 
+            /*
             Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(aimDG,
                                                                      "Test Formated Email",
                                                                      @".\approval.html", // newTaskNotification.html",
@@ -121,6 +127,7 @@ namespace Apollo.AIM.SNAP.Model
                                                                              {"PROCESSNAME", "processName"},
                                                                              {"INCIDENT", "incident"}
                                                                          });
+             */
 
         }
 
