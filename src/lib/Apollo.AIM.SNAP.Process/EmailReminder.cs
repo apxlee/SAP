@@ -15,7 +15,7 @@ namespace Apollo.AIM.SNAP.Process
     public partial class EmailReminder : ServiceBase
     {
         private Timer _timer = null;
-        private bool done = false;
+        private  bool done = false;
         private string fileName = @"d:\temp\EmailReminderlogger.txt";
 
         public EmailReminder()
@@ -29,7 +29,7 @@ namespace Apollo.AIM.SNAP.Process
 
             _timer = new Timer(1800000);
 
-            //    _timer = new Timer(10000);
+             //   _timer = new Timer(30000);
 
             // Now tell the timer when the timer fires
             // (the Elapsed event) call the _timer_Elapsed
@@ -82,11 +82,12 @@ namespace Apollo.AIM.SNAP.Process
 
             if (DateTime.Now.Hour >= 2 && !done)
             {
-                //outputMessage(" EmailReminderlogger: DO it time ", EventLogEntryType.Information);
+                outputMessage(" EmailReminderlogger: DO it ", EventLogEntryType.Information);
 
                 emailApproverForOverdueTask();
 
                 done = true;
+
             }
 
             if (DateTime.Now.Hour < 2)
@@ -116,59 +117,75 @@ namespace Apollo.AIM.SNAP.Process
 
         private void emailApproverForOverdueTask()
         {
-            using (var db = new SNAPDatabaseDataContext())
+            try
             {
-                var unfinishedtasks = db.SNAP_Workflow_States.Where(s => s.completedDate == null);
-                foreach (var state in unfinishedtasks)
+                using (var db = new SNAPDatabaseDataContext())
                 {
-                    try
+                    var unfinishedtasks = db.SNAP_Workflow_States.Where(s => s.completedDate == null);
+                    foreach (var state in unfinishedtasks)
                     {
-                        if (state.SNAP_Workflow.SNAP_Request.statusEnum != (byte) RequestState.Closed)
+                        try
                         {
-                            // TODO - should be remind submitter to work on 'request to change', SLA is 3 days or does that matter
-                            if (state.workflowStatusEnum == (byte)WorkflowState.Pending_Approval
-                                && state.SNAP_Workflow.SNAP_Actor.SNAP_Actor_Group.actorGroupType != (byte)ActorApprovalType.Workflow_Admin)
+                            if (state.SNAP_Workflow.SNAP_Request.statusEnum != (byte) RequestState.Closed)
                             {
-                                // only remind approvers, not access team
-
-                                outputMessage("WF id: " + state.SNAP_Workflow.pkId + "-" + state.SNAP_Workflow.SNAP_Actor.displayName +" due on: " + state.dueDate, EventLogEntryType.Information);
-
-
-                                if (state.dueDate != null && state.notifyDate != null)
+                                // TODO - should be remind submitter to work on 'request to change', SLA is 3 days or does that matter
+                                if (state.workflowStatusEnum == (byte) WorkflowState.Pending_Approval
+                                    &&
+                                    state.SNAP_Workflow.SNAP_Actor.SNAP_Actor_Group.actorGroupType !=
+                                    (byte) ActorApprovalType.Workflow_Admin)
                                 {
-                                    DateTime dueDate = DateTime.Parse(state.dueDate.ToString());
-                                    TimeSpan diff = DateTime.Now.Subtract(dueDate);
+                                    // only remind approvers, not access team
 
-                                    if (diff.Days == 1) // more than 24 hours over due
+                                    outputMessage(
+                                        "WF id: " + state.SNAP_Workflow.pkId + "-" +
+                                        state.SNAP_Workflow.SNAP_Actor.displayName + " due on: " + state.dueDate,
+                                        EventLogEntryType.Information);
+
+
+                                    if (state.dueDate != null && state.notifyDate != null)
                                     {
-                                        state.SNAP_Workflow.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
-                                                                                           {
-                                                                                               commentText = "over due!",
-                                                                                               commentTypeEnum = (byte)CommentsType.Email_Reminder,
-                                                                                               createdDate = DateTime.Now,
-                                                                                           });
+                                        DateTime dueDate = DateTime.Parse(state.dueDate.ToString());
+                                        TimeSpan diff = DateTime.Now.Subtract(dueDate);
 
-                                        outputMessage("WF id: " + state.SNAP_Workflow.pkId + " gets email nag",EventLogEntryType.Information);
+                                        if (diff.Days == 1) // more than 24 hours over due
+                                        {
+                                            state.SNAP_Workflow.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
+                                                                                               {
+                                                                                                   commentText =
+                                                                                                       "over due!",
+                                                                                                   commentTypeEnum =
+                                                                                                       (byte)
+                                                                                                       CommentsType.
+                                                                                                           Email_Reminder,
+                                                                                                   createdDate =
+                                                                                                       DateTime.Now,
+                                                                                               });
 
-                                        // TODO - send out reminder email
-                                        Email.OverdueTask(state.SNAP_Workflow.SNAP_Actor.emailAddress,
-                                                          state.SNAP_Workflow.SNAP_Actor.displayName,
-                                                          state.SNAP_Workflow.SNAP_Request.pkId,
-                                                          state.SNAP_Workflow.SNAP_Request.userDisplayName);
-                                        db.SubmitChanges();
+                                            outputMessage("WF id: " + state.SNAP_Workflow.pkId + " gets email nag",
+                                                          EventLogEntryType.Information);
+
+                                            Email.OverdueTask(state.SNAP_Workflow.SNAP_Actor.emailAddress,
+                                                              state.SNAP_Workflow.SNAP_Actor.displayName,
+                                                              state.SNAP_Workflow.SNAP_Request.pkId,
+                                                              state.SNAP_Workflow.SNAP_Request.userDisplayName);
+                                            db.SubmitChanges();
+                                        }
+
                                     }
-
                                 }
                             }
-
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        outputMessage("WF id: " + state.SNAP_Workflow.pkId + ", Stack Trace : " + ex.StackTrace, EventLogEntryType.Error);
-                    }
+                        catch (Exception ex)
+                        {
+                            outputMessage("State id: " + state.pkId + ",WF id: " + state.workflowId + ", Stack Trace : " + ex.StackTrace, EventLogEntryType.Error);
+                        }
 
+                    }
                 }
+            }
+            catch(Exception ex)
+            {
+                outputMessage(ex.Message + ", Stack Trace : " + ex.StackTrace, EventLogEntryType.Error);
             }
         }
 

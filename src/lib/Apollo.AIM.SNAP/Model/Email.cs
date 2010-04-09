@@ -11,25 +11,15 @@ namespace Apollo.AIM.SNAP.Model
 {
     public class Email
     {
-        /*
-         *       <add key="Approval" value="D:\gitrepo\snap\trunk\src\lib\Apollo.AIM.SNAP\EmailTemplate\approval.html" />
-      <add key="NagApproval" value="D:\gitrepo\snap\trunk\src\lib\Apollo.AIM.SNAP\EmailTemplate\nagApproval.html" />
-      <add key="CompleteToSubmitter" value="D:\gitrepo\snap\trunk\src\lib\Apollo.AIM.SNAP\EmailTemplate\completeToSubmitter.html" /> 
-      <add key="ConfrimToSubmitter" value="D:\gitrepo\snap\trunk\src\lib\Apollo.AIM.SNAP\EmailTemplate\confirmSubmitToSubmitter.html" />
-      <add key="DenyToSubmitter" value="D:\gitrepo\snap\trunk\src\lib\Apollo.AIM.SNAP\EmailTemplate\denyToSubmitter.html" />
-      <add key="RequestChangeToSubmitter" value="D:\gitrepo\snap\trunk\src\lib\Apollo.AIM.SNAP\EmailTemplate\RequestChangeToSubmitter.html" />
-
-         */
         //private static string link = @"http://access/snap/index.aspx?Requestid=";
         private static string prefix = @"http://";
         private static string url = @"http://";
-        private static string aimDG = "pong.lee@apollogrp.edu";
 
         public static void OverdueTask(string toEmail, string toName, long id, string userName)
         {
             configPerEnvironment(id);
 
-            /*
+            
             Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(toEmail,
                                                                      "Supplemental Network Access Process-Overdue Alert",
                                                                      ConfigurationManager.AppSettings["NagApproval"], // newTaskNotification.html",
@@ -41,7 +31,7 @@ namespace Apollo.AIM.SNAP.Model
                                                                              {"PREFIX", prefix}
                                                                          });
 
-             */
+             
         }
 
         public static void UpdateRequesterStatus(string submitterUserId, string name, long id, WorkflowState status, string reason)
