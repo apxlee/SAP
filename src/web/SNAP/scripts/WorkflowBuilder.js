@@ -1,7 +1,6 @@
 ﻿function approverGroupChecked(obj, requestId)
 {
     $(document).ready(function() {
-
         $(obj).closest("table").find("input[type=radio][checked]").each(
           function() {
               if ($(obj).attr("checked")) {
@@ -15,8 +14,7 @@
 }
 function createWorkflow(requestId) {
     var postData = "{'requestId':'" + requestId.toString() + "','actorIds':'" + $("#_selectedActors_" + requestId).val() + "'}";
-    //var postData = "{'actorIds':'" + $("#_selectedActors_" + requestId).val() + "'}";
-
+    
     $.ajax({
         type: "POST",
         contentType: "application/json; character=utf-8",

@@ -72,7 +72,7 @@ namespace Apollo.AIM.SNAP.Web
             return DirectoryServices.GetUserManagerInfoByFullName(fullName);
         }
 
-        #region
+        #region WorkflowBuilder
 
         [WebMethod]
         public static bool CreateWorkflow(int requestId, string actorIds)

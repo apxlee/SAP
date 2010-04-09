@@ -11,10 +11,10 @@ namespace Apollo.AIM.SNAP.Web.Controls
 	{
 		protected void Page_Load(object sender, EventArgs e)
 		{
-			//if (WebUtilities.CurrentViewIndex == ViewIndex.access_team)
-			//{
-				BuildAccessTeamView();
-			//}
+            if (WebUtilities.CurrentViewIndex == ViewIndex.access_team)
+            {
+                BuildAccessTeamView();
+            }
 		}
 		
 		private void BuildAccessTeamView()

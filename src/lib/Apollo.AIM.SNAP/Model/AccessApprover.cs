@@ -15,5 +15,6 @@ namespace Apollo.AIM.SNAP.Model
         public string GroupName { get; set; }
         public string Description { get; set; }
         public ActorApprovalType ActorApprovalType { get; set; }
+        public WorkflowState WorkflowState { get; set; }
     }
 }

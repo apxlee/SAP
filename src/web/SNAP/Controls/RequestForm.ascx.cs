@@ -117,7 +117,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
                     using (var db = new SNAPDatabaseDataContext())
                     {
-                        int requestID = db.usp_insert_request_xml(xmlInput, WebUtilities.CurrentLoginUserId, UserLoginId, UserName, detail.Title, ManagerLoginId, ManagerName);
+                        int requestID = db.usp_insert_request_xml(xmlInput, SnapSession.CurrentUser.LoginId, UserLoginId, UserName, detail.Title, ManagerLoginId, ManagerName);
                         if (requestID > 0)
                         {
                             //TODO set Session variable to requestID

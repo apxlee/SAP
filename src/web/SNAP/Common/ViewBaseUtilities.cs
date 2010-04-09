@@ -83,7 +83,7 @@ namespace Apollo.AIM.SNAP.Web.Common
             
             using (var db = new SNAPDatabaseDataContext())
             {
-                availableApprovers = ApprovalWorkflow.GetActiveApprovers(db);
+                availableApprovers = ApprovalWorkflow.GetAvailableApprovers();
             }
 
             if (!IsNullRecordTest)

@@ -811,40 +811,90 @@ namespace Apollo.AIM.SNAP.Model
             }
         }
 
-        public static List<AccessApprover> GetActiveApprovers(SNAPDatabaseDataContext db)
+        public static List<AccessApprover> GetAvailableApprovers()
         {
             List<AccessApprover> approverList = new List<AccessApprover>();
-            var query = from sa in db.SNAP_Actors
-                        join sag in db.SNAP_Actor_Groups on sa.actor_groupId equals sag.pkId
-                        where sa.isActive == true && sag.isActive == true
-                        orderby sag.actorGroupType, sag.groupName ascending
-                        select new
-                        {
-                            ActorId = sa.pkId,
-                            UserId = sa.userId,
-                            DisplayName = sa.displayName,
-                            IsDefault = sa.isDefault,
-                            GroupId = sag.pkId,
-                            GroupName = sag.groupName,
-                            Description = sag.description,
-                            ActorGroupType = sag.actorGroupType
-                        };
 
-            foreach (var approver in query)
+            using (var db = new SNAPDatabaseDataContext())
             {
-                AccessApprover newApprover = new AccessApprover();
-                newApprover.ActorId = approver.ActorId;
-                newApprover.UserId = approver.UserId;
-                newApprover.DisplayName = approver.DisplayName;
-                newApprover.IsDefault = approver.IsDefault;
-                newApprover.GroupId = approver.GroupId;
-                newApprover.GroupName = approver.GroupName;
-                newApprover.Description = approver.Description;
-                newApprover.ActorApprovalType = (ActorApprovalType)approver.ActorGroupType;
-                approverList.Add(newApprover);
+                var query = from sa in db.SNAP_Actors
+                            join sag in db.SNAP_Actor_Groups on sa.actor_groupId equals sag.pkId
+                            where sa.isActive == true && sag.isActive == true && sag.actorGroupType < 2
+                            orderby sag.actorGroupType, sag.groupName ascending
+                            select new
+                            {
+                                ActorId = sa.pkId,
+                                UserId = sa.userId,
+                                DisplayName = sa.displayName,
+                                IsDefault = sa.isDefault,
+                                GroupId = sag.pkId,
+                                GroupName = sag.groupName,
+                                Description = sag.description,
+                                ActorGroupType = sag.actorGroupType
+                            };
+                foreach (var approver in query)
+                {
+                    AccessApprover newApprover = new AccessApprover();
+                    newApprover.ActorId = approver.ActorId;
+                    newApprover.UserId = approver.UserId;
+                    newApprover.DisplayName = approver.DisplayName;
+                    newApprover.IsDefault = approver.IsDefault;
+                    newApprover.GroupId = approver.GroupId;
+                    newApprover.GroupName = approver.GroupName;
+                    newApprover.Description = approver.Description;
+                    newApprover.ActorApprovalType = (ActorApprovalType)approver.ActorGroupType;
+                    approverList.Add(newApprover);
+                }
+
+            }
+            
+            return approverList;
+        }
+
+        public static List<AccessApprover> GetRequestApprovers(int requestId)
+        {
+            List<AccessApprover> approverList = new List<AccessApprover>();
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var query = from sw in db.SNAP_Workflows
+                            join sws in db.SNAP_Workflow_States on sw.pkId equals sws.workflowId
+                            where sw.requestId == requestId
+                            group sw by new { sw.requestId, sw.actorId } into wfGroup
+                            select new
+                            {
+                                ActorId = wfGroup.Key.actorId,
+                                WorkflowId = wfGroup.Max(sw => sw.pkId) 
+                            };
+
+                foreach (var approver in query)
+                {
+                    AccessApprover newApprover = new AccessApprover();
+                    newApprover.ActorId = approver.ActorId;
+                    newApprover.WorkflowState = (WorkflowState)GetWorkflowState(approver.WorkflowId);
+                    approverList.Add(newApprover);
+                }
             }
 
             return approverList;
+        }
+
+        public static byte GetWorkflowState(int workflowId)
+        {
+            byte state = 0;
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var result = db.SNAP_Workflow_States
+                             .Where(u=>u.workflowId == workflowId)
+                             .OrderByDescending(o=>o.pkId)
+                             .Select(s=>s.workflowStatusEnum)
+                             .First();
+
+                state = (byte)result;
+            }
+
+            return state;
         }
 
         public int Id { get; set; }

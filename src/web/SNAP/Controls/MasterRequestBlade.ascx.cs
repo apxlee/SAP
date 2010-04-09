@@ -25,11 +25,10 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			PopulateUserInfo();
 			LoadReadOnlyRequestPanel();
 			LoadRequestTrackingPanel();
-            //TODO : testing Access Team Panels until John finishes his login work
-            LoadAccessTeamPanels();
+
 			try
 			{
-				switch ((Role)Page.Session["SNAPUserRole"])
+				switch ((Role)SnapSession.CurrentUser.CurrentRole)
 				{
 					case Role.ApprovingManager:
 						LoadApprovingManagerPanel();
@@ -95,22 +94,27 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			WorkflowBuilderPanel workflowBuilderPanel;
 			AccessCommentsPanel accessCommentsPanel;
 
-            workflowBuilderPanel = LoadControl("~/Controls/WorkflowBuilderPanel.ascx") as WorkflowBuilderPanel;
-			workflowBuilderPanel.RequestId = RequestId.ToString();
-            workflowBuilderPanel.AvailableApprovers = AvailableApprovers;
+            if (RequestState != RequestState.Closed)
+            {
+                workflowBuilderPanel = LoadControl("~/Controls/WorkflowBuilderPanel.ascx") as WorkflowBuilderPanel;
+                workflowBuilderPanel.RequestId = RequestId.ToString();
+                workflowBuilderPanel.RequestApprovers = ApprovalWorkflow.GetRequestApprovers(Convert.ToInt32(RequestId));
+                workflowBuilderPanel.AvailableApprovers = AvailableApprovers;
 
-            Literal buttonLit = new Literal();
-            buttonLit.Text = "<input type=\"hidden\" id=\"_selectedActors_" + RequestId.ToString() + "\" />";
-            buttonLit.Text += "<input type=\"button\" value=\"Close Completed\" class=\"csm_html_button\"/>";
-            buttonLit.Text += "<input type=\"button\" value=\"Create Ticket\" class=\"csm_html_button\"/>";
-            buttonLit.Text += "<input type=\"button\" value=\"Edit Workflow\" class=\"csm_html_button\"/>";
-            buttonLit.Text += "<input type=\"button\" value=\"Build Workflow | Continue\" onclick=\"createWorkflow('" + RequestId.ToString() + "');\" class=\"csm_html_button\"/>";
-            
-            PlaceHolder dynamicButtonsContainer;
-            dynamicButtonsContainer = (PlaceHolder)WebUtilities.FindControlRecursive(workflowBuilderPanel, "_dynamicButtonsContainer");
-            dynamicButtonsContainer.Controls.Add(buttonLit);
+                Literal buttonLit = new Literal();
+                buttonLit.Text = "<input type=\"hidden\" id=\"_selectedActors_" + RequestId.ToString() + "\" />" +
+                "<input type=\"button\" value=\"Close Completed\" class=\"csm_html_button\"/>" +
+                "<input type=\"button\" value=\"Create Ticket\" class=\"csm_html_button\"/>" +
+                "<input type=\"button\" value=\"Edit Workflow\" class=\"csm_html_button\"/>" +
+                "<input type=\"button\" value=\"Build Workflow | Continue\"" +
+                " onclick=\"createWorkflow('" + RequestId.ToString() + "');\" class=\"csm_html_button\"/>";
 
-			_accessTeamPanelContainer.Controls.Add(workflowBuilderPanel);
+                PlaceHolder dynamicButtonsContainer;
+                dynamicButtonsContainer = (PlaceHolder)WebUtilities.FindControlRecursive(workflowBuilderPanel, "_dynamicButtonsContainer");
+                dynamicButtonsContainer.Controls.Add(buttonLit);
+
+                _accessTeamPanelContainer.Controls.Add(workflowBuilderPanel);
+            }
 			
 		}
 		

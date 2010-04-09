@@ -66,7 +66,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 			{
 				if (_isAccessTeam)
 				{
-					var rolecheck = snapDb.SNAP_Actors.Where(a => a.actor_groupId == 1 && a.userId == LoginId && a.isActive == true);
+					var rolecheck = snapDb.SNAP_Actors.Where(a => a.actor_groupId == (int)ActorGroupType.Workflow_Admin && a.userId == LoginId && a.isActive == true);
 					// TODO: we need to think about this... 
 					// if they aren't in the "Heather" subgroup, but are AIM members, should they really be superuser?
 					// could move the superuser list to web.config
@@ -76,7 +76,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 				}
 				else
 				{
-					var rolecheck = snapDb.SNAP_Actors.Where(a => a.actor_groupId != 1 && a.userId == LoginId && a.isActive == true);
+                    var rolecheck = snapDb.SNAP_Actors.Where(a => a.actor_groupId != (int)ActorGroupType.Workflow_Admin && a.userId == LoginId && a.isActive == true);
 					if (rolecheck.Count() > 0) { CurrentRole = Role.ApprovingManager; }
 					else { CurrentRole = Role.Requestor; }
 				}
