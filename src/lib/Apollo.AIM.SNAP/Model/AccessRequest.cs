@@ -204,8 +204,12 @@ namespace Apollo.AIM.SNAP.Model
 
                     if (result)
                     {
-                        createrApprovalWorkFlow(db, actorIds);
-                        db.SubmitChanges();
+                        result = mustHaveManagerInWorkflow(db, actorIds);
+                        if (result)
+                        {
+                            createrApprovalWorkFlow(db, actorIds);
+                            db.SubmitChanges();
+                        }
                     }
 
                 }
@@ -213,7 +217,22 @@ namespace Apollo.AIM.SNAP.Model
                 InformApproverForAction();
             }
             catch (Exception ex) {
-                Logger.Error("SNAP - AccessRequst: Create Workflow", ex); 
+                Logger.Error("SNAP - AccessRequst: Create Workflow", ex);
+                result = false;
+            }
+            return result;
+        }
+
+        private bool mustHaveManagerInWorkflow(SNAPDatabaseDataContext db,  List<int> actorIds)
+        {
+            var result = false;
+            foreach (var i in actorIds)
+            {
+                if (db.SNAP_Actors.Single(a=>a.pkId == i).SNAP_Actor_Group.actorGroupType == (byte) ActorApprovalType.Manager)
+                {
+                    result = true;
+                    break;
+                }
             }
             return result;
         }
@@ -570,35 +589,102 @@ namespace Apollo.AIM.SNAP.Model
         }
 
         */
+        /*
         private void createrApprovalWorkFlow(SNAPDatabaseDataContext db, List<int> actorIds)
         {
             var req = db.SNAP_Requests.Single(x => x.pkId == _id);
 
+            
+
+            //if (req.SNAP_Workflows.Count == 1 && req.SNAP_Workflows[0].actorId == 1) // brand new wf
+            //{
+                foreach (var actId in actorIds)
+                {
+
+                    SNAP_Workflow wf;
+                    if (req.SNAP_Workflows.Count(w => w.actorId == actId) == 0) // 
+                    {
+                        wf = new SNAP_Workflow() {actorId = actId};
+                        req.SNAP_Workflows.Add(wf);
+                    }
+                    else
+                    {
+                        wf = req.SNAP_Workflows.Single(w => w.actorId == actId);
+                            // wf already exists due to change request
+                    }
+
+                    var actor = db.SNAP_Actors.Single(a => a.pkId == actId);
+                    var agt = actor.SNAP_Actor_Group.actorGroupType ?? 3; // default to accessteam if null
+
+                    ActorApprovalType t = (ActorApprovalType) agt;
+
+                    stateTransition(t, wf, WorkflowState.Not_Active, WorkflowState.Pending_Approval);
+
+                }
+            //}
+
+        }
+*/
+
+        private void createrApprovalWorkFlow(SNAPDatabaseDataContext db, List<int> actorIds)
+        {
+            var req = db.SNAP_Requests.Single(x => x.pkId == _id);
+
+            
+            var orgActorList = new List<int>();
+            var toDeleteActorList = new List<int>();
+            List<SNAP_Workflow_State> toDeleteWFStates = new List<SNAP_Workflow_State>();
+            if (req.SNAP_Workflows.Count > 1)
+            {
+                foreach(var wf in req.SNAP_Workflows)
+                {
+                    if (wf.actorId != 1)
+                        orgActorList.Add(wf.actorId);
+                }
+
+                toDeleteActorList = orgActorList.Except(actorIds).ToList();
+                foreach (var i in toDeleteActorList)
+                {
+                    var wf = req.SNAP_Workflows.Single(w => w.actorId == i);
+                    toDeleteWFStates.AddRange(wf.SNAP_Workflow_States);
+                    db.SNAP_Workflow_States.DeleteAllOnSubmit(toDeleteWFStates);
+                    db.SNAP_Workflows.DeleteOnSubmit(wf);
+                    db.SNAP_Workflow_Comments.DeleteAllOnSubmit(wf.SNAP_Workflow_Comments);
+                    //req.SNAP_Workflows.Remove(wf);
+                }
+
+                
+            }
+             
+
+            //if (req.SNAP_Workflows.Count == 1 && req.SNAP_Workflows[0].actorId == 1) // brand new wf
+            //{
             foreach (var actId in actorIds)
             {
 
                 SNAP_Workflow wf;
                 if (req.SNAP_Workflows.Count(w => w.actorId == actId) == 0) // 
                 {
-                    wf  = new SNAP_Workflow() {actorId = actId };
+                    wf = new SNAP_Workflow() { actorId = actId };
                     req.SNAP_Workflows.Add(wf);
                 }
                 else
                 {
-                    wf = req.SNAP_Workflows.Single(w => w.actorId == actId); // wf already exists due to change request
+                    wf = req.SNAP_Workflows.Single(w => w.actorId == actId);
+                    // wf already exists due to change request
                 }
 
                 var actor = db.SNAP_Actors.Single(a => a.pkId == actId);
                 var agt = actor.SNAP_Actor_Group.actorGroupType ?? 3; // default to accessteam if null
 
-                ActorApprovalType t = (ActorApprovalType) agt;
+                ActorApprovalType t = (ActorApprovalType)agt;
 
                 stateTransition(t, wf, WorkflowState.Not_Active, WorkflowState.Pending_Approval);
-                
-            }
-            
-        }
 
+            }
+            //}
+
+        }
 
         private bool emailApproverForAction(List<SNAP_Workflow> wfs)
         {

@@ -262,7 +262,23 @@ namespace Apollo.AIM.SNAP.Test
             }
         }
 
-        
+
+        [Test]
+        public void ShouldFailToCreateWorkflowByAccessTeamDueToMissingManagerApprover()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+
+                var accessReq = new AccessRequest(req.pkId);
+
+                accessReq.Ack();
+
+                Assert.IsFalse(accessReq.CreateWorkflow(new List<int>() { windowsServerActorId, databaseActorId }));
+
+            }
+        }
+
         [Test] public void ShouldCreateWorkflowByAccessTeam()
         {
             using (var db = new SNAPDatabaseDataContext())
@@ -770,12 +786,14 @@ namespace Apollo.AIM.SNAP.Test
 
 
                 // get manager approal
+                //ystem.Threading.Thread.Sleep(90000);
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
                 Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate == null);
 
                 accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
 
                 // get team approval
+                //System.Threading.Thread.Sleep(90000);
                 wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Team_Approver);
                 accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
 
@@ -785,12 +803,11 @@ namespace Apollo.AIM.SNAP.Test
                 // !!! for individual test, please uncommnet it
                 // !!! comment it out to save time
 
-                // System.Threading.Thread.Sleep(90000);
+                //System.Threading.Thread.Sleep(90000);
                 wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
                 accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
                 accessReq.WorkflowAck(wfs[1].pkId, WorkflowAction.Approved);
                 accessReq.WorkflowAck(wfs[2].pkId, WorkflowAction.Approved);
-
 
             }
 
@@ -903,7 +920,281 @@ namespace Apollo.AIM.SNAP.Test
 
         }
 
-        //[Ignore]
+        [Test]
+        public void ShouldHandleUpdateCreateWorkFlowByAddingNewApprovals()
+        {
+            // set up for first request to change
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+
+                var accessReq = new AccessRequest(req.pkId);
+                accessReq.Ack();
+                accessReq.CreateWorkflow(new List<int>()
+                                             {
+                                                 managerActorId,
+                                                 teamApprovalActorId,
+                                                 windowsServerActorId,
+                                                 //databaseActorId,
+                                                 //networkShareActorId
+                                             });
+
+                // get manager approal
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
+                Assert.IsTrue(
+                    wfs[0].SNAP_Workflow_States.Single(
+                        s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate == null);
+
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+
+                // get team approval
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Team_Approver);
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+
+
+                // get technical approval, but the last one request to change
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
+                //accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+                //accessReq.WorkflowAck(wfs[1].pkId, WorkflowAction.Approved);
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Change, "change it");
+
+            }
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+                var accessReq = new AccessRequest(req.pkId);
+
+                Assert.IsTrue(req.statusEnum == (byte)RequestState.Change_Requested);
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
+                //verifyWorkflowStateComplete(wfs[0], WorkflowState.Approved);
+                //verifyWorkflowStateComplete(wfs[1], WorkflowState.Approved);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Change_Requested);
+
+                verifyWorkflowComment(wfs[0], CommentsType.Requested_Change);
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
+                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Change_Requested).completedDate == null);
+
+            }
+
+            // recreate wf
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+
+                var accessReq = new AccessRequest(req.pkId);
+
+                accessReq.RequestChanged();
+                accessReq.Ack();
+                accessReq.CreateWorkflow(new List<int>()
+                                         {
+                                             managerActorId,
+                                             teamApprovalActorId,
+                                             windowsServerActorId,
+                                             databaseActorId,
+                                             networkShareActorId
+                                         });
+
+                // get technical approval, but the last one request to change
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
+                Assert.IsTrue(wfs.Count == 3);
+                
+            }
+        }
+
+        [Test]
+        public void ShouldHandleUpdateCreateWorkFlowByRemovingApproval()
+        {
+            int goneWFid = 0;
+            // set up for first request to change
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+
+                var accessReq = new AccessRequest(req.pkId);
+                accessReq.Ack();
+                accessReq.CreateWorkflow(new List<int>()
+                                             {
+                                                 managerActorId,
+                                                 teamApprovalActorId,
+                                                 windowsServerActorId,
+                                                 //databaseActorId,
+                                                 //networkShareActorId
+                                             });
+
+                // get manager approal
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
+                Assert.IsTrue(
+                    wfs[0].SNAP_Workflow_States.Single(
+                        s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate == null);
+
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+
+                // get team approval
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Team_Approver);
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+
+
+                // get technical approval, but the last one request to change
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
+                goneWFid = wfs[0].pkId;
+                //accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+                //accessReq.WorkflowAck(wfs[1].pkId, WorkflowAction.Approved);
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Change, "change it");
+
+            }
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+                var accessReq = new AccessRequest(req.pkId);
+
+                Assert.IsTrue(req.statusEnum == (byte)RequestState.Change_Requested);
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
+                //verifyWorkflowStateComplete(wfs[0], WorkflowState.Approved);
+                //verifyWorkflowStateComplete(wfs[1], WorkflowState.Approved);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Change_Requested);
+
+                verifyWorkflowComment(wfs[0], CommentsType.Requested_Change);
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
+                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Change_Requested).completedDate == null);
+
+            }
+
+
+            // recreate wf
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+
+                var accessReq = new AccessRequest(req.pkId);
+
+                accessReq.RequestChanged();
+                accessReq.Ack();
+                accessReq.CreateWorkflow(new List<int>()
+                                         {
+                                             managerActorId,
+                                             teamApprovalActorId,
+                                             //windowsServerActorId,
+                                             databaseActorId,
+                                             networkShareActorId
+                                         });
+
+                // get technical approval, but the last one request to change
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
+                Assert.IsTrue(wfs.Count == 2);
+
+                var noSuchWorkflow = db.SNAP_Workflows.Where(w => w.actorId == windowsServerActorId);
+                Assert.IsTrue(noSuchWorkflow.Count() == 0);
+
+                var noSuchWorkflowState = db.SNAP_Workflow_States.Where(s => s.workflowId == goneWFid);
+                Assert.IsTrue(noSuchWorkflowState.Count() == 0);
+
+                var noSuchWorkflowComment = db.SNAP_Workflow_Comments.Where(c=> c.workflowId == goneWFid);
+                Assert.IsTrue(noSuchWorkflowComment.Count() == 0);
+
+
+            }
+        }
+
+
+
+        [Test]
+        public void ShouldHandleUpdateCreateWorkFlowByRemovingTechApproval()
+        {
+            int goneWFid = 0;
+            // set up for first request to change
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+
+                var accessReq = new AccessRequest(req.pkId);
+                accessReq.Ack();
+                accessReq.CreateWorkflow(new List<int>()
+                                             {
+                                                 managerActorId,
+                                                 teamApprovalActorId,
+                                                 windowsServerActorId,
+                                                 //databaseActorId,
+                                                 //networkShareActorId
+                                             });
+
+                // get manager approal
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
+                Assert.IsTrue(
+                    wfs[0].SNAP_Workflow_States.Single(
+                        s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate == null);
+
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+
+                // get team approval
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Team_Approver);
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+                goneWFid = wfs[0].pkId;
+
+
+                // get technical approval, but the last one request to change
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
+                //accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+                //accessReq.WorkflowAck(wfs[1].pkId, WorkflowAction.Approved);
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Change, "change it");
+
+            }
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+                var accessReq = new AccessRequest(req.pkId);
+
+                Assert.IsTrue(req.statusEnum == (byte)RequestState.Change_Requested);
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
+                //verifyWorkflowStateComplete(wfs[0], WorkflowState.Approved);
+                //verifyWorkflowStateComplete(wfs[1], WorkflowState.Approved);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Change_Requested);
+
+                verifyWorkflowComment(wfs[0], CommentsType.Requested_Change);
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
+                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Change_Requested).completedDate == null);
+
+            }
+
+
+            // recreate wf
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+
+                var accessReq = new AccessRequest(req.pkId);
+
+                accessReq.RequestChanged();
+                accessReq.Ack();
+                accessReq.CreateWorkflow(new List<int>()
+                                         {
+                                             managerActorId,
+                                             //teamApprovalActorId,
+                                             windowsServerActorId,
+                                             //databaseActorId,
+                                             //networkShareActorId
+                                         });
+
+                // get technical approval, but the last one request to change
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
+                Assert.IsTrue(wfs.Count == 1);
+
+                var noSuchWorkflow = db.SNAP_Workflows.Where(w => w.actorId == teamApprovalActorId);
+                Assert.IsTrue(noSuchWorkflow.Count() == 0);
+
+                var noSuchWorkflowState = db.SNAP_Workflow_States.Where(s => s.workflowId == goneWFid);
+                Assert.IsTrue(noSuchWorkflowState.Count() == 0);
+
+                var noSuchWorkflowComment = db.SNAP_Workflow_Comments.Where(c => c.workflowId == goneWFid);
+                Assert.IsTrue(noSuchWorkflowComment.Count() == 0);
+
+
+            }
+        }
+
         [Test]
         public void ShouldHandleFromManagerToTeamToLastTechicalRequestToChangeLoop()
         {
@@ -961,7 +1252,7 @@ namespace Apollo.AIM.SNAP.Test
 
             }
 
-            for (int i = 0; i < 5; i++ )
+            for (int i = 0; i < 5; i++)
                 using (var db = new SNAPDatabaseDataContext())
                 {
                     var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
@@ -975,7 +1266,7 @@ namespace Apollo.AIM.SNAP.Test
                                                  managerActorId,
                                                  teamApprovalActorId,
                                                  windowsServerActorId,
-                                                 databaseActorId,
+                                                 //databaseActorId,
                                                  networkShareActorId
                                              });
 
@@ -989,16 +1280,18 @@ namespace Apollo.AIM.SNAP.Test
                     //Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate == null);
 
                     accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+
                     Assert.IsTrue(
                         wfs[0].SNAP_Workflow_States.Count(
-                            s => s.completedDate != null 
-                                && s.workflowStatusEnum == (byte) WorkflowState.Approved
-                                && s.pkId > state.pkId) == 1 );
+                            s => s.completedDate != null
+                                && s.workflowStatusEnum == (byte)WorkflowState.Approved
+                                && s.pkId > state.pkId) == 1);
 
                     // get team approval
                     wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Team_Approver);
 
                     accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+
 
                     Assert.IsTrue(
                             wfs[0].SNAP_Workflow_States.Count(
@@ -1007,7 +1300,9 @@ namespace Apollo.AIM.SNAP.Test
                                     && s.pkId > state.pkId) == 1);
 
                     var r = new Random();
-                    var last = r.Next(2);
+                    //var last = r.Next(2);
+                    var last = r.Next(1);
+                    //var last = 0;
                     // get only one technical request to change
                     wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
                     for (int x = 0; x <= last; x++)
@@ -1033,10 +1328,10 @@ namespace Apollo.AIM.SNAP.Test
                                     && s.workflowStatusEnum == (byte)WorkflowState.Change_Requested)
                                    == 1);
                      */
-                    
+
                 }
         }
-
+        
         [Ignore]
         [Test]
         public void ShouldHandleCreateSDTicket()
@@ -1400,6 +1695,8 @@ namespace Apollo.AIM.SNAP.Test
 
             }
         }
+
+
 
         [Test] public void TestDateDiff()
         {
