@@ -250,6 +250,23 @@ namespace Apollo.AIM.SNAP.Model
             return wfList;
         }
 
+        public static byte GetRequestState(int requestId)
+        {
+            byte state = 0;
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var result = db.SNAP_Requests
+                             .Where(u => u.pkId == requestId)
+                             .Select(s => s.statusEnum)
+                             .First();
+
+                state = (byte)result;
+            }
+
+            return state;
+        }
+
         public void InformApproverForAction()
         {
             bool done = false;
@@ -870,7 +887,6 @@ namespace Apollo.AIM.SNAP.Model
 
     #endregion
 
-
     #region  ApprovalWorkflow class
 
     public abstract class  ApprovalWorkflow
@@ -897,9 +913,9 @@ namespace Apollo.AIM.SNAP.Model
             }
         }
 
-        public static List<AccessApprover> GetAvailableApprovers()
+        public static List<AccessGroup> GetAvailableGroups()
         {
-            List<AccessApprover> approverList = new List<AccessApprover>();
+            List<AccessGroup> groupList = new List<AccessGroup>();
 
             using (var db = new SNAPDatabaseDataContext())
             {
@@ -920,22 +936,49 @@ namespace Apollo.AIM.SNAP.Model
                             };
                 foreach (var approver in query)
                 {
+                    List<AccessApprover> approverList = new List<AccessApprover>();
                     AccessApprover newApprover = new AccessApprover();
                     newApprover.ActorId = approver.ActorId;
                     newApprover.UserId = approver.UserId;
                     newApprover.DisplayName = approver.DisplayName;
                     newApprover.IsDefault = approver.IsDefault;
-                    newApprover.GroupId = approver.GroupId;
-                    newApprover.GroupName = approver.GroupName;
-                    newApprover.Description = approver.Description;
-                    newApprover.ActorApprovalType = (ActorApprovalType)approver.ActorGroupType;
-                    approverList.Add(newApprover);
-                }
+                    newApprover.ActorGroupType = (ActorGroupType)approver.ActorGroupType;
 
+                    AccessGroup accessGroup = groupList.Find(delegate(AccessGroup _grp)
+                    {
+                        if (_grp.GroupId == approver.GroupId)
+                        {
+                            // group exsists
+                            return true;
+                        }
+                            // group doesn't exsist
+                            return false;
+                    });
+
+                    if (accessGroup != null)
+                    {
+                        approverList = accessGroup.AvailableApprovers;
+                        approverList.Add(newApprover);
+                        accessGroup.AvailableApprovers = approverList;
+                    }
+                    else
+                    {
+                        
+                        AccessGroup newGroup = new AccessGroup();
+                        approverList.Add(newApprover);
+                        newGroup.GroupId = approver.GroupId;
+                        newGroup.GroupName = approver.GroupName;
+                        newGroup.Description = approver.Description;
+                        newGroup.ActorGroupType = (ActorGroupType)approver.ActorGroupType;
+                        newGroup.AvailableApprovers = approverList;
+                        groupList.Add(newGroup);
+                    }
+                }
             }
-            
-            return approverList;
+
+            return groupList;
         }
+
 
         public static List<AccessApprover> GetRequestApprovers(int requestId)
         {
@@ -1192,7 +1235,6 @@ namespace Apollo.AIM.SNAP.Model
         }
     }
 
-
     public class TeamApprovalWorkflow : ApprovalWorkflow
     {
         public TeamApprovalWorkflow(int id): base(id){}
@@ -1249,6 +1291,6 @@ namespace Apollo.AIM.SNAP.Model
         }
     }
 
-#endregion
+    #endregion
 
 }
