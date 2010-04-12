@@ -18,7 +18,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		public string OverallRequestStatus { get; set; }
 		public string LastUpdatedDate { get; set; }
 		public bool IsSelectedRequest { get; set; }
-        public List<AccessApprover> AvailableApprovers { get; set; }
+        public List<AccessGroup> AvailableGroups { get; set; }
 		
 		protected void Page_Load(object sender, EventArgs e)
 		{
@@ -71,7 +71,6 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		private void LoadReadOnlyRequestPanel()
 		{
 			ReadOnlyRequestPanel readOnlyRequestPanel;
-
 			readOnlyRequestPanel = LoadControl("~/Controls/ReadOnlyRequestPanel.ascx") as ReadOnlyRequestPanel;
 			readOnlyRequestPanel.RequestId = RequestId.ToString();
             readOnlyRequestPanel.RequestState = RequestState;
@@ -98,8 +97,9 @@ namespace Apollo.AIM.SNAP.Web.Controls
             {
                 workflowBuilderPanel = LoadControl("~/Controls/WorkflowBuilderPanel.ascx") as WorkflowBuilderPanel;
                 workflowBuilderPanel.RequestId = RequestId.ToString();
+                workflowBuilderPanel.RequestState = RequestState;
                 workflowBuilderPanel.RequestApprovers = ApprovalWorkflow.GetRequestApprovers(Convert.ToInt32(RequestId));
-                workflowBuilderPanel.AvailableApprovers = AvailableApprovers;
+                workflowBuilderPanel.AvailableGroups = AvailableGroups;
 
                 Literal buttonLit = new Literal();
                 buttonLit.Text = "<input type=\"hidden\" id=\"_selectedActors_" + RequestId.ToString() + "\" />" +

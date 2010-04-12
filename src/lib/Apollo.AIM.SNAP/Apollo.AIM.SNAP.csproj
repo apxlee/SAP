@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="Model\AccessApprover.cs" />
     <Compile Include="Model\AccessRequest.cs" />
+    <Compile Include="Model\AccessGroup.cs" />
     <Compile Include="Model\Email.cs" />
     <Compile Include="Model\Enumeration.cs" />
     <Compile Include="Model\RequestData.cs" />

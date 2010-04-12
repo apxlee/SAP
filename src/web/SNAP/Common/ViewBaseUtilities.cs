@@ -79,11 +79,11 @@ namespace Apollo.AIM.SNAP.Web.Common
         public static void BuildRequests(Page page, RequestState RequestState, PlaceHolder BladeContainer, Panel nullMessage, bool IsNullRecordTest)
         {
             DataTable requestTestTable = ViewBaseUtilities.GetRequests(RequestState);
-            List<AccessApprover> availableApprovers = new List<AccessApprover>();
+            List<AccessGroup> availableGroups = new List<AccessGroup>();
             
             using (var db = new SNAPDatabaseDataContext())
             {
-                availableApprovers = ApprovalWorkflow.GetAvailableApprovers();
+                availableGroups = ApprovalWorkflow.GetAvailableGroups();
             }
 
             if (!IsNullRecordTest)
@@ -98,7 +98,7 @@ namespace Apollo.AIM.SNAP.Web.Common
                     requestBlade.OverallRequestStatus = request["overall_request_status"].ToString();
                     requestBlade.LastUpdatedDate = request["last_updated_date"].ToString();
                     requestBlade.IsSelectedRequest = (bool)request["is_selected"];
-                    requestBlade.AvailableApprovers = availableApprovers;
+                    requestBlade.AvailableGroups = availableGroups;
 
                     BladeContainer.Controls.Add(requestBlade);
                 }
