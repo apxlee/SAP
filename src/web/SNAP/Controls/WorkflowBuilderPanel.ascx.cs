@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
+using Apollo.AIM.SNAP.CA;
 using Apollo.AIM.SNAP.Model;
 using Apollo.AIM.SNAP.Web.Common;
 
@@ -20,9 +21,6 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            //TODO Manager Name for the Request
-			_requiredApproverFullName.Text = "Greg Belanger";
-
             WorkflowApprover primaryApprover;
             primaryApprover = LoadControl("~/Controls/WorkflowApprover.ascx") as WorkflowApprover;
 

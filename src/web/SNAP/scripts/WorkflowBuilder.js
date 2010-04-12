@@ -13,7 +13,9 @@
     });
 }
 function createWorkflow(requestId) {
-    var postData = "{'requestId':'" + requestId.toString() + "','actorIds':'" + $("#_selectedActors_" + requestId).val() + "'}";
+
+    alert($("#_managerId_" + requestId).val());
+    var postData = "{'requestId':'" + requestId.toString() + "','actorIds':'" + $("#_selectedActors_" + requestId).val() + "[" + $("#_managerId_" + requestId).val() + "]'}";
     
     $.ajax({
         type: "POST",

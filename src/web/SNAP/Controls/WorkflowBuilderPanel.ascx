@@ -17,7 +17,11 @@
 				<table border="0" cellpadding="0" cellspacing="0" width="100%" class="oospa_workflow_builder_row">
 					<tr>
 						<td width="22"><input type="checkbox" checked="checked" disabled="disabled" class="csm_input_checkradio" /></td>
-						<td width="386"><asp:Label ID="_requiredApproverFullName" runat="server" CssClass="csm_inline"></asp:Label></td>
+						<td width="386">
+			<%--			    <asp:Label ID="_requiredApproverFullName" runat="server" CssClass="csm_inline"></asp:Label>
+						    <asp:Label ID="_requiredApproverUserId" Visible="false" runat="server" CssClass="csm_inline"></asp:Label>--%>
+						    <asp:PlaceHolder ID="_managerInfoSection" runat="server" />
+						</td>
 						<td width="20" class="">&nbsp;</td>
 						<td width="20" class="oospa_edit_icon" onclick="">&nbsp;</td><!-- TODO: onclick trigger ajax? -->
 					</tr>

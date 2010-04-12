@@ -948,10 +948,10 @@ namespace Apollo.AIM.SNAP.Model
                     {
                         if (_grp.GroupId == approver.GroupId)
                         {
-                            // group exsists
+                            // group exists
                             return true;
                         }
-                            // group doesn't exsist
+                            // group doesn't exist
                             return false;
                     });
 
@@ -979,6 +979,19 @@ namespace Apollo.AIM.SNAP.Model
             return groupList;
         }
 
+        public static int GetActorIdByUserId(ActorGroupType actorGroupType, string userId)
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var query = from sa in db.SNAP_Actors
+                            join sag in db.SNAP_Actor_Groups on sa.actor_groupId equals sag.pkId
+                            where sa.userId == userId && sag.actorGroupType == (byte)actorGroupType 
+                            select sa.pkId;
+                if (query.Count() > 0)
+                { return (int)query.First(); }
+                else { return 0; }
+            }
+        }
 
         public static List<AccessApprover> GetRequestApprovers(int requestId)
         {

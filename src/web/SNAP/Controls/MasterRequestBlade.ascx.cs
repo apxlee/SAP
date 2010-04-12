@@ -101,6 +101,19 @@ namespace Apollo.AIM.SNAP.Web.Controls
                 workflowBuilderPanel.RequestApprovers = ApprovalWorkflow.GetRequestApprovers(Convert.ToInt32(RequestId));
                 workflowBuilderPanel.AvailableGroups = AvailableGroups;
 
+                DataTable managerInfo = new DataTable();
+                managerInfo = GetManagerInfo();
+
+                DataRow row = managerInfo.Rows[0];
+
+                Literal managerInfoLit = new Literal();
+                managerInfoLit.Text = "<span id=\"_managerDisplayName_" + RequestId + "\" class=\"csm_inline\">" + row[0].ToString() + "</span>";
+                managerInfoLit.Text += "<input id=\"_managerId_" + RequestId + "\" type=\"hidden\" value=\"" + row[1].ToString() + "\">";
+
+                PlaceHolder managerInfoSection = new PlaceHolder();
+                managerInfoSection = (PlaceHolder)WebUtilities.FindControlRecursive(workflowBuilderPanel, "_managerInfoSection");
+                managerInfoSection.Controls.Add(managerInfoLit);
+
                 Literal buttonLit = new Literal();
                 buttonLit.Text = "<input type=\"hidden\" id=\"_selectedActors_" + RequestId.ToString() + "\" />" +
                 "<input type=\"button\" value=\"Close Completed\" class=\"csm_html_button\"/>" +
@@ -117,7 +130,21 @@ namespace Apollo.AIM.SNAP.Web.Controls
             }
 			
 		}
-		
+
+        private DataTable GetManagerInfo()
+        {
+            DataTable table = new DataTable();
+            table.Columns.Add("ManagerName", typeof(string));
+            table.Columns.Add("ManagerID", typeof(string));
+
+            var reqDetails = Common.Request.Details(RequestState);
+            var reqDetail = reqDetails.Single(x => x.pkId.ToString() == RequestId);
+
+            table.Rows.Add(reqDetail.managerDisplayName, ApprovalWorkflow.GetActorIdByUserId(ActorGroupType.Manager, reqDetail.managerUserId));
+
+            return table;
+        }
+
 		private void LoadApprovingManagerPanel() {}
 	}
 }
