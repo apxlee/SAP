@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Data;
 using System.Collections.Generic;
 using System.Data.Linq;
@@ -105,6 +106,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
         protected void _submitForm_Click(object sender, EventArgs e)
         {
+            int requestID;
             try
             {
                 List<RequestData> newRequestDataList = RequestFormRequestData(_requestForm);
@@ -117,7 +119,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
                     using (var db = new SNAPDatabaseDataContext())
                     {
-                        int requestID = db.usp_insert_request_xml(xmlInput, SnapSession.CurrentUser.LoginId, UserLoginId, UserName, detail.Title, ManagerLoginId, ManagerName);
+                        requestID = db.usp_insert_request_xml(xmlInput, SnapSession.CurrentUser.LoginId, UserLoginId, UserName, detail.Title, ManagerLoginId, ManagerName);
                         if (requestID > 0)
                         {
                             //TODO set Session variable to requestID
@@ -129,10 +131,16 @@ namespace Apollo.AIM.SNAP.Web.Controls
                 else
                 {
                     RequestData.UpdateRequestData(newRequestDataList, _requestFormData);
-                    var requestId = System.Convert.ToInt32(Request.QueryString["RequestId"]);
-                    var accessReq = new AccessRequest(requestId);
+                    requestID = System.Convert.ToInt32(Request.QueryString["RequestId"]);
+                    var accessReq = new AccessRequest(requestID);
                     accessReq.RequestChanged();
                 }
+
+                // TODO: Should use WebUtilities.CurrentLoginUserId or userobject
+                Page currentPage = HttpContext.Current.Handler as Page;
+                var x = currentPage.Request.ServerVariables["AUTH_USER"].Split('\\')[1]; // remove domain name
+                Email.UpdateRequesterStatus(x, /* WebUtilities.CurrentLoginUserId,*/ UserName, requestID, WorkflowState.Pending_Acknowlegement, string.Empty);
+                Email.TaskAssignToApprover(ConfigurationManager.AppSettings["AIM-DG"], "Access Team", requestID, UserName);
 
             }
             catch (Exception ex)

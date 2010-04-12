@@ -40,12 +40,10 @@ namespace Apollo.AIM.SNAP.Model
             string emailTemplatePath = "";
             switch (status)
             {
-                    /*
                 case WorkflowState.Pending_Acknowlegement:
                     subject = "Supplemental Network Access Process-Submitted";
-                    emailTemplatePath = ConfigurationManager.AppSettings["Approval"];
+                    emailTemplatePath = ConfigurationManager.AppSettings["ConfirmSubmitToSubmitter"];
                     break;
-                     */
                 case WorkflowState.Closed_Completed:
                     subject = "Supplemental Network Access Process-Complete";
                     emailTemplatePath = ConfigurationManager.AppSettings["CompleteToSubmitter"];
@@ -62,7 +60,7 @@ namespace Apollo.AIM.SNAP.Model
 
             configPerEnvironment(id);
 
-            /*
+            
             Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(emailAddress(submitterUserId),
                                                                      subject,
                                                                      emailTemplatePath, // newTaskNotification.html",
@@ -75,18 +73,14 @@ namespace Apollo.AIM.SNAP.Model
                                                                              {"PREFIX", prefix}
                                                                          });
 
-             */
+             
         }
 
         public static void TaskAssignToApprover(string toEmailAddress, string to, long id, string name)
         {
-            var subject = "Supplemental Network Access Process-Approval Needed";
-            var body = "A task is waiting for your approval. For detail, <a href='" + url + id + "'>visit our site</a>";
             configPerEnvironment(id);
-
-            /*
             Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(toEmailAddress,
-                                                                     "Supplemental Network Access Process-Submit",
+                                                                     "Supplemental Network Access Process-Approval Needed",
                                                                      ConfigurationManager.AppSettings["Approval"], // newTaskNotification.html",
                                                                      new Hashtable()
                                                                          {
@@ -96,14 +90,15 @@ namespace Apollo.AIM.SNAP.Model
                                                                              {"PREFIX", prefix}
                                                                          });
 
-             */
+             
         }
 
+        /*
         public static void RequestAsssignToAccessTeam(long id, string firstName, string lastName)
         {
             configPerEnvironment(id);
 
-            /*
+            
             Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(aimDG,
                                                                      "Test Formated Email",
                                                                      @".\approval.html", // newTaskNotification.html",
@@ -117,9 +112,10 @@ namespace Apollo.AIM.SNAP.Model
                                                                              {"PROCESSNAME", "processName"},
                                                                              {"INCIDENT", "incident"}
                                                                          });
-             */
+             
 
         }
+         */
 
         private static string emailAddress(string usrId)
         {
@@ -133,6 +129,9 @@ namespace Apollo.AIM.SNAP.Model
 
         private static void configPerEnvironment(long id)
         {
+            prefix = @"http://";
+            url = @"http://";
+
             if (Environment.UserDomainName.ToUpper().Contains("DEVAPOLLO"))
             {
                 prefix += "localhost/snap/images";
