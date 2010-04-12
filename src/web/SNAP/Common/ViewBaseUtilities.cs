@@ -27,7 +27,7 @@ namespace Apollo.AIM.SNAP.Web.Common
             foreach (usp_open_my_request_detailsResult list in reqDetails)
             {
                 table.Rows.Add(list.pkId, list.userDisplayName.StripTitleFromUserName()
-                    , Convert.ToString((WorkflowState)Enum.Parse(typeof(WorkflowState), list.statusEnum.ToString())).StripUnderscore()
+                    , Convert.ToString((RequestState)Enum.Parse(typeof(RequestState), list.statusEnum.ToString())).StripUnderscore()
                     , list.createdDate.ToString("MMM d, yyyy"), false);
                 // is this "last updated date" or "created date"?
             }
