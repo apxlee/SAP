@@ -23,7 +23,17 @@ namespace Apollo.AIM.SNAP.Web.Common
 		{
 			LoginId = networkId;
 			SetADProperties();
-			SetRole();
+			
+			if (WebUtilities.IsSuperUser(LoginId))
+			{
+				CurrentRole = Role.SuperUser;
+				return;
+			}
+			else
+			{			
+				SetRole();
+			}
+			
 			SetDefaultView();
 		}
 		
@@ -55,11 +65,6 @@ namespace Apollo.AIM.SNAP.Web.Common
 	CurrentRole = Role.AccessTeam;
 	return;
 #endif
-			if (WebUtilities.IsSuperUser(LoginId)) 
-			{ 
-				CurrentRole = Role.SuperUser;
-				return;
-			}
 
 			using (var snapDb = new SNAPDatabaseDataContext())
 			try
