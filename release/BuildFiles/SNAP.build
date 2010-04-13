@@ -8,8 +8,10 @@
   <include buildfile="common.build"/>
   
   <property name="build.snap.dir" value="${build.src.dir}\web\SNAP" dynamic="true"/>
+  <property name="build.snap.process.dir" value="${build.src.dir}\lib\Apollo.AIM.SNAP.Process" dynamic="true"/>
   <property name="sln.file" value="SNAP.sln" />
   <property name="package.snap.dir" value="${package.dir}\snap" dynamic="true"/>
+  <property name="package.snap.process.dir" value="${package.dir}\snap.process" dynamic="true"/>
   <property name="deploy.snap.dir" value="${deploy.web.dir}\snap" dynamic="true"/>
   <property name="vd.name" value="" readonly="false"/>
 
@@ -31,7 +33,9 @@
 	<echo>package.dir = ${package.dir} </echo>
 
 		<delete dir="${package.snap.dir}" if="${directory::exists(package.snap.dir)}"/>
+		<delete dir="${package.snap.process.dir}" if="${directory::exists(package.snap.process.dir)}"/>
 		<mkdir dir="${package.snap.dir}" failonerror="true"/>
+		<mkdir dir="${package.snap.process.dir}" failonerror="true"/>
     <echo>Copying from ${build.snap.dir} to ${package.snap.dir}</echo>
     
     <copy todir="${package.snap.dir}" verbose="true" overwrite="true">
@@ -55,11 +59,32 @@
         <include name="**/*.gif" />
         <include name="**/*.jpg" />
         <include name="**/*.swf" />
+        <include name="**/*.png" />
+
+        <include name="**/*.config" />
+        <include name="**/*.exe" />
 
         <exclude name="**/obj"/>
         <exclude name="**/obj/**"/>
       </fileset>
     </copy>
+
+    <echo>Copying from ${build.snap.process.dir} to ${package.snap.process.dir}</echo>
+    
+    <copy todir="${package.snap.process.dir}" verbose="true" overwrite="true">
+      <fileset basedir="${build.snap.process.dir}">
+        <include name="**/*.dll" />
+        <include name="**/*.config" />
+        <include name="**/*.exe" />
+        <include name="**/*.xml" />
+        <include name="**/*.pdb" if="${configuration=='debug'}" />
+        
+
+        <exclude name="**/obj"/>
+        <exclude name="**/obj/**"/>
+      </fileset>
+    </copy>
+
     
   </target>
 
