@@ -79,6 +79,45 @@ namespace Apollo.AIM.SNAP.Web.Common
             }
         }
 
+        public static int AccessTeamCount()
+        {
+            int num = 0;
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var result = db.SNAP_Requests
+                             .Where(o => o.statusEnum == 0 || o.statusEnum == 2)
+                             .Select(s => s.statusEnum)
+                             .Count();
+
+                num = (int)result;
+            }
+
+            return num;
+        }
+
+        public static int ApprovalCount(string UserID)
+        {
+            int num = 0;
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var result = from sr in db.SNAP_Requests
+                            join sw in db.SNAP_Workflows on sr.pkId equals sw.requestId
+                            join sws in db.SNAP_Workflow_States on sw.pkId equals sws.workflowId
+                            join sa in db.SNAP_Actors on sw.actorId equals sa.pkId
+                            where sa.userId == UserID && sws.workflowStatusEnum == 7
+                            select new {sr.pkId};
+
+                num = (int)result.Count();
+            }
+
+            return num;
+        }
+
+
+
+
 
     }
 }
