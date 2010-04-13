@@ -57,7 +57,8 @@ INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actors]([actor_groupId],[userId],[disp
 VALUES(3,'jdsteele','Jonathan Steele','jdsteele@apollogrp.com',0,1)
 INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actors]([actor_groupId],[userId],[displayName],[emailAddress],[isDefault],[isActive])
 VALUES(3,'clschwim','Chris Schwimmer','clschwim@apollogrp.edu',0,1)
-
+INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actors]([actor_groupId],[userId],[displayName],[emailAddress],[isDefault],[isActive])
+VALUES(4,'gjbelang','Greg Belanger','gjbelang@apollogrp.edu',1,1)
 --// Insert Request State Types
 print 'Insert request state types'
 INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Request_State_Type]([pkId],[typeName])
