@@ -62,7 +62,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 		private void SetRole()
 		{
 #if DEBUG
-	CurrentRole = Role.AccessTeam;
+	CurrentRole = Role.ApprovingManager;
 	return;
 #endif
 

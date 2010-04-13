@@ -19,7 +19,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 
 		private void PerformChecks()
 		{
-			// TODO: (Phase 2) Allow selected users (superUsers) to work on app in maintenance mode
+			// TODO: (future iteration) Allow selected users (superUsers) to work on app in maintenance mode
 			//
 			if (Convert.ToBoolean(ConfigurationManager.AppSettings["SNAPMaintenanceOn"].ToString()))
 			{

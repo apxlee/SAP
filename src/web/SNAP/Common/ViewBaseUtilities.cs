@@ -12,8 +12,27 @@ namespace Apollo.AIM.SNAP.Web.Common
 {
     public class ViewBaseUtilities
     {
+		public static void BuildRequestBlades(RequestState requestState, PlaceHolder bladeContainer, Panel nullMessage, string selectedRequestId)
+		{
+			DataTable requestTestTable = ViewBaseUtilities.GetRequests(requestState, selectedRequestId);
+			Page currentPage = HttpContext.Current.Handler as Page;
 
-		static DataTable GetRequests(RequestState requestState)
+			foreach (DataRow request in requestTestTable.Rows)
+			{
+				MasterRequestBlade requestBlade;
+				requestBlade = currentPage.LoadControl("~/Controls/MasterRequestBlade.ascx") as MasterRequestBlade;
+				requestBlade.RequestId = request["request_id"].ToString();
+				requestBlade.RequestState = requestState;
+				requestBlade.AffectedEndUserName = request["affected_end_user_name"].ToString();
+				requestBlade.OverallRequestStatus = request["overall_request_status"].ToString();
+				requestBlade.LastUpdatedDate = request["last_updated_date"].ToString();
+				requestBlade.IsSelectedRequest = (bool)request["is_selected"];
+
+				bladeContainer.Controls.Add(requestBlade);
+			}
+		}
+		
+		static DataTable GetRequests(RequestState requestState, string selectedRequestId)
 		{
             DataTable table = new DataTable();
             table.Columns.Add("request_id", typeof(string));
@@ -22,13 +41,17 @@ namespace Apollo.AIM.SNAP.Web.Common
 			table.Columns.Add("last_updated_date", typeof(string));
 			table.Columns.Add("is_selected", typeof(bool));
 
-
             var reqDetails = Common.Request.Details(requestState);
-            foreach (usp_open_my_request_detailsResult list in reqDetails)
+            foreach (usp_open_my_request_detailsResult request in reqDetails)
             {
-                table.Rows.Add(list.pkId, list.userDisplayName.StripTitleFromUserName()
-                    , Convert.ToString((RequestState)Enum.Parse(typeof(RequestState), list.statusEnum.ToString())).StripUnderscore()
-                    , list.createdDate.ToString("MMM d, yyyy"), false);
+                table.Rows.Add(
+					request.pkId
+					, request.userDisplayName.StripTitleFromUserName()
+                    , Convert.ToString((RequestState)Enum.Parse(typeof(RequestState)
+					, request.statusEnum.ToString())).StripUnderscore()
+					, request.createdDate.ToString("MMM d, yyyy")
+					, (request.pkId.ToString().Trim() == selectedRequestId) ? true : false
+                    );
                 // is this "last updated date" or "created date"?
             }
 
@@ -78,7 +101,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 
         public static void BuildRequests(Page page, RequestState RequestState, PlaceHolder BladeContainer, Panel nullMessage, bool IsNullRecordTest)
         {
-            DataTable requestTestTable = ViewBaseUtilities.GetRequests(RequestState);
+            DataTable requestTestTable = ViewBaseUtilities.GetRequests(RequestState, null);
             List<AccessGroup> availableGroups = new List<AccessGroup>();
             
             using (var db = new SNAPDatabaseDataContext())
@@ -108,6 +131,7 @@ namespace Apollo.AIM.SNAP.Web.Common
                 nullMessage.Visible = true;
             }
         }
+        
 
     }
 }

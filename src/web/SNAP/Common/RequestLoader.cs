@@ -56,12 +56,12 @@ namespace Apollo.AIM.SNAP.Web.Common
         }
     }
 
-    public class MyApprovalLooder : RequestLoader
+    public class MyApprovalLoader : RequestLoader
     {
 
         protected override void loadData(SNAPDatabaseDataContext db, ref Dictionary<string, object> open, ref Dictionary<string, object> close)
         {
-            db.GetAllRequests(WebUtilities.CurrentLoginUserId, "approval");
+            db.GetAllRequests(SnapSession.CurrentUser.LoginId, "approval");
             open = db.OpenRquests;
             close = db.CloseRquests;
         }
