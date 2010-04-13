@@ -20,8 +20,8 @@ namespace Apollo.AIM.SNAP.Web
 {
 	public partial class Index : SnapPage
 	{
-		public string ExpandedRequestId { get; set; }
-		public ViewIndex RequestedViewIndex { get; set; }
+		//public string SelectedRequestId { get; set; }
+		//public ViewIndex RequestedViewIndex { get; set; }
 		
 		protected void Page_Load(object sender, EventArgs e)	
 		{
@@ -67,17 +67,18 @@ namespace Apollo.AIM.SNAP.Web
 		
 		private void SetViewFromQueryString()
 		{
-			ExpandedRequestId = Request.QueryString[QueryStringConstants.REQUEST_ID];
-			RequestedViewIndex = (ViewIndex)Enum.Parse(typeof(ViewIndex), Request.QueryString[QueryStringConstants.REQUESTED_VIEW_INDEX]);
+			// TODO: test to make sure this isn't null assignment?
+			SnapSession.SelectedRequestId = Request.QueryString[QueryStringConstants.REQUEST_ID];
+			ViewIndex requestedViewIndex = (ViewIndex)Enum.Parse(typeof(ViewIndex), Request.QueryString[QueryStringConstants.REQUESTED_VIEW_INDEX]);
 			Role currentRole = SnapSession.CurrentUser.CurrentRole;
 
-			switch (RequestedViewIndex)
+			switch (requestedViewIndex)
 			{
 				case ViewIndex.request_form:
 				case ViewIndex.my_requests:
 				case ViewIndex.search:
 				case ViewIndex.support:
-					WebUtilities.SetActiveView((int)RequestedViewIndex);
+					WebUtilities.SetActiveView((int)requestedViewIndex);
 					break;
 			
 				case ViewIndex.my_approvals:
