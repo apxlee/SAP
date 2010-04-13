@@ -43,7 +43,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 			get
 			{
 				Page currentPage = HttpContext.Current.Handler as Page;
-				return currentPage.Session[SessionVariables.SELECTED_REQUEST_ID;
+				return (string)currentPage.Session[SessionVariables.SELECTED_REQUEST_ID];
 			}
 			set
 			{
