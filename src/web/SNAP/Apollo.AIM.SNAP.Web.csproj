@@ -66,6 +66,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\ConnectionFactory.dll</HintPath>
     </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Neo, Version=1.4.0.17536, Culture=neutral, PublicKeyToken=36a32b8e5c75024d">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\Neo.dll</HintPath>

@@ -62,8 +62,8 @@ namespace Apollo.AIM.SNAP.Web.Common
 		private void SetRole()
 		{
 #if DEBUG
-	CurrentRole = Role.ApprovingManager;
-	return;
+	//CurrentRole = Role.ApprovingManager;
+	//return;
 #endif
 
 			using (var snapDb = new SNAPDatabaseDataContext())

@@ -45,7 +45,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
         private bool IsAuthenticatedUser(string networkId, string password)
         {
 #if DEBUG
-	return true;
+	//return true;
 #endif			
 			try
 			{
