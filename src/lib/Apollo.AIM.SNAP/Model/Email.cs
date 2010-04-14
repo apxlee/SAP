@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using Apollo.AIM.SNAP.CA;
 
+using System.Web;
+
 namespace Apollo.AIM.SNAP.Model
 {
     public class Email
@@ -19,10 +21,9 @@ namespace Apollo.AIM.SNAP.Model
         {
             configPerEnvironment(id);
 
-            
             Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(toEmail,
                                                                      "Supplemental Network Access Process-Overdue Alert",
-                                                                     ConfigurationManager.AppSettings["NagApproval"], // newTaskNotification.html",
+                                                                     absPath + ConfigurationManager.AppSettings["NagApproval"], // newTaskNotification.html",
                                                                      new Hashtable()
                                                                          {
                                                                              {"APPROVERNAME", toName},
@@ -36,25 +37,26 @@ namespace Apollo.AIM.SNAP.Model
 
         public static void UpdateRequesterStatus(string submitterUserId, string name, long id, WorkflowState status, string reason)
         {
+
             string subject = "";
-            string emailTemplatePath = "";
+            string emailTemplatePath = absPath;
             switch (status)
             {
                 case WorkflowState.Pending_Acknowlegement:
                     subject = "Supplemental Network Access Process-Submitted";
-                    emailTemplatePath = ConfigurationManager.AppSettings["ConfirmSubmitToSubmitter"];
+                    emailTemplatePath +=  ConfigurationManager.AppSettings["ConfirmSubmitToSubmitter"];
                     break;
                 case WorkflowState.Closed_Completed:
                     subject = "Supplemental Network Access Process-Complete";
-                    emailTemplatePath = ConfigurationManager.AppSettings["CompleteToSubmitter"];
+                    emailTemplatePath += ConfigurationManager.AppSettings["CompleteToSubmitter"];
                     break;
                 case WorkflowState.Change_Requested:
                     subject = "Supplemental Network Access Process-Request Change";
-                    emailTemplatePath = ConfigurationManager.AppSettings["RequestChangeToSubmitter"];
+                    emailTemplatePath += ConfigurationManager.AppSettings["RequestChangeToSubmitter"];
                     break;
                 case WorkflowState.Closed_Denied:
                     subject = "Supplemental Network Access Process-Denied";
-                    emailTemplatePath = ConfigurationManager.AppSettings["DenyToSubmitter"];
+                    emailTemplatePath += ConfigurationManager.AppSettings["DenyToSubmitter"];
                     break;
             }
 
@@ -81,13 +83,12 @@ namespace Apollo.AIM.SNAP.Model
             configPerEnvironment(id);
             Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(toEmailAddress,
                                                                      "Supplemental Network Access Process-Approval Needed",
-                                                                     ConfigurationManager.AppSettings["Approval"], // newTaskNotification.html",
+                                                                     absPath + ConfigurationManager.AppSettings["Approval"], // newTaskNotification.html",
                                                                      new Hashtable()
                                                                          {
                                                                              {"APPROVERNAME", to},
                                                                              {"NAME", name},
                                                                              {"URL", url},
-                                                                             {"PREFIX", prefix}
                                                                          });
 
              
@@ -127,6 +128,23 @@ namespace Apollo.AIM.SNAP.Model
             return detail.EmailAddress;
         }
 
+        private static string absPath
+        {
+            get
+            {
+                string x = string.Empty;
+                try
+                {
+                   x = HttpRuntime.AppDomainAppPath;
+                }
+                catch (Exception ex)
+                {
+                }
+
+                return x;
+
+            }
+        }
         private static void configPerEnvironment(long id)
         {
             prefix = @"http://";

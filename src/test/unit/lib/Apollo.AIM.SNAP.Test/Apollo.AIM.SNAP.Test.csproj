@@ -94,6 +94,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>copy $(ProjectDir)*.html $(TargetDir)</PostBuildEvent>
+    <PostBuildEvent>copy $(ProjectDir)*.html $(TargetDir)
+xcopy /Y $(SolutionDir)src\lib\Apollo.AIM.SNAP\EmailTemplate\*.html  $(TargetDir)\EmailTemplate\*.*</PostBuildEvent>
   </PropertyGroup>
 </Project>
