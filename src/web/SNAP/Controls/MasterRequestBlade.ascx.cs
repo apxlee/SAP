@@ -51,7 +51,6 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			{
 				// TODO: if session not set, redirect to login?  throw message to user?  set role to user?
 			}
-
 		}
 		
 		private void PopulateUserInfo()
@@ -89,6 +88,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		
 		private void LoadAccessTeamPanels() 
 		{
+
 			AcknowledgementPanel acknowledgementPanel;
 			WorkflowBuilderPanel workflowBuilderPanel;
 			AccessCommentsPanel accessCommentsPanel;
@@ -145,6 +145,16 @@ namespace Apollo.AIM.SNAP.Web.Controls
             return table;
         }
 
-		private void LoadApprovingManagerPanel() {}
+		private void LoadApprovingManagerPanel() 
+		{
+			if (RequestState != RequestState.Closed)
+			{
+				ApprovingManagerPanel approvingManagerPanel;
+				approvingManagerPanel = LoadControl("~/Controls/ApprovingManagerPanel.ascx") as ApprovingManagerPanel;
+				approvingManagerPanel.RequestId = RequestId;
+				_approvingManagerPanelContainer.Controls.Add(approvingManagerPanel);
+			}
+			
+		}
 	}
 }
