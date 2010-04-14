@@ -51,5 +51,19 @@ namespace Apollo.AIM.SNAP.Web.Common
 				currentPage.Session[SessionVariables.SELECTED_REQUEST_ID] = value;
 			}
 		}
+		
+		public static ViewIndex RequestedView
+		{
+			get
+			{
+				Page currentPage = HttpContext.Current.Handler as Page;
+				return (ViewIndex)currentPage.Session[SessionVariables.REQUESTED_VIEW_INDEX];
+			}
+			set
+			{
+				Page currentPage = HttpContext.Current.Handler as Page;
+				currentPage.Session[SessionVariables.REQUESTED_VIEW_INDEX] = value;
+			}
+		}
 	}
 }

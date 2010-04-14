@@ -59,6 +59,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 			{
 				multiView.ActiveViewIndex = viewIndex;
 				ribbonContainer.CssClass = Convert.ToString((ViewIndex)Enum.Parse(typeof(ViewIndex), viewIndex.ToString()));
+				SnapSession.RequestedView = (ViewIndex)viewIndex;
 			}
 			catch
 			{
