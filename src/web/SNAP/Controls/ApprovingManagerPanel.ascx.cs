@@ -9,6 +9,8 @@ namespace Apollo.AIM.SNAP.Web.Controls
 {
 	public partial class ApprovingManagerPanel : System.Web.UI.UserControl
 	{
+		public string RequestId { get; set; }
+		
 		protected void Page_Load(object sender, EventArgs e)
 		{
 

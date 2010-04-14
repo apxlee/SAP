@@ -1,12 +1,11 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ApprovingManagerPanel.ascx.cs" Inherits="Apollo.AIM.SNAP.Web.Controls.ApprovingManagerPanel" %>
 <!-- TODO: make server side user controls -->
 <div class="csm_text_container">
- 	<table border="0" cellpadding="0" cellspacing="0" style="margin-bottom:5px;">
-        <tr>
-            <td><img src="Styles/section_image_blue_suit.png" /></td>
-            <td><h2>&nbsp;&nbsp;Approver Section</h2></td>
-        </tr>
-    </table>
+	<div class="csm_icon_heading_container snap_my_approvals">
+		<h2>Approver Actions</h2>
+	</div>
+	<p class="csm_prefix_bump3">As an Approver, please review the access details above and select an appropriate action below.  Denials
+		and Request for Change require a detailed description.</p>
     		     
     <fieldset><!-- use fieldset for standards & compliance -->
 	<table border="0" cellpadding="0" cellspacing="0" class="csm_input_form_container">
