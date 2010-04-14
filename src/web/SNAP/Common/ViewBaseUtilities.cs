@@ -14,37 +14,51 @@ namespace Apollo.AIM.SNAP.Web.Common
     {
 		public static void BuildRequestBlades(RequestState requestState, PlaceHolder bladeContainer, Panel nullMessage, string selectedRequestId)
 		{
-			DataTable requestTestTable = ViewBaseUtilities.GetRequests(requestState, selectedRequestId);
 			Page currentPage = HttpContext.Current.Handler as Page;
-
-			foreach (DataRow request in requestTestTable.Rows)
+			DataTable requestTable = ViewBaseUtilities.GetRequests(requestState, selectedRequestId);
+			
+			if (requestTable.Rows.Count < 1)
 			{
-				MasterRequestBlade requestBlade;
-				requestBlade = currentPage.LoadControl("~/Controls/MasterRequestBlade.ascx") as MasterRequestBlade;
-				requestBlade.RequestId = request["request_id"].ToString();
-				requestBlade.RequestState = requestState;
-				requestBlade.AffectedEndUserName = request["affected_end_user_name"].ToString();
-				requestBlade.OverallRequestStatus = request["overall_request_status"].ToString();
-				requestBlade.LastUpdatedDate = request["last_updated_date"].ToString();
-				requestBlade.IsSelectedRequest = (bool)request["is_selected"];
+				nullMessage.Visible = true;
+			}
+			else
+			{
+				List<AccessGroup> availableGroups = new List<AccessGroup>();
+				using (var db = new SNAPDatabaseDataContext())
+				{
+					availableGroups = ApprovalWorkflow.GetAvailableGroups();
+				}
+				
+				foreach (DataRow request in requestTable.Rows)
+				{
+					MasterRequestBlade requestBlade;
+					requestBlade = currentPage.LoadControl("~/Controls/MasterRequestBlade.ascx") as MasterRequestBlade;
+					requestBlade.RequestId = request["request_id"].ToString();
+					requestBlade.RequestState = requestState;
+					requestBlade.AffectedEndUserName = request["affected_end_user_name"].ToString();
+					requestBlade.OverallRequestStatus = request["overall_request_status"].ToString();
+					requestBlade.LastUpdatedDate = request["last_updated_date"].ToString();
+					requestBlade.IsSelectedRequest = (bool)request["is_selected"];
+					requestBlade.AvailableGroups = availableGroups;
 
-				bladeContainer.Controls.Add(requestBlade);
+					bladeContainer.Controls.Add(requestBlade);
+				}
 			}
 		}
 		
 		static DataTable GetRequests(RequestState requestState, string selectedRequestId)
 		{
-            DataTable table = new DataTable();
-            table.Columns.Add("request_id", typeof(string));
-			table.Columns.Add("affected_end_user_name", typeof(string));
-			table.Columns.Add("overall_request_status", typeof(string));
-			table.Columns.Add("last_updated_date", typeof(string));
-			table.Columns.Add("is_selected", typeof(bool));
+            DataTable requestTable = new DataTable();
+            requestTable.Columns.Add("request_id", typeof(string));
+			requestTable.Columns.Add("affected_end_user_name", typeof(string));
+			requestTable.Columns.Add("overall_request_status", typeof(string));
+			requestTable.Columns.Add("last_updated_date", typeof(string));
+			requestTable.Columns.Add("is_selected", typeof(bool));
 
             var reqDetails = Common.Request.Details(requestState);
             foreach (usp_open_my_request_detailsResult request in reqDetails)
             {
-                table.Rows.Add(
+                requestTable.Rows.Add(
 					request.pkId
 					, request.userDisplayName.StripTitleFromUserName()
                     , Convert.ToString((RequestState)Enum.Parse(typeof(RequestState)
@@ -55,48 +69,7 @@ namespace Apollo.AIM.SNAP.Web.Common
                 // is this "last updated date" or "created date"?
             }
 
-
-            /*
-           	if (requestState == RequestState.Open)
-		    {
-                var reqDetails = Common.Request.Details(requestState);
-
-			    //table.Rows.Add("12345", "User One", "Open", "Feb. 10, 2010", false);
-			    //table.Rows.Add("54321", "User Two", "Open", "Jan. 3, 2010", true);
-
-                foreach (usp_open_my_request_detailsResult list in reqDetails)
-                {
-                    table.Rows.Add(list.pkId, list.userDisplayName.StripTitleFromUserName()
-						, Convert.ToString((WorkflowState)Enum.Parse(typeof(WorkflowState), list.statusEnum.ToString())).StripUnderscore()
-						, list.createdDate.ToString("MMM d, yyyy"), false);
-                    // is this "last updated date" or "created date"?
-                }
-		    }
-
-			if (requestState == RequestState.Closed)
-			{
-                
-                
-                var reqDetails = Common.Request.Details(requestState);
-
-                //table.Rows.Add("12345", "User One", "Open", "Feb. 10, 2010", false);
-                //table.Rows.Add("54321", "User Two", "Open", "Jan. 3, 2010", true);
-
-                foreach (usp_open_my_request_detailsResult list in reqDetails)
-                {
-                    table.Rows.Add(list.pkId, list.userDisplayName.StripTitleFromUserName()
-                        , Convert.ToString((WorkflowState)Enum.Parse(typeof(WorkflowState), list.statusEnum.ToString())).StripUnderscore()
-                        , list.createdDate.ToString("MMM d, yyyy"), false);
-                    // is this "last updated date" or "created date"?
-                }
-                
-
-				//table.Rows.Add("98544", "User One", "Closed", "Jan. 10, 2010", false);
-				//table.Rows.Add("96554", "User Two", "Closed", "Jan. 3, 2010", false);
-                
-			}			
-			*/
-			return table;
+			return requestTable;
 		}
 
         public static void BuildRequests(Page page, RequestState RequestState, PlaceHolder BladeContainer, Panel nullMessage, bool IsNullRecordTest)
