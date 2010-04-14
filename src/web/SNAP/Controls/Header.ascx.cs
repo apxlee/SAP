@@ -5,6 +5,7 @@ using System.Web.UI.WebControls;
 
 using Apollo.AIM.SNAP.Model;
 using Apollo.AIM.SNAP.Web.Common;
+using MyRequest = Apollo.AIM.SNAP.Web.Common.Request;
 
 // TODO: header links don't work on non-multiview pages
 
@@ -64,16 +65,20 @@ namespace Apollo.AIM.SNAP.Web.Controls
 					case Role.ApprovingManager :
 						linkButtons.AddRange(new List<string> { "request_form", "my_requests", "my_approvals", "search", "support" });
 						linksContainerWidth = "600";
+						PendingApprovals = MyRequest.ApprovalCount(SnapSession.CurrentUser.LoginId);
 						break;
 						
 					case Role.AccessTeam :
 						linkButtons.AddRange(new List<string> { "request_form", "my_requests", "access_team", "search", "support" });
 						linksContainerWidth = "600";
+						PendingAccessTeam = MyRequest.AccessTeamCount();
 						break;
 						
 					case Role.SuperUser :
 						linkButtons.AddRange(new List<string> { "request_form", "my_requests", "my_approvals", "access_team", "search", "support" });
 						linksContainerWidth = "763";
+						PendingApprovals = MyRequest.ApprovalCount(SnapSession.CurrentUser.LoginId);
+						PendingAccessTeam = MyRequest.AccessTeamCount();
 						break;
 
 					case Role.Requestor :
