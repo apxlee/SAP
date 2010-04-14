@@ -773,23 +773,27 @@ TODO: REMOVE THIS SECTION
     }
 
 .oospa_request_details {
-	background: transparent url('../images/icon_approver.png') no-repeat;
+	background: transparent url('../images/icon_reqdetails.png') no-repeat;
     }
     
 .oospa_request_status {
-	background: transparent url('../images/icon_yellow_chart.png') no-repeat;
+	background: transparent url('../images/icon_status.png') no-repeat;
     }
     
 .oospa_aim_builder {
-	background: transparent url('../images/icon_red_clipboard.png') no-repeat;
+	background: transparent url('../images/icon_accessteam.png') no-repeat;
 	}
 	
 .oospa_aim_comments {
-	background: transparent url('../images/icon_red_clipboard.png') no-repeat;
+	background: transparent url('../images/icon_accessteam.png') no-repeat;
 	}
 	
 .oospa_aim_acknowledgement {
-	background: transparent url('../images/icon_red_clipboard.png') no-repeat;
+	background: transparent url('../images/icon_accessteam.png') no-repeat;
+	}
+	
+.snap_my_approvals {
+	background: transparent url('../images/icon_approver.png') no-repeat;
 	}
 	
 .oospa_delete_icon {
