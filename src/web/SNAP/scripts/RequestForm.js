@@ -38,7 +38,37 @@ var userManager = {
         this.mgrSelection.toggle();
         this.mgrName.attr("disabled", true)
     },
+    
+    ToolTip: function() {
 
+        xOffset = 10;
+        yOffset = 30;
+
+        // these 2 variable determine popup's distance from the cursor
+        // you might want to adjust to get the right result
+
+        /* END CONFIG */
+        $("a.tooltip").hover(function(e) {
+            this.t = this.title;
+            this.title = "";
+            var c = (this.t != "") ? "<br/>" + this.t : "";
+            $("body").append("<p id='tooltip'><img src='" + this.rel + "' alt='tool tip' />" + c + "</p>");
+            $("#tooltip")
+			    .css("top", (e.pageY - xOffset) + "px")
+			    .css("left", (e.pageX + yOffset) + "px")
+			    .show();
+        },
+	    function() {
+	        this.title = this.t;
+	        $("#tooltip").remove();
+	    });
+	    $("a.tooltip").mousemove(function(e) {
+	        $("#tooltip")
+			    .css("top", (e.pageY - xOffset) + "px")
+			    .css("left", (e.pageX + yOffset) + "px");
+        });
+    },
+    
     GetNames: function(name, selection, dialogDiv) {
         var postData = "{'name':'" + name.val().replace("(", "").replace(")", "").replace(/\\/, "").replace("'", "\\'") + "'}";
         userManager.ajaxIndicatorUser.show();
@@ -283,7 +313,6 @@ var userManager = {
 
     MgrNameFocusOut: function() {
         userManager.mgrName.focusout(function() {
-            //alert("Mgr FocusOut");
             if (userManager.mgrLoginId.val() == "") {
                 userManager.GetNames(userManager.mgrName, userManager.mgrSelection, userManager.mgrSelectionDiv);
             }
@@ -292,7 +321,6 @@ var userManager = {
 
     MgrNameChange: function() {
         userManager.mgrName.change(function() {
-            //alert("Mgr Change");
             userManager.mgrLoginId.val('');
             userManager.GetNames(userManager.mgrName, userManager.mgrSelection, userManager.mgrSelectionDiv);
         })
@@ -483,6 +511,7 @@ var userManager = {
     Ready: function() {
         // this: userManager object
         this.Setup();
+        this.ToolTip();
         this.BuildDialog();
         this.HandleGetUserNames();
         this.HandleGetManagerNames();
