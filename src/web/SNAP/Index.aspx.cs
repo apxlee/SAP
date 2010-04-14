@@ -5,17 +5,6 @@ using System.Web.UI;
 using Apollo.AIM.SNAP.Model;
 using Apollo.AIM.SNAP.Web.Common;
 
-// TODO: grab requests based on role + view and pass to next page?
-// TODO: set pending counters (header) based on role + view + requests
-// TODO: set roles on login page
-// TODO: when login page is active, need to allow user to view support page
-// TODO: if user follows link from email, must bounce to login page first (unless already authenticated)
-// TODO: build footer links based on role
-// TODO: make 404 page and/or error page and/or error panels on page?
-// TODO: masterblade reads requestId from index and uses to make that request the expanded view
-// TODO: clean up commented code and logic bombs in index/request form
-// TODO: masterblade.js loads for every blade
-
 namespace Apollo.AIM.SNAP.Web
 {
 	public partial class Index : SnapPage
