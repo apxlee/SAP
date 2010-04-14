@@ -19,5 +19,6 @@ namespace Apollo.AIM.SNAP.Web.Common
 		public const string CURRENT_USER = "CurrentUser";
 		public const string IS_USER_CREATED = "IsUserCreated";
 		public const string SELECTED_REQUEST_ID = "SelectedRequestId";
+		public const string REQUESTED_VIEW_INDEX = "RequestedViewIndex";
 	}	
 }
