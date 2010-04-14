@@ -3,6 +3,8 @@
 	<div class="csm_icon_heading_container oospa_request_details">
 		<h2>Request Details</h2>
 	</div>
+	<p class="csm_prefix_bump3">This section contains the detailed description of the access being requested, as well as
+	a justification for the request.  Please review this section for accuracy.</p>
 	<!-- TODO: style this table with Css -->              
 	<table style="font-size:1em;margin-left:10px;" cellpadding="0" cellspacing="0" width="100%">
 		<!-- TODO: add static rows for title/mgr/requestor to style easier? -->
