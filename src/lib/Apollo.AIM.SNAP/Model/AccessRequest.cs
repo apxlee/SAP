@@ -191,6 +191,16 @@ namespace Apollo.AIM.SNAP.Model
             return result;
         }
 
+        // TODO - overload CreateWorkflow
+        public bool CreateWorkflow(string mgrId, List<int>actorIDs)
+        {
+            // convert mgrId _-> actorid AccessRequest.GetActorIdByUserId
+            // insert into actorIDs
+            // calll CreateWorkflow(actorIds);
+
+            return true;
+        }
+
         public bool CreateWorkflow(List<int> actorIds)
         {
             var result = false;
@@ -705,7 +715,8 @@ namespace Apollo.AIM.SNAP.Model
 
                 ActorApprovalType t = (ActorApprovalType)agt;
 
-                stateTransition(t, wf, WorkflowState.Not_Active, WorkflowState.Pending_Approval);
+                //stateTransition(t, wf, WorkflowState.Not_Active, WorkflowState.Pending_Approval);
+                stateTransition(t, wf, WorkflowState.Not_Active, WorkflowState.Not_Active);
 
             }
             //}
@@ -722,15 +733,31 @@ namespace Apollo.AIM.SNAP.Model
                 {
                     foreach (var state in wf.SNAP_Workflow_States)
                     {
-                        if (state.notifyDate == null && state.workflowStatusEnum == (byte)WorkflowState.Pending_Approval)
+                        //if (state.notifyDate == null && state.workflowStatusEnum == (byte)WorkflowState.Pending_Approval)
+                        if (state.notifyDate == null && state.workflowStatusEnum == (byte)WorkflowState.Not_Active)
                         {
                             Email.TaskAssignToApprover(state.SNAP_Workflow.SNAP_Actor.emailAddress, state.SNAP_Workflow.SNAP_Actor.displayName, _id, state.SNAP_Workflow.SNAP_Request.userDisplayName);
                             state.notifyDate = DateTime.Now;
-                            var actorType = (ActorApprovalType) (wf.SNAP_Actor.SNAP_Actor_Group.actorGroupType ?? 3); // default workflow admin
-                            state.dueDate = getDueDate(actorType, WorkflowState.Pending_Approval, WorkflowState.Pending_Workflow);
+                            state.completedDate = DateTime.Now;
+                            
+                            //state.dueDate = getDueDate(actorType, WorkflowState.Pending_Approval, WorkflowState.Pending_Workflow);
+                            //state.dueDate = getDueDate(actorType, WorkflowState.Not_Active, WorkflowState.Pending_Workflow);
                             done = true;
                         }
                     }
+
+                    // from not acitve -> pending approval
+                    if (done)
+                    {
+                        var actorType = (ActorApprovalType) (wf.SNAP_Actor.SNAP_Actor_Group.actorGroupType ?? 3); // default workflow admin
+                        wf.SNAP_Workflow_States.Add(new SNAP_Workflow_State()
+                                                        {
+                                                            workflowStatusEnum = (byte) WorkflowState.Pending_Approval,
+                                                            notifyDate = DateTime.Now,
+                                                            dueDate = getDueDate(actorType, WorkflowState.Not_Active,WorkflowState.Pending_Workflow)
+                                                        });
+                    }
+
                 }
             }
 

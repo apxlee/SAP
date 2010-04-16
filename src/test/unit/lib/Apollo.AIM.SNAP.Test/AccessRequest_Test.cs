@@ -199,6 +199,12 @@ namespace Apollo.AIM.SNAP.Test
         {
             Assert.IsTrue(wf.SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)state).completedDate != null);
         }
+
+        private void verifyWorkflowTransition(SNAP_Workflow wf, WorkflowState fr, WorkflowState to)
+        {
+            verifyWorkflowStateComplete(wf, fr);
+            verifyWorkflowState(wf, to);            
+        }
         [Test]
         public void ShouldCloseCancelledByAccessTeam()
         {
@@ -306,6 +312,7 @@ namespace Apollo.AIM.SNAP.Test
                 {
                     Console.WriteLine(s.workflowId + "," + s.workflowStatusEnum + "," + ((s.completedDate != null) ? s.completedDate.ToString() : "TBD"));
                 }
+                verifyWorkflowStateComplete(managerWF, WorkflowState.Not_Active);
                 verifyWorkflowState(managerWF, WorkflowState.Pending_Approval);
             }
         }
@@ -441,9 +448,17 @@ namespace Apollo.AIM.SNAP.Test
                 var accessReq = new AccessRequest(req.pkId);
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
 
-
                 verifyWorkflowStateComplete(wfs[0], WorkflowState.Pending_Approval);
                 verifyWorkflowStateComplete(wfs[0], WorkflowState.Approved);
+
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Team_Approver);
+                verifyWorkflowTransition(wfs[0], WorkflowState.Not_Active, WorkflowState.Pending_Approval);
+
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
+                verifyWorkflowState(wfs[0], WorkflowState.Not_Active);
+                verifyWorkflowState(wfs[1], WorkflowState.Not_Active);
+                verifyWorkflowState(wfs[2], WorkflowState.Not_Active);
+
             }
 
         }
@@ -532,13 +547,15 @@ namespace Apollo.AIM.SNAP.Test
                 var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
                 var accessReq = new AccessRequest(req.pkId);
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
-                verifyWorkflowStateComplete(wfs[0], WorkflowState.Pending_Approval);
-                verifyWorkflowStateComplete(wfs[0], WorkflowState.Approved);
+                verifyWorkflowTransition(wfs[0], WorkflowState.Pending_Approval, WorkflowState.Approved);
 
                 wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Team_Approver);
-                verifyWorkflowStateComplete(wfs[0], WorkflowState.Pending_Approval);
-                verifyWorkflowStateComplete(wfs[0], WorkflowState.Approved);
+                verifyWorkflowTransition(wfs[0], WorkflowState.Pending_Approval, WorkflowState.Approved);
 
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
+                verifyWorkflowTransition(wfs[0], WorkflowState.Not_Active, WorkflowState.Pending_Approval);
+                verifyWorkflowTransition(wfs[1], WorkflowState.Not_Active, WorkflowState.Pending_Approval);
+                verifyWorkflowTransition(wfs[2], WorkflowState.Not_Active, WorkflowState.Pending_Approval);
             }
 
         }
@@ -653,8 +670,6 @@ namespace Apollo.AIM.SNAP.Test
                 verifyWorkflowStateComplete(wfs[0], WorkflowState.Approved);
 
             }
-
-
         }
 
 
