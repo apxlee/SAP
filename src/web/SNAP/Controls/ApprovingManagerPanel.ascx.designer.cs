@@ -12,5 +12,32 @@ namespace Apollo.AIM.SNAP.Web.Controls {
     
     
     public partial class ApprovingManagerPanel {
+        
+        /// <summary>
+        /// _approve control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button _approve;
+        
+        /// <summary>
+        /// _approveAndMoveNext control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button _approveAndMoveNext;
+        
+        /// <summary>
+        /// _requestChangeDeny control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button _requestChangeDeny;
     }
 }
