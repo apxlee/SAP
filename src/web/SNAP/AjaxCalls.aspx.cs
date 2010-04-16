@@ -94,7 +94,12 @@ namespace Apollo.AIM.SNAP.Web
         }
 
         #endregion
-
+        
+        [WebMethod]
+        public static bool ApproveRequest(int requestId)
+        {
+			return true;
+        }
     }
 
 }
