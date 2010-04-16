@@ -116,6 +116,7 @@ namespace Apollo.AIM.SNAP.Model
                     if (result)
                     {
                         addAccessTeamComment(accessTeamWF, comment, commentType);
+                        Email.UpdateRequesterStatus(req.submittedBy, req.userDisplayName, _id, wfState, comment);
                         db.SubmitChanges();
                     }
 
@@ -414,6 +415,8 @@ namespace Apollo.AIM.SNAP.Model
 
                     if (result)
                     {
+                        // TODO - uncommentthis out so SD can be created!!!
+
                         /*
                         var changeRequest = new ServiceDesk.ChangeRequest(Apollo.ServiceDesk.SDConfig.Instance.Login, Apollo.ServiceDesk.SDConfig.Instance.Password);
 

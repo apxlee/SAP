@@ -58,6 +58,10 @@ namespace Apollo.AIM.SNAP.Model
                     subject = "Supplemental Network Access Process-Denied";
                     emailTemplatePath += ConfigurationManager.AppSettings["DenyToSubmitter"];
                     break;
+                case WorkflowState.Closed_Cancelled:
+                    subject = "Supplemental Network Access Process-Cancelled";
+                    emailTemplatePath += ConfigurationManager.AppSettings["DenyToSubmitter"];
+                    break;
             }
 
             configPerEnvironment(id);

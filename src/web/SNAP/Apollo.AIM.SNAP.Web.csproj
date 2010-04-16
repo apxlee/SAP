@@ -430,4 +430,7 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>copy $(SolutionDir)lib\log4net.dll $(TargetDir)</PostBuildEvent>
+  </PropertyGroup>
 </Project>

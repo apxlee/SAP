@@ -43,6 +43,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\lib\Apollo.Ultimus.CAP.dll</HintPath>
     </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\lib\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.4.6.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\lib\nunit.framework.dll</HintPath>
@@ -95,6 +99,7 @@
   -->
   <PropertyGroup>
     <PostBuildEvent>copy $(ProjectDir)*.html $(TargetDir)
+copy $(SolutionDir)lib\log4net.dll $(TargetDir)
 xcopy /Y $(SolutionDir)src\lib\Apollo.AIM.SNAP\EmailTemplate\*.html  $(TargetDir)\EmailTemplate\*.*</PostBuildEvent>
   </PropertyGroup>
 </Project>
