@@ -836,6 +836,57 @@ namespace Apollo.AIM.SNAP.Test
 
         }
 
+        [Test]
+        public void ShouldHandleAccessTeamCloseAfterAllApproved()
+        {
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+
+                var accessReq = new AccessRequest(req.pkId);
+                accessReq.Ack();
+                accessReq.CreateWorkflow(new List<int>()
+                                             {
+                                                 managerActorId,
+                                                 teamApprovalActorId,
+                                                 windowsServerActorId,
+                                                 //databaseActorId,
+                                                 //networkShareActorId
+                                             });
+
+
+                // get manager approal
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
+                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate == null);
+
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+
+                // get team approval
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Team_Approver);
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+
+
+                // get technical approval
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+
+                accessReq.NoAccess(WorkflowAction.Cancel, "Please close it");
+
+            }
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+                var accessReq = new AccessRequest(req.pkId);
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
+                Assert.IsTrue(req.statusEnum == (byte)RequestState.Closed);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Closed_Cancelled);
+                verifyWorkflowComment(wfs[0], CommentsType.Cancelled);
+            }
+
+        }
+
 
         [Test]
         public void ShouldNotEnterToDifferentStateWhenNotReady()
@@ -855,7 +906,6 @@ namespace Apollo.AIM.SNAP.Test
                 Assert.IsFalse(accessReq.FinalizeRequest());
                 Assert.IsFalse(accessReq.RequestChanged());
             }
-
         }
 
         [Test]
@@ -1389,6 +1439,57 @@ namespace Apollo.AIM.SNAP.Test
 
             }
 
+        }
+
+
+        [Test]
+        public void ShouldHandleAccessTeamCloseAfterCreateTicket()
+        {
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+
+                var accessReq = new AccessRequest(req.pkId);
+                accessReq.Ack();
+                accessReq.CreateWorkflow(new List<int>()
+                                             {
+                                                 managerActorId,
+                                                 teamApprovalActorId,
+                                                 windowsServerActorId,
+                                                 //databaseActorId,
+                                                 //networkShareActorId
+                                             });
+
+
+                // get manager approal
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
+                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate == null);
+
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+
+                // get team approval
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Team_Approver);
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+
+
+                // get technical approval
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+                accessReq.CreateServiceDeskTicket();
+                accessReq.NoAccess(WorkflowAction.Cancel, "Please close it");
+
+            }
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+                var accessReq = new AccessRequest(req.pkId);
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
+                Assert.IsTrue(req.statusEnum == (byte)RequestState.Closed);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Closed_Cancelled);
+                verifyWorkflowComment(wfs[0], CommentsType.Cancelled);
+            }
         }
 
         [Ignore]

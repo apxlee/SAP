@@ -108,8 +108,9 @@ namespace Apollo.AIM.SNAP.Model
                 {
                     var req = db.SNAP_Requests.Single(r => r.pkId == _id);
                     var accessTeamWF = req.SNAP_Workflows.Single(x => x.actorId == AccessTeamActorId);
+                    var currentAccessTeamWFState = (WorkflowState) accessTeamWF.SNAP_Workflow_States.Single(s => s.completedDate == null).workflowStatusEnum;
                     result = reqStateTransition(req, RequestState.Pending, RequestState.Closed,
-                                                accessTeamWF, WorkflowState.Pending_Workflow,
+                                                accessTeamWF, currentAccessTeamWFState, /* WorkflowState.Pending_Workflow,*/
                                                 wfState);
 
                     if (result)
@@ -413,6 +414,7 @@ namespace Apollo.AIM.SNAP.Model
 
                     if (result)
                     {
+                        /*
                         var changeRequest = new ServiceDesk.ChangeRequest(Apollo.ServiceDesk.SDConfig.Instance.Login, Apollo.ServiceDesk.SDConfig.Instance.Password);
 
                         changeRequest.CategoryName = "Server.Systems.Privileged Access";
@@ -426,6 +428,9 @@ namespace Apollo.AIM.SNAP.Model
 
 
                         req.ticketNumber = changeRequest.Number;
+                        */
+
+                        req.ticketNumber = "123456";
 
                         db.SubmitChanges();
                     }
@@ -650,6 +655,9 @@ namespace Apollo.AIM.SNAP.Model
             
             var orgActorList = new List<int>();
             var toDeleteActorList = new List<int>();
+
+            // if there is an update approval list, we need to remove old approvers who are 
+            // not in the new list
             List<SNAP_Workflow_State> toDeleteWFStates = new List<SNAP_Workflow_State>();
             if (req.SNAP_Workflows.Count > 1)
             {
@@ -667,10 +675,7 @@ namespace Apollo.AIM.SNAP.Model
                     db.SNAP_Workflow_States.DeleteAllOnSubmit(toDeleteWFStates);
                     db.SNAP_Workflows.DeleteOnSubmit(wf);
                     db.SNAP_Workflow_Comments.DeleteAllOnSubmit(wf.SNAP_Workflow_Comments);
-                    //req.SNAP_Workflows.Remove(wf);
                 }
-
-                
             }
              
 
@@ -1059,7 +1064,7 @@ namespace Apollo.AIM.SNAP.Model
             accessTeamWF = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin)[0];
         }
 
-        protected bool approveAndInformOhterSequentialManager()
+        protected bool approveAndInformOtherSequentialManager()
         {
             if (req.statusEnum != (byte)RequestState.Pending)
                 return false;
@@ -1233,7 +1238,7 @@ namespace Apollo.AIM.SNAP.Model
 
         public override bool Approve()
         {
-            return approveAndInformOhterSequentialManager();
+            return approveAndInformOtherSequentialManager();
         }
 
         public override bool Deny(string comment)
@@ -1254,7 +1259,7 @@ namespace Apollo.AIM.SNAP.Model
 
         public override bool Approve()
         {
-            return approveAndInformOhterSequentialManager();
+            return approveAndInformOtherSequentialManager();
         }
 
         public override bool Deny(string comment)
