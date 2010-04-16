@@ -13,7 +13,9 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		
 		protected void Page_Load(object sender, EventArgs e)
 		{
-
+			//Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "key", ApproveScript());
+			
+			_approve.OnClientClick = "return ApproveRequest(\'" + RequestId + "\');";
 		}
 	}
 }

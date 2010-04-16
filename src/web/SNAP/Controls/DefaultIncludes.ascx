@@ -7,3 +7,4 @@
 <link href="styles/jquery-ui-1.7.2.custom.css" rel="stylesheet" type="text/css" />
 <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>jquery-1.4.2.min.js" type="text/javascript"></script>
 <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>jquery-ui-1.7.2.custom.min.js" type="text/javascript"></script>
+<script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>MyApprovals.js" type="text/javascript"></script>
