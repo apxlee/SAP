@@ -215,8 +215,9 @@ namespace Apollo.AIM.SNAP.Model
                     }
 
                 }
-
+#if Debug
                 InformApproverForAction();
+#endif
             }
             catch (Exception ex) {
                 Logger.Error("SNAP - AccessRequst: Create Workflow", ex);
@@ -1027,6 +1028,24 @@ namespace Apollo.AIM.SNAP.Model
             }
 
             return approverList;
+        }
+
+        public static int GetWorkflowId(int actorId, int requestId)
+        {
+            int workflowId = 0;
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var result = db.SNAP_Workflows
+                             .Where(u => u.actorId == actorId && u.requestId == requestId)
+                             .OrderByDescending(o => o.pkId)
+                             .Select(s => s.pkId)
+                             .First();
+
+                workflowId = (int)result;
+            }
+
+            return workflowId;
         }
 
         public static byte GetWorkflowState(int workflowId)
