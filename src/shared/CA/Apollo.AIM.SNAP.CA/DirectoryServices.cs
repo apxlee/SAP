@@ -183,13 +183,29 @@ namespace Apollo.AIM.SNAP.CA
                     // match list of users, just return the name. will get detail user_manager info from another call. This is improve the performance. avoid call get usermanager
                     // info for list of users
 
-                    users.ForEach(s =>   result.Add(new UserManagerInfo
-                                         {
-                                             LoginId = "unknown",
-                                             ManagerLoginId = "unknown",
-                                             ManagerName = "unknown",
-                                             Name = s
-                                         }));
+                    //users.ForEach(s =>   result.Add(new UserManagerInfo
+                    //                     {
+                    //                         LoginId = "unknown",
+                    //                         ManagerLoginId = "unknown",
+                    //                         ManagerName = "unknown",
+                    //                         Name = s
+                    //                     }));
+
+                    foreach (var user in users)
+                    {
+                        var u = GetUserByFullName(user);
+                        if (u != null)
+                        {
+                            result.Add(new UserManagerInfo
+                            {
+                                LoginId = u.LoginName ?? "unknown",
+                                ManagerLoginId = "unknown",
+                                ManagerName = "unknown",
+                                Name = user
+                            });
+
+                        }
+                    }
                 }
 
             }
