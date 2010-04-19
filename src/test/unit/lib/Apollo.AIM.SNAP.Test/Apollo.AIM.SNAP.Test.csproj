@@ -99,7 +99,9 @@
   -->
   <PropertyGroup>
     <PostBuildEvent>copy $(ProjectDir)*.html $(TargetDir)
+
 copy $(SolutionDir)lib\log4net.dll $(TargetDir)
+
 xcopy /Y $(SolutionDir)src\lib\Apollo.AIM.SNAP\EmailTemplate\*.html  $(TargetDir)\EmailTemplate\*.*</PostBuildEvent>
   </PropertyGroup>
 </Project>
