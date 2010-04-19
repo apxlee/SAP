@@ -409,6 +409,8 @@ namespace Apollo.AIM.SNAP.Test
                                              });
 
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte) ActorApprovalType.Manager);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Not_Active);
+                verifyWorkflowTransition(wfs[0], WorkflowState.Not_Active, WorkflowState.Pending_Approval);
                 Assert.IsTrue(wfs.Count == 1);
                 Assert.IsTrue(wfs[0].SNAP_Workflow_States[0].notifyDate != null);
             }
