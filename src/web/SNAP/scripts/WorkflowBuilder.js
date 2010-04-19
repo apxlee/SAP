@@ -29,41 +29,51 @@ function editWorkflow(obj,requestId) {
     $(document).ready(function() {
         $(obj).parent().parent().find("input[type=checkbox]").each(
           function() {
-              $(this).removeAttr("disabled");
-              approverGroupChecked(this, requestId);
+              if ($(this).attr("id").indexOf("_requiredCheck") < 0) {
+                  $(this).removeAttr("disabled");
+                  approverGroupChecked(this, requestId);
+              }
           });
         $("#closed_cancelled_" + requestId).removeAttr("disabled");
         $("#create_workflow_" + requestId).removeAttr("disabled");
         $(obj).attr("disabled", "disabled");
+        $(obj).parent().parent().find(".oospa_edit_icon").click(function() {
+            managerEdit(this);
+        });
     });
 }
 
 function createWorkflow(requestId) {
+    if ($("#_managerUserId_" + requestId).val() > "") {
+            //var postData = "{'requestId':'" + requestId.toString() + "','actorIds':'" + $("#_selectedActors_" + requestId).val() + "[" + $("#_managerId_" + requestId).val() + "]'}";
+            var postData = "{'requestId':'" + requestId.toString() + "','actorIds':'" + $("#_selectedActors_" + requestId).val() + "[" + $("#_managerId_" + requestId).val() + "]'}";
 
-    var postData = "{'requestId':'" + requestId.toString() + "','actorIds':'" + $("#_selectedActors_" + requestId).val() + "[" + $("#_managerId_" + requestId).val() + "]'}";
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; character=utf-8",
+                url: "AjaxCalls.aspx/CreateWorkflow",
+                data: postData,
+                dataType: "json",
+                success: function(msg) {
+                    alert(msg.d);
+                    if (msg.d) {
+                        alert("Workflow Created");
+                    }
+                    else {
+                        alert("Workflow Creation Failed");
+                    }
+                },
 
-    $.ajax({
-        type: "POST",
-        contentType: "application/json; character=utf-8",
-        url: "AjaxCalls.aspx/CreateWorkflow",
-        data: postData,
-        dataType: "json",
-        success: function(msg) {
-            alert(msg.d);
-            if (msg.d) {
-                alert("Workflow Created");
-            }
-            else {
-                alert("Workflow Creation Failed");
-            }
-        },
-
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            alert("GetNames Error: " + XMLHttpRequest);
-            alert("GetNames Error: " + textStatus);
-            alert("GetNames Error: " + errorThrown);
-        }
-    });
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert("GetNames Error: " + XMLHttpRequest);
+                    alert("GetNames Error: " + textStatus);
+                    alert("GetNames Error: " + errorThrown);
+                }
+            });
+    }
+    else {
+        alert("Invalid Manager Name!"); //TODO: Add some style to this validation
+    }
 }
 
 function managerEdit(obj) {
@@ -83,14 +93,13 @@ function managerEdit(obj) {
             managerInputUserId.val("");
         });
 
-        managerInputDisplayName.focusout(function() {
-            if (managerInputUserId.val() == "") {
-                GetNames(managerInputDisplayName);
-            }
-        });
         managerInputCheckButton.click(function() {
             if (managerInputUserId.val() == "") {
                 GetNames(managerInputDisplayName);
+            }
+            else {
+                managerInputSection.hide();
+                managerLabelSection.show();
             }
         });
     });

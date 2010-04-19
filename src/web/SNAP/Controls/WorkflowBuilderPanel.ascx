@@ -16,7 +16,7 @@
 			<td class="csm_input_form_control_column">
 				<table border="0" cellpadding="0" cellspacing="0" width="100%" class="oospa_workflow_builder_row">
 					<tr>
-						<td width="22"><input type="checkbox" checked="checked" disabled="disabled" class="csm_input_checkradio" /></td>
+						<td width="22"><input type="checkbox" id="_requiredCheck" checked="checked" disabled="disabled" class="csm_input_checkradio" /></td>
 						<td width="386">
 						    <asp:PlaceHolder ID="_managerInfoSection" runat="server" />		        
 				        </td>
@@ -26,7 +26,7 @@
 				        </td>
 				        <td>&nbsp</td>
 						<td width="20" class="">&nbsp;</td>
-						<td width="20" class="oospa_edit_icon" onclick="managerEdit(this);">&nbsp;</td><!-- TODO: onclick trigger ajax? -->
+						<td width="20" class="oospa_edit_icon">&nbsp;</td>
 					</tr>
 				</table>							
 			</td>

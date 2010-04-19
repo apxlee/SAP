@@ -231,7 +231,7 @@ var userManager = {
                     else {
                         var li = jQuery(document.createElement('li'));
                         var label = jQuery(document.createElement('label'));
-                        label.html(strSection + " empty field");
+                        label.html(strSection + " empty or invalid entry");
                         label.attr("for", val.replace("]", ""));
                         li.append(label);
                         li.appendTo($("#_formValidationTop").children("ul"));
@@ -262,13 +262,17 @@ var userManager = {
     HandleGetUserNames: function() {
         userManager.userNameCheck.click(function() {
             // this is ref to the button not usermanager, hence to call usermanager function I need to ref to qualify user manager
-            userManager.GetNames(userManager.userName, userManager.userSelection, userManager.userSelectionDiv);
+            if (userManager.userLoginId.val() == "") {
+                userManager.GetNames(userManager.userName, userManager.userSelection, userManager.userSelectionDiv);
+            }
         })
     },
     HandleGetManagerNames: function() {
         userManager.mgrNameCheck.click(function() {
             // this is ref to the button not usermanager, hence to call usermanager function I need to ref to qualify user manager
-            userManager.GetNames(userManager.mgrName, userManager.mgrSelection, userManager.mgrSelectionDiv);
+            if (userManager.mgrLoginId.val() == "") {
+                userManager.GetNames(userManager.mgrName, userManager.mgrSelection, userManager.mgrSelectionDiv);
+            }
         })
     },
 
@@ -277,25 +281,24 @@ var userManager = {
             userManager.mgrName.removeAttr('disabled');
             userManager.mgrNameCheck.removeAttr('disabled');
             userManager.mgrEdit.attr("disabled", true);
-            userManager.mgrName.focus();
         })
     },
 
     HandleNameSelectionChange: function() { userManager.userSelection.change(userManager.UserNameSelected) },
     HandleManagerSelectionChange: function() { userManager.mgrSelection.change(userManager.ManagerNameSelected) },
 
-    UserNameFocusOut: function() {
-        userManager.userName.focusout(function() {
-            if (userManager.userLoginId.val() == "") {
-                userManager.GetNames(userManager.userName, userManager.userSelection, userManager.userSelectionDiv);
-            }
-        })
-    },
+    //    UserNameFocusOut: function() {
+    //        userManager.userName.focusout(function() {
+    //            if (userManager.userLoginId.val() == "") {
+    //                userManager.GetNames(userManager.userName, userManager.userSelection, userManager.userSelectionDiv);
+    //            }
+    //        })
+    //    },
 
     UserNameChange: function() {
         userManager.userName.change(function() {
-            userManager.userLoginId.val('');
-            userManager.GetNames(userManager.userName, userManager.userSelection, userManager.userSelectionDiv);
+            userManager.userLoginId.val("");
+            //userManager.GetNames(userManager.userName, userManager.userSelection, userManager.userSelectionDiv);
         })
     },
 
@@ -308,18 +311,18 @@ var userManager = {
         userManager.userSelectionDiv.dialog('close');
     },
 
-    MgrNameFocusOut: function() {
-        userManager.mgrName.focusout(function() {
-            if (userManager.mgrLoginId.val() == "") {
-                userManager.GetNames(userManager.mgrName, userManager.mgrSelection, userManager.mgrSelectionDiv);
-            }
-        })
-    },
+    //    MgrNameFocusOut: function() {
+    //        userManager.mgrName.focusout(function() {
+    //            if (userManager.mgrLoginId.val() == "") {
+    //                userManager.GetNames(userManager.mgrName, userManager.mgrSelection, userManager.mgrSelectionDiv);
+    //            }
+    //        })
+    //    },
 
     MgrNameChange: function() {
         userManager.mgrName.change(function() {
-            userManager.mgrLoginId.val('');
-            userManager.GetNames(userManager.mgrName, userManager.mgrSelection, userManager.mgrSelectionDiv);
+            userManager.mgrLoginId.val("");
+            //userManager.GetNames(userManager.mgrName, userManager.mgrSelection, userManager.mgrSelectionDiv);
         })
     },
 
@@ -521,10 +524,10 @@ var userManager = {
         this.HandleGetUserNames();
         this.HandleGetManagerNames();
         this.UserNameChange();
-        this.UserNameFocusOut();
+        //this.UserNameFocusOut();
         this.HandleNameSelectionChange();
         this.MgrNameChange();
-        this.MgrNameFocusOut();
+        //this.MgrNameFocusOut();
         this.HandleManagerSelectionChange();
         this.HandleEditManagerName();
         this.HandleClearClick();
