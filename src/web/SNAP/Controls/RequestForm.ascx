@@ -34,9 +34,7 @@
 				</td>
 				<td class="csm_input_form_control_column">
 					<asp:TextBox ID="_requestorId" runat="server" CssClass="csm_text_input_short" ></asp:TextBox>
-					<!--<Button ID="_checkRequestorId" Class="csm_html_button" Text="Check" />-->
 					<button type='button' id='_checkRequestorId' class="csm_html_button">Check</button>
-
 			        <p><em>Example: axuser (domain name is not needed)</em></p>
 				</td>
                 <td>
@@ -52,7 +50,6 @@
 				</td>
 				<td class="csm_input_form_control_column">
 					<asp:TextBox ID="_managerName" runat="server" CssClass="csm_text_input_short" ></asp:TextBox>
-			        <!--<asp:Button ID="_checkManagerName" runat="server" CssClass="csm_html_button" Text="Check" /> -->
 			        <button type='button' id='_checkManagerName' class="csm_html_button">Check</button>
 			        <button type='button' id="_editManagerName" class="csm_html_button">Edit</button>
 			        <div id="_notificationManager" style="display:none;">

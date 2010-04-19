@@ -46,30 +46,30 @@ function editWorkflow(obj,requestId) {
 function createWorkflow(requestId) {
     if ($("#_managerUserId_" + requestId).val() > "") {
             //var postData = "{'requestId':'" + requestId.toString() + "','actorIds':'" + $("#_selectedActors_" + requestId).val() + "[" + $("#_managerId_" + requestId).val() + "]'}";
-            var postData = "{'requestId':'" + requestId.toString() + "','actorIds':'" + $("#_selectedActors_" + requestId).val() + "[" + $("#_managerId_" + requestId).val() + "]'}";
+        var postData = "{'requestId':'" + requestId.toString() + "','managerUserId':'" + $("#_managerUserId_" + requestId).val() + "','actorIds':'" + $("#_selectedActors_" + requestId).val() + "'}";
+        alert(postData); //TODO: (added parameter managerUserId)format postdata to match AjaxCalls.aspx\CreateWorkflow parameter"
+//            $.ajax({
+//                type: "POST",
+//                contentType: "application/json; character=utf-8",
+//                url: "AjaxCalls.aspx/CreateWorkflow",
+//                data: postData,
+//                dataType: "json",
+//                success: function(msg) {
+//                    alert(msg.d);
+//                    if (msg.d) {
+//                        alert("Workflow Created");
+//                    }
+//                    else {
+//                        alert("Workflow Creation Failed");
+//                    }
+//                },
 
-            $.ajax({
-                type: "POST",
-                contentType: "application/json; character=utf-8",
-                url: "AjaxCalls.aspx/CreateWorkflow",
-                data: postData,
-                dataType: "json",
-                success: function(msg) {
-                    alert(msg.d);
-                    if (msg.d) {
-                        alert("Workflow Created");
-                    }
-                    else {
-                        alert("Workflow Creation Failed");
-                    }
-                },
-
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    alert("GetNames Error: " + XMLHttpRequest);
-                    alert("GetNames Error: " + textStatus);
-                    alert("GetNames Error: " + errorThrown);
-                }
-            });
+//                error: function(XMLHttpRequest, textStatus, errorThrown) {
+//                    alert("GetNames Error: " + XMLHttpRequest);
+//                    alert("GetNames Error: " + textStatus);
+//                    alert("GetNames Error: " + errorThrown);
+//                }
+//            });
     }
     else {
         alert("Invalid Manager Name!"); //TODO: Add some style to this validation

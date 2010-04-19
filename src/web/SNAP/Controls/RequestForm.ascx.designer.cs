@@ -59,15 +59,6 @@ namespace Apollo.AIM.SNAP.Web.Controls {
         protected global::System.Web.UI.WebControls.TextBox _managerName;
         
         /// <summary>
-        /// _checkManagerName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button _checkManagerName;
-        
-        /// <summary>
         /// _managerLoginId control.
         /// </summary>
         /// <remarks>
