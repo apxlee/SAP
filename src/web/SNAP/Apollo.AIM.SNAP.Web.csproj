@@ -130,9 +130,16 @@
     <Content Include="Controls\WorkflowBuilderPanel.ascx" />
     <Content Include="images\footer_email.png" />
     <Content Include="images\header_email.png" />
+    <Content Include="images\icon_accessteam.png" />
+    <Content Include="images\icon_approver.png" />
+    <Content Include="images\icon_checkbox_checked.png" />
+    <Content Include="images\icon_checkbox_unchecked.png" />
+    <Content Include="images\icon_reqdetails.png" />
+    <Content Include="images\icon_status.png" />
     <Content Include="images\logo_aim.png" />
     <Content Include="images\modal_shadow_696x572.png" />
     <Content Include="images\placard_quknpainls.png" />
+    <Content Include="scripts\MyApprovals.js" />
     <Content Include="scripts\WorkflowBuilder.js" />
     <Content Include="AjaxCalls.aspx" />
     <Content Include="images\ajax_indicator.gif" />
