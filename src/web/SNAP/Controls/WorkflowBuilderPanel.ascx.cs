@@ -139,7 +139,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
             Literal litRadioButton = new Literal();
             litRadioButton.Text = "<tr><td>&nbsp;</td><td colspan=\"3\">";
-            litRadioButton.Text += "<input type=\"radio\" id=\"" + approver.ActorId + "\" name=\"radio" + RequestId + "_" + group.GroupId + "\" " + strDisabled + " " + strChecked + " class=\"csm_input_checkradio\" />";
+            litRadioButton.Text += "<input type=\"radio\" id=\"" + approver.ActorId + "\" disabled=\"disabled\" name=\"radio" + RequestId + "_" + group.GroupId + "\" " + strDisabled + " " + strChecked + " class=\"csm_input_checkradio\" />";
             litRadioButton.Text += "<span class=\"csm_inline\">" + strDisplayName + "</span>";
             litRadioButton.Text += "</td></tr>";
 

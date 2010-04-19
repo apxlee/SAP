@@ -17,8 +17,6 @@ var userManager = {
         this.mgrSelectionDiv = $("#_managerSelectionDiv");
 
         this.mgrEdit = $("button[id$='_editManagerName']");
-        this.ajaxIndicatorUser = $("div[id$='_notificationUser']");
-        this.ajaxIndicatorManager = $("div[id$='_notificationManager']");
 
         this.submitButton = $("input[id$='_submitForm']");
         this.submitButtonLower = $("input[id$='_submitForm_lower']");
@@ -38,7 +36,7 @@ var userManager = {
         this.mgrSelection.toggle();
         this.mgrName.attr("disabled", true)
     },
-    
+
     ToolTip: function() {
 
         xOffset = 10;
@@ -62,16 +60,17 @@ var userManager = {
 	        this.title = this.t;
 	        $("#tooltip").remove();
 	    });
-	    $("a.tooltip").mousemove(function(e) {
-	        $("#tooltip")
+        $("a.tooltip").mousemove(function(e) {
+            $("#tooltip")
 			    .css("top", (e.pageY - xOffset) + "px")
 			    .css("left", (e.pageX + yOffset) + "px");
         });
     },
-    
+
     GetNames: function(name, selection, dialogDiv) {
         var postData = "{'name':'" + name.val().replace("(", "").replace(")", "").replace(/\\/, "").replace("'", "\\'") + "'}";
-        userManager.ajaxIndicatorUser.show();
+        selection.hide()
+        dialogDiv.dialog("open");
 
         $.ajax({
             type: "POST",
@@ -80,18 +79,19 @@ var userManager = {
             data: postData,
             dataType: "json",
             success: function(msg) {
-                userManager.ajaxIndicatorUser.hide();
 
                 var names = msg.d;
 
                 // no match                
                 if (names.length == 0) {
                     userManager.FillErrorFields(name);
+                    dialogDiv.dialog("close");
                 }
 
                 // direct match
                 if (names.length == 1) {
                     userManager.FillAllFields(name, names);
+                    dialogDiv.dialog("close");
                 }
 
                 // match list of names
@@ -101,7 +101,7 @@ var userManager = {
             },
 
             error: function(XMLHttpRequest, textStatus, errorThrown) {
-                userManager.ajaxIndicatorUser.hide();
+                dialogDiv.dialog("close");
                 alert("GetNames Error: " + XMLHttpRequest);
                 alert("GetNames Error: " + textStatus);
                 alert("GetNames Error: " + errorThrown);
@@ -111,7 +111,6 @@ var userManager = {
 
     GetUserManagerInfo: function(flag, fullName) {
         var postData = "{'fullName':'" + fullName.val().replace("'", "\\'") + "'}";
-        userManager.ajaxIndicatorUser.show();
 
         $.ajax({
             type: "POST",
@@ -120,13 +119,11 @@ var userManager = {
             data: postData,
             dataType: "json",
             success: function(msg) {
-                userManager.ajaxIndicatorUser.hide();
                 var userInfo = msg.d;
                 userManager.FillUserManagerInfo(flag, userInfo);
             },
 
             error: function(XMLHttpRequest, textStatus, errorThrown) {
-                userManager.ajaxIndicatorUser.hide();
                 alert("GetUserManagerInfo Error: " + XMLHttpRequest);
                 alert("GetUserManagerInfo Error: " + textStatus);
                 alert("GetUserManagerInfo Error: " + errorThrown);
@@ -373,7 +370,7 @@ var userManager = {
         }
     },
 
-    FillSelection: function(selection, names, dialogDiv) {
+    FillSelection: function(selection, names) {
         var listItems = [];
         for (var key in names) {
             listItems.push('<option value="' + key + '">' + names[key].Name + '</option>');
@@ -387,7 +384,8 @@ var userManager = {
         else
             selection.attr('size', names.length);
 
-        dialogDiv.dialog('open');
+        selection.parent().find('.oospa_ajax_indicator').hide();
+        selection.show();
     },
 
 
@@ -442,6 +440,10 @@ var userManager = {
         }
     },
 
+    DialogOpen: function(obj) {
+        $(obj).parent().find('.oospa_ajax_indicator').show();
+    },
+
     ConvertToDialog: function(obj, type) {
         if (type == "user") {
             obj.dialog({
@@ -453,6 +455,9 @@ var userManager = {
                 height: 300,
                 width: 350,
                 modal: true,
+                open: function() {
+                    userManager.DialogOpen(obj);
+                },
                 close: function(event, ui) {
                     userManager.DialogClose(obj);
                 },
@@ -525,7 +530,7 @@ var userManager = {
         this.HandleClearClick();
         this.HandleSubmitClick();
         this.Clear();
-        
+
     }
 }
 

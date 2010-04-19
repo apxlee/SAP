@@ -19,6 +19,8 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		public string LastUpdatedDate { get; set; }
 		public bool IsSelectedRequest { get; set; }
         public List<AccessGroup> AvailableGroups { get; set; }
+        private WorkflowState AccessTeamState;
+        private static int AccessTeamActorId = 1;
 		
 		protected void Page_Load(object sender, EventArgs e)
 		{
@@ -88,13 +90,15 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		
 		private void LoadAccessTeamPanels() 
 		{
-
 			AcknowledgementPanel acknowledgementPanel;
 			WorkflowBuilderPanel workflowBuilderPanel;
 			AccessCommentsPanel accessCommentsPanel;
 
             if (RequestState != RequestState.Closed)
             {
+                //get the access team state.  this for building the workflow builder buttons. 
+                AccessTeamState = (WorkflowState)ApprovalWorkflow.GetWorkflowState(ApprovalWorkflow.GetWorkflowId(AccessTeamActorId, Convert.ToInt32(RequestId)));
+
                 workflowBuilderPanel = LoadControl("~/Controls/WorkflowBuilderPanel.ascx") as WorkflowBuilderPanel;
                 workflowBuilderPanel.RequestId = RequestId.ToString();
                 workflowBuilderPanel.RequestState = RequestState;
@@ -108,19 +112,34 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
                 Literal managerInfoLit = new Literal();
                 managerInfoLit.Text = "<span id=\"_managerDisplayName_" + RequestId + "\" class=\"csm_inline\">" + row[0].ToString() + "</span>";
-                managerInfoLit.Text += "<input id=\"_managerId_" + RequestId + "\" type=\"hidden\" value=\"" + row[1].ToString() + "\">";
+                managerInfoLit.Text += "<input id=\"_managerUserId_" + RequestId + "\" type=\"hidden\" value=\"" + row[1].ToString() + "\">";
 
                 PlaceHolder managerInfoSection = new PlaceHolder();
                 managerInfoSection = (PlaceHolder)WebUtilities.FindControlRecursive(workflowBuilderPanel, "_managerInfoSection");
                 managerInfoSection.Controls.Add(managerInfoLit);
 
                 Literal buttonLit = new Literal();
-                buttonLit.Text = "<input type=\"hidden\" id=\"_selectedActors_" + RequestId.ToString() + "\" />" +
-                "<input type=\"button\" value=\"Close Completed\" class=\"csm_html_button\"/>" +
-                "<input type=\"button\" value=\"Create Ticket\" class=\"csm_html_button\"/>" +
-                "<input type=\"button\" value=\"Edit Workflow\" class=\"csm_html_button\"/>" +
-                "<input type=\"button\" value=\"Build Workflow | Continue\"" +
-                " onclick=\"createWorkflow('" + RequestId.ToString() + "');\" class=\"csm_html_button\"/>";
+                buttonLit.Text = "<input type=\"hidden\" id=\"_selectedActors_" + RequestId.ToString() + "\" />";
+
+                switch (AccessTeamState)
+                {
+                    case WorkflowState.Pending_Acknowlegement:
+                        buttonLit.Text += BuildButtons("create_workflow_" + RequestId.ToString(), "Create Workflow", "createWorkflow('" + RequestId.ToString() + "');", false);
+                        break;
+                    case WorkflowState.Pending_Workflow:
+                        buttonLit.Text += BuildButtons("create_workflow_" + RequestId.ToString(), "Create Workflow", "createWorkflow('" + RequestId.ToString() + "');", false);
+                        break;
+                    case WorkflowState.Pending_Approval:
+                        buttonLit.Text += BuildButtons("closed_cancelled_" + RequestId.ToString(), "Closed Cancelled", "alert('Closed Cancelled');", true);
+                        buttonLit.Text += BuildButtons("edit_workflow_" + RequestId.ToString(), "Edit Workflow", "editWorkflow(this,'" + RequestId.ToString() + "');", false);
+                        buttonLit.Text += BuildButtons("create_workflow_" + RequestId.ToString(), "Continue Workflow", "createWorkflow('" + RequestId.ToString() + "');", true);
+                        break;
+                    case WorkflowState.Pending_Provisioning:
+                        buttonLit.Text += BuildButtons("closed_cancelled_" + RequestId.ToString(), "Closed Cancelled", "alert('Closed Cancelled');", false);
+                        buttonLit.Text += BuildButtons("closed_complete_" + RequestId.ToString(), "Closed Complete", "alert('Closed Complete Clicked');", false);
+                        buttonLit.Text += BuildButtons("create_ticket_" + RequestId.ToString(), "Create Ticket", "alert('Create Ticket Clicked');", false);
+                        break;
+                }
 
                 PlaceHolder dynamicButtonsContainer;
                 dynamicButtonsContainer = (PlaceHolder)WebUtilities.FindControlRecursive(workflowBuilderPanel, "_dynamicButtonsContainer");
@@ -131,16 +150,28 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			
 		}
 
+        private string BuildButtons(string buttonId, string buttonName, string buttonFunction, bool isDisabled)
+        {
+            string strButton = "";
+            string strDisabled = "";
+                if(isDisabled){ strDisabled = "disabled=\"disabled\""; }
+            strButton = "<input type=\"button\" id=\"" + buttonId + "\" " + strDisabled + " value=\"" + buttonName +
+                "\" onclick=\"" + buttonFunction + "\" class=\"csm_html_button\"/>";
+
+            return strButton;
+        }
+
         private DataTable GetManagerInfo()
         {
             DataTable table = new DataTable();
             table.Columns.Add("ManagerName", typeof(string));
-            table.Columns.Add("ManagerID", typeof(string));
+            table.Columns.Add("ManagerUserID", typeof(string));
+            table.Columns.Add("ManagerActorID", typeof(string));
 
             var reqDetails = Common.Request.Details(RequestState);
             var reqDetail = reqDetails.Single(x => x.pkId.ToString() == RequestId);
 
-            table.Rows.Add(reqDetail.managerDisplayName, ApprovalWorkflow.GetActorIdByUserId(ActorGroupType.Manager, reqDetail.managerUserId));
+            table.Rows.Add(reqDetail.managerDisplayName, reqDetail.managerUserId, ApprovalWorkflow.GetActorIdByUserId(ActorGroupType.Manager, reqDetail.managerUserId));
 
             return table;
         }

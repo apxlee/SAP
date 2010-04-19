@@ -18,12 +18,15 @@
 					<tr>
 						<td width="22"><input type="checkbox" checked="checked" disabled="disabled" class="csm_input_checkradio" /></td>
 						<td width="386">
-			<%--			    <asp:Label ID="_requiredApproverFullName" runat="server" CssClass="csm_inline"></asp:Label>
-						    <asp:Label ID="_requiredApproverUserId" Visible="false" runat="server" CssClass="csm_inline"></asp:Label>--%>
-						    <asp:PlaceHolder ID="_managerInfoSection" runat="server" />
-						</td>
+						    <asp:PlaceHolder ID="_managerInfoSection" runat="server" />		        
+				        </td>
+				        <td width="386" style="display:none;" class="csm_input_form_control_column">
+				            <asp:TextBox ID="_managerName" runat="server" CssClass="csm_text_input_short" ></asp:TextBox>
+			                <button type='button' id='_checkManagerName' class="csm_html_button">Check</button>
+				        </td>
+				        <td>&nbsp</td>
 						<td width="20" class="">&nbsp;</td>
-						<td width="20" class="oospa_edit_icon" onclick="">&nbsp;</td><!-- TODO: onclick trigger ajax? -->
+						<td width="20" class="oospa_edit_icon" onclick="managerEdit(this);">&nbsp;</td><!-- TODO: onclick trigger ajax? -->
 					</tr>
 				</table>							
 			</td>

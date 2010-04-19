@@ -21,5 +21,12 @@
 			<p>There are no Closed Requests at this time.</p>
 		</div>
 	</asp:Panel>	
-
+    <div id="_managerSelectionDiv" style="display:none"; >
+      <p />
+      <div style="display:none;text-align:center;padding-top:100px;" class="oospa_ajax_indicator">
+            <img alt="loading..." src="images/ajax_indicator.gif" width="16" height="16" />
+      </div>
+      <select style="display:none;" size="3" class="oospa_select_user" name="managerSelection" id="_managerSelection"></select>
+        
+    </div>
 </div>

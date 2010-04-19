@@ -803,9 +803,15 @@ TODO: REMOVE THIS SECTION
 .oospa_edit_icon {
 	background: transparent url('../images/icon_edit_small.png') 0 2px no-repeat;
 	}
-.oospa_select_user {
-    width: 100%;
+.oospa_select_user 
+{
+    width: 320px;
     height: 200px;
+}
+.oospa_ajax_indicator
+{
+    text-align:center;
+    padding-top:100px;
 }	
 .csm_template_1 .csm_icon_heading_container h2 {
     margin-left: 60px;

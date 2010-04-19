@@ -38,9 +38,6 @@
 					<button type='button' id='_checkRequestorId' class="csm_html_button">Check</button>
 
 			        <p><em>Example: axuser (domain name is not needed)</em></p>
-			        <div id="_notificationUser" style="display:none;">
-                        <img alt='loading...' src="images/ajax_indicator.gif" width="16" height="16" />
-                    </div>
 				</td>
                 <td>
                     <asp:TextBox ID="_requestorLoginId" runat="server" style="display:none" ></asp:TextBox>
@@ -86,11 +83,17 @@
 
       <div id='_managerSelectionDiv' style="display:none"; >
           <p />
-          <select size="3" class="oospa_select_user" name="managerSelection" id="_managerSelection"></select>
+            <div style="display:none;" class="oospa_ajax_indicator">
+                <img alt="loading..." src="images/ajax_indicator.gif" width="16" height="16" />
+            </div>
+          <select size="3" style="display:none;" class="oospa_select_user" name="managerSelection" id="_managerSelection"></select>
       </div>
       <div id='_nameSelectionDiv' style="display:none"; >
            <p />
-          <select size="3" class="oospa_select_user" name="nameSelection" id="_nameSelection"></select>
+           <div style="display:none;" class="oospa_ajax_indicator">
+                <img alt="loading..." src="images/ajax_indicator.gif" width="16" height="16" />
+            </div>
+          <select size="3" style="display:none;" class="oospa_select_user" name="nameSelection" id="_nameSelection"></select>
       </div>
 
      <div id="_acknowledgmentDiv" class="modal_li" style="display:none;">
