@@ -6,6 +6,7 @@ using System.Linq;
 
 using System.Text;
 using System.Transactions;
+using Apollo.AIM.SNAP.CA;
 using Apollo.AIM.SNAP.Model;
 using System.Collections.Specialized;
 using System.Configuration;
@@ -192,7 +193,7 @@ namespace Apollo.AIM.SNAP.Model
         }
 
         // TODO - overload CreateWorkflow
-        public bool CreateWorkflow(string mgrId, List<int>actorIDs)
+        public bool CreateWorkflow(string usrId, List<int>actorIDs)
         {
             // convert mgrId _-> actorid AccessRequest.GetActorIdByUserId
             // insert into actorIDs
@@ -793,13 +794,47 @@ namespace Apollo.AIM.SNAP.Model
         {
             using (var db = new SNAPDatabaseDataContext())
             {
-                var query = from sa in db.SNAP_Actors
-                            join sag in db.SNAP_Actor_Groups on sa.actor_groupId equals sag.pkId
-                            where sa.userId == userId && sag.actorGroupType == (byte)actorGroupType 
-                            select sa.pkId;
-                if (query.Count() > 0)
-                { return (int)query.First(); }
-                else { return 0; }
+                int actorId = 0;
+                try
+                {
+                    var query = from sa in db.SNAP_Actors
+                                join sag in db.SNAP_Actor_Groups on sa.actor_groupId equals sag.pkId
+                                where sa.userId == userId && sag.actorGroupType == (byte) actorGroupType
+                                select sa.pkId;
+                    if (query.Count() > 0)
+                    {
+                        return (int) query.First();
+                    }
+                    else
+                    {
+                        ADUserDetail usrDetail = Apollo.AIM.SNAP.CA.DirectoryServices.GetUserByLoginName(userId);
+                        if (usrDetail != null)
+                        {
+                            var actorGroupId =
+                                db.SNAP_Actor_Groups.Single(g => g.actorGroupType == (byte) actorGroupType).pkId;
+                            db.SNAP_Actors.InsertOnSubmit(new SNAP_Actor()
+                                                              {
+                                                                  displayName =
+                                                                      usrDetail.FirstName + " " + usrDetail.LastName,
+                                                                  actor_groupId = actorGroupId,
+                                                                  emailAddress = usrDetail.EmailAddress,
+                                                                  isActive = true,
+                                                                  isDefault = false,
+                                                                  userId = userId
+
+                                                              });
+
+                            db.SubmitChanges();
+                            return GetActorIdByUserId(actorGroupType, userId);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error("AccessRequest - GetAtorIdByUserId, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
+                }
+
+                return actorId;
             }
         }
 

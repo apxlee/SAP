@@ -1815,6 +1815,48 @@ namespace Apollo.AIM.SNAP.Test
         }
 
 
+        [Test] public void ShouldReturnActorId()
+        {
+            string usrid = "pxlee";
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+
+                var groupId = db.SNAP_Actor_Groups.Single(g => g.actorGroupType == (byte) ActorGroupType.Manager).pkId;
+                var toRemoveActor = db.SNAP_Actors.Single(a => a.userId == usrid && a.actor_groupId == groupId);
+                
+                db.SNAP_Actors.DeleteOnSubmit(toRemoveActor);
+
+                db.SubmitChanges();
+            }
+
+            Assert.IsTrue(ApprovalWorkflow.GetActorIdByUserId(ActorGroupType.Manager, usrid) != 0);
+        }
+
+        [Test]
+        public void ShouldReturnZeroActorId()
+        {
+            string usrid = "pxleepxlee";
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                try
+                {
+                    var groupId =
+                        db.SNAP_Actor_Groups.Single(g => g.actorGroupType == (byte) ActorGroupType.Manager).pkId;
+                    var toRemoveActor = db.SNAP_Actors.Single(a => a.userId == usrid && a.actor_groupId == groupId);
+
+                    db.SNAP_Actors.DeleteOnSubmit(toRemoveActor);
+
+                    db.SubmitChanges();
+                }
+                catch(Exception ex)
+                {
+                }
+            }
+
+            Assert.IsTrue(ApprovalWorkflow.GetActorIdByUserId(ActorGroupType.Manager, usrid) == 0);
+        }
 
         [Test] public void TestDateDiff()
         {

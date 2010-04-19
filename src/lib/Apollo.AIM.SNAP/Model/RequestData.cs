@@ -12,6 +12,7 @@ namespace Apollo.AIM.SNAP.Model
         public string UserText { get; set; }
         public static XElement ToXml(List<RequestData> data)
         {
+            //throw new Exception("Bad!");
             var root = new XElement("ROOT");
             foreach (var list in data)
             {
