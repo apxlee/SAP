@@ -26,7 +26,7 @@
 				        </td>
 				        <td>&nbsp</td>
 						<td width="20" class="">&nbsp;</td>
-						<td width="20" class="oospa_edit_icon">&nbsp;</td>
+						<td width="20" class="oospa_edit_icon_disabled">&nbsp;</td>
 					</tr>
 				</table>							
 			</td>

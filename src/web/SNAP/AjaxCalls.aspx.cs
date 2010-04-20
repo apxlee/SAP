@@ -96,8 +96,30 @@ namespace Apollo.AIM.SNAP.Web
         #endregion
         
         [WebMethod]
-        public static bool ApproveRequest(int requestId)
+        public static bool ApproveRequest(int requestId, WorkflowState action, string comments)
         {
+            //TODO: get actorId from current user
+            var accessReq = new AccessRequest(requestId);
+
+            switch (action)
+            {
+                case WorkflowState.Approved:
+                    return true;
+                    break;
+                case WorkflowState.Change_Requested:
+                    //accessReq.addRequestComment(comments, CommentsType.Requested_Change);
+                    //accessReq.RequestChanged();
+                    return true;
+                    break;
+                case WorkflowState.Closed_Denied:
+                    return true;
+                    break;
+                default:
+                    return false;
+                    break;
+            }
+
+            
 			return true;
         }
     }

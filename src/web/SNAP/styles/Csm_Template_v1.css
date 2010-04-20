@@ -803,6 +803,9 @@ TODO: REMOVE THIS SECTION
 .oospa_edit_icon {
 	background: transparent url('../images/icon_edit_small.png') 0 2px no-repeat;
 	}
+.oospa_edit_icon_disabled {
+	background: transparent url('../images/icon_edit_small_disabled.png') 0 2px no-repeat;
+	}
 .oospa_select_user 
 {
     width: 320px;

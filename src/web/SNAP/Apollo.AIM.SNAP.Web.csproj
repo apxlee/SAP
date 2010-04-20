@@ -135,6 +135,7 @@
     <Content Include="images\icon_approver.png" />
     <Content Include="images\icon_checkbox_checked.png" />
     <Content Include="images\icon_checkbox_unchecked.png" />
+    <Content Include="images\icon_edit_small_disabled.png" />
     <Content Include="images\icon_reqdetails.png" />
     <Content Include="images\icon_status.png" />
     <Content Include="images\logo_aim.png" />

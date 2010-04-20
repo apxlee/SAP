@@ -124,15 +124,15 @@ namespace Apollo.AIM.SNAP.Web.Controls
                 switch (AccessTeamState)
                 {
                     case WorkflowState.Pending_Acknowlegement:
-                        buttonLit.Text += BuildButtons("create_workflow_" + RequestId.ToString(), "Create Workflow", "createWorkflow('" + RequestId.ToString() + "');", false);
+                        buttonLit.Text += BuildButtons("create_workflow_" + RequestId.ToString(), "Create Workflow", "createWorkflow(this,'" + RequestId.ToString() + "');", false);
                         break;
                     case WorkflowState.Pending_Workflow:
-                        buttonLit.Text += BuildButtons("create_workflow_" + RequestId.ToString(), "Create Workflow", "createWorkflow('" + RequestId.ToString() + "');", false);
+                        buttonLit.Text += BuildButtons("create_workflow_" + RequestId.ToString(), "Create Workflow", "createWorkflow(this,'" + RequestId.ToString() + "');", false);
                         break;
                     case WorkflowState.Pending_Approval:
                         buttonLit.Text += BuildButtons("closed_cancelled_" + RequestId.ToString(), "Closed Cancelled", "alert('Closed Cancelled');", true);
                         buttonLit.Text += BuildButtons("edit_workflow_" + RequestId.ToString(), "Edit Workflow", "editWorkflow(this,'" + RequestId.ToString() + "');", false);
-                        buttonLit.Text += BuildButtons("create_workflow_" + RequestId.ToString(), "Continue Workflow", "createWorkflow('" + RequestId.ToString() + "');", true);
+                        buttonLit.Text += BuildButtons("create_workflow_" + RequestId.ToString(), "Continue Workflow", "createWorkflow(this,'" + RequestId.ToString() + "');", true);
                         break;
                     case WorkflowState.Pending_Provisioning:
                         buttonLit.Text += BuildButtons("closed_cancelled_" + RequestId.ToString(), "Closed Cancelled", "alert('Closed Cancelled');", false);
