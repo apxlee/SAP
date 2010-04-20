@@ -250,6 +250,7 @@ namespace Apollo.AIM.SNAP.Test
         [Test]
         public void ShouldRequestToChangeByAccessTeanMultipleTimes()
         {
+            var accessTeamId = 1;
             for (int i = 0; i < 5; i++)
             {
                 using (var db = new SNAPDatabaseDataContext())
@@ -258,7 +259,8 @@ namespace Apollo.AIM.SNAP.Test
 
                     var accessReq = new AccessRequest(req.pkId);
                     accessReq.Ack();
-                    accessReq.RequestToChange("Please change it");
+                    //accessReq.RequestToChange("Please change it");
+                    accessReq.RequestToChange(accessTeamId, "Please change it");
                 }
 
                 using (var db = new SNAPDatabaseDataContext())
@@ -996,14 +998,18 @@ namespace Apollo.AIM.SNAP.Test
 
                 var accessReq = new AccessRequest(req.pkId);
                 accessReq.Ack();
-                accessReq.CreateWorkflow(new List<int>()
-                                             {
-                                                 managerActorId,
-                                                 teamApprovalActorId,
-                                                 windowsServerActorId,
-                                                 databaseActorId,
-                                                 networkShareActorId
-                                             });
+                var techApprovers = new List<int>() { 
+                                       windowsServerActorId,
+                                       databaseActorId,
+                                       networkShareActorId
+                                    };
+                var actorIds = new List<int>()
+                                   {
+                                       managerActorId,
+                                       teamApprovalActorId,
+                                   };
+                actorIds.AddRange(techApprovers);
+                accessReq.CreateWorkflow(actorIds);
 
 
                 // get manager approal
@@ -1022,8 +1028,11 @@ namespace Apollo.AIM.SNAP.Test
                 // get technical approval, but the last one request to change
                 wfs = accessReq.FindApprovalTypeWF(db, (byte) ActorApprovalType.Technical_Approver);
                 accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+                techApprovers.Remove(wfs[0].actorId);
                 accessReq.WorkflowAck(wfs[1].pkId, WorkflowAction.Approved);
-                accessReq.WorkflowAck(wfs[2].pkId, WorkflowAction.Change, "change it");
+                techApprovers.Remove(wfs[1].actorId);
+                //accessReq.WorkflowAck(wfs[2].pkId, WorkflowAction.Change, "change it");
+                accessReq.RequestToChange(techApprovers[0], "change it");
 
             }
 

@@ -131,6 +131,38 @@ namespace Apollo.AIM.SNAP.Model
 
         }
 
+
+        public bool RequestToChange(int actorId, string comment)
+        {
+            bool result = false;
+
+            try
+            {
+                if (actorId == AccessTeamActorId)
+                {
+                    result = RequestToChange(comment);
+                }
+                else
+                {
+                    int wid = 0;
+                    using (var db = new SNAPDatabaseDataContext())
+                    {
+                        var req = db.SNAP_Requests.Single(r => r.pkId == _id);
+                        wid = req.SNAP_Workflows.Single(w => w.actorId == actorId).pkId; // TODO: can one actor plays multiple roles such as manager and technical approver, if so, this will not work
+                    }
+                    result = WorkflowAck(wid, WorkflowAction.Change);
+                }
+            }
+            catch(Exception ex)
+            {
+                Logger.Error("SNAP - AccessRequst: Request To Change", ex);
+                result = false;
+            }
+
+            return result;
+        }
+
+
         public bool RequestToChange(string comment)
         {
             bool result = false;
