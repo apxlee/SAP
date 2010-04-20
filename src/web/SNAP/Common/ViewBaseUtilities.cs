@@ -23,14 +23,18 @@ namespace Apollo.AIM.SNAP.Web.Common
 			}
 			else
 			{
+                /*
 				List<AccessGroup> availableGroups = new List<AccessGroup>();
 				using (var db = new SNAPDatabaseDataContext())
 				{
 					availableGroups = ApprovalWorkflow.GetAvailableGroups();
 				}
-				
+				*/
+                 
+
 				foreach (DataRow request in requestTable.Rows)
 				{
+                    /*
 					MasterRequestBlade requestBlade;
 					requestBlade = currentPage.LoadControl("~/Controls/MasterRequestBlade.ascx") as MasterRequestBlade;
 					requestBlade.RequestId = request["request_id"].ToString();
@@ -40,8 +44,9 @@ namespace Apollo.AIM.SNAP.Web.Common
 					requestBlade.LastUpdatedDate = request["last_updated_date"].ToString();
 					requestBlade.IsSelectedRequest = (bool)request["is_selected"];
 					requestBlade.AvailableGroups = availableGroups;
+                    */
 
-					bladeContainer.Controls.Add(requestBlade);
+                    bladeContainer.Controls.Add(buildMasterBlade(request, currentPage,requestState));
 				}
 			}
 		}
@@ -75,17 +80,21 @@ namespace Apollo.AIM.SNAP.Web.Common
         public static void BuildRequests(Page page, RequestState RequestState, PlaceHolder BladeContainer, Panel nullMessage, bool IsNullRecordTest)
         {
             DataTable requestTestTable = ViewBaseUtilities.GetRequests(RequestState, null);
+
+            /*
             List<AccessGroup> availableGroups = new List<AccessGroup>();
             
             using (var db = new SNAPDatabaseDataContext())
             {
                 availableGroups = ApprovalWorkflow.GetAvailableGroups();
             }
+            */
 
             if (!IsNullRecordTest)
             {
                 foreach (DataRow request in requestTestTable.Rows)
                 {
+                    /*
                     MasterRequestBlade requestBlade;
                     requestBlade = page.LoadControl("~/Controls/MasterRequestBlade.ascx") as MasterRequestBlade;
                     requestBlade.RequestId = request["request_id"].ToString();
@@ -95,8 +104,10 @@ namespace Apollo.AIM.SNAP.Web.Common
                     requestBlade.LastUpdatedDate = request["last_updated_date"].ToString();
                     requestBlade.IsSelectedRequest = (bool)request["is_selected"];
                     requestBlade.AvailableGroups = availableGroups;
+                    */
 
-                    BladeContainer.Controls.Add(requestBlade);
+                    BladeContainer.Controls.Add(buildMasterBlade(request,page,RequestState));
+
                 }
             }
             else
@@ -106,5 +117,20 @@ namespace Apollo.AIM.SNAP.Web.Common
         }
         
 
+        static MasterRequestBlade buildMasterBlade(DataRow request, Page page, RequestState RequestState)
+        {
+            var availableGroups = ApprovalWorkflow.GetAvailableGroups();
+            MasterRequestBlade requestBlade;
+            requestBlade = page.LoadControl("~/Controls/MasterRequestBlade.ascx") as MasterRequestBlade;
+            requestBlade.RequestId = request["request_id"].ToString();
+            requestBlade.RequestState = RequestState;
+            requestBlade.AffectedEndUserName = request["affected_end_user_name"].ToString();
+            requestBlade.OverallRequestStatus = request["overall_request_status"].ToString();
+            requestBlade.LastUpdatedDate = request["last_updated_date"].ToString();
+            requestBlade.IsSelectedRequest = (bool)request["is_selected"];
+            requestBlade.AvailableGroups = availableGroups;
+
+            return requestBlade;
+        }
     }
 }

@@ -195,11 +195,14 @@ namespace Apollo.AIM.SNAP.Model
         // TODO - overload CreateWorkflow
         public bool CreateWorkflow(string usrId, List<int>actorIDs)
         {
-            // convert mgrId _-> actorid AccessRequest.GetActorIdByUserId
-            // insert into actorIDs
-            // calll CreateWorkflow(actorIds);
+            var mgrActorId = ApprovalWorkflow.GetActorIdByUserId(ActorGroupType.Manager, usrId);
+            if ( mgrActorId != 0 )
+            {
+                actorIDs.Add(mgrActorId);
+                return CreateWorkflow(actorIDs);
+            }
 
-            return true;
+            return false;
         }
 
         public bool CreateWorkflow(List<int> actorIds)

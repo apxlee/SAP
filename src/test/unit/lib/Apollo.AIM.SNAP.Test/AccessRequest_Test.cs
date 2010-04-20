@@ -205,6 +205,26 @@ namespace Apollo.AIM.SNAP.Test
             verifyWorkflowStateComplete(wf, fr);
             verifyWorkflowState(wf, to);            
         }
+
+        private void removeManagerActorByUserId(string mgrUid)
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                try
+                {
+                    var groupId =
+                        db.SNAP_Actor_Groups.Single(g => g.actorGroupType == (byte)ActorGroupType.Manager).pkId;
+                    var toRemoveActor = db.SNAP_Actors.Single(a => a.userId == mgrUid && a.actor_groupId == groupId);
+
+                    db.SNAP_Actors.DeleteOnSubmit(toRemoveActor);
+
+                    db.SubmitChanges();
+                }
+                catch (Exception ex)
+                {
+                }
+            }
+        }
         [Test]
         public void ShouldCloseCancelledByAccessTeam()
         {
@@ -316,7 +336,48 @@ namespace Apollo.AIM.SNAP.Test
                 verifyWorkflowState(managerWF, WorkflowState.Pending_Approval);
             }
         }
-         
+
+
+        [Test]
+        public void ShouldCreateWorkflowByAccessTeamUsingMgrUsrId()
+        {
+            var mgrUid = "pxlee";
+            removeManagerActorByUserId(mgrUid);
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+
+                var accessReq = new AccessRequest(req.pkId);
+
+                accessReq.Ack();
+
+                accessReq.CreateWorkflow(mgrUid, new List<int>() { teamApprovalActorId });
+
+                var mgrGroupId = db.SNAP_Actor_Groups.Single(g => g.actorGroupType == (byte) ActorGroupType.Manager).pkId;
+                var newManagerActorId = db.SNAP_Actors.Single(a => a.userId == mgrUid && a.actor_groupId == mgrGroupId).pkId;
+
+                var accessTeamWF = db.SNAP_Workflows.Single(x => x.requestId == req.pkId && x.actorId == accessTeamActorId);
+                var accessTeamWFStates = db.SNAP_Workflow_States.Where(x => x.workflowId == accessTeamWF.pkId);
+                foreach (var s in accessTeamWFStates)
+                {
+                    Console.WriteLine(s.workflowId + "," + s.workflowStatusEnum + "," + ((s.completedDate != null) ? s.completedDate.ToString() : "TBD"));
+                }
+
+                verifyWorkflowState(accessTeamWF, WorkflowState.Pending_Approval);
+
+                var managerWF = db.SNAP_Workflows.Single(x => x.requestId == req.pkId && x.actorId == newManagerActorId);
+                var managerWFStates = db.SNAP_Workflow_States.Where(x => x.workflowId == managerWF.pkId);
+                foreach (var s in managerWFStates)
+                {
+                    Console.WriteLine(s.workflowId + "," + s.workflowStatusEnum + "," + ((s.completedDate != null) ? s.completedDate.ToString() : "TBD"));
+                }
+                verifyWorkflowStateComplete(managerWF, WorkflowState.Not_Active);
+                verifyWorkflowState(managerWF, WorkflowState.Pending_Approval);
+
+                
+            }
+        }
         [Test]
         public void ShouldReturnManagerWorkflowApprovalType()
         {
@@ -1819,17 +1880,7 @@ namespace Apollo.AIM.SNAP.Test
         {
             string usrid = "pxlee";
 
-            using (var db = new SNAPDatabaseDataContext())
-            {
-
-                var groupId = db.SNAP_Actor_Groups.Single(g => g.actorGroupType == (byte) ActorGroupType.Manager).pkId;
-                var toRemoveActor = db.SNAP_Actors.Single(a => a.userId == usrid && a.actor_groupId == groupId);
-                
-                db.SNAP_Actors.DeleteOnSubmit(toRemoveActor);
-
-                db.SubmitChanges();
-            }
-
+            removeManagerActorByUserId(usrid);
             Assert.IsTrue(ApprovalWorkflow.GetActorIdByUserId(ActorGroupType.Manager, usrid) != 0);
         }
 
@@ -1838,23 +1889,7 @@ namespace Apollo.AIM.SNAP.Test
         {
             string usrid = "pxleepxlee";
 
-            using (var db = new SNAPDatabaseDataContext())
-            {
-                try
-                {
-                    var groupId =
-                        db.SNAP_Actor_Groups.Single(g => g.actorGroupType == (byte) ActorGroupType.Manager).pkId;
-                    var toRemoveActor = db.SNAP_Actors.Single(a => a.userId == usrid && a.actor_groupId == groupId);
-
-                    db.SNAP_Actors.DeleteOnSubmit(toRemoveActor);
-
-                    db.SubmitChanges();
-                }
-                catch(Exception ex)
-                {
-                }
-            }
-
+            removeManagerActorByUserId(usrid);
             Assert.IsTrue(ApprovalWorkflow.GetActorIdByUserId(ActorGroupType.Manager, usrid) == 0);
         }
 
