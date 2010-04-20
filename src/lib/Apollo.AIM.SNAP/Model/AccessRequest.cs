@@ -192,10 +192,11 @@ namespace Apollo.AIM.SNAP.Model
             return result;
         }
 
-        // TODO - overload CreateWorkflow
-        public bool CreateWorkflow(string usrId, List<int>actorIDs)
+
+        // add mgr into the list of actorid and create the wf after that
+        public bool CreateWorkflow(string mgrusrId, List<int>actorIDs)
         {
-            var mgrActorId = ApprovalWorkflow.GetActorIdByUserId(ActorGroupType.Manager, usrId);
+            var mgrActorId = ApprovalWorkflow.GetActorIdByUserId(ActorGroupType.Manager, mgrusrId);
             if ( mgrActorId != 0 )
             {
                 actorIDs.Add(mgrActorId);
