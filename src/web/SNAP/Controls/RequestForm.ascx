@@ -29,13 +29,13 @@
 		<table border="0" cellpadding="0" cellspacing="0" class="csm_input_form_container">
 			<tr>
 				<td class="csm_input_form_label_column csm_input_required_field">
-					<label for="_requestFormControl__requestorId">User Name</label>
-					<p>Please enter your network user name</p>
+					<label for="_requestFormControl__requestorId">Affected End User</label>
+					<p>Please enter the full name of the person this request will affect.</p>
 				</td>
 				<td class="csm_input_form_control_column">
 					<asp:TextBox ID="_requestorId" runat="server" CssClass="csm_text_input_short" ></asp:TextBox>
 					<button type='button' id='_checkRequestorId' class="csm_html_button">Check</button>
-			        <p><em>Example: axuser (domain name is not needed)</em></p>
+			        <!--<p><em>Example: axuser (domain name is not needed)</em></p>-->
 				</td>
                 <td>
                     <asp:TextBox ID="_requestorLoginId" runat="server" style="display:none" ></asp:TextBox>

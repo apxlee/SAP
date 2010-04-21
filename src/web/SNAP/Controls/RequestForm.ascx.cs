@@ -29,6 +29,11 @@ namespace Apollo.AIM.SNAP.Web.Controls
         
         private void BuildRequestForm()
         {
+			if (SnapSession.IsRequestPrePopulated)
+			{
+				_requestorId.Text = SnapSession.CurrentUser.FullName;
+				_managerName.Text = SnapSession.CurrentUser.ManagerName;
+			}
         
             _requestFormData = loadRequestFormData();
 
