@@ -21,8 +21,9 @@
   <property name="package.base.dir" value="..\package" dynamic="true"/>
   <property name="package.dir" value="${package.base.dir}\${configuration}" dynamic="true"/>
   <property name="package.bak.dir" value="..\package.bak\${configuration}" dynamic="true"/>
-  <property name="deploy.dir" value="\\awhpst11.apollogrp.edu" dynamic="true"/>
-  <property name="deploy.web.dir" value="${deploy.dir}\qacap8_2" dynamic="true"/>
+  <property name="deploy.dir" value="\\awhpst11.apollogrp.edu\snap\1.0" dynamic="true"/>
+  <property name="deploy.web.dir" value="\\awhpst11.apollogrp.edu\snap\1.0" dynamic="true"/>
+  <!--<property name="deploy.web.dir" value="${deploy.dir}\qacap8_2" dynamic="true"/>-->
   <!--<tstamp property="timestamp" pattern="yyyyMMddhhmmss" unless="${property::exists('timestamp')}"/>-->
   <property name="typemock.tasks.path" value="C:\Program Files\Typemock\Isolator\5.0\TypeMock.NAntBuild.dll"/>
   <property name="nunit.console.path" value="C:\Program Files\NUnit 2.4.6\bin\nunit-console.exe"/>

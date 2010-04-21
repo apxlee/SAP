@@ -13,6 +13,7 @@
   <property name="package.snap.dir" value="${package.dir}\snap" dynamic="true"/>
   <property name="package.snap.process.dir" value="${package.dir}\snap.process" dynamic="true"/>
   <property name="deploy.snap.dir" value="${deploy.web.dir}\snap" dynamic="true"/>
+  <property name="deploy.snap.process.dir" value="${deploy.web.dir}\snap.process" dynamic="true"/>
   <property name="vd.name" value="" readonly="false"/>
 
   <fileset id="asmfolders">
@@ -37,7 +38,6 @@
 		<mkdir dir="${package.snap.dir}" failonerror="true"/>
 		<mkdir dir="${package.snap.process.dir}" failonerror="true"/>
     <echo>Copying from ${build.snap.dir} to ${package.snap.dir}</echo>
-    
     <copy todir="${package.snap.dir}" verbose="true" overwrite="true">
       <fileset basedir="${build.snap.dir}">
         <include name="**/*.dll" />
@@ -70,7 +70,6 @@
     </copy>
 
     <echo>Copying from ${build.snap.process.dir} to ${package.snap.process.dir}</echo>
-    
     <copy todir="${package.snap.process.dir}" verbose="true" overwrite="true">
       <fileset basedir="${build.snap.process.dir}">
         <include name="**/*.dll" />
@@ -83,9 +82,7 @@
         <exclude name="**/obj"/>
         <exclude name="**/obj/**"/>
       </fileset>
-    </copy>
-
-    
+    </copy>    
   </target>
 
   <target name="createvd" description="Creates a virtual directory for the web project." depends="getsvnpath">
@@ -98,10 +95,20 @@
 
   <target name="deploy" description="Deploys the packaged files to QA." depends="package">
     <echo>Copying from ${package.snap.dir} to ${deploy.snap.dir}</echo>
+
     <copy todir="${deploy.snap.dir}" verbose="true" overwrite="true">
       <fileset basedir="${package.snap.dir}">
         <include name="**/*"/>
       </fileset>
     </copy>
+
+    <echo>Copying from ${package.snap.process.dir} to ${deploy.snap.process.dir}</echo>
+
+    <copy todir="${deploy.snap.process.dir}" verbose="true" overwrite="true">
+      <fileset basedir="${package.snap.process.dir}">
+        <include name="**/*"/>
+      </fileset>
+    </copy>
+
   </target>
 </project>

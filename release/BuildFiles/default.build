@@ -28,8 +28,9 @@
   <target name="deploy" description="Deploys the packaged code to the QA environment" depends="package">
     <property name="build.target" value="deploy"/>
     <call target="run.build.files"/>
-    <call target="deploy.common"/>
+    <!--<call target="deploy.common"/>-->
   </target>
+
 
   <target name="deploy.common" description="Deploys common files.">
     <echo>Deploying workflow files.</echo>
@@ -38,8 +39,10 @@
     <call target="common.deploy"/>
 
     <echo>Deploying rule files.</echo>
+
     <property name="deploy.from.dir" value="${build.src.dir}\rules"/>
     <property name="deploy.to.dir" value="${deploy.dir}\qacap8_2\RulesPath"/>
+
     <call target="common.deploy"/>
   </target>
 
