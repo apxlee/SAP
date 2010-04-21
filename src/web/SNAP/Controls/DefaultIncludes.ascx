@@ -10,4 +10,5 @@
 <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>MasterRequestBlade.js" type="text/javascript"></script>
 <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>ApproverActions.js" type="text/javascript"></script>
 <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>Acknowledgement.js" type="text/javascript"></script>
+<script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>AccessComments.js" type="text/javascript"></script>
 <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>WorkflowBuilder.js" type="text/javascript"></script>

@@ -145,6 +145,29 @@ namespace Apollo.AIM.SNAP.Web
                     break;
             }
         }
+
+        [WebMethod]
+        public static bool AccessComments(int requestId, CommentsType action, string comments)
+        {
+            //TODO: get actorId from current user
+            var accessReq = new AccessRequest(requestId);
+
+            switch (action)
+            {
+                case CommentsType.Access_Notes_AccessTeam:
+                    return true;
+                    break;
+                case CommentsType.Access_Notes_ApprovingManager:
+                    return true;
+                    break;
+                case CommentsType.Access_Notes_Requestor:
+                    return true;
+                    break;
+                default:
+                    return false;
+                    break;
+            }
+        }
     }
 
 }
