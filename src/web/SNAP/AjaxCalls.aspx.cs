@@ -96,7 +96,7 @@ namespace Apollo.AIM.SNAP.Web
         #endregion
         
         [WebMethod]
-        public static bool ApproveRequest(int requestId, WorkflowState action, string comments)
+        public static bool ApproverActions(int requestId, WorkflowState action, string comments)
         {
             //TODO: get actorId from current user
             var accessReq = new AccessRequest(requestId);
@@ -118,9 +118,32 @@ namespace Apollo.AIM.SNAP.Web
                     return false;
                     break;
             }
+        }
+        
+        [WebMethod]
+        public static bool AccessTeamActions(int requestId, WorkflowState action, string comments)
+        {
+            //TODO: get actorId from current user
+            var accessReq = new AccessRequest(requestId);
 
-            
-			return true;
+            switch (action)
+            {
+                case WorkflowState.Pending_Workflow:
+                    return true;
+                    break;
+                case WorkflowState.Change_Requested:
+                    return true;
+                    break;
+                case WorkflowState.Closed_Cancelled:
+                    return true;
+                    break;
+                case WorkflowState.Closed_Denied:
+                    return true;
+                    break;
+                default:
+                    return false;
+                    break;
+            }
         }
     }
 

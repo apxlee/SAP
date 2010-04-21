@@ -1,5 +1,4 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ApprovingManagerPanel.ascx.cs" Inherits="Apollo.AIM.SNAP.Web.Controls.ApprovingManagerPanel" %>
-<!-- TODO: make server side user controls -->
 <div class="csm_text_container">
 	<div class="csm_icon_heading_container snap_my_approvals">
 		<h2>Approver Actions</h2>
@@ -26,7 +25,7 @@
 				<input type="radio" name="_changeDeny" class="csm_input_checkradio" value="Request Change" onclick="changeDenyClick(this);" /><span class="" style="line-height: 1.5em;font-size:.85em;margin:0 8px 0 2px;float:left;">Request Change</span>
 				<input type="radio" name="_changeDeny" class="csm_input_checkradio" value="Deny" onclick="changeDenyClick(this);" /><span class="" style="line-height: 1.5em;font-size:.85em;margin:0 8px 0 2px;float:left;">Deny</span>				
 				<div class="csm_clear">&nbsp;</div>
-				<textarea rows="10" cols="" class="csm_text_input csm_textarea_short"></textarea>
+				<textarea rows="10" cols="" name="_changeDenyComment" class="csm_text_input csm_textarea_short"></textarea>
 				<p><em><strong>Note:&nbsp;</strong>Specific reasons for Request Changes, Denial are required.</em></p>
 			</td>
 		</tr>					

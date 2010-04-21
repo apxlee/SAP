@@ -99,6 +99,9 @@ namespace Apollo.AIM.SNAP.Web.Controls
                 //get the access team state.  this for building the workflow builder buttons. 
                 AccessTeamState = (WorkflowState)ApprovalWorkflow.GetWorkflowState(ApprovalWorkflow.GetWorkflowId(AccessTeamActorId, Convert.ToInt32(RequestId)));
 
+                acknowledgementPanel = LoadControl("~/Controls/AcknowledgementPanel.ascx") as AcknowledgementPanel;
+                acknowledgementPanel.RequestId = RequestId.ToString();
+
                 workflowBuilderPanel = LoadControl("~/Controls/WorkflowBuilderPanel.ascx") as WorkflowBuilderPanel;
                 workflowBuilderPanel.RequestId = RequestId.ToString();
                 workflowBuilderPanel.RequestState = RequestState;
@@ -145,7 +148,9 @@ namespace Apollo.AIM.SNAP.Web.Controls
                 dynamicButtonsContainer = (PlaceHolder)WebUtilities.FindControlRecursive(workflowBuilderPanel, "_dynamicButtonsContainer");
                 dynamicButtonsContainer.Controls.Add(buttonLit);
 
+                _accessTeamPanelContainer.Controls.Add(acknowledgementPanel);
                 _accessTeamPanelContainer.Controls.Add(workflowBuilderPanel);
+                
             }
 			
 		}
