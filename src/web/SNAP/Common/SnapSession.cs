@@ -38,6 +38,28 @@ namespace Apollo.AIM.SNAP.Web.Common
 			}
 		}
 		
+		public static bool IsRequestPrePopulated
+		{
+			get
+			{
+				Page currentPage = HttpContext.Current.Handler as Page;
+
+				if (currentPage.Session[SessionVariables.IS_REQUEST_PREPOPULATED] != null)
+				{
+					return (bool)currentPage.Session[SessionVariables.IS_REQUEST_PREPOPULATED];
+				}
+				else
+				{
+					return false;
+				}
+			}
+			set
+			{
+				Page currentPage = HttpContext.Current.Handler as Page;
+				currentPage.Session[SessionVariables.IS_REQUEST_PREPOPULATED] = value;
+			}
+		}
+		
 		public static string SelectedRequestId
 		{
 			get
