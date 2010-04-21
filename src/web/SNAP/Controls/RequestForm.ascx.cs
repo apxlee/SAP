@@ -136,10 +136,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
                     accessReq.RequestChanged();
                 }
 
-                // TODO: Should use WebUtilities.CurrentLoginUserId or userobject
-                Page currentPage = HttpContext.Current.Handler as Page;
-                var x = currentPage.Request.ServerVariables["AUTH_USER"].Split('\\')[1]; // remove domain name
-                Email.UpdateRequesterStatus(x, /* WebUtilities.CurrentLoginUserId,*/ UserName, requestID, WorkflowState.Pending_Acknowlegement, string.Empty);
+                Email.UpdateRequesterStatus(SnapSession.CurrentUser.LoginId, UserName, requestID, WorkflowState.Pending_Acknowlegement, string.Empty);
                 Email.TaskAssignToApprover(ConfigurationManager.AppSettings["AIM-DG"], "Access Team", requestID, UserName);
 
             }
