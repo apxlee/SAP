@@ -34,10 +34,24 @@ namespace Apollo.AIM.SNAP.Web.Controls
 				SnapSession.CurrentUser = currentUser;
 				
 				string redirectUrl = "index.aspx";
+				
 				if (!string.IsNullOrEmpty(Request.QueryString.ToString()))
 				{
 					redirectUrl += "?" + Request.QueryString.ToString();
 				}
+				else
+				{
+					if (_loginPathSelection.Value == "request_form" || _loginPathSelection.Value == "proxy_request")
+					{
+						redirectUrl += "?" + QueryStringConstants.REQUESTED_VIEW_INDEX + "=" + (int)ViewIndex.request_form;
+					}
+
+					if (_loginPathSelection.Value == "request_form") 
+					{	
+						SnapSession.IsRequestPrePopulated = true;
+					}
+				}
+				
 				WebUtilities.Redirect(redirectUrl , false);
 			}
         }
