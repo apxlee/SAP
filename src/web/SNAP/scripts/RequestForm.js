@@ -170,8 +170,9 @@ var userManager = {
 
 
     Clear: function() {
-        userManager.textAreas.val('');
-        userManager.inputFields.val('');
+		userManager.textAreas.val('');
+        // NOTE: when requestor info is pre-populated (server-side), this was clearing it out.
+        //userManager.inputFields.val('');
         userManager.mgrNameCheck.attr("disabled", true);
         userManager.mgrEdit.removeAttr('disabled');
         userManager.mgrName.attr("disabled", true);
