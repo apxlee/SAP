@@ -136,12 +136,16 @@ namespace Apollo.AIM.SNAP.Web.Controls
 				WebUtilities.SetActiveView( (int)Enum.Parse(typeof(ViewIndex), e.CommandName) );
 				_ribbonContainerOuter.CssClass = e.CommandName;
 			}
-			else
-			{
-				WebUtilities.Redirect(string.Format("index.aspx?{0}={1}"
-					, QueryStringConstants.REQUESTED_VIEW_INDEX
-					, (int)Enum.Parse(typeof(ViewIndex), e.CommandName)), true);
-			}
+			//else
+			//{
+			//    WebUtilities.Redirect(string.Format("index.aspx?{0}={1}"
+			//        , QueryStringConstants.REQUESTED_VIEW_INDEX
+			//        , (int)Enum.Parse(typeof(ViewIndex), e.CommandName)), true);
+			//}
+
+			WebUtilities.Redirect(string.Format("index.aspx?{0}={1}"
+				, QueryStringConstants.REQUESTED_VIEW_INDEX
+				, (int)Enum.Parse(typeof(ViewIndex), e.CommandName)), true);			
         }
 	}
 }
