@@ -9,7 +9,6 @@
 				$("div[id*='_loginCheck']").removeClass("aim_checkbox_checked").addClass("aim_checkbox_unchecked");
 				$(this).removeClass("aim_checkbox_unchecked").addClass("aim_checkbox_checked");
 				$("input[id*='_loginPathSelection']").attr("value", $(this).attr('value'));
-				//alert($("input[id*='_loginPathSelection']").attr('value'));
 			});
 		}
 
@@ -23,10 +22,9 @@
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td><div id="login_description_logo"></div></td>
-					<td style="vertical-align:middle;padding-left:10px;">
+					<td style="vertical-align:middle;padding-left:10px;"><!--<p style="font-size:.90em;"><strong>Access & Identity Management</strong></p>-->
 						<p style="font-size:.90em;padding-right:15px;">The Supplemental Non-Production Access Process (SNAP) application augments the rights being 
 						provisioned through the <a href="http://access.apollogrp.edu/cap/" style="color:Blue;">Computer Access Process (CAP)</a>, which handles Production systems.</p>
-						<!--<p>Please login with your network credentials below.</p>-->
 					</td>
 				</tr>
 			</table>

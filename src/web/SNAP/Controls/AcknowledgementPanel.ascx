@@ -2,9 +2,10 @@
 <div class="csm_text_container">
 	<div class="csm_icon_heading_container oospa_aim_acknowledgement">
 		<h2>Access & Identity Management - Acknowledgement</h2>
-	</div>
-	<p class="csm_prefix_bump3">Please review the access details above and select an appropriate action below.  Denials
+		<p class="">Please review the access details above and select an appropriate action below.  Denials
 		and Request for Change require a detailed description.</p>
+	</div>
+	
     		     
     <fieldset><!-- use fieldset for standards & compliance -->
 	<table border="0" cellpadding="0" cellspacing="0" class="csm_input_form_container">
