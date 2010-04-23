@@ -20,7 +20,16 @@
 	<div class="csm_content_container">
 		
 		<div class="csm_text_container csm_alternating_bg">
-			<p>this app is for the thing with the stuff</p>
+			<table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td><div id="login_description_logo"></div></td>
+					<td style="vertical-align:middle;padding-left:10px;">
+						<p style="font-size:.90em;padding-right:15px;">The Supplemental Non-Production Access Process (SNAP) application augments the rights being 
+						provisioned through the <a href="http://access.apollogrp.edu/cap/" style="color:Blue;">Computer Access Process (CAP)</a>, which handles Production systems.</p>
+						<!--<p>Please login with your network credentials below.</p>-->
+					</td>
+				</tr>
+			</table>
 		</div>
 		
 		<asp:Panel ID="_loginMessageContainer" runat="server" CssClass="csm_content_container" Visible="false">
@@ -53,7 +62,7 @@
 				<tr>
 					<td colspan="2" class="csm_input_spanning_column">
 						<div class="csm_input_form_label_container">
-							<table cellpadding="0" cellspacing="5px" border="0" class="snap_login">
+							<table cellpadding="0" cellspacing="0" border="0" class="snap_login">
 								<tr>
 									<td><div id="_loginCheck1" class="aim_checkbox_unchecked" value="request_form"></div></td>
 									<td>
@@ -79,7 +88,7 @@
 									</td>
 								</tr>
 							</table>
-							<div class="csm_input_buttons_container_centered">
+							<div class="csm_input_buttons_container_centered csm_top10">
 								<asp:Button ID="_submitLogin" Text="Login" CssClass="csm_html_button" runat="server" onclick="_submitLogin_Click" />
 							</div>
 						</div>
