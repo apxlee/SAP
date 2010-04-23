@@ -18,18 +18,18 @@ function AccessTeamActions(obj, requestId, action) {
     
     switch (action) 
     {
-        case '9':
+        case '4':
             comments = ""
         break;
-        case '1':
+        case '2':
             if (textarea.val() == "") { alert("please specify the change"); return false; }
             else { comments = textarea.val(); }
         break;
-        case '2':
+        case '3':
             if (textarea.val() == "") { alert("please specify the reason for cancel"); return false; }
             else { comments = textarea.val(); }
             break;
-        case '4':
+        case '1':
             if (textarea.val() == "") { alert("please specify the reason for denial"); return false; }
             else { comments = textarea.val(); }
         break;

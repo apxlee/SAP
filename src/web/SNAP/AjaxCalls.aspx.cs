@@ -121,25 +121,21 @@ namespace Apollo.AIM.SNAP.Web
         }
         
         [WebMethod]
-        public static bool AccessTeamActions(int requestId, WorkflowState action, string comments)
+        public static bool AccessTeamActions(int requestId, WorkflowAction action, string comments)
         {
             //TODO: get actorId from current user
             var accessReq = new AccessRequest(requestId);
 
             switch (action)
             {
-                case WorkflowState.Pending_Workflow:
-                    return true;
-                    break;
-                case WorkflowState.Change_Requested:
-                    return true;
-                    break;
-                case WorkflowState.Closed_Cancelled:
-                    return true;
-                    break;
-                case WorkflowState.Closed_Denied:
-                    return true;
-                    break;
+                case WorkflowAction.Ack:
+                    return accessReq.Ack();
+                case WorkflowAction.Change:
+                    return accessReq.RequestToChange(comments);
+                case WorkflowAction.Cancel:
+                    return accessReq.NoAccess(action, comments);
+                case WorkflowAction.Denied:
+                    return accessReq.NoAccess(action, comments);
                 default:
                     return false;
                     break;
@@ -150,8 +146,13 @@ namespace Apollo.AIM.SNAP.Web
         public static bool AccessComments(int requestId, CommentsType action, string comments)
         {
             //TODO: get actorId from current user
-            var accessReq = new AccessRequest(requestId);
+            //var x = SnapSession.CurrentUser.LoginId;
+            //var y = x.ToUpper();
 
+            var accessReq = new AccessRequest(requestId);
+            return accessReq.AddComment(comments, action);
+
+            /*
             switch (action)
             {
                 case CommentsType.Access_Notes_AccessTeam:
@@ -167,6 +168,7 @@ namespace Apollo.AIM.SNAP.Web
                     return false;
                     break;
             }
+             */
         }
     }
 
