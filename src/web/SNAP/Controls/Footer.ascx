@@ -5,22 +5,13 @@
 		<div class="csm_container_16">
 			<div class="snap_container_center_788 csm_footer_logo">
 				<div class="csm_alpha csm_grid_10 csm_top10 ">
-					<div class="csm_grid_3">
+					<!-- TODO: future iteration -->
+					<!--<div class="csm_grid_3">
 						<h1>Application Links</h1>
 						<ul>
-							<li><a href="Index.aspx?viewIndex=1">Request Form</a></li>
-							<li><a href="Index.aspx?viewIndex=5">Search</a></li>
-							<li><a href="Index.aspx?viewIndex=6">Support</a></li>
-						</ul>
-					</div>
-					<!--<div class="csm_grid_3">
-						<h1>Demonstration Role Change</h1>
-						<ul>
-							<li><a href="index.aspx?role=SuperUser">Super User</a></li>
-							<li><a href="index.aspx?role=ApprovingManager">Approving Manager</a></li>
-							<li><a href="index.aspx?role=AccessTeam">Access Team</a></li>
-							<li><a href="index.aspx?role=Requestor">Requestor (Default User)</a></li>
-							<li><a href="index.aspx?role=NotAuthenticated">Not Authenticated</a></li>
+							<li><a href="">Request Form</a></li>
+							<li><a href="">Search</a></li>
+							<li><a href="">Support</a></li>
 						</ul>
 					</div>-->
 					<div class="csm_grid_3">
