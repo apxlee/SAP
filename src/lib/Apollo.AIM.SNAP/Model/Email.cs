@@ -98,36 +98,15 @@ namespace Apollo.AIM.SNAP.Model
              
         }
 
-        /*
-        public static void RequestAsssignToAccessTeam(long id, string firstName, string lastName)
-        {
-            configPerEnvironment(id);
-
-            
-            Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(aimDG,
-                                                                     "Test Formated Email",
-                                                                     @".\approval.html", // newTaskNotification.html",
-                                                                     new Hashtable()
-                                                                         {
-                                                                             {"APPROVERNAME", "Access Team"},
-                                                                             {"SUBJECTFIRSTNAME", firstName},
-                                                                             {"SUBJECTLASTNAME", lastName},
-                                                                             {"SNAPURL", url},
-                                                                             {"PREFIX", prefix},
-                                                                             {"PROCESSNAME", "processName"},
-                                                                             {"INCIDENT", "incident"}
-                                                                         });
-             
-
-        }
-         */
 
         private static string emailAddress(string usrId)
         {
             // for unit test only
+#if DEBUG
             if (usrId == "UnitTester")
                 return "pong.lee@apollogrp.edu";
 
+#endif
             ADUserDetail detail = Apollo.AIM.SNAP.CA.DirectoryServices.GetUserByLoginName(usrId);
             return detail.EmailAddress;
         }
