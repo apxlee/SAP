@@ -775,9 +775,25 @@ TODO: REMOVE THIS SECTION
 
 .csm_template_1 .csm_icon_heading_container {
 	background-position: 0px 0px;
-	height: 50px;
-	margin-bottom: 2px;
+	margin-bottom: 5px;
     }
+
+.csm_template_1 .csm_icon_heading_container.border {
+	border-bottom: 1px solid #dcdcdc;
+    }    
+    
+.csm_template_1 .csm_icon_heading_container h2 {
+    margin-left: 60px;
+    line-height: 1em;
+    margin: 0 0 0 60px;
+    padding: 5px 0;
+    }    
+
+.csm_template_1 .csm_icon_heading_container p {
+	padding-left: 60px;
+	padding-right: 30px;
+	padding-bottom: 3px;
+	}
 
 .oospa_request_details {
 	background: transparent url('../images/icon_reqdetails.png') no-repeat;
@@ -823,10 +839,7 @@ TODO: REMOVE THIS SECTION
     text-align:center;
     padding-top:100px;
 }	
-.csm_template_1 .csm_icon_heading_container h2 {
-    margin-left: 60px;
-    line-height: 2.7em;
-    }
+
     
 table.oospa_workflow_builder_row {
 	margin-bottom: 10px;
