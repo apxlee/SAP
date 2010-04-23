@@ -880,7 +880,7 @@ div.modal_li
 	background-position: 15px 0px;
 	width: 56px;
 	height: 26px;
-	margin-top: 4px;
+	margin-top: 3px;
 	}
 	
 .csm_template_1 .aim_checkbox_unchecked {
@@ -889,7 +889,7 @@ div.modal_li
 	background-position: 15px 0px;
 	width: 56px;
 	height: 26px;
-	margin-top: 4px;
+	margin-top: 3px;
 	cursor: pointer;
 	}
 
@@ -899,4 +899,9 @@ div.modal_li
 
 .csm_template_1 table.snap_login p {
 	padding-right: 50px;
+	}
+	
+.csm_template_1 table.snap_login td {
+	vertical-align: top;
+	padding-top: 4px;
 	}
