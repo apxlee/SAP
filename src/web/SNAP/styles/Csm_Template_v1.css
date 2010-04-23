@@ -526,6 +526,13 @@ TODO: REMOVE THIS SECTION
 	padding: 0;
 	text-align: right;
 	}
+	
+.csm_template_1 .csm_input_buttons_container_centered {
+	margin-left: auto;
+	margin-right: auto;
+	padding: 0;
+	text-align: center;
+	}	
 		
 	
 /* Spanning Column Input Form
@@ -863,3 +870,33 @@ div.modal_li
 	list-style: disc inside;
 	font-weight: normal; 
 }
+
+/* Login Page
+----------------------------------------------------------------------------------------------------*/
+
+.csm_template_1 .aim_checkbox_checked {
+	background-image: url('../images/icon_checkbox_checked.png');
+	background-repeat: no-repeat;
+	background-position: 15px 0px;
+	width: 56px;
+	height: 26px;
+	margin-top: 4px;
+	}
+	
+.csm_template_1 .aim_checkbox_unchecked {
+	background-image: url('../images/icon_checkbox_unchecked.png');
+	background-repeat: no-repeat;
+	background-position: 15px 0px;
+	width: 56px;
+	height: 26px;
+	margin-top: 4px;
+	cursor: pointer;
+	}
+
+.csm_template_1 table.snap_login tr td h2 {
+	padding-left: 0px;
+	}
+
+.csm_template_1 table.snap_login p {
+	padding-right: 50px;
+	}
