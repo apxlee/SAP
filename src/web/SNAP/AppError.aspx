@@ -49,10 +49,10 @@
 	<script type="text/javascript">
 		try {
 			var pageTracker = _gat._getTracker("UA-15693359-2");
-			pageTracker._setDomainName("none");
-			pageTracker._setCustomVar(1, "topLevelName", "sectionValue", 3);
-			pageTracker._trackPageview();
-			//pageTracker._trackPageview("/AppError"); }
+			pageTracker._setDomainName(".devapollogrp.edu");
+			//pageTracker._setCustomVar(1, "topLevelName", "sectionValue", 3);
+			//pageTracker._trackPageview();
+			pageTracker._trackPageview("/AppError"); }
 		catch (err) {alert('ga error'); }
 	</script>	
 </html>
