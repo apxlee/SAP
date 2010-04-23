@@ -46,6 +46,11 @@ namespace Apollo.AIM.SNAP.Web
 				}
 			}
 			
+			if (IsPostBack && !string.IsNullOrEmpty(Request[QueryStringConstants.REQUESTED_VIEW_INDEX]))
+			{
+				SetViewFromQueryString();
+			}
+			
 			if (IsPostBack && !SnapSession.IsUserCreated)
 			{
 				// this SHOULD never fire because postback requires logged in user
