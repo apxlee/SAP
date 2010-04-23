@@ -18,18 +18,6 @@ namespace Apollo.AIM.SNAP.Web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            /*
-            Person p = CurrentSession.LoginPerson;
-            ArrayList groups = Apollo.CA.DirectoryServices.getADAMGroups(p.userId);
-            var groupInfo = "Groups:\n";
-            foreach (var list in groups)
-            {
-                groupInfo += list + "\n";
-            }
-            txtUsrInfo.Text = "Manager: " + p.ManagerLink.userId + "\n" + "User Info: " + p.ToStringAllProperties();
-            txtGroupInfo.Text = groupInfo;
-            this.ucUserDetails1.init(p.Oid.ToString());
-            */
         }
 
         [WebMethod]
@@ -138,7 +126,6 @@ namespace Apollo.AIM.SNAP.Web
                     return accessReq.NoAccess(action, comments);
                 default:
                     return false;
-                    break;
             }
         }
 

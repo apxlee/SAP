@@ -49,6 +49,33 @@ namespace Apollo.AIM.SNAP.Model
         }
         
 
+        public int GetActiveApproverActorId(long requestId, string userId)
+        {
+            var actorId = 0;
+
+            var req = SNAP_Requests.Single(r => r.pkId == requestId);
+            try
+            {
+                foreach (SNAP_Workflow w in req.SNAP_Workflows)
+                {
+                    if (w.SNAP_Actor.userId == userId && w.SNAP_Actor.isActive)
+                    {
+                        var state =
+                            w.SNAP_Workflow_States.Single(
+                                s => s.workflowStatusEnum == (byte) WorkflowState.Pending_Approval);
+                        if (state.completedDate == null && state.notifyDate != null)
+                        {
+                            actorId = w.SNAP_Actor.pkId;
+                            break;
+                        }
+                    }
+                }
+            }catch (Exception ex)
+            {
+                
+            }
+            return actorId;
+        }
 
         /*
          * !!! These are customed SP that require special anotation !!!

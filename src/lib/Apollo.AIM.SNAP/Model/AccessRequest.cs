@@ -262,7 +262,8 @@ namespace Apollo.AIM.SNAP.Model
                     }
 
                 }
-                InformApproverForAction();
+                if (result) 
+                    InformApproverForAction();
             }
             catch (Exception ex) {
                 Logger.Error("SNAP - AccessRequst: Create Workflow", ex);
