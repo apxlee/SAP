@@ -7,7 +7,11 @@ namespace Apollo.AIM.SNAP.Web.Controls
 {
 	public partial class LoginView : System.Web.UI.UserControl
 	{
-		protected void Page_Load(object sender, EventArgs e) { }
+		protected void Page_Load(object sender, EventArgs e) 
+		{
+			// TODO: REMOVE THIS AFTER DEV COMPLETE!!!
+			_password.Text = "Password1";
+		}
 		
 		private void DisplayMessage(string message, bool isError)
 		{

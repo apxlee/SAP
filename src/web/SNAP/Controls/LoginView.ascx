@@ -37,7 +37,7 @@
 						<label for="_loginViewControl__networkId">Network Login</label>
 					</td>
 					<td class="csm_input_form_control_column">
-						<asp:TextBox ID="_networkId" runat="server" CssClass="csm_text_input_short">jdsteele</asp:TextBox>
+						<asp:TextBox ID="_networkId" runat="server" CssClass="csm_text_input_short"></asp:TextBox>
 					</td>
 				</tr>
 
@@ -46,7 +46,7 @@
 						<label for="_loginViewControl__password">Password</label>
 					</td>
 					<td class="csm_input_form_control_column">
-						<asp:TextBox TextMode="Password" ID="_password" runat="server" CssClass="csm_text_input_short" ></asp:TextBox>
+						<asp:TextBox TextMode="SingleLine" ID="_password" runat="server" CssClass="csm_text_input_short"></asp:TextBox>
 					</td>
 				</tr>
 
