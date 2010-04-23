@@ -86,8 +86,12 @@
 	</script> 
 	<script type="text/javascript">
 		//<![CDATA[
-		try { var pageTracker = _gat._getTracker("UA-15693359-2"); pageTracker._trackPageview(); }
-		catch (err) { }
+		try {
+			var pageTracker = _gat._getTracker("UA-15693359-2");
+			//pageTracker._setDomainName("none");
+			pageTracker._trackPageview(); 
+			}
+			catch (err) { }
 		//]]>
 	</script>	
 
