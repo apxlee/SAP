@@ -21,28 +21,9 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            WorkflowApprover primaryApprover;
-            primaryApprover = LoadControl("~/Controls/WorkflowApprover.ascx") as WorkflowApprover;
-
-            Literal primaryLit = new Literal();
-            primaryLit.Text = "<label>Primary Approvers</label>";
-
-            PlaceHolder primarySectionName;
-            primarySectionName = (PlaceHolder)WebUtilities.FindControlRecursive(primaryApprover, "_approverSectionName");
-            primarySectionName.Controls.Add(primaryLit);
-
-            WorkflowApprover secondaryApprover;
-            secondaryApprover = LoadControl("~/Controls/WorkflowApprover.ascx") as WorkflowApprover;
-
-            Literal secondaryLit = new Literal();
-            secondaryLit.Text = "<label>Secondary Approvers</label>";
-
-            PlaceHolder secondarySectionName;
-            secondarySectionName = (PlaceHolder)WebUtilities.FindControlRecursive(secondaryApprover, "_approverSectionName");
-            secondarySectionName.Controls.Add(secondaryLit);
 
             List<AccessGroup> UpdatedGroups = new List<AccessGroup>();
-            
+            string strGroupType = "";
             //make a copy of available groups
             foreach (AccessGroup group in AvailableGroups)
             {
@@ -99,8 +80,40 @@ namespace Apollo.AIM.SNAP.Web.Controls
                 Label approverGroupDescription = new Label();
                 WorkflowApprover strSection = new WorkflowApprover();
 
-                if (group.ActorGroupType == ActorGroupType.Team_Approver) { strSection = primaryApprover; }
-                else { strSection = secondaryApprover; }
+                WorkflowApprover primaryApprover;
+                primaryApprover = LoadControl("~/Controls/WorkflowApprover.ascx") as WorkflowApprover;
+
+                WorkflowApprover secondaryApprover;
+                secondaryApprover = LoadControl("~/Controls/WorkflowApprover.ascx") as WorkflowApprover;
+
+                if (group.ActorGroupType == ActorGroupType.Team_Approver) 
+                { 
+                    strSection = primaryApprover;
+                    if (strGroupType != group.ActorGroupType.ToString())
+                    {
+                        strGroupType = group.ActorGroupType.ToString();
+                        Literal primaryLit = new Literal();
+                        primaryLit.Text = "<label>Primary Approvers</label>";
+
+                        PlaceHolder primarySectionName;
+                        primarySectionName = (PlaceHolder)WebUtilities.FindControlRecursive(primaryApprover, "_approverSectionName");
+                        primarySectionName.Controls.Add(primaryLit);
+                    }
+                }
+                else 
+                { 
+                    strSection = secondaryApprover;
+                    if (strGroupType != group.ActorGroupType.ToString())
+                    {
+                        strGroupType = group.ActorGroupType.ToString();
+                        Literal secondaryLit = new Literal();
+                        secondaryLit.Text = "<label>Secondary Approvers</label>";
+
+                        PlaceHolder secondarySectionName;
+                        secondarySectionName = (PlaceHolder)WebUtilities.FindControlRecursive(secondaryApprover, "_approverSectionName");
+                        secondarySectionName.Controls.Add(secondaryLit);
+                    }
+                }
 
                 approverCheckBoxSection = (PlaceHolder)WebUtilities.FindControlRecursive(strSection, "_approverCheckBoxSection");
                 approverGroupName = (Label)WebUtilities.FindControlRecursive(strSection, "_approverGroupName");
