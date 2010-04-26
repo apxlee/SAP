@@ -6,12 +6,12 @@
 	<div class="csm_content_container">
 		
 		<div class="csm_text_container">
-		    <p>Use this form to request Out-of-Scope Privileged Access to
-		    servers only.  "Out-of-Scope" is defined as resources that are not subject to PCI/SOX compliance.  In-Scope access is
-		    handled with a <a href="http://microsoft.com">Computer Access Process Request.</a></p>
-		    <p>Please Note: This form is NOT used for requesting application or database access.  Windows Sql Server database
-		    access requires an "a.dot" account (you may request "a.dot" accounts with this application).  Database access is
-		    completed using a Service Desk ticket assigned to the database group.</p>
+		    <p>Use this form to request things you want but don't have. Would you like a pony? You can't use this form.  Would you like
+		    access to a network share?  It's likely this form will work for you.  But we can't make any promises.  Some other type of access is
+		    handled with a <a href="http://access.apollogrp.edu/cap/" style="color:Blue;">Computer Access Process (CAP) request.</a></p>
+		    <p>Please Note: It's possible this form is NOT used for requesting application or database access, depending on your blood type
+		    and/or star sign.  Windows Sql Server database access often requires an "a.dot" account (you may request "a.dot" accounts with this application).  
+		    Otherwise, database access is completed using a Rubber Chicken ticket assigned to the database group.</p>
 		</div>
 		
 		<fieldset><!-- use fieldset for standards & compliance -->
@@ -30,12 +30,12 @@
 			<tr>
 				<td class="csm_input_form_label_column csm_input_required_field">
 					<label for="_requestFormControl__requestorId">Affected End User</label>
-					<p>Please enter the full name of the person this request will affect.</p>
+					<p>Please enter the full name or username of the person this request will affect.</p>
 				</td>
 				<td class="csm_input_form_control_column">
 					<asp:TextBox ID="_requestorId" runat="server" CssClass="csm_text_input_short" ></asp:TextBox>
 					<button type='button' id='_checkRequestorId' class="csm_html_button">Check</button>
-			        <!--<p><em>Example: axuser (domain name is not needed)</em></p>-->
+			        <p><em>Example: axuser (domain name is not needed) or Full Name</em></p>
 				</td>
                 <td>
                     <asp:TextBox ID="_requestorLoginId" runat="server" style="display:none" ></asp:TextBox>
