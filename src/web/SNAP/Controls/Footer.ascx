@@ -6,14 +6,12 @@
 			<div class="snap_container_center_788 csm_footer_logo">
 				<div class="csm_alpha csm_grid_10 csm_top10 ">
 					<!-- TODO: future iteration -->
-					<!--<div class="csm_grid_3">
-						<h1>Application Links</h1>
+					<div class="csm_grid_3">
+						<h1>Testing Links</h1>
 						<ul>
-							<li><a href="">Request Form</a></li>
-							<li><a href="">Search</a></li>
-							<li><a href="">Support</a></li>
+							<li><asp:LinkButton ID="logout" runat="server" onclick="logout_Click">Logout</asp:LinkButton></li>
 						</ul>
-					</div>-->
+					</div>
 					<div class="csm_grid_3">
 						<h1>Feedback</h1>
 						<ul>

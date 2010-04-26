@@ -19,5 +19,11 @@ namespace Apollo.AIM.SNAP.Web.Controls
         protected void Page_Load(object sender, EventArgs e)
         {
         }
+
+		protected void logout_Click(object sender, EventArgs e)
+		{
+			Session.Clear();
+			WebUtilities.Redirect("Index.aspx", true);
+		}
     }
 }
