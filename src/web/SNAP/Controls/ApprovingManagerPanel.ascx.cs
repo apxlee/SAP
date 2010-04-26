@@ -14,10 +14,10 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		
 		protected void Page_Load(object sender, EventArgs e)
 		{
-            _approve.Attributes.Add("onclick","return ApproverActions(this,'" + RequestId + "','" + (byte)WorkflowState.Approved + "');");
-            _requestChange.Attributes.Add("onclick", "ApproverActions(this,'" + RequestId + "','" + (byte)WorkflowState.Change_Requested + "');");
+            _approve.Attributes.Add("onclick","return ApproverActions(this,'" + RequestId + "','" + (byte)WorkflowAction.Approved + "');");
+            _requestChange.Attributes.Add("onclick", "ApproverActions(this,'" + RequestId + "','" + (byte)WorkflowAction.Change + "');");
             _requestChange.Disabled = true;
-            _deny.Attributes.Add("onclick", "ApproverActions(this,'" + RequestId + "','" + (byte)WorkflowState.Closed_Denied + "');");
+            _deny.Attributes.Add("onclick", "ApproverActions(this,'" + RequestId + "','" + (byte)WorkflowAction.Denied + "');");
             _deny.Disabled = true;
         }
 	}

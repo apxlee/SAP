@@ -20,11 +20,11 @@ function ApproverActions(obj,requestId,action) {
         case '0':
             comments = ""
         break;
-        case '1':
+        case '2':
             if (textarea.val() == "") { alert("please specify the change"); return false; }
             else { comments = textarea.val(); }
         break;
-    case '4':
+    case '1':
         if (textarea.val() == "") { alert("please specify the reason for denial"); return false; }
         else { comments = textarea.val(); }
         break;

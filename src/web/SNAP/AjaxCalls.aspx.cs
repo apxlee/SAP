@@ -63,6 +63,7 @@ namespace Apollo.AIM.SNAP.Web
         #region WorkflowBuilder
 
         [WebMethod]
+/*
         public static bool CreateWorkflow(int requestId, string actorIds)
         {
             var accessReq = new AccessRequest(requestId);
@@ -77,23 +78,50 @@ namespace Apollo.AIM.SNAP.Web
                 if (actor.Length > 1) { actorsList.Add(Convert.ToInt32(actor.Replace("[", "").Replace("]", ""))); }
             }
 
-            accessReq.Ack();
             return accessReq.CreateWorkflow(actorsList);
+        }
+*/
+        public static bool CreateWorkflow(int requestId, string managerUserId, string actorIds)
+        {
+            var accessReq = new AccessRequest(requestId);
+            string[] split = null;
+            char[] splitter = { '[' };
+            split = actorIds.Split(splitter);
+
+            List<int> actorsList = new List<int>();
+
+            foreach (string actor in split)
+            {
+                if (actor.Length > 1) { actorsList.Add(Convert.ToInt32(actor.Replace("[", "").Replace("]", ""))); }
+            }
+
+            return accessReq.CreateWorkflow(managerUserId, actorsList);
         }
 
         #endregion
         
         [WebMethod]
-        public static bool ApproverActions(int requestId, WorkflowState action, string comments)
+        public static bool ApproverActions(int requestId, WorkflowAction action, string comments)
         {
-            //TODO: get actorId from current user
-            var accessReq = new AccessRequest(requestId);
+            var currentUsrId = SnapSession.CurrentUser.LoginId;
+            int wfId = 0;
 
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                wfId = db.GetActiveWorkflowId(requestId, currentUsrId);
+                if (wfId == 0)
+                    return false;
+            }
+            
+
+            var accessReq = new AccessRequest(requestId);
+            return accessReq.WorkflowAck(wfId, action, comments);
+
+            /*
             switch (action)
             {
                 case WorkflowState.Approved:
-                    return true;
-                    break;
+                    return accessReq.WorkflowAck(wfId, WorkflowAction.Approved);
                 case WorkflowState.Change_Requested:
                     //accessReq.addRequestComment(comments, CommentsType.Requested_Change);
                     //accessReq.RequestChanged();
@@ -106,6 +134,7 @@ namespace Apollo.AIM.SNAP.Web
                     return false;
                     break;
             }
+             */
         }
         
         [WebMethod]
@@ -132,9 +161,6 @@ namespace Apollo.AIM.SNAP.Web
         [WebMethod]
         public static bool AccessComments(int requestId, CommentsType action, string comments)
         {
-            //TODO: get actorId from current user
-            //var x = SnapSession.CurrentUser.LoginId;
-            //var y = x.ToUpper();
 
             var accessReq = new AccessRequest(requestId);
             return accessReq.AddComment(comments, action);
