@@ -49,9 +49,9 @@ namespace Apollo.AIM.SNAP.Model
         }
         
 
-        public int GetActiveApproverActorId(long requestId, string userId)
+        public int GetActiveWorkflowId(long requestId, string userId)
         {
-            var actorId = 0;
+            var wfId = 0;
 
             var req = SNAP_Requests.Single(r => r.pkId == requestId);
             try
@@ -60,6 +60,7 @@ namespace Apollo.AIM.SNAP.Model
                 {
                     if (w.SNAP_Actor.userId == userId && w.SNAP_Actor.isActive)
                     {
+                        /*
                         var state =
                             w.SNAP_Workflow_States.Single(
                                 s => s.workflowStatusEnum == (byte) WorkflowState.Pending_Approval);
@@ -68,13 +69,22 @@ namespace Apollo.AIM.SNAP.Model
                             actorId = w.SNAP_Actor.pkId;
                             break;
                         }
+                         */
+
+                        var state = w.SNAP_Workflow_States.Single(s => s.completedDate == null && s.notifyDate != null);
+                        if (state.workflowStatusEnum == (byte)WorkflowState.Pending_Approval)
+                        {
+                            wfId = w.pkId;
+                            break;
+                        }
+
                     }
                 }
             }catch (Exception ex)
             {
                 
             }
-            return actorId;
+            return wfId;
         }
 
         /*

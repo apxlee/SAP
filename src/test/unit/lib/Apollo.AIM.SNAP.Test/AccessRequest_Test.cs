@@ -1914,7 +1914,7 @@ namespace Apollo.AIM.SNAP.Test
         }
 
         [Test]
-        public void ShouldReturnActiveActorIdByFromRequestIDAndUsrId()
+        public void ShouldReturnWorkflowIdByFromRequestIDAndUsrId()
         {
             SNAP_Request req;
             SNAP_Workflow wf;
@@ -1928,10 +1928,11 @@ namespace Apollo.AIM.SNAP.Test
                 accessReq.Ack();
                 accessReq.CreateWorkflow(new List<int>() {managerActorId, teamApprovalActorId, windowsServerActorId,databaseActorId,networkShareActorId});
 
-                Assert.IsTrue(db.GetActiveApproverActorId(req.pkId, managerUserId) == managerActorId);
+                //Assert.IsTrue(db.GetActiveWorkflowId(req.pkId, managerUserId) == managerActorId);
+                Assert.IsTrue(db.GetActiveWorkflowId(req.pkId, managerUserId) != 0);
                 // they are not active approver yet
-                Assert.IsTrue(db.GetActiveApproverActorId(req.pkId, teamApprovalUserId) == 0);
-                Assert.IsTrue(db.GetActiveApproverActorId(req.pkId, WindowsServerUserId) == 0);
+                Assert.IsTrue(db.GetActiveWorkflowId(req.pkId, teamApprovalUserId) == 0);
+                Assert.IsTrue(db.GetActiveWorkflowId(req.pkId, WindowsServerUserId) == 0);
 
                 wf = accessReq.FindApprovalTypeWF(db, (byte) ActorApprovalType.Manager)[0];
                 accessReq.WorkflowAck(wf.pkId, WorkflowAction.Approved);
@@ -1941,10 +1942,11 @@ namespace Apollo.AIM.SNAP.Test
             {
                 req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
                 // this is the only active approver
-                Assert.IsTrue(db.GetActiveApproverActorId(req.pkId, teamApprovalUserId) == teamApprovalActorId);
+                //Assert.IsTrue(db.GetActiveWorkflowId(req.pkId, teamApprovalUserId) == teamApprovalActorId);
+                Assert.IsTrue(db.GetActiveWorkflowId(req.pkId, teamApprovalUserId) != 0);
                 // this are not active approver
-                Assert.IsTrue(db.GetActiveApproverActorId(req.pkId, managerUserId) == 0);
-                Assert.IsTrue(db.GetActiveApproverActorId(req.pkId, WindowsServerUserId) == 0);
+                Assert.IsTrue(db.GetActiveWorkflowId(req.pkId, managerUserId) == 0);
+                Assert.IsTrue(db.GetActiveWorkflowId(req.pkId, WindowsServerUserId) == 0);
             }
 
 
@@ -1957,12 +1959,18 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext()) {
                 // these are active approvers
-                Assert.IsTrue(db.GetActiveApproverActorId(req.pkId, WindowsServerUserId) == windowsServerActorId);
-                Assert.IsTrue(db.GetActiveApproverActorId(req.pkId, networkShareUserId) == networkShareActorId);
-                Assert.IsTrue(db.GetActiveApproverActorId(req.pkId, databaseUserId) == databaseActorId);
+                /*
+                Assert.IsTrue(db.GetActiveWorkflowId(req.pkId, WindowsServerUserId) == windowsServerActorId);
+                Assert.IsTrue(db.GetActiveWorkflowId(req.pkId, networkShareUserId) == networkShareActorId);
+                Assert.IsTrue(db.GetActiveWorkflowId(req.pkId, databaseUserId) == databaseActorId);
+                */
+                Assert.IsTrue(db.GetActiveWorkflowId(req.pkId, WindowsServerUserId) != 0);
+                Assert.IsTrue(db.GetActiveWorkflowId(req.pkId, networkShareUserId) != 0);
+                Assert.IsTrue(db.GetActiveWorkflowId(req.pkId, databaseUserId) != 0);
+
                 // there are not active approvers
-                Assert.IsTrue(db.GetActiveApproverActorId(req.pkId, managerUserId) == 0);
-                Assert.IsTrue(db.GetActiveApproverActorId(req.pkId, teamApprovalUserId) == 0);
+                Assert.IsTrue(db.GetActiveWorkflowId(req.pkId, managerUserId) == 0);
+                Assert.IsTrue(db.GetActiveWorkflowId(req.pkId, teamApprovalUserId) == 0);
             }
         }
 
