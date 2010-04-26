@@ -10,7 +10,7 @@
             </tr>
         </table>
      </asp:Panel>
-     <asp:Panel ID="_workflowBladeCommentsContainer" runat="server" CssClass="csm_text_container_nodrop">
+     <asp:Panel ID="_workflowBladeCommentsContainer" runat="server" CssClass="csm_text_container_nodrop" Visible="false">
 		<!--
 		Replace with Literal Control(s) conforming to the following formatting:
 		<p><u>%Action% by %WorkflowActorName% on %LongDate%</u><br />%Comments%</p>

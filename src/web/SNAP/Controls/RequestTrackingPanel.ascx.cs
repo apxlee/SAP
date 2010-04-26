@@ -27,29 +27,27 @@ namespace Apollo.AIM.SNAP.Web.Controls
 				WorkflowBlade workflowBlade;
 				workflowBlade = LoadControl("~/Controls/WorkflowBlade.ascx") as WorkflowBlade;
 
-				// TODO: test for access team and append csm_alternating_bg
-				//
 				Panel workflowBladeData;
 				workflowBladeData = (Panel)WebUtilities.FindControlRecursive(workflowBlade, "_workflowBladeData");
+				
 				if (workflowRow["workflow_actor_name"].ToString().ToLower() == "access & identity management")
 				{
 					workflowBladeData.CssClass = workflowBladeData.CssClass + " csm_alternating_bg";
 				}
 
+				#region Blade Labels
 				Label workflowActorName = (Label)WebUtilities.FindControlRecursive(workflowBlade, "_workflowActorName");
 				workflowActorName.Text = workflowRow["workflow_actor_name"].ToString();
 				
 				Label workflowStatus = (Label)WebUtilities.FindControlRecursive(workflowBlade, "_workflowStatus");
-				//workflowStatus.Text = workflowRow["workflow_status"].ToString();
 				workflowStatus.Text = Convert.ToString((WorkflowState)Enum.Parse(typeof(WorkflowState), workflowRow["workflow_status"].ToString())).StripUnderscore();
 
-				// Convert.ToString((WorkflowState)Enum.Parse(typeof(WorkflowState), workflowRow["workflow_status"].ToString())).StripUnderscore()
-				
 				Label workflowDueDate = (Label)WebUtilities.FindControlRecursive(workflowBlade, "_workflowDueDate");
 				workflowDueDate.Text = TestAndConvertDate(workflowRow["workflow_due_date"].ToString());
 				
 				Label workflowCompletedDate = (Label)WebUtilities.FindControlRecursive(workflowBlade, "_workflowCompletedDate");
 				workflowCompletedDate.Text = TestAndConvertDate(workflowRow["workflow_completed_date"].ToString());
+				#endregion
 
                 BuildBladeComments(workflowBlade, (int)workflowRow["workflow_pkid"], workflowRow["workflow_actor_name"].ToString());
 				
@@ -59,28 +57,30 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		
 		private void BuildBladeComments(Control CurrentBlade, int WorkflowId, string actorName)
 		{
-			// if no comments then hide comments container
-			//
 			DataTable workflowCommentsTable = GetWorkflowComments(WorkflowId, actorName);
-			Panel workflowBladeCommentsContainer = (Panel)WebUtilities.FindControlRecursive(CurrentBlade, "_workflowBladeCommentsContainer");
-			StringBuilder workflowComments = new StringBuilder();
-
-			foreach (DataRow comment in workflowCommentsTable.Rows)
+			
+			if (workflowCommentsTable.Rows.Count > 0)
 			{
-				// TODO: move string to config file?
-				workflowComments.AppendFormat("<p{0}><u>{1} by {2} on {3}</u><br />{4}</p>"
-					, (bool)comment["is_new"] ? " class=csm_error_text" : string.Empty
-					, comment["action"].ToString()
-					, comment["workflow_actor"].ToString()
-					, comment["comment_date"].ToString()
-					, comment["comment"].ToString());
+				Panel workflowBladeCommentsContainer = (Panel)WebUtilities.FindControlRecursive(CurrentBlade, "_workflowBladeCommentsContainer");
+				StringBuilder workflowComments = new StringBuilder();
+
+				foreach (DataRow comment in workflowCommentsTable.Rows)
+				{
+					// TODO: move string to config file?
+					workflowComments.AppendFormat("<p{0}><u>{1} by {2} on {3}</u><br />{4}</p>"
+						, (bool)comment["is_new"] ? " class=csm_error_text" : string.Empty
+						, comment["action"].ToString()
+						, comment["workflow_actor"].ToString()
+						, comment["comment_date"].ToString()
+						, comment["comment"].ToString());
+				}
+
+				Literal comments = new Literal();
+				comments.Text = workflowComments.ToString();
+
+				workflowBladeCommentsContainer.Controls.Add(comments);
+				workflowBladeCommentsContainer.Visible = true;
 			}
-
-			Literal comments = new Literal();
-			comments.Text = workflowComments.ToString();
-
-			workflowBladeCommentsContainer.Controls.Add(comments);
-			workflowBladeCommentsContainer.Visible = true;
 		}
 		
 		private string TestAndConvertDate(string date)
