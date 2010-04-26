@@ -7,7 +7,7 @@
 				<div class="csm_alpha csm_grid_10 csm_top10 ">
 					<!-- TODO: future iteration -->
 					<div class="csm_grid_3">
-						<h1>Testing Links</h1>
+						<h1>Application Links</h1>
 						<ul>
 							<li><asp:LinkButton ID="logout" runat="server" onclick="logout_Click">Logout</asp:LinkButton></li>
 						</ul>

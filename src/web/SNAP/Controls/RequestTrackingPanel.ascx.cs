@@ -31,7 +31,10 @@ namespace Apollo.AIM.SNAP.Web.Controls
 				//
 				Panel workflowBladeData;
 				workflowBladeData = (Panel)WebUtilities.FindControlRecursive(workflowBlade, "_workflowBladeData");
-				workflowBladeData.CssClass = workflowBladeData.CssClass + " csm_alternating_bg";
+				if (workflowRow["workflow_actor_name"].ToString().ToLower() == "access & identity management")
+				{
+					workflowBladeData.CssClass = workflowBladeData.CssClass + " csm_alternating_bg";
+				}
 
 				Label workflowActorName = (Label)WebUtilities.FindControlRecursive(workflowBlade, "_workflowActorName");
 				workflowActorName.Text = workflowRow["workflow_actor_name"].ToString();
