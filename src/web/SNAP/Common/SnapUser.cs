@@ -27,7 +27,6 @@ namespace Apollo.AIM.SNAP.Web.Common
 			if (WebUtilities.IsSuperUser(LoginId))
 			{
 				CurrentRole = Role.SuperUser;
-				return;
 			}
 			else
 			{			
@@ -62,7 +61,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 		private void SetRole()
 		{
 #if DEBUG
-	CurrentRole = Role.SuperUser;
+	CurrentRole = Role.ApprovingManager;
 	return;
 #endif
 
