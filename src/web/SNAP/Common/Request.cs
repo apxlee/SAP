@@ -35,7 +35,7 @@ namespace Apollo.AIM.SNAP.Web.Common
         public static List<usp_open_my_request_workflow_detailsResult> WfDetails(RequestState state)
         {
                 if (requests(state).ContainsKey("wfDetails"))
-                    return (List<usp_open_my_request_workflow_detailsResult>) requests(state)["wfDetails"];
+                    return (List<usp_open_my_request_workflow_detailsResult>)requests(state)["wfDetails"];
 
                 return new List<usp_open_my_request_workflow_detailsResult>();
         }
@@ -47,6 +47,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 
                 return new List<usp_open_my_request_workflow_commentsResult>();
         }
+        
         static bool exist(RequestState state)
         {
             var key = state == RequestState.Open ? OpenRequestKey : CloseRequestKey;
@@ -67,7 +68,7 @@ namespace Apollo.AIM.SNAP.Web.Common
         {
             get
             {
-                return WebUtilities.CurrentLoginUserId + "-" + "OpenRequests";
+                return SnapSession.CurrentUser.LoginId + "-" + "OpenRequests";
             }
         }
 
@@ -75,7 +76,7 @@ namespace Apollo.AIM.SNAP.Web.Common
         {
             get
             {
-                return WebUtilities.CurrentLoginUserId + "-" + "CloseRequests";
+                return SnapSession.CurrentUser.LoginId + "-" + "CloseRequests";
             }
         }
 

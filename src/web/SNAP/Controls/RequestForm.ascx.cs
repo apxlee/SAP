@@ -188,7 +188,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			{
 				var requestId = System.Convert.ToInt32(Request.QueryString["RequestId"]);
 				var db = new SNAPDatabaseDataContext();
-				var formData = db.usp_open_request_tab(WebUtilities.CurrentLoginUserId, requestId);
+				var formData = db.usp_open_request_tab(SnapSession.CurrentUser.LoginId, requestId);
 				// formData contain history of all data fields, we are only interested in the latest
 
 				return formData.ToList();

@@ -35,6 +35,9 @@ namespace Apollo.AIM.SNAP.Web
 				
 			if (!IsPostBack && SnapSession.IsUserCreated)
 			{
+                _currentUserDisplayName.Value = SnapSession.CurrentUser.FullName;
+                _currentUserId.Value = SnapSession.CurrentUser.LoginId;
+
 				if (string.IsNullOrEmpty(Request.QueryString[QueryStringConstants.REQUEST_ID])
 					&& string.IsNullOrEmpty(Request.QueryString[QueryStringConstants.REQUESTED_VIEW_INDEX]))
 				{

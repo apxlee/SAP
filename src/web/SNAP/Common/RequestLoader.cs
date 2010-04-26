@@ -50,7 +50,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 
         protected override void loadData(SNAPDatabaseDataContext db, ref Dictionary<string, object> open, ref Dictionary<string, object> close)
         {
-            db.GetAllRequests(WebUtilities.CurrentLoginUserId, "my");
+            db.GetAllRequests(SnapSession.CurrentUser.LoginId, "my");
             open = db.OpenRquests;
             close = db.CloseRquests;
         }
@@ -72,7 +72,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 
         protected override void loadData(SNAPDatabaseDataContext db, ref Dictionary<string, object> open, ref Dictionary<string, object> close)
         {
-            db.GetAllRequests(WebUtilities.CurrentLoginUserId, "accessteam");
+            db.GetAllRequests(SnapSession.CurrentUser.LoginId, "accessteam");
             open = db.OpenRquests;
             close = db.CloseRquests;
         }

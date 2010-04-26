@@ -19,7 +19,8 @@ function ApproverActions(obj,requestId,action) {
     {
         case '0':
             comments = ""
-        break;
+            alert($("#_currentUserDisplayName").val() + " - " + $("#_currentUserId").val());
+            break;
         case '2':
             if (textarea.val() == "") { alert("please specify the change"); return false; }
             else { comments = textarea.val(); }

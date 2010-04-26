@@ -159,6 +159,25 @@ namespace Apollo.AIM.SNAP.Web
         }
 
         [WebMethod]
+        public static bool BuilderActions(int requestId, WorkflowState state)
+        {
+            //TODO: get actorId from current user
+            var accessReq = new AccessRequest(requestId);
+
+            switch (state)
+            {
+                case WorkflowState.Closed_Cancelled:
+                    return true;
+                case WorkflowState.Closed_Completed:
+                    return true;
+                case WorkflowState.Pending_Provisioning:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        [WebMethod]
         public static bool AccessComments(int requestId, CommentsType action, string comments)
         {
 

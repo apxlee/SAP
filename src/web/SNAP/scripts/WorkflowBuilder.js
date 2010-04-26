@@ -46,7 +46,40 @@ function editWorkflow(obj,requestId) {
         });
     });
 }
-
+function builderActions(obj, requestId, state)
+{
+    var postData = "{'requestId':'" + requestId.toString() + "','state':'" + state + "'}";
+    alert(postData);
+    $.ajax({
+        type: "POST",
+        contentType: "application/json; character=utf-8",
+        url: "AjaxCalls.aspx/BuilderActions",
+        data: postData,
+        dataType: "json",
+        success: function(msg) {
+            if (msg.d) {
+                switch (state) {
+                    case "2":
+                        alert("closed cancelled");
+                        break;
+                    case "3":
+                        alert("closed completed");
+                        break;
+                    case "8":
+                        alert("ticket created");
+                        break;
+                }
+            }
+            else { alert("action failed"); }
+        }
+		,
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert("GetNames Error: " + XMLHttpRequest);
+            alert("GetNames Error: " + textStatus);
+            alert("GetNames Error: " + errorThrown);
+        }
+    });
+}
 function createWorkflow(obj, requestId) {
     $(document).ready(function() {
         if ($("#_managerUserId_" + requestId).val() > "") {
