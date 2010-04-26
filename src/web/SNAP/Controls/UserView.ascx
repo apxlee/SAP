@@ -19,3 +19,13 @@
 	</asp:Panel>	
 
 </div>
+<script type="text/javascript">
+	//<![CDATA[
+	$(document).ready(
+	function() {
+		try { pageTracker._trackPageview("/UserView.ascx"); }
+		catch (err) { }
+	}
+	);
+	//]]>
+</script>

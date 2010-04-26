@@ -1,6 +1,16 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="RequestForm.ascx.cs" Inherits="Apollo.AIM.SNAP.Web.Controls.RequestForm" %>
 <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>RequestForm.js" type="text/javascript"></script>
 <script type="text/javascript"> $(document).ready(DocReady);</script>
+<script type="text/javascript">
+	//<![CDATA[
+	$(document).ready(
+	function() {
+		try { pageTracker._trackPageview("/RequestForm.ascx"); }
+		catch (err) { }
+		}
+	);
+	//]]>
+</script>
 <div class="csm_container_center_700">
     
 	<div class="csm_content_container">
