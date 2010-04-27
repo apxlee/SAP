@@ -18,12 +18,9 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		//
 		public string RequestId { get; set; }
         public RequestState RequestState { get; set; }
+
 		protected void Page_Load(object sender, EventArgs e)
 		{
-			// build details section
-			//
-			// TODO: make 'AD Manager Name' red, add seperator between heading info and details
-			//
 			DataTable requestTestTable = GetDetails();
 			_readOnlyRequestDetails.DataSource = requestTestTable;
 			_readOnlyRequestDetails.DataBind();
@@ -107,25 +104,20 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
         string CompareManagerName(string userId, string mgrUserId)
         {
-			//if (!string.IsNullOrEmpty(userId))
-			//{
 			try
 			{
 				ADUserDetail userDetail = Apollo.AIM.SNAP.CA.DirectoryServices.GetUserByLoginName(userId);
-				if (userDetail != null)
+				if (mgrUserId != userDetail.Manager.LoginName)
 				{
-					if (mgrUserId != userDetail.Manager.LoginName)
-					{
-						return "<span class=\"csm_error_text\">[Active Directory:&nbsp;" + userDetail.ManagerName + "]</span>";
-					}
+					return "<span class=\"csm_error_text\">[Active Directory:&nbsp;" + userDetail.ManagerName + "]</span>";
 				}
 			}
 			catch (Exception ex)
 			{
 				// TODO: Logger.Error("ReadOnlyRequestPanel > CompareManagerName", ex);
 			}
-			//}
-            return string.Empty;
+
+			return string.Empty;
         }
 
         string userText(List<SNAP_Access_User_Text> list, int formId)
