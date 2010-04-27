@@ -56,22 +56,22 @@ function AccessTeamActions(obj, requestId, action) {
             if (msg.d) {
                 switch (action) {
                     case '9':
-                        updateRequestTracking(obj, "Pending Acknowlegement", "Pending Workflow");
+                        updateRequestTracking(obj, "Pending Acknowledgement", "Pending Workflow");
                         $(obj).attr("disabled", "disabled");
                         $(obj).next().attr("disabled", "disabled");
                         break;
                     case '1':
-                        updateRequestTracking(obj, "Pending Acknowlegement", "Change Requested");
+                        updateRequestTracking(obj, "Pending Acknowledgement", "Change Requested");
                         disableBladeActions(obj);
                         addComments(obj, "Change Requested", comments);
                         break;
                     case '2':
-                        updateRequestTracking(obj, "Pending Acknowlegement", "Closed Cancelled");
+                        updateRequestTracking(obj, "Pending Acknowledgement", "Closed Cancelled");
                         disableBladeActions(obj);
                         addComments(obj, "Closed Cancelled", comments);
                         break;
                     case '4':
-                        updateRequestTracking(obj, "Pending Acknowlegement", "Closed Denied");
+                        updateRequestTracking(obj, "Pending Acknowledgement", "Closed Denied");
                         disableBladeActions(obj);
                         addComments(obj, "Closed Denied", comments);
                         break;
