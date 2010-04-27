@@ -115,7 +115,6 @@ namespace Apollo.AIM.SNAP.Web
             return actorsList;
         }
 
-        
         #endregion
         
         [WebMethod]
