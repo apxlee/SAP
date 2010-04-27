@@ -62,11 +62,19 @@ namespace Apollo.AIM.SNAP.Web.Controls
             var reqDetail = reqDetails.Single(x => x.pkId.ToString() == RequestId);
             var reqUserText = reqUserTexts.Where(x => x.requestId.ToString() == RequestId).ToList();
 
-
-            table.Rows.Add("Title", reqDetail.userTitle);
-            table.Rows.Add("Manager Name", reqDetail.managerDisplayName);
-            table.Rows.Add("AD Manager Name", ADManagerName(reqDetail.userId, reqDetail.managerUserId));
-            table.Rows.Add("Requestor", reqDetail.submittedBy);
+            _affectedEndUserTitle.Text = reqDetail.userTitle;
+            _managerName.Text = reqDetail.managerDisplayName.ToString();
+            _adManagerName.Text = ADManagerName(reqDetail.userId, reqDetail.managerUserId);
+            _requestorName.Text = reqDetail.submittedBy.ToString();
+            
+			//table.Rows.Add("Title", reqDetail.userTitle);
+			//table.Rows.Add("Manager Name", reqDetail.managerDisplayName);
+			//// TODO: test to see if ADM different, only display when not the same
+			//table.Rows.Add("AD Manager Name", ADManagerName(reqDetail.userId, reqDetail.managerUserId));
+			//table.Rows.Add("Requestor", reqDetail.submittedBy);
+            
+			// TODO: get request form info            
+            
             table.Rows.Add("Windows Servers", userText(reqUserText, 2));
                 //reqUserText.Single(x => x.access_details_formId == 2).userText); ;
             table.Rows.Add("Linux/Unix Servers", userText(reqUserText, 3));
@@ -98,7 +106,9 @@ namespace Apollo.AIM.SNAP.Web.Controls
                 if (usrDetail != null)
                 {
                     if (mgrUsrId == usrDetail.Manager.LoginName)
+                    {
                         return usrDetail.ManagerName;
+                    }
 
                     return "<span style='color:red'><strong>" + usrDetail.ManagerName + "</strong></span>";
                 }

@@ -14,6 +14,42 @@ namespace Apollo.AIM.SNAP.Web.Controls {
     public partial class ReadOnlyRequestPanel {
         
         /// <summary>
+        /// _affectedEndUserTitle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label _affectedEndUserTitle;
+        
+        /// <summary>
+        /// _managerName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label _managerName;
+        
+        /// <summary>
+        /// _adManagerName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label _adManagerName;
+        
+        /// <summary>
+        /// _requestorName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label _requestorName;
+        
+        /// <summary>
         /// _readOnlyRequestDetails control.
         /// </summary>
         /// <remarks>
