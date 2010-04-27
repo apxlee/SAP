@@ -31,7 +31,7 @@ namespace Apollo.AIM.SNAP.Model
         Closed_Completed = 3,
         Closed_Denied = 4,
         Not_Active = 5,
-        Pending_Acknowlegement = 6,
+        Pending_Acknowledgement = 6,
         Pending_Approval = 7,
         Pending_Provisioning = 8,
         Pending_Workflow = 9,
