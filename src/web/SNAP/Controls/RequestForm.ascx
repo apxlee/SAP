@@ -5,7 +5,7 @@
 	//<![CDATA[
 	$(document).ready(
 	function() {
-		try { pageTracker._trackPageview("/RequestForm.ascx"); }
+		try { pageTracker._trackPageview("/RequestForm"); }
 		catch (err) { }
 		}
 	);
