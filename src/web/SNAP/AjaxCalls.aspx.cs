@@ -62,7 +62,7 @@ namespace Apollo.AIM.SNAP.Web
 
         #region WorkflowBuilder
 
-        [WebMethod]
+        
 /*
         public static bool CreateWorkflow(int requestId, string actorIds)
         {
@@ -81,6 +81,8 @@ namespace Apollo.AIM.SNAP.Web
             return accessReq.CreateWorkflow(actorsList);
         }
 */
+
+        [WebMethod]
         public static bool CreateWorkflow(int requestId, string managerUserId, string actorIds)
         {
             var accessReq = new AccessRequest(requestId);
@@ -96,6 +98,24 @@ namespace Apollo.AIM.SNAP.Web
             }
 
             return accessReq.CreateWorkflow(managerUserId, actorsList);
+        }
+
+        [WebMethod]
+        public static bool EditWorkflow(int requestId, string managerUserId, string actorIds)
+        {
+            var accessReq = new AccessRequest(requestId);
+            string[] split = null;
+            char[] splitter = { '[' };
+            split = actorIds.Split(splitter);
+
+            List<int> actorsList = new List<int>();
+
+            foreach (string actor in split)
+            {
+                if (actor.Length > 1) { actorsList.Add(Convert.ToInt32(actor.Replace("[", "").Replace("]", ""))); }
+            }
+
+            return accessReq.EditWorkflow(managerUserId, actorsList);
         }
 
         #endregion

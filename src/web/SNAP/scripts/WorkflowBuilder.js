@@ -133,6 +133,60 @@ function createWorkflow(obj, requestId) {
     });
 }
 
+
+function editCreatedWorkflow(obj, requestId) {
+    $(document).ready(function() {
+        if ($("#_managerUserId_" + requestId).val() > "") {
+            var postData = "{'requestId':'" + requestId.toString() + "','managerUserId':'" + $("#_managerUserId_" + requestId).val() + "','actorIds':'" + $("#_selectedActors_" + requestId).val() + "'}";
+            alert(postData); //TODO: (added parameter managerUserId)format postdata to match AjaxCalls.aspx\CreateWorkflow parameter"
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; character=utf-8",
+                url: "AjaxCalls.aspx/EditWorkflow",
+                data: postData,
+                dataType: "json",
+                success: function(msg) {
+                    alert(msg.d);
+                    if (msg.d) {
+                        alert("Workflow Created");
+
+                        var editLink = $(obj).parent().parent().find(".oospa_edit_icon");
+                        editLink.addClass("oospa_edit_icon_disabled");
+                        editLink.removeClass("oospa_edit_icon");
+                        editLink.unbind('click');
+
+                        $(obj).parent().parent().find("input[type=checkbox]").each(
+                          function() {
+                              $(this).attr("disabled", "disabled");
+                          });
+                        $(obj).parent().parent().find("input[type=radio]").each(
+                          function() {
+                              $(this).attr("disabled", "disabled");
+                          });
+                        $("#closed_cancelled_" + requestId).attr("disabled", "disabled");
+                        $("#edit_workflow_" + requestId).removeAttr("disabled");
+                        $(obj).attr("disabled", "disabled");
+                        $("#_selectedActors_" + requestId).val("");
+                    }
+                    else {
+                        alert("Workflow Creation Failed");
+                    }
+                },
+
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert("GetNames Error: " + XMLHttpRequest);
+                    alert("GetNames Error: " + textStatus);
+                    alert("GetNames Error: " + errorThrown);
+                }
+            });
+        }
+        else {
+            alert("Invalid Manager Name!"); //TODO: Add some style to this validation
+        }
+    });
+}
+
 function managerEdit(obj) {
     $(document).ready(function() {
         var managerLabelSection = $(obj).prev().prev().prev().prev()

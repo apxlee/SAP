@@ -138,7 +138,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
                     case WorkflowState.Pending_Approval:
                         buttonLit.Text += BuildButtons("closed_cancelled_" + RequestId.ToString(), "Closed Cancelled", "builderActions(this,'" + RequestId.ToString() + "','2');", true);
                         buttonLit.Text += BuildButtons("edit_workflow_" + RequestId.ToString(), "Edit Workflow", "editWorkflow(this,'" + RequestId.ToString() + "');", false);
-                        buttonLit.Text += BuildButtons("create_workflow_" + RequestId.ToString(), "Continue Workflow", "createWorkflow(this,'" + RequestId.ToString() + "');", true);
+                        buttonLit.Text += BuildButtons("create_workflow_" + RequestId.ToString(), "Continue Workflow", "editCreatedWorkflow(this,'" + RequestId.ToString() + "');", true);
                         break;
                     case WorkflowState.Pending_Provisioning:
                         buttonLit.Text += BuildButtons("closed_cancelled_" + RequestId.ToString(), "Closed Cancelled", "builderActions(this,'" + RequestId.ToString() + "','2');", false);
