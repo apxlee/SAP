@@ -50,24 +50,18 @@ namespace Apollo.AIM.SNAP.Web.Common
         
         static bool exist(RequestState state)
         {
-            var key = "";
-            switch (state)
-            {
-                case RequestState.Open:
-                    key = OpenRequestKey;
-                    break;
-                case RequestState.Closed:
-                    key = CloseRequestKey;
-                    break;
-                case RequestState.Search:
-                    key = SearchRequestKey;
-                    break;
-            }
-
-            return HttpContext.Current.Items.Contains(key);
+            return HttpContext.Current.Items.Contains(GetKey(state));
         }
 
         static Dictionary<string, object> requests(RequestState state)
+        {
+             if (exist(state))
+                return (Dictionary<string, object>)HttpContext.Current.Items[GetKey(state)];
+
+            return new Dictionary<string, object>();
+        }
+
+        private static string GetKey(RequestState state)
         {
             var key = "";
             switch (state)
@@ -82,11 +76,7 @@ namespace Apollo.AIM.SNAP.Web.Common
                     key = SearchRequestKey;
                     break;
             }
-
-            if (exist(state))
-                return (Dictionary<string, object>) HttpContext.Current.Items[key];
-
-            return new Dictionary<string, object>();
+            return key;
         }
 
         public static string OpenRequestKey
