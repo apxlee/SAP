@@ -40,6 +40,7 @@ namespace Apollo.AIM.SNAP.Model
                 {
                     var req = db.SNAP_Requests.Single(r => r.pkId == _id);
                     var accessTeamWF = req.SNAP_Workflows.Single(x => x.actorId == AccessTeamActorId);
+                    
                     result = reqStateTransition(req, RequestState.Open, RequestState.Pending,
                                                 accessTeamWF, WorkflowState.Pending_Acknowlegement,
                                                 WorkflowState.Pending_Workflow);
@@ -241,22 +242,35 @@ namespace Apollo.AIM.SNAP.Model
         public bool CreateWorkflow(List<int> actorIds)
         {
             var result = false;
+            var editWf = false;
             try
             {
                 using (var db = new SNAPDatabaseDataContext())
                 {
                     var req = db.SNAP_Requests.Single(r => r.pkId == _id);
                     var accessTeamWF = req.SNAP_Workflows.Single(x => x.actorId == AccessTeamActorId);
-                    result = reqStateTransition(req, RequestState.Pending, RequestState.Pending,
-                                                accessTeamWF, WorkflowState.Pending_Workflow,
-                                                WorkflowState.Pending_Approval);
+                    var accessTeamWFState = accessTeamWF.SNAP_Workflow_States.Single(s => s.completedDate == null);
+
+                    // access team is update worflow components, no need to perform transition
+                    if (accessTeamWFState.workflowStatusEnum == (byte)WorkflowState.Pending_Approval)
+                    {
+                        result = true;
+                        editWf = true;
+                    }
+                    else
+                    {
+                        //inform = true;
+                        result = reqStateTransition(req, RequestState.Pending, RequestState.Pending,
+                                                    accessTeamWF, WorkflowState.Pending_Workflow,
+                                                    WorkflowState.Pending_Approval);
+                    }
 
                     if (result)
                     {
                         result = mustHaveManagerInWorkflow(db, actorIds);
                         if (result)
                         {
-                            createrApprovalWorkFlow(db, actorIds);
+                            createrApprovalWorkFlow(db, actorIds, editWf);
                             db.SubmitChanges();
                         }
                     }
@@ -271,6 +285,33 @@ namespace Apollo.AIM.SNAP.Model
             }
             return result;
         }
+
+        
+        public bool EditWorkflow(string mgrusrId, List<int>actorIDs)
+        {
+            bool result = false;
+            var mgrActorId = ApprovalWorkflow.GetActorIdByUserId(ActorGroupType.Manager, mgrusrId);
+            if (mgrActorId != 0)
+            {
+                actorIDs.Add(mgrActorId);
+                using (var db = new SNAPDatabaseDataContext())
+                {
+                    result = mustHaveManagerInWorkflow(db, actorIDs);
+                    if (result)
+                    {
+                        createrApprovalWorkFlow(db, actorIDs, true);
+                        // inform pending approval wf
+                        db.SubmitChanges();
+                        InformApproverForAction();
+                    }
+
+                }
+                return result;
+           }
+
+            return result;
+        }
+        
 
         private bool mustHaveManagerInWorkflow(SNAPDatabaseDataContext db,  List<int> actorIds)
         {
@@ -485,6 +526,7 @@ namespace Apollo.AIM.SNAP.Model
                     }
                     result = true;
                 }
+
             }
             return result;
         }
@@ -501,7 +543,7 @@ namespace Apollo.AIM.SNAP.Model
         }
 
 
-        private void createrApprovalWorkFlow(SNAPDatabaseDataContext db, List<int> actorIds)
+        private void createrApprovalWorkFlow(SNAPDatabaseDataContext db, List<int> actorIds, bool editWf)
         {
             var req = db.SNAP_Requests.Single(x => x.pkId == _id);
 
@@ -536,27 +578,49 @@ namespace Apollo.AIM.SNAP.Model
             //{
             foreach (var actId in actorIds)
             {
-
+                var transitionRequired = false;
                 SNAP_Workflow wf;
                 if (req.SNAP_Workflows.Count(w => w.actorId == actId) == 0) // 
                 {
                     wf = new SNAP_Workflow() { actorId = actId };
                     req.SNAP_Workflows.Add(wf);
+
+                    transitionRequired = true;
+
                 }
-                else
+                else // wf already exists due to change request(all prev wf are completed) or access team just needs to update the wf component
                 {
+
                     wf = req.SNAP_Workflows.Single(w => w.actorId == actId);
-                    // wf already exists due to change request
+
+                    if (!editWf) {
+                        transitionRequired = true; 
+                    }
+
+                    /*
+                    // wf alread exists due to request to change
+                    if (!(wf.SNAP_Workflow_States.Count(s=>s.completedDate == null)==1))
+                    {
+                        transitionRequired = true;  
+                    }
+                    else
+                    {
+                        //access team decides to update in the middle of approval such as one approval is on leave, then we don't need to transition state
+                    }
+                     */
+
                 }
 
-                var actor = db.SNAP_Actors.Single(a => a.pkId == actId);
-                var agt = actor.SNAP_Actor_Group.actorGroupType ?? 3; // default to accessteam if null
+                if (transitionRequired)
+                {
+                    var actor = db.SNAP_Actors.Single(a => a.pkId == actId);
+                    var agt = actor.SNAP_Actor_Group.actorGroupType ?? 3; // default to accessteam if null
 
-                ActorApprovalType t = (ActorApprovalType)agt;
+                    ActorApprovalType t = (ActorApprovalType) agt;
 
-                //stateTransition(t, wf, WorkflowState.Not_Active, WorkflowState.Pending_Approval);
-                stateTransition(t, wf, WorkflowState.Not_Active, WorkflowState.Not_Active);
-
+                    //stateTransition(t, wf, WorkflowState.Not_Active, WorkflowState.Pending_Approval);
+                    stateTransition(t, wf, WorkflowState.Not_Active, WorkflowState.Not_Active);
+                }
             }
             //}
 

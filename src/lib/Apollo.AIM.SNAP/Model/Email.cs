@@ -20,7 +20,7 @@ namespace Apollo.AIM.SNAP.Model
         public static void OverdueTask(string toEmail, string toName, long id, string userName)
         {
             configPerEnvironment(id);
-
+            /*
             Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(toEmail,
                                                                      "Supplemental Network Access Process-Overdue Alert",
                                                                      absPath + ConfigurationManager.AppSettings["NagApproval"], // newTaskNotification.html",
@@ -32,7 +32,7 @@ namespace Apollo.AIM.SNAP.Model
                                                                              {"PREFIX", prefix}
                                                                          });
 
-             
+             */
         }
 
         public static void UpdateRequesterStatus(string submitterUserId, string name, long id, WorkflowState status, string reason)
@@ -66,7 +66,7 @@ namespace Apollo.AIM.SNAP.Model
 
             configPerEnvironment(id);
 
-            
+            /*
             Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(emailAddress(submitterUserId),
                                                                      subject,
                                                                      emailTemplatePath, // newTaskNotification.html",
@@ -79,12 +79,14 @@ namespace Apollo.AIM.SNAP.Model
                                                                              {"PREFIX", prefix}
                                                                          });
 
-             
+             */
         }
 
         public static void TaskAssignToApprover(string toEmailAddress, string to, long id, string name)
         {
             configPerEnvironment(id);
+            
+            /*
             Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(toEmailAddress,
                                                                      "Supplemental Network Access Process-Approval Needed",
                                                                      absPath + ConfigurationManager.AppSettings["Approval"], // newTaskNotification.html",
@@ -95,7 +97,7 @@ namespace Apollo.AIM.SNAP.Model
                                                                              {"URL", url},
                                                                          });
 
-             
+             */
         }
 
 
