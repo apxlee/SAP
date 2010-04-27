@@ -86,24 +86,22 @@ namespace Apollo.AIM.SNAP.Web
         public static bool CreateWorkflow(int requestId, string managerUserId, string actorIds)
         {
             var accessReq = new AccessRequest(requestId);
-            string[] split = null;
-            char[] splitter = { '[' };
-            split = actorIds.Split(splitter);
-
-            List<int> actorsList = new List<int>();
-
-            foreach (string actor in split)
-            {
-                if (actor.Length > 1) { actorsList.Add(Convert.ToInt32(actor.Replace("[", "").Replace("]", ""))); }
-            }
+            List<int> actorsList = GetActorsList(actorIds);
 
             return accessReq.CreateWorkflow(managerUserId, actorsList);
         }
+
 
         [WebMethod]
         public static bool EditWorkflow(int requestId, string managerUserId, string actorIds)
         {
             var accessReq = new AccessRequest(requestId);
+            List<int> actorsList = GetActorsList(actorIds);
+            return accessReq.EditWorkflow(managerUserId, actorsList);
+        }
+
+        private static List<int> GetActorsList(string actorIds)
+        {
             string[] split = null;
             char[] splitter = { '[' };
             split = actorIds.Split(splitter);
@@ -114,10 +112,10 @@ namespace Apollo.AIM.SNAP.Web
             {
                 if (actor.Length > 1) { actorsList.Add(Convert.ToInt32(actor.Replace("[", "").Replace("]", ""))); }
             }
-
-            return accessReq.EditWorkflow(managerUserId, actorsList);
+            return actorsList;
         }
 
+        
         #endregion
         
         [WebMethod]
