@@ -64,16 +64,10 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
             _affectedEndUserTitle.Text = reqDetail.userTitle;
             _managerName.Text = reqDetail.managerDisplayName.ToString();
-            _adManagerName.Text = ADManagerName(reqDetail.userId, reqDetail.managerUserId);
-            _requestorName.Text = reqDetail.submittedBy.ToString();
+            _adManagerName.Text = CompareManagerName(reqDetail.userId, reqDetail.managerUserId);
+			_requestorName.Text = GetFullNameFromAD(reqDetail.submittedBy);
             
-			//table.Rows.Add("Title", reqDetail.userTitle);
-			//table.Rows.Add("Manager Name", reqDetail.managerDisplayName);
-			//// TODO: test to see if ADM different, only display when not the same
-			//table.Rows.Add("AD Manager Name", ADManagerName(reqDetail.userId, reqDetail.managerUserId));
-			//table.Rows.Add("Requestor", reqDetail.submittedBy);
-            
-			// TODO: get request form info            
+			// TODO: get request form info and match to request details 
             
             table.Rows.Add("Windows Servers", userText(reqUserText, 2));
                 //reqUserText.Single(x => x.access_details_formId == 2).userText); ;
@@ -82,9 +76,10 @@ namespace Apollo.AIM.SNAP.Web.Controls
             table.Rows.Add("Network Shares", userText(reqUserText, 4));
                 //reqUserText.Single(x => x.access_details_formId == 4).userText);
             table.Rows.Add("Justification", userText(reqUserText, 5));
-                //reqUserText.Single(x => x.access_details_formId == 5).userText);
+			//reqUserText.Single(x => x.access_details_formId == 5).userText);
 
-		    /*
+			#region Mockup Stuff
+			/*
 		    table.Rows.Add("Title", "Network Engineer II");
 			table.Rows.Add("Manager Name", "Bob Jones");
 			table.Rows.Add("AD Manager Name", "Sally Kirkland");
@@ -94,26 +89,43 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			table.Rows.Add("Network Shares", "//MSTGG01/Enrollment");
 			table.Rows.Add("Justification", "I am required to have access to complete my tasks under EC Level 4. I am required to have access to complete my tasks under EC Level 4. I am required to have access to complete my tasks under EC Level 4.");
              */
+			#endregion
 
 			return table;
 		}
-		
-        string ADManagerName(string userId, string mgrUsrId)
-        {
-            if (userId != string.Empty)
-            {
-                ADUserDetail usrDetail = Apollo.AIM.SNAP.CA.DirectoryServices.GetUserByLoginName(userId);
-                if (usrDetail != null)
-                {
-                    if (mgrUsrId == usrDetail.Manager.LoginName)
-                    {
-                        return usrDetail.ManagerName;
-                    }
 
-                    return "<span style='color:red'><strong>" + usrDetail.ManagerName + "</strong></span>";
-                }
-            }
-            return "";
+		private string GetFullNameFromAD(string userId)
+		// TODO: should there ever be a record without 'Requestor'?  Log this as error?
+		{
+			if (string.IsNullOrEmpty(userId)) { return "<span class=\"csm_error_text\">Unknown</strong></span>"; }
+			else
+			{
+				ADUserDetail userDetail = CA.DirectoryServices.GetUserByLoginName(userId);
+				return userDetail.FirstName + " " + userDetail.LastName;
+			}
+		}
+
+        string CompareManagerName(string userId, string mgrUserId)
+        {
+			//if (!string.IsNullOrEmpty(userId))
+			//{
+			try
+			{
+				ADUserDetail userDetail = Apollo.AIM.SNAP.CA.DirectoryServices.GetUserByLoginName(userId);
+				if (userDetail != null)
+				{
+					if (mgrUserId != userDetail.Manager.LoginName)
+					{
+						return "<span class=\"csm_error_text\">[Active Directory:&nbsp;" + userDetail.ManagerName + "]</span>";
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				// TODO: Logger.Error("ReadOnlyRequestPanel > CompareManagerName", ex);
+			}
+			//}
+            return string.Empty;
         }
 
         string userText(List<SNAP_Access_User_Text> list, int formId)
