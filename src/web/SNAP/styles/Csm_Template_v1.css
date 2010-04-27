@@ -28,6 +28,8 @@ body {
 .csm_template_1 .csm_top5 {margin-top: 5px;}
 .csm_template_1 .csm_top10 {margin-top: 10px;}
 .csm_template_1 .csm_top15 {margin-top: 15px;}
+.csm_template_1 .csm_bottom5 {margin-bottom: 5px;}
+.csm_template_1 .csm_bottom10 {margin-bottom: 10px;}
 .csm_template_1 .csm_500 {min-height: 500px;padding-bottom:20px;} /* TODO: return to 500 when logo cutoff changed */
 
 .csm_template_1 .csm_content_container {
