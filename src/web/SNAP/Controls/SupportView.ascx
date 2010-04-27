@@ -6,7 +6,7 @@
 	//<![CDATA[
 	$(document).ready(
 	function() {
-		try { pageTracker._trackPageview("/UserView.ascx"); }
+		try { pageTracker._trackPageview("/SupportView"); }
 		catch (err) { }
 	}
 	);

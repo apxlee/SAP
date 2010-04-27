@@ -1,5 +1,14 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="AccessTeamView.ascx.cs" Inherits="Apollo.AIM.SNAP.Web.Controls.AccessTeamView" %>
-
+<script type="text/javascript">
+	//<![CDATA[
+	$(document).ready(
+	function() {
+		try { pageTracker._trackPageview("/AccessTeamView"); }
+		catch (err) { }
+	}
+	);
+	//]]>
+</script>
 <div class="csm_container_center_700">
 	
 	<h1>Access Team Request Filter</h1>

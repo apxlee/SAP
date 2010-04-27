@@ -1,5 +1,14 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ApprovingManagerView.ascx.cs" Inherits="Apollo.AIM.SNAP.Web.Controls.ApprovingManagerView" %>
-
+<script type="text/javascript">
+	//<![CDATA[
+	$(document).ready(
+	function() {
+		try { pageTracker._trackPageview("/ApprovingManagerView"); }
+		catch (err) { }
+	}
+	);
+	//]]>
+</script>
 <div class="csm_container_center_700">
 	
 	<h1>Pending Approval</h1>

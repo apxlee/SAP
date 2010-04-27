@@ -1,6 +1,15 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="SearchView.ascx.cs" Inherits="Apollo.AIM.SNAP.Web.Controls.SearchView" %>
 <div class="csm_container_center_700">
-	
+<script type="text/javascript">
+	//<![CDATA[
+	$(document).ready(
+	function() {
+		try { pageTracker._trackPageview("/SearchView"); }
+		catch (err) { }
+	}
+	);
+	//]]>
+</script>	
 	<h1>Search Panel</h1>
 	
 	<h1>Search Results</h1>
