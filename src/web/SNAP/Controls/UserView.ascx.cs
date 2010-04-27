@@ -21,7 +21,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		
 		private void BuildUserView()
 		{
-            var requesterLoader = new Common.MyRequestLooder();
+            var requesterLoader = new Common.MyRequestLoader();
 		    requesterLoader.Load();
 
             ViewBaseUtilities.BuildRequests(this.Page, RequestState.Open, _openRequestsContainer, _nullDataMessage_ClosedRequests, false);

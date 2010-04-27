@@ -9,6 +9,8 @@ namespace Apollo.AIM.SNAP.Web.Common
 {
     public abstract class RequestLoader
     {
+        public string searchText { get; set; }
+
         public void Load()
         {
             try
@@ -18,10 +20,12 @@ namespace Apollo.AIM.SNAP.Web.Common
 
                     Dictionary<string, object> openRequests = null;
                     Dictionary<string, object> closeRequests = null;
+                    Dictionary<string, object> searchRequests = null;
 
-                    loadData(db, ref openRequests, ref closeRequests);
+                    loadData(db, ref openRequests, ref closeRequests, ref searchRequests);
                     addToContext(Common.Request.OpenRequestKey, openRequests);
                     addToContext(Common.Request.CloseRequestKey, closeRequests);
+                    addToContext(Common.Request.SearchRequestKey, searchRequests);
                     
                 }
             }
@@ -41,14 +45,14 @@ namespace Apollo.AIM.SNAP.Web.Common
             
         }
 
-        protected abstract void loadData(SNAPDatabaseDataContext db, ref Dictionary<string, object> open, ref Dictionary<string, object> close);
+        protected abstract void loadData(SNAPDatabaseDataContext db, ref Dictionary<string, object> open, ref Dictionary<string, object> close, ref Dictionary<string, object> search);
 
     }
 
-    public class MyRequestLooder : RequestLoader
+    public class MyRequestLoader : RequestLoader
     {
 
-        protected override void loadData(SNAPDatabaseDataContext db, ref Dictionary<string, object> open, ref Dictionary<string, object> close)
+        protected override void loadData(SNAPDatabaseDataContext db, ref Dictionary<string, object> open, ref Dictionary<string, object> close, ref Dictionary<string, object> search)
         {
             db.GetAllRequests(SnapSession.CurrentUser.LoginId, "my");
             open = db.OpenRquests;
@@ -59,7 +63,7 @@ namespace Apollo.AIM.SNAP.Web.Common
     public class MyApprovalLoader : RequestLoader
     {
 
-        protected override void loadData(SNAPDatabaseDataContext db, ref Dictionary<string, object> open, ref Dictionary<string, object> close)
+        protected override void loadData(SNAPDatabaseDataContext db, ref Dictionary<string, object> open, ref Dictionary<string, object> close, ref Dictionary<string, object> search)
         {
             db.GetAllRequests(SnapSession.CurrentUser.LoginId, "approval");
             open = db.OpenRquests;
@@ -67,10 +71,10 @@ namespace Apollo.AIM.SNAP.Web.Common
         }
     }
 
-    public class AccessTeamRequestLooder : RequestLoader
+    public class AccessTeamRequestLoader : RequestLoader
     {
 
-        protected override void loadData(SNAPDatabaseDataContext db, ref Dictionary<string, object> open, ref Dictionary<string, object> close)
+        protected override void loadData(SNAPDatabaseDataContext db, ref Dictionary<string, object> open, ref Dictionary<string, object> close, ref Dictionary<string, object> search)
         {
             db.GetAllRequests(SnapSession.CurrentUser.LoginId, "accessteam");
             open = db.OpenRquests;
@@ -78,4 +82,12 @@ namespace Apollo.AIM.SNAP.Web.Common
         }
     }
 
+    public class SearchRequestLoader : RequestLoader
+    {
+        protected override void loadData(SNAPDatabaseDataContext db, ref Dictionary<string, object> open, ref Dictionary<string, object> close, ref Dictionary<string, object> search)
+        {
+            db.GetSearchRequests(searchText);
+            search = db.SearchRquests;
+        }
+    }
 }

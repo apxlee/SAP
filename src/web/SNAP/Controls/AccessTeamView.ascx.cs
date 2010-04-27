@@ -19,7 +19,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		
 		private void BuildAccessTeamView()
 		{
-            var requestLoader = new Common.AccessTeamRequestLooder();
+            var requestLoader = new Common.AccessTeamRequestLoader();
             requestLoader.Load();
 
             ViewBaseUtilities.BuildRequests(this.Page, RequestState.Open, _openRequestsContainer, _nullDataMessage_ClosedRequests, false);

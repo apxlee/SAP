@@ -19,7 +19,8 @@ namespace Apollo.AIM.SNAP.Model
         Open = 0,
         Change_Requested = 1,
         Pending = 2,
-        Closed = 3
+        Closed = 3,
+        Search = 4
     }
 
     public enum WorkflowState

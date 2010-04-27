@@ -28,31 +28,34 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			LoadReadOnlyRequestPanel();
 			LoadRequestTrackingPanel();
 
-			try
-			{
-				switch ((Role)SnapSession.CurrentUser.CurrentRole)
-				{
-					case Role.ApprovingManager:
-						LoadApprovingManagerPanel();
-						break;
+            if (RequestState != RequestState.Search)
+            {
+                try
+                {
+                    switch ((Role)SnapSession.CurrentUser.CurrentRole)
+                    {
+                        case Role.ApprovingManager:
+                            LoadApprovingManagerPanel();
+                            break;
 
-					case Role.AccessTeam:
-						LoadAccessTeamPanels();
-						break;
+                        case Role.AccessTeam:
+                            LoadAccessTeamPanels();
+                            break;
 
-					case Role.SuperUser:
-						LoadApprovingManagerPanel();
-						LoadAccessTeamPanels();
-						break;
+                        case Role.SuperUser:
+                            LoadApprovingManagerPanel();
+                            LoadAccessTeamPanels();
+                            break;
 
-					default:
-						break;
-				}
-			}
-			catch (Exception ex)
-			{
-				// TODO: if session not set, redirect to login?  throw message to user?  set role to user?
-			}
+                        default:
+                            break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // TODO: if session not set, redirect to login?  throw message to user?  set role to user?
+                }
+            }
 		}
 		
 		private void PopulateUserInfo()
