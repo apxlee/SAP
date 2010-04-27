@@ -143,7 +143,7 @@ namespace Apollo.AIM.SNAP.Test
                 }
 
                 // access team wf pending ack -> pending workflow
-                Assert.IsTrue(states.Count(x => x.workflowStatusEnum == (byte) WorkflowState.Pending_Acknowlegement) == states.Count(x => x.workflowStatusEnum == (byte) WorkflowState.Pending_Workflow));
+                Assert.IsTrue(states.Count(x => x.workflowStatusEnum == (byte) WorkflowState.Pending_Acknowledgement) == states.Count(x => x.workflowStatusEnum == (byte) WorkflowState.Pending_Workflow));
                 
             }
 
@@ -298,7 +298,7 @@ namespace Apollo.AIM.SNAP.Test
                     var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
                     Assert.IsTrue(req.statusEnum == (byte) RequestState.Open);
                     var cnt = i + 1;
-                    Assert.IsTrue(req.SNAP_Workflows[0].SNAP_Workflow_States.Count(s => s.workflowStatusEnum == (byte) WorkflowState.Pending_Acknowlegement) > cnt);
+                    Assert.IsTrue(req.SNAP_Workflows[0].SNAP_Workflow_States.Count(s => s.workflowStatusEnum == (byte) WorkflowState.Pending_Acknowledgement) > cnt);
                 }
             }
         }

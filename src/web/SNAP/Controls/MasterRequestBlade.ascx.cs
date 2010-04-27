@@ -132,7 +132,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
                 switch (AccessTeamState)
                 {
-                    case WorkflowState.Pending_Acknowlegement:
+                    case WorkflowState.Pending_Acknowledgement:
                         buttonLit.Text += BuildButtons("create_workflow_" + RequestId.ToString(), "Create Workflow", "createWorkflow(this,'" + RequestId.ToString() + "');", false);
                         break;
                     case WorkflowState.Pending_Workflow:

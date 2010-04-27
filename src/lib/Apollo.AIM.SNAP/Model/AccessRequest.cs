@@ -42,7 +42,7 @@ namespace Apollo.AIM.SNAP.Model
                     var accessTeamWF = req.SNAP_Workflows.Single(x => x.actorId == AccessTeamActorId);
                     
                     result = reqStateTransition(req, RequestState.Open, RequestState.Pending,
-                                                accessTeamWF, WorkflowState.Pending_Acknowlegement,
+                                                accessTeamWF, WorkflowState.Pending_Acknowledgement,
                                                 WorkflowState.Pending_Workflow);
 
                     if (result)
@@ -207,7 +207,7 @@ namespace Apollo.AIM.SNAP.Model
                     var accessTeamWF = req.SNAP_Workflows.Single(x => x.actorId == AccessTeamActorId);
                     result = reqStateTransition(req, RequestState.Change_Requested, RequestState.Open,
                                                 accessTeamWF, WorkflowState.Change_Requested,
-                                                WorkflowState.Pending_Acknowlegement);
+                                                WorkflowState.Pending_Acknowledgement);
 
                     if (result)
                     {

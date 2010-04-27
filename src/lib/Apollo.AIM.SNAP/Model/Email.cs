@@ -42,7 +42,7 @@ namespace Apollo.AIM.SNAP.Model
             string emailTemplatePath = absPath;
             switch (status)
             {
-                case WorkflowState.Pending_Acknowlegement:
+                case WorkflowState.Pending_Acknowledgement:
                     subject = "Supplemental Network Access Process-Submitted";
                     emailTemplatePath +=  ConfigurationManager.AppSettings["ConfirmSubmitToSubmitter"];
                     break;
