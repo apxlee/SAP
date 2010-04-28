@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Data;
 using System.Web.UI;
+using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using Apollo.AIM.SNAP.Model;
 using Apollo.AIM.SNAP.Web.Common;
+using MyRequest = Apollo.AIM.SNAP.Web.Common.Request;
 
 namespace Apollo.AIM.SNAP.Web.Controls
 {
@@ -14,6 +16,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
             if (WebUtilities.CurrentViewIndex == ViewIndex.access_team)
             {
                 BuildAccessTeamView();
+                BuildAccessTeamFilter();
             }
 		}
 		
@@ -26,5 +29,15 @@ namespace Apollo.AIM.SNAP.Web.Controls
             //ViewBaseUtilities.BuildRequests(this.Page, RequestState.Closed, _closedRequestsContainer, _nullDataMessage_ClosedRequests, true);
             ViewBaseUtilities.BuildRequests(this.Page, RequestState.Closed, _closedRequestsContainer, _nullDataMessage_ClosedRequests, false);
 		}
+
+        private void BuildAccessTeamFilter()
+        {
+            //List<int> filterList = MyRequest.AccessFilterCount();
+            //int total = filterList[0] + filterList[1] + filterList[2];
+            _pendingacknowledgementFilter.Text = "Pending Acknowledgement"; //(" + filterList[0].ToString() + ")";
+            _pendingworkflowFilter.Text = "Pending Workflow"; //(" + filterList[1].ToString() + ")";
+            _pendingprovisioningFilter.Text = "Pending Provisioning"; //(" + filterList[2].ToString() + ")";
+            _showallFilter.Text = "Show All"; //(" + total.ToString() + ")";
+        }
 	}
 }

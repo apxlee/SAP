@@ -291,4 +291,24 @@
       <Column Name="lastModifiedDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
+  <Function Name="dbo.usp_request_details" Method="usp_request_details">
+    <Parameter Name="requestId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="usp_request_detailsResult">
+      <Column Name="requestId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="submittedBy" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="userId" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="userDisplayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="userTitle" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="managerUserId" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="managerDisplayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="fieldId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="fieldLabel" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="fieldText" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="modifiedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ticketNumber" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="isChanged" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="statusEnum" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="createdDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
 </Database>

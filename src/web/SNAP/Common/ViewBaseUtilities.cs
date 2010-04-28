@@ -77,6 +77,29 @@ namespace Apollo.AIM.SNAP.Web.Common
 			return requestTable;
 		}
 
+        public static DataTable GetRequestDetails(int requestId)
+        {
+            DataTable detailsTable = new DataTable();
+            detailsTable.Columns.Add("fieldId", typeof(int));
+            detailsTable.Columns.Add("fieldLabel", typeof(string));
+            detailsTable.Columns.Add("fieldText", typeof(string));
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var result = db.usp_request_details(requestId);
+
+                if (result != null)
+                {
+                    foreach (var row in result)
+                    {
+                        detailsTable.Rows.Add(row.fieldId, row.fieldLabel, row.fieldText);
+                    }
+                }
+            }
+
+            return detailsTable;
+        }
+
         public static void BuildRequests(Page page, RequestState RequestState, PlaceHolder BladeContainer, Panel nullMessage, bool IsNullRecordTest)
         {
             DataTable requestTestTable = ViewBaseUtilities.GetRequests(RequestState, null);

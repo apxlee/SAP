@@ -271,6 +271,13 @@ namespace Apollo.AIM.SNAP.Model
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), request_data, submittedBy, userId, userDisplayName, userTitle, managerUserId, managerDisplayName);
 			return ((int)(result.ReturnValue));
 		}
+		
+		[Function(Name="dbo.usp_request_details")]
+		public ISingleResult<usp_request_detailsResult> usp_request_details([Parameter(DbType="Int")] System.Nullable<int> requestId)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), requestId);
+			return ((ISingleResult<usp_request_detailsResult>)(result.ReturnValue));
+		}
 	}
 	
 	[Table(Name="dbo.SNAP_Access_Details_Form")]
@@ -4532,6 +4539,284 @@ namespace Apollo.AIM.SNAP.Model
 				if ((this._lastModifiedDate != value))
 				{
 					this._lastModifiedDate = value;
+				}
+			}
+		}
+	}
+	
+	public partial class usp_request_detailsResult
+	{
+		
+		private int _requestId;
+		
+		private string _submittedBy;
+		
+		private string _userId;
+		
+		private string _userDisplayName;
+		
+		private string _userTitle;
+		
+		private string _managerUserId;
+		
+		private string _managerDisplayName;
+		
+		private int _fieldId;
+		
+		private string _fieldLabel;
+		
+		private string _fieldText;
+		
+		private System.DateTime _modifiedDate;
+		
+		private string _ticketNumber;
+		
+		private bool _isChanged;
+		
+		private byte _statusEnum;
+		
+		private System.DateTime _createdDate;
+		
+		public usp_request_detailsResult()
+		{
+		}
+		
+		[Column(Storage="_requestId", DbType="Int NOT NULL")]
+		public int requestId
+		{
+			get
+			{
+				return this._requestId;
+			}
+			set
+			{
+				if ((this._requestId != value))
+				{
+					this._requestId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_submittedBy", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
+		public string submittedBy
+		{
+			get
+			{
+				return this._submittedBy;
+			}
+			set
+			{
+				if ((this._submittedBy != value))
+				{
+					this._submittedBy = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_userId", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
+		public string userId
+		{
+			get
+			{
+				return this._userId;
+			}
+			set
+			{
+				if ((this._userId != value))
+				{
+					this._userId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_userDisplayName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string userDisplayName
+		{
+			get
+			{
+				return this._userDisplayName;
+			}
+			set
+			{
+				if ((this._userDisplayName != value))
+				{
+					this._userDisplayName = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_userTitle", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string userTitle
+		{
+			get
+			{
+				return this._userTitle;
+			}
+			set
+			{
+				if ((this._userTitle != value))
+				{
+					this._userTitle = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_managerUserId", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
+		public string managerUserId
+		{
+			get
+			{
+				return this._managerUserId;
+			}
+			set
+			{
+				if ((this._managerUserId != value))
+				{
+					this._managerUserId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_managerDisplayName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string managerDisplayName
+		{
+			get
+			{
+				return this._managerDisplayName;
+			}
+			set
+			{
+				if ((this._managerDisplayName != value))
+				{
+					this._managerDisplayName = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_fieldId", DbType="Int NOT NULL")]
+		public int fieldId
+		{
+			get
+			{
+				return this._fieldId;
+			}
+			set
+			{
+				if ((this._fieldId != value))
+				{
+					this._fieldId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_fieldLabel", DbType="NVarChar(50)")]
+		public string fieldLabel
+		{
+			get
+			{
+				return this._fieldLabel;
+			}
+			set
+			{
+				if ((this._fieldLabel != value))
+				{
+					this._fieldLabel = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_fieldText", DbType="NVarChar(MAX)")]
+		public string fieldText
+		{
+			get
+			{
+				return this._fieldText;
+			}
+			set
+			{
+				if ((this._fieldText != value))
+				{
+					this._fieldText = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_modifiedDate", DbType="DateTime NOT NULL")]
+		public System.DateTime modifiedDate
+		{
+			get
+			{
+				return this._modifiedDate;
+			}
+			set
+			{
+				if ((this._modifiedDate != value))
+				{
+					this._modifiedDate = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_ticketNumber", DbType="NVarChar(20)")]
+		public string ticketNumber
+		{
+			get
+			{
+				return this._ticketNumber;
+			}
+			set
+			{
+				if ((this._ticketNumber != value))
+				{
+					this._ticketNumber = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_isChanged", DbType="Bit NOT NULL")]
+		public bool isChanged
+		{
+			get
+			{
+				return this._isChanged;
+			}
+			set
+			{
+				if ((this._isChanged != value))
+				{
+					this._isChanged = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_statusEnum", DbType="TinyInt NOT NULL")]
+		public byte statusEnum
+		{
+			get
+			{
+				return this._statusEnum;
+			}
+			set
+			{
+				if ((this._statusEnum != value))
+				{
+					this._statusEnum = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_createdDate", DbType="SmallDateTime NOT NULL")]
+		public System.DateTime createdDate
+		{
+			get
+			{
+				return this._createdDate;
+			}
+			set
+			{
+				if ((this._createdDate != value))
+				{
+					this._createdDate = value;
 				}
 			}
 		}

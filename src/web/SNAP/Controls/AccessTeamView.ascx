@@ -12,7 +12,20 @@
 <div class="csm_container_center_700">
 	
 	<h1>Access Team Request Filter</h1>
-	
+	<table border="0" cellpadding="0" cellspacing="0" class="csm_input_form_container">
+		<tr>
+			<td class="csm_input_form_control_column">
+				<input type="radio" name="_changeFilter" class="csm_input_checkradio" value="Pending Acknowledgement" />
+				<asp:Label CssClass="csm_input_checkradio_span" ID="_pendingacknowledgementFilter" runat="server" />
+				<input type="radio" name="_changeFilter" class="csm_input_checkradio" value="Pending Workflow" />
+				<asp:Label CssClass="csm_input_checkradio_span" ID="_pendingworkflowFilter" runat="server" />	
+				<input type="radio" name="_changeFilter" class="csm_input_checkradio" value="Pending Provisioning" />
+				<asp:Label CssClass="csm_input_checkradio_span" ID="_pendingprovisioningFilter" runat="server" />
+				<input type="radio" name="_changeFilter" checked="checked" class="csm_input_checkradio" value="Show All" />
+				<asp:Label CssClass="csm_input_checkradio_span" ID="_showallFilter" runat="server" />
+			</td>
+		</tr>					
+	</table>
 	<h1>Open Requests</h1>
 	<asp:PlaceHolder ID="_openRequestsContainer" runat="server"></asp:PlaceHolder>
 	<asp:Panel ID="_nullDataMessage_OpenRequests" runat="server" CssClass="csm_content_container" Visible="false">

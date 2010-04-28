@@ -139,7 +139,52 @@ namespace Apollo.AIM.SNAP.Web.Common
             return num;
         }
 
+        /* TODO method for Access Team Filter Counts
+        public static List<int> AccessFilterCount()
+        {
+            List<int> filterList = new List<int>();
 
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var pendingAck = from sr in db.SNAP_Requests
+                                 join sw in db.SNAP_Workflows on sr.pkId equals sw.requestId
+                                 join sws in db.SNAP_Workflow_States on sw.pkId equals sws.workflowId
+                                 join sa in db.SNAP_Actors on sw.actorId equals sa.pkId
+                                 where sws.workflowStatusEnum == 6 && 
+                                 sr.statusEnum == 0 || 
+                                 sr.statusEnum == 1 || 
+                                 sr.statusEnum == 2
+                                 select new { sr.pkId };
+
+                var pendingWor = from sr in db.SNAP_Requests
+                                 join sw in db.SNAP_Workflows on sr.pkId equals sw.requestId
+                                 join sws in db.SNAP_Workflow_States on sw.pkId equals sws.workflowId
+                                 join sa in db.SNAP_Actors on sw.actorId equals sa.pkId
+                                 where sws.workflowStatusEnum == 9 &&
+                                 sr.statusEnum == 0 ||
+                                 sr.statusEnum == 1 ||
+                                 sr.statusEnum == 2
+                                 select new { sr.pkId };
+
+                var pendingPro = from sr in db.SNAP_Requests
+                                 join sw in db.SNAP_Workflows on sr.pkId equals sw.requestId
+                                 join sws in db.SNAP_Workflow_States on sw.pkId equals sws.workflowId
+                                 join sa in db.SNAP_Actors on sw.actorId equals sa.pkId
+                                 where sws.workflowStatusEnum == 8 &&
+                                 sr.statusEnum == 0 ||
+                                 sr.statusEnum == 1 ||
+                                 sr.statusEnum == 2
+                                 select new { sr.pkId };
+
+                filterList.Add((int)pendingAck.Count());
+                filterList.Add((int)pendingWor.Count());
+                filterList.Add((int)pendingPro.Count());
+            }
+
+            return filterList;
+        }
+
+        */
 
 
 

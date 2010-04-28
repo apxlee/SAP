@@ -114,7 +114,7 @@
         <classShapeMoniker Id="1e9e97bc-c82a-4939-9046-922d3276e406" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 10.3704451497396); (3.04166666666667 : 10.3704451497396 : JumpStart); (3.20833333333333 : 10.3704451497396 : JumpEnd); (3.59375 : 10.3704451497396); (3.59375 : 6.26050048828125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.75 : 10.3704451497396); (3.59375 : 10.3704451497396); (3.59375 : 6.26050048828125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/SNAPDatabaseDataContext/SNAP_Actor/SNAP_Actor_SNAP_Workflow" />
       <nodes>
         <classShapeMoniker Id="5b242711-9925-4eba-a7f2-7de57655c331" />
