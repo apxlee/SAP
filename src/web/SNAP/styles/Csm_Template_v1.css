@@ -64,6 +64,8 @@ body {
 .csm_template_1 .csm_displayed_block {
 	display: block;
 	}
+	
+.csm_template_1 .aim_dark_text {color: #696969;}
 
 
 /* Single Row Text Container
