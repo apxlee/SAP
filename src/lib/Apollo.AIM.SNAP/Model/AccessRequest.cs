@@ -648,21 +648,20 @@ namespace Apollo.AIM.SNAP.Model
             var toDeleteWFStates = new List<SNAP_Workflow_State>();
             if (req.SNAP_Workflows.Count > 1)
             {
+                /*
                 foreach(var wf in req.SNAP_Workflows)
                 {
                     if (wf.actorId != 1)
                         orgActorList.Add(wf.actorId);
                 }
+                 */
+                getOriginalActorList(req, orgActorList);
 
                 toDeleteActorList = orgActorList.Except(actorIds).ToList();
                 foreach (var i in toDeleteActorList)
                 {
                     var wf = req.SNAP_Workflows.Single(w => w.actorId == i);
-
-                    toDeleteWFStates.AddRange(wf.SNAP_Workflow_States);
-                    db.SNAP_Workflow_States.DeleteAllOnSubmit(toDeleteWFStates);
-                    db.SNAP_Workflows.DeleteOnSubmit(wf);
-                    db.SNAP_Workflow_Comments.DeleteAllOnSubmit(wf.SNAP_Workflow_Comments);
+                    deleteActorWorkflow(db, toDeleteWFStates, wf);
                 }
             }
              
@@ -695,6 +694,14 @@ namespace Apollo.AIM.SNAP.Model
 
         }
 
+        private void deleteActorWorkflow(SNAPDatabaseDataContext db, List<SNAP_Workflow_State> toDeleteWFStates, SNAP_Workflow wf)
+        {
+            toDeleteWFStates.AddRange(wf.SNAP_Workflow_States);
+            db.SNAP_Workflow_States.DeleteAllOnSubmit(toDeleteWFStates);
+            db.SNAP_Workflows.DeleteOnSubmit(wf);
+            db.SNAP_Workflow_Comments.DeleteAllOnSubmit(wf.SNAP_Workflow_Comments);
+        }
+
         private List<int> editApprovalWorkFlow(SNAPDatabaseDataContext db, List<int> actorIds)
         {
             var newAddedActorIds = new List<int>();
@@ -709,11 +716,7 @@ namespace Apollo.AIM.SNAP.Model
             List<SNAP_Workflow_State> toDeleteWFStates = new List<SNAP_Workflow_State>();
             if (req.SNAP_Workflows.Count > 1)
             {
-                foreach (var wf in req.SNAP_Workflows)
-                {
-                    if (wf.actorId != 1)
-                        orgActorList.Add(wf.actorId);
-                }
+                getOriginalActorList(req, orgActorList);
 
                 toDeleteActorList = orgActorList.Except(actorIds).ToList();
                 foreach (var i in toDeleteActorList)
@@ -733,11 +736,13 @@ namespace Apollo.AIM.SNAP.Model
                             && s.workflowStatusEnum == (byte)WorkflowState.Not_Active).Count() == 1)
                         )
                     {
-
+                        deleteActorWorkflow(db,toDeleteWFStates,wf);
+                        /*
                         toDeleteWFStates.AddRange(wf.SNAP_Workflow_States);
                         db.SNAP_Workflow_States.DeleteAllOnSubmit(toDeleteWFStates);
                         db.SNAP_Workflows.DeleteOnSubmit(wf);
                         db.SNAP_Workflow_Comments.DeleteAllOnSubmit(wf.SNAP_Workflow_Comments);
+                         */
                     }
                 }
             }
@@ -764,6 +769,15 @@ namespace Apollo.AIM.SNAP.Model
             }
 
             return newAddedActorIds;
+        }
+
+        private void getOriginalActorList(SNAP_Request req, List<int> orgActorList)
+        {
+            foreach (var wf in req.SNAP_Workflows)
+            {
+                if (wf.actorId != 1)
+                    orgActorList.Add(wf.actorId);
+            }
         }
 
         private bool emailApproverForAction(List<SNAP_Workflow> wfs)
