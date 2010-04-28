@@ -135,12 +135,12 @@ namespace Apollo.AIM.SNAP.Model
             prefix = @"http://";
             url = @"http://";
 
-            if (Environment.UserDomainName.ToUpper().Contains("DEVAPOLLO"))
+            if (Environment.UserDomainName.ToUpper().Contains("DEV"))
             {
-                prefix += "localhost/snap/images";
-                url += ("localhost/snap/index.aspx?RequestId=" + id);
+                prefix += Environment.MachineName + "/snap/images";
+                url += (Environment.MachineName + "/snap/index.aspx?RequestId=" + id);
             }
-            else if (Environment.UserDomainName.ToUpper().Contains("QAAPOLLO"))
+            else if (Environment.UserDomainName.ToUpper().Contains("QA"))
             {
                 prefix += "access.qaapollogrp.edu/snap/images";
                 url += ("access.qaapollogrp.edu/snap/index.aspx?RequestId=" + id);
