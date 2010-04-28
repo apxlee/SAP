@@ -48,7 +48,7 @@ function editWorkflow(obj,requestId) {
 }
 function builderActions(obj, requestId, state)
 {
-    var postData = "{'requestId':'" + requestId.toString() + "','state':'" + state + "'}";
+    var postData = "{'requestId':'" + requestId.toString() + "','action':'" + state + "'}";
     alert(postData);
     $.ajax({
         type: "POST",

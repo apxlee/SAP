@@ -73,6 +73,8 @@ namespace Apollo.AIM.SNAP.Model
         Denied = 1,
         Change = 2,
         Cancel = 3,
-        Ack = 4
+        Ack = 4,
+        Ticket = 5,
+        Complete = 6
     }
 }

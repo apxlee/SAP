@@ -176,19 +176,19 @@ namespace Apollo.AIM.SNAP.Web
         }
 
         [WebMethod]
-        public static bool BuilderActions(int requestId, WorkflowState state)
+        public static bool BuilderActions(int requestId, WorkflowAction action)
         {
             //TODO: get actorId from current user
             var accessReq = new AccessRequest(requestId);
 
-            switch (state)
+            switch (action)
             {
-                case WorkflowState.Closed_Cancelled:
-                    return true;
-                case WorkflowState.Closed_Completed:
-                    return true;
-                case WorkflowState.Pending_Provisioning:
-                    return true;
+                case WorkflowAction.Cancel:
+                    return accessReq.NoAccess(action, "");
+                case WorkflowAction.Complete:
+                    return accessReq.FinalizeRequest();
+                case WorkflowAction.Ticket:
+                    return accessReq.CreateServiceDeskTicket();
                 default:
                     return false;
             }
