@@ -7,38 +7,39 @@
 	</div>
 	
 	<!-- TODO: style this table with Css -->              
-	<table style="font-size:1em;margin-left:10px;" cellpadding="0" cellspacing="0" width="100%">
-		<!-- TODO: add static rows for title/mgr/requestor to style easier? -->
-		<tr style="line-height:1em;">
+	<table style="font-size:1em;margin-left:10px;margin-right:10px" cellpadding="0" cellspacing="0" width="100%">
+		<tr>
 			<td style="text-align:right;width:140px;padding-right:4px;"><p>Title&#58;</p></td>
-			<td style="padding:4px;padding-right:10px;">
+			<td style="padding:1px 10px 1px 4px;">
 				<p><asp:Label ID="_affectedEndUserTitle" runat="server"></asp:Label></p>
 			</td>
 		</tr>
-		<tr style="line-height:1em;">
+		<tr>
 			<td style="text-align:right;width:140px;padding-right:4px;"><p>Manager Name&#58;</p></td>
-			<td style="padding:4px;padding-right:10px;">
+			<td style="padding:1px 10px 1px 4px;">
 				<p><asp:Label ID="_managerName" runat="server"></asp:Label>&nbsp;&nbsp;<asp:Label ID="_adManagerName" runat="server"></asp:Label></p>
 			</td>
 		</tr>
-		<tr style="line-height:1em;">
+		<tr>
 			<td style="text-align:right;width:140px;padding-right:4px;"><p>Requestor&#58;</p></td>
-			<td style="padding:4px;padding-right:10px;">
+			<td style="padding:1px 10px 1px 4px;">
 				<p><asp:Label ID="_requestorName" runat="server"></asp:Label></p>
 			</td>
 		</tr>
+
 		<asp:Repeater ID="_readOnlyRequestDetails" runat="server">
 			<ItemTemplate>
-				<tr style="line-height:1em;">
-					<td style="text-align:right;width:140px;padding-right:4px;"><p><%# Eval("label") %>&#58;</p></td>
-					<td style="padding:4px;padding-right:10px;"><p><%# Eval("value") %></p></td>
+				<tr>
+					<td style="text-align:right;width:140px;padding-right:4px;"><p><%# Eval("fieldLabel")%>&#58;</p></td>
+					<td style="padding:1px 10px 1px 4px;"><p><%# Eval("fieldText")%></p></td>
 				</tr>
 			</ItemTemplate>
 		</asp:Repeater>
+
 		<asp:PlaceHolder ID="_accessNotesContainer" runat="server" Visible="false">
 			<tr style="line-height:1.2em;color:Red;">
 				<td style="text-align:right;width:140px;padding-right:4px;"><p>Access Notes&#58;</p></td>
-				<td style="padding:4px;padding-right:10px;"><asp:Literal ID="_accessNotes" runat="server"></asp:Literal></td>
+				<td style="padding:1px 10px 1px 4px;"><asp:Literal ID="_accessNotes" runat="server"></asp:Literal></td>
 			</tr>			
 		</asp:PlaceHolder>
 	</table>
