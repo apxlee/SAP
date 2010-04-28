@@ -466,7 +466,10 @@ namespace Apollo.AIM.SNAP.Test
 
                 foreach (var wf in wfs)
                 {
-                    verifyWorkflowState(wf, WorkflowState.Not_Active);
+                    wf.SNAP_Workflow_States.Single(
+                        s =>
+                        s.completedDate == null && s.notifyDate == null &&
+                        s.workflowStatusEnum == (byte) WorkflowState.Not_Active);
                 }
 
             }
@@ -1105,6 +1108,67 @@ namespace Apollo.AIM.SNAP.Test
                 var firstApproverApproveState = firstApprover.SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Approved);
                 Assert.IsTrue(firstApproverPendingState.notifyDate == firstApproverApproveState.notifyDate);
                 Assert.IsTrue(firstApproverPendingState.dueDate == firstApproverApproveState.dueDate);
+
+            }
+
+        }
+
+        [Test]
+        public void ShouldGetPendingActorId()
+        {
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+
+                var accessReq = new AccessRequest(req.pkId);
+                accessReq.Ack();
+                accessReq.CreateWorkflow(new List<int>()
+                                             {
+                                                 managerActorId,
+                                                 teamApprovalActorId,
+                                                 windowsServerActorId,
+                                                 databaseActorId,
+                                                 networkShareActorId
+                                             });
+
+                Assert.IsTrue(accessReq.GetPendingApprovalActorId()[0] == managerActorId);
+                Assert.IsTrue(accessReq.GetPendingApprovalActorType() == (byte)ActorApprovalType.Manager);
+
+                // get manager approal
+                //ystem.Threading.Thread.Sleep(90000);
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
+                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate == null);
+
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+
+                Assert.IsTrue(accessReq.GetPendingApprovalActorId()[0] == teamApprovalActorId);
+                Assert.IsTrue(accessReq.GetPendingApprovalActorType() == (byte)ActorApprovalType.Team_Approver);
+
+                // get team approval
+                //System.Threading.Thread.Sleep(90000);
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Team_Approver);
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+
+                Assert.IsTrue(accessReq.GetPendingApprovalActorId().Contains(windowsServerActorId));
+                Assert.IsTrue(accessReq.GetPendingApprovalActorType() == (byte)ActorApprovalType.Technical_Approver);
+                Assert.IsTrue(accessReq.GetPendingApprovalActorId().Contains(networkShareActorId));
+                Assert.IsTrue(accessReq.GetPendingApprovalActorType() == (byte)ActorApprovalType.Technical_Approver);
+                Assert.IsTrue(accessReq.GetPendingApprovalActorId().Contains(databaseActorId));
+                Assert.IsTrue(accessReq.GetPendingApprovalActorType() == (byte)ActorApprovalType.Technical_Approver);
+                // get all technical approval
+
+                // !!! for individual test, please uncommnet it
+                // !!! comment it out to save time
+
+                //System.Threading.Thread.Sleep(90000);
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+                Assert.IsFalse(accessReq.GetPendingApprovalActorId().Contains(wfs[0].actorId));
+                accessReq.WorkflowAck(wfs[1].pkId, WorkflowAction.Approved);
+                Assert.IsFalse(accessReq.GetPendingApprovalActorId().Contains(wfs[1].actorId));
+                accessReq.WorkflowAck(wfs[2].pkId, WorkflowAction.Approved);
+                Assert.IsTrue(accessReq.GetPendingApprovalActorId().Count == 0);
 
             }
 
