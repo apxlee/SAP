@@ -299,10 +299,39 @@ namespace Apollo.AIM.SNAP.Model
                     result = mustHaveManagerInWorkflow(db, actorIDs);
                     if (result)
                     {
-                        createrApprovalWorkFlow(db, actorIDs, true);
-                        // inform pending approval wf
+                        var newActorIds = createrApprovalWorkFlow(db, actorIDs, true);
                         db.SubmitChanges();
-                        InformApproverForAction();
+                        //InformApproverForAction();
+
+
+                        // inform new added actor her new due day
+                        var req = db.SNAP_Requests.Single(r => r.pkId == _id);
+                        foreach (var wf in req.SNAP_Workflows)
+                        {
+                            if (wf.actorId != AccessTeamActorId && newActorIds.Contains(wf.actorId))
+                            {
+                                var state = wf.SNAP_Workflow_States.Where(s => s.completedDate == null && s.notifyDate == null).ToList();
+
+                                if ((state.Count() == 1) && state[0].workflowStatusEnum == (byte) WorkflowState.Not_Active)
+                                {
+                                    state[0].notifyDate = DateTime.Now;
+                                    state[0].completedDate = DateTime.Now;
+                                    Email.TaskAssignToApprover(state[0].SNAP_Workflow.SNAP_Actor.emailAddress,
+                                                               state[0].SNAP_Workflow.SNAP_Actor.displayName, _id,
+                                                               state[0].SNAP_Workflow.SNAP_Request.userDisplayName);
+                                     
+                                    stateTransition((ActorApprovalType)wf.SNAP_Actor.SNAP_Actor_Group.actorGroupType, wf, WorkflowState.Not_Active, WorkflowState.Pending_Approval);
+                                    /*
+                                    state[0].notifyDate = DateTime.Now;
+                                    state[0].completedDate = getDueDate((ActorApprovalType) wf.SNAP_Actor.SNAP_Actor_Group.actorGroupType,
+                                                   WorkflowState.Not_Active,
+                                                   WorkflowState.Pending_Approval);
+                                     */
+                                }
+                            }
+                        }
+                        db.SubmitChanges();
+                        
                     }
 
                 }
@@ -542,9 +571,10 @@ namespace Apollo.AIM.SNAP.Model
 
         }
 
-
-        private void createrApprovalWorkFlow(SNAPDatabaseDataContext db, List<int> actorIds, bool editWf)
+        // return a list of new actorids while they need to be in pending approval state
+        private List<int> createrApprovalWorkFlow(SNAPDatabaseDataContext db, List<int> actorIds, bool editWf)
         {
+            var newAddedActorIds = new List<int>();
             var req = db.SNAP_Requests.Single(x => x.pkId == _id);
 
             
@@ -566,10 +596,31 @@ namespace Apollo.AIM.SNAP.Model
                 foreach (var i in toDeleteActorList)
                 {
                     var wf = req.SNAP_Workflows.Single(w => w.actorId == i);
-                    toDeleteWFStates.AddRange(wf.SNAP_Workflow_States);
-                    db.SNAP_Workflow_States.DeleteAllOnSubmit(toDeleteWFStates);
-                    db.SNAP_Workflows.DeleteOnSubmit(wf);
-                    db.SNAP_Workflow_Comments.DeleteAllOnSubmit(wf.SNAP_Workflow_Comments);
+
+                    // ony remove pending approval and not active wf
+
+                    
+                    if ((wf.SNAP_Workflow_States.Where(s => s.completedDate == null
+                        && s.notifyDate != null
+                        && (s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval )).Count() == 1)
+
+                            || 
+
+                        (wf.SNAP_Workflow_States.Where(s=>s.completedDate == null 
+                            && s.notifyDate == null 
+                            && s.workflowStatusEnum == (byte)WorkflowState.Not_Active).Count()== 1)
+                        
+                            ||
+
+                        (!editWf)
+                        )
+                    {
+                     
+                        toDeleteWFStates.AddRange(wf.SNAP_Workflow_States);
+                        db.SNAP_Workflow_States.DeleteAllOnSubmit(toDeleteWFStates);
+                        db.SNAP_Workflows.DeleteOnSubmit(wf);
+                        db.SNAP_Workflow_Comments.DeleteAllOnSubmit(wf.SNAP_Workflow_Comments);
+                    }
                 }
             }
              
@@ -582,6 +633,8 @@ namespace Apollo.AIM.SNAP.Model
                 SNAP_Workflow wf;
                 if (req.SNAP_Workflows.Count(w => w.actorId == actId) == 0) // 
                 {
+                    newAddedActorIds.Add(actId);
+
                     wf = new SNAP_Workflow() { actorId = actId };
                     req.SNAP_Workflows.Add(wf);
 
@@ -624,6 +677,7 @@ namespace Apollo.AIM.SNAP.Model
             }
             //}
 
+            return newAddedActorIds;
         }
 
         private bool emailApproverForAction(List<SNAP_Workflow> wfs)

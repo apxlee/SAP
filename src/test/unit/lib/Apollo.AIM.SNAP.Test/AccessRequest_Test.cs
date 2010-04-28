@@ -792,7 +792,6 @@ namespace Apollo.AIM.SNAP.Test
 
                 accessReq.EditWorkflow(managerUserId, new List<int>()
                                              {
-                                                 //managerActorId,
                                                  teamApprovalActorId,
                                                  //windowsServerActorId,
                                                  databaseActorId,
