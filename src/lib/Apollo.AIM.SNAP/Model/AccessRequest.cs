@@ -463,7 +463,7 @@ namespace Apollo.AIM.SNAP.Model
                     {
                         // TODO - uncommentthis out so SD can be created!!!
 
-                        /*
+                        
                         var changeRequest = new ServiceDesk.ChangeRequest(Apollo.ServiceDesk.SDConfig.Instance.Login, Apollo.ServiceDesk.SDConfig.Instance.Password);
 
                         changeRequest.CategoryName = "Server.Systems.Privileged Access";
@@ -477,9 +477,9 @@ namespace Apollo.AIM.SNAP.Model
 
 
                         req.ticketNumber = changeRequest.Number;
-                        */
+                        
 
-                        req.ticketNumber = "123456";
+                        //req.ticketNumber = "123456";
 
                         db.SubmitChanges();
                     }

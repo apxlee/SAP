@@ -1767,8 +1767,8 @@ namespace Apollo.AIM.SNAP.Test
                 accessReq.CreateServiceDeskTicket();
 
                 // For dev:
-                // login to to http://awhdht02:8080/CAisd/pdmweb.exe 
-                // sign in as svc_cap
+                // login to to http://awhdht02.devapollogrp.edu/CAisd/pdmweb.exe
+                // sign in as svc_cap/S31H9D&amp;2j6
                 // look at Change Orders/Unassinged/all 
 
             }
