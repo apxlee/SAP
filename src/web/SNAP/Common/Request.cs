@@ -110,7 +110,7 @@ namespace Apollo.AIM.SNAP.Web.Common
             using (var db = new SNAPDatabaseDataContext())
             {
                 var result = db.SNAP_Requests
-                             .Where(o => o.statusEnum == 0 || o.statusEnum == 2)
+                             .Where(o => o.statusEnum == 0 || o.statusEnum == 1 || o.statusEnum == 2)
                              .Select(s => s.statusEnum)
                              .Count();
 

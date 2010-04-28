@@ -130,25 +130,32 @@ namespace Apollo.AIM.SNAP.Web.Controls
                 Literal buttonLit = new Literal();
                 buttonLit.Text = "<input type=\"hidden\" id=\"_selectedActors_" + RequestId.ToString() + "\" />";
 
-                switch (AccessTeamState)
-                {
-                    case WorkflowState.Pending_Acknowledgement:
-                        buttonLit.Text += BuildButtons("create_workflow_" + RequestId.ToString(), "Create Workflow", "createWorkflow(this,'" + RequestId.ToString() + "');", false);
-                        break;
-                    case WorkflowState.Pending_Workflow:
-                        buttonLit.Text += BuildButtons("create_workflow_" + RequestId.ToString(), "Create Workflow", "createWorkflow(this,'" + RequestId.ToString() + "');", false);
-                        break;
-                    case WorkflowState.Pending_Approval:
-                        buttonLit.Text += BuildButtons("closed_cancelled_" + RequestId.ToString(), "Closed Cancelled", "builderActions(this,'" + RequestId.ToString() + "','2');", true);
-                        buttonLit.Text += BuildButtons("edit_workflow_" + RequestId.ToString(), "Edit Workflow", "editWorkflow(this,'" + RequestId.ToString() + "');", false);
-                        buttonLit.Text += BuildButtons("create_workflow_" + RequestId.ToString(), "Continue Workflow", "editCreatedWorkflow(this,'" + RequestId.ToString() + "');", true);
-                        break;
-                    case WorkflowState.Pending_Provisioning:
-                        buttonLit.Text += BuildButtons("closed_cancelled_" + RequestId.ToString(), "Closed Cancelled", "builderActions(this,'" + RequestId.ToString() + "','2');", false);
-                        buttonLit.Text += BuildButtons("closed_completed_" + RequestId.ToString(), "Closed Completed", "builderActions(this,'" + RequestId.ToString() + "','3');", false);
-                        buttonLit.Text += BuildButtons("create_ticket_" + RequestId.ToString(), "Create Ticket", "builderActions(this,'" + RequestId.ToString() + "','8');", false);
-                        break;
-                }
+                //switch (AccessTeamState)
+                //{
+                //    case WorkflowState.Pending_Acknowledgement:
+                //        buttonLit.Text += BuildButtons("create_workflow_" + RequestId.ToString(), "Create Workflow", "createWorkflow(this,'" + RequestId.ToString() + "');", false);
+                //        break;
+                //    case WorkflowState.Pending_Workflow:
+                //        buttonLit.Text += BuildButtons("create_workflow_" + RequestId.ToString(), "Create Workflow", "createWorkflow(this,'" + RequestId.ToString() + "');", false);
+                //        break;
+                //    case WorkflowState.Pending_Approval:
+                //        buttonLit.Text += BuildButtons("closed_cancelled_" + RequestId.ToString(), "Closed Cancelled", "builderActions(this,'" + RequestId.ToString() + "','2');", true);
+                //        buttonLit.Text += BuildButtons("edit_workflow_" + RequestId.ToString(), "Edit Workflow", "editWorkflow(this,'" + RequestId.ToString() + "');", true);
+                //        buttonLit.Text += BuildButtons("create_workflow_" + RequestId.ToString(), "Continue Workflow", "editCreatedWorkflow(this,'" + RequestId.ToString() + "');", true);
+                //        break;
+                //    case WorkflowState.Pending_Provisioning:
+                //        buttonLit.Text += BuildButtons("closed_cancelled_" + RequestId.ToString(), "Closed Cancelled", "builderActions(this,'" + RequestId.ToString() + "','2');", false);
+                //        buttonLit.Text += BuildButtons("closed_completed_" + RequestId.ToString(), "Closed Completed", "builderActions(this,'" + RequestId.ToString() + "','3');", false);
+                //        buttonLit.Text += BuildButtons("create_ticket_" + RequestId.ToString(), "Create Ticket", "builderActions(this,'" + RequestId.ToString() + "','8');", false);
+                //        break;
+                //}
+
+                buttonLit.Text += BuildButtons("closed_cancelled_" + RequestId.ToString(), "Closed Cancelled", "builderActions(this,'" + RequestId.ToString() + "','2');", false);
+                buttonLit.Text += BuildButtons("closed_completed_" + RequestId.ToString(), "Closed Completed", "builderActions(this,'" + RequestId.ToString() + "','3');", false);
+                buttonLit.Text += BuildButtons("create_ticket_" + RequestId.ToString(), "Create Ticket", "builderActions(this,'" + RequestId.ToString() + "','8');", false);
+                buttonLit.Text += BuildButtons("edit_workflow_" + RequestId.ToString(), "Edit Workflow", "editWorkflow(this,'" + RequestId.ToString() + "');", false);
+                buttonLit.Text += BuildButtons("create_workflow_" + RequestId.ToString(), "Continue Workflow", "editCreatedWorkflow(this,'" + RequestId.ToString() + "');", false);
+                        
 
                 PlaceHolder dynamicButtonsContainer;
                 dynamicButtonsContainer = (PlaceHolder)WebUtilities.FindControlRecursive(workflowBuilderPanel, "_dynamicButtonsContainer");

@@ -24,6 +24,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
             List<AccessGroup> UpdatedGroups = new List<AccessGroup>();
             string strGroupType = "";
+
             //make a copy of available groups
             foreach (AccessGroup group in AvailableGroups)
             {
