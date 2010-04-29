@@ -1,14 +1,4 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="SearchView.ascx.cs" Inherits="Apollo.AIM.SNAP.Web.Controls.SearchView" %>
-<script type="text/javascript">
-	//<![CDATA[
-	$(document).ready(
-	function() {
-		try { pageTracker._trackPageview("/SearchView"); }
-		catch (err) { }
-	}
-	);
-	//]]>
-</script>
 <div class="csm_container_center_700">
 	<div class="csm_content_container">	
 		<div class="csm_text_container csm_bottom5">
@@ -37,3 +27,13 @@
 		</asp:Panel>
 	
 </div>
+<script type="text/javascript">
+	//<![CDATA[
+	$(document).ready(
+	function() {
+		try { pageTracker._trackPageview("/SearchView"); }
+		catch (err) { }
+	}
+	);
+	//]]>
+</script>
