@@ -86,7 +86,7 @@ namespace Apollo.AIM.SNAP.Model
         {
             configPerEnvironment(id);
             
-            /*
+            
             Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(toEmailAddress,
                                                                      "Supplemental Network Access Process-Approval Needed",
                                                                      absPath + ConfigurationManager.AppSettings["Approval"], // newTaskNotification.html",
@@ -95,9 +95,10 @@ namespace Apollo.AIM.SNAP.Model
                                                                              {"APPROVERNAME", to},
                                                                              {"NAME", name},
                                                                              {"URL", url},
+                                                                             {"PREFIX", prefix}
                                                                          });
 
-             */
+             
         }
 
 
@@ -137,8 +138,8 @@ namespace Apollo.AIM.SNAP.Model
 
             if (Environment.UserDomainName.ToUpper().Contains("DEV"))
             {
-                prefix += Environment.MachineName + ".devapollogpr.edu/snap/images";
-                url += (Environment.MachineName + ".devapollogpr.edu/snap/index.aspx?RequestId=" + id);
+                prefix += Environment.MachineName + ".devapollogrp.edu/snap/images";
+                url += (Environment.MachineName + ".devapollogrp.edu/snap/index.aspx?RequestId=" + id);
             }
             else if (Environment.UserDomainName.ToUpper().Contains("QA"))
             {
