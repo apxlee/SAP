@@ -10,6 +10,13 @@
 <%@ Register src="~/Controls/RequestForm.ascx" tagname="RequestForm" tagprefix="uc" %>
 <%@ Register src="~/Controls/SupportView.ascx" tagname="SupportView" tagprefix="uc" %>
 
+
+	
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head id="_head" runat="server">
+    <title>Supplemental Access Process</title>
 <script type="text/javascript">
 	//<![CDATA[
 	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
@@ -17,13 +24,7 @@
 	try { var pageTracker = _gat._getTracker("UA-15693359-2"); }
 	catch (err) { }
 	//]]>
-</script>
-	
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" >
-<head id="_head" runat="server">
-    <title>Supplemental Access Process</title>
+</script>    
 </head>
 <body> 
 	<form runat="server" id="_defaultForm">
