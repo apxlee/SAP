@@ -29,11 +29,7 @@
 </div>
 <script type="text/javascript">
 	//<![CDATA[
-	$(document).ready(
-	function() {
 		try { pageTracker._trackPageview("/SearchView"); }
 		catch (err) { }
-	}
-	);
 	//]]>
 </script>
