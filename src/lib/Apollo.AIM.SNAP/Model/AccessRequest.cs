@@ -294,32 +294,44 @@ namespace Apollo.AIM.SNAP.Model
             {
                 // who is in pending state, we need to remember to inform the pending approver her new due day
                 var currentPendingApproverType = GetPendingApprovalActorType();
-
-                actorIDs.Add(mgrActorId);
-                using (var db = new SNAPDatabaseDataContext())
+                if (currentPendingApproverType != -1)
                 {
-                    result = mustHaveManagerInWorkflow(db, actorIDs);
-                    if (result)
+                    actorIDs.Add(mgrActorId);
+                    using (var db = new SNAPDatabaseDataContext())
                     {
-                        var newActorIds = editApprovalWorkFlow(db, actorIDs);
-                        db.SubmitChanges();
-                        
-                        var req = db.SNAP_Requests.Single(r => r.pkId == _id);
-                        foreach (var wf in req.SNAP_Workflows)
+                        result = mustHaveManagerInWorkflow(db, actorIDs);
+                        if (result)
                         {
-                            if (wf.actorId != AccessTeamActorId && newActorIds.Contains(wf.actorId))
+                            var req = db.SNAP_Requests.Single(r => r.pkId == _id);
+                            var accessTeamWF = req.SNAP_Workflows.Single(x => x.actorId == AccessTeamActorId);
+                            // make sure accessTeamWF stat is pending apporal 
+                            if (
+                                accessTeamWF.SNAP_Workflow_States.Count(
+                                    s =>
+                                    s.completedDate == null &&
+                                    s.workflowStatusEnum == (byte) WorkflowState.Pending_Approval) == 1)
                             {
-                                InformNewPendingApproverNewDueDate(wf, currentPendingApproverType);
+                                var newActorIds = editApprovalWorkFlow(db, actorIDs);
+                                db.SubmitChanges();
+
+                                req = db.SNAP_Requests.Single(r => r.pkId == _id);
+                                foreach (var wf in req.SNAP_Workflows)
+                                {
+                                    if (wf.actorId != AccessTeamActorId && newActorIds.Contains(wf.actorId))
+                                    {
+                                        InformNewPendingApproverNewDueDate(wf, currentPendingApproverType);
+                                    }
+                                }
+                                db.SubmitChanges();
+                            }
+                            else
+                            {
+                                result = false;
                             }
                         }
-                        db.SubmitChanges();
-                        
                     }
-
                 }
-                return result;
-           }
-
+            }
             return result;
         }
 
