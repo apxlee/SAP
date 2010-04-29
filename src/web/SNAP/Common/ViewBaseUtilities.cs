@@ -92,11 +92,12 @@ namespace Apollo.AIM.SNAP.Web.Common
                 {
                     foreach (var row in result)
                     {
-                        detailsTable.Rows.Add(row.fieldId, row.fieldLabel, row.fieldText);
+						string modifiedFieldText = (string.IsNullOrEmpty(row.fieldText)) ? "<span class=\"aim_dark_text\">[Empty]</span>" : row.fieldText;
+						detailsTable.Rows.Add(row.fieldId, row.fieldLabel, modifiedFieldText);
                     }
                 }
             }
-
+            
             return detailsTable;
         }
 
