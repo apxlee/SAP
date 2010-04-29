@@ -137,8 +137,8 @@ namespace Apollo.AIM.SNAP.Model
 
             if (Environment.UserDomainName.ToUpper().Contains("DEV"))
             {
-                prefix += Environment.MachineName + "/snap/images";
-                url += (Environment.MachineName + "/snap/index.aspx?RequestId=" + id);
+                prefix += Environment.MachineName + ".devapollogpr.edu/snap/images";
+                url += (Environment.MachineName + ".devapollogpr.edu/snap/index.aspx?RequestId=" + id);
             }
             else if (Environment.UserDomainName.ToUpper().Contains("QA"))
             {

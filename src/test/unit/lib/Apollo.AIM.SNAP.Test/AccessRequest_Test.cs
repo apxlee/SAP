@@ -765,6 +765,53 @@ namespace Apollo.AIM.SNAP.Test
 
 
         [Test]
+        public void ShouldHandleonlyManagerApproval()
+        {
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+
+                var accessReq = new AccessRequest(req.pkId);
+                accessReq.Ack();
+                accessReq.CreateWorkflow(new List<int>()
+                                             {
+                                                 managerActorId,
+                                             });
+
+                // get manager approal
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
+                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate == null);
+
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+
+            }
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+                var accessReq = new AccessRequest(req.pkId);
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
+                verifyWorkflowTransition(wfs[0], WorkflowState.Pending_Approval, WorkflowState.Approved);
+
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
+                verifyWorkflowTransition(wfs[0], WorkflowState.Pending_Approval, WorkflowState.Approved);
+
+
+                /*
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Team_Approver);
+                verifyWorkflowTransition(wfs[0], WorkflowState.Pending_Approval, WorkflowState.Approved);
+
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
+                verifyWorkflowTransition(wfs[0], WorkflowState.Not_Active, WorkflowState.Pending_Approval);
+                verifyWorkflowTransition(wfs[1], WorkflowState.Not_Active, WorkflowState.Pending_Approval);
+                verifyWorkflowTransition(wfs[2], WorkflowState.Not_Active, WorkflowState.Pending_Approval);
+                 */
+            }
+
+        }
+
+        [Test]
         public void ShouldHandleFromManagerToTeamApproveAndModifyTechApprover()
         {
 

@@ -756,18 +756,6 @@ namespace Apollo.AIM.SNAP.Model
             return newAddedActorIds;
         }
 
-        /*
-        private List<int> getOriginalActorList(SNAP_Request req)
-        {
-            var orgActorList = new List<int>();
-            foreach (var wf in req.SNAP_Workflows)
-            {
-                if (wf.actorId != 1)
-                    orgActorList.Add(wf.actorId);
-            }
-            return orgActorList;
-        }
-        */
 
         private List<int> getToDeletedActorList(SNAP_Request req, List<int> actorIds)
         {
@@ -1189,6 +1177,8 @@ namespace Apollo.AIM.SNAP.Model
                     informApproverForAction();
                     //db.SubmitChanges();
                     //ts.Complete();
+                    completeRequestApprovalCheck();
+                    db.SubmitChanges();
                     return true;
                 }
             //}
