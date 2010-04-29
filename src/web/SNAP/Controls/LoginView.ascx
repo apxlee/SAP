@@ -15,14 +15,8 @@
 		);
 </script>
 <script type="text/javascript">
-	//<![CDATA[
-	$(document).ready(
-	function() {
 		try { pageTracker._trackPageview("/LoginView"); }
 		catch (err) { }
-	}
-	);
-	//]]>
 </script>
 
 <div class="csm_container_center_700">
