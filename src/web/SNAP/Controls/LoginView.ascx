@@ -15,6 +15,7 @@
 		);
 </script>
 <script type="text/javascript">
+	alert('hi');
 		try { pageTracker._trackPageview(); }
 		catch (err) { }
 </script>
