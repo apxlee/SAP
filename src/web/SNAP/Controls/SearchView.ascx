@@ -27,10 +27,3 @@
 		</asp:Panel>
 	
 </div>
-<script type="text/javascript">
-	//<![CDATA[
-	//alert('searchview');
-		try { pageTracker._trackPageview("/SearchView"); }
-		catch (err) { }
-	//]]>
-</script>
