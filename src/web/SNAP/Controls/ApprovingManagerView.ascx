@@ -9,6 +9,8 @@
 	);
 	//]]>
 </script>
+<script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>MasterRequestBlade.js" type="text/javascript"></script>
+<script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>ApproverActions.js" type="text/javascript"></script>
 <div class="csm_container_center_700">
 	
 	<h1>Pending Approval</h1>

@@ -24,37 +24,27 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		
 		protected void Page_Load(object sender, EventArgs e)
 		{
-			PopulateUserInfo();
-			LoadReadOnlyRequestPanel();
-			LoadRequestTrackingPanel();
-
-            if (RequestState != RequestState.Search)
+            try
             {
-                try
+                PopulateUserInfo();
+                LoadReadOnlyRequestPanel();
+                LoadRequestTrackingPanel();
+
+                switch (SnapSession.RequestedView)
                 {
-                    switch ((Role)SnapSession.CurrentUser.CurrentRole)
-                    {
-                        case Role.ApprovingManager:
-                            LoadApprovingManagerPanel();
-                            break;
-
-                        case Role.AccessTeam:
-                            LoadAccessTeamPanels();
-                            break;
-
-                        case Role.SuperUser:
-                            LoadApprovingManagerPanel();
-                            LoadAccessTeamPanels();
-                            break;
-
-                        default:
-                            break;
-                    }
+                    case ViewIndex.my_approvals:
+                        LoadApprovingManagerPanel();
+                        break;
+                    case ViewIndex.access_team:
+                        LoadAccessTeamPanels();
+                        break;
+                    default:
+                        break;
                 }
-                catch (Exception ex)
-                {
-                    // TODO: if session not set, redirect to login?  throw message to user?  set role to user?
-                }
+            }
+            catch (Exception ex)
+            {
+                // TODO: if session not set, redirect to login?  throw message to user?  set role to user?
             }
 		}
 		
