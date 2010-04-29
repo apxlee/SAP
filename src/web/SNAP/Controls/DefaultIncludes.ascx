@@ -6,10 +6,7 @@
 	try { var pageTracker = _gat._getTracker("UA-15693359-2"); }
 	catch (err) { }
 	</script>    
-<script type="text/javascript">
-	try { pageTracker._trackPageview(); }
-	catch (err) { }
-</script>
+
 <link href="styles/Csm_Reset.css" rel="stylesheet" type="text/css" />
 <link href="styles/Csm_Grid976.css" rel="stylesheet" type="text/css" />
 <link href="styles/Csm_Template_v1.css" rel="stylesheet" type="text/css" />
