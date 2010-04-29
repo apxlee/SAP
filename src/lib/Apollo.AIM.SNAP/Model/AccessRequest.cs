@@ -47,6 +47,7 @@ namespace Apollo.AIM.SNAP.Model
 
                     if (result)
                     {
+                        addAccessTeamComment(accessTeamWF, "Ack @" + DateTime.Now, CommentsType.Access_Notes_AccessTeam);
                         db.SubmitChanges();
                     }
 
@@ -492,6 +493,10 @@ namespace Apollo.AIM.SNAP.Model
                         
 
                         //req.ticketNumber = "123456";
+
+                        addAccessTeamComment(accessTeamWF, 
+                            "Service Desk ticket: " + req.ticketNumber + " created @" + DateTime.Now, 
+                            CommentsType.Access_Notes_AccessTeam);
 
                         db.SubmitChanges();
                     }

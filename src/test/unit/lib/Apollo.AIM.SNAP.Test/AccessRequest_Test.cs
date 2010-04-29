@@ -1624,10 +1624,17 @@ namespace Apollo.AIM.SNAP.Test
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
                 Assert.IsTrue(wfs.Count == 1);
 
+                /*
                 var noSuchWorkflow = db.SNAP_Workflows.Where(w => w.actorId == teamApprovalActorId);
                 Assert.IsTrue(noSuchWorkflow.Count() == 0);
+                */
+
+                var noSuchWorkflow = req.SNAP_Workflows.Where(w => w.actorId == teamApprovalActorId);
+                Assert.IsTrue(noSuchWorkflow.Count() == 0);
+
 
                 var noSuchWorkflowState = db.SNAP_Workflow_States.Where(s => s.workflowId == goneWFid);
+                //var noSuchWorkflowState = reNAP_Workflow_States.Where(s => s.workflowId == goneWFid);
                 Assert.IsTrue(noSuchWorkflowState.Count() == 0);
 
                 var noSuchWorkflowComment = db.SNAP_Workflow_Comments.Where(c => c.workflowId == goneWFid);
@@ -2194,6 +2201,32 @@ namespace Apollo.AIM.SNAP.Test
         {
             string usrid = "pxlee";
 
+            //g.actorGroupType == (byte)ActorGroupType.Manager
+            try
+            {
+                using (var db = new SNAPDatabaseDataContext())
+                {
+                    var c =
+                        db.SNAP_Actors.Count(
+                            a => a.userId == usrid && a.SNAP_Actor_Group.actorGroupType == (byte) ActorGroupType.Manager);
+                    if (c == 0)
+                    {
+                        db.SNAP_Actors.InsertOnSubmit(new SNAP_Actor()
+                                                          {
+                                                              actor_groupId = 4,
+                                                              displayName = "Pong Lee",
+                                                              emailAddress = "pxlee@apollogrp.edu",
+                                                              isActive = true,
+                                                              isDefault = false
+                                                          });
+                        db.SubmitChanges();
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                
+            }
             removeManagerActorByUserId(usrid);
             Assert.IsTrue(ApprovalWorkflow.GetActorIdByUserId(ActorGroupType.Manager, usrid) != 0);
         }

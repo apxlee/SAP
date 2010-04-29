@@ -78,8 +78,8 @@ namespace Apollo.AIM.SNAP.Model
                         }
                          */
 
-                        var state = w.SNAP_Workflow_States.Single(s => s.completedDate == null && s.notifyDate != null);
-                        if (state.workflowStatusEnum == (byte)WorkflowState.Pending_Approval)
+                        var state = w.SNAP_Workflow_States.Where(s => s.completedDate == null && s.notifyDate != null).ToList();
+                        if (state.Count == 1 && state[0].workflowStatusEnum == (byte)WorkflowState.Pending_Approval)
                         {
                             wfId = w.pkId;
                             break;
