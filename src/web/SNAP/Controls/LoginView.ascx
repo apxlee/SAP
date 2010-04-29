@@ -17,7 +17,7 @@
 <script type="text/javascript">
 	alert('hi');
 		try { pageTracker._trackPageview(); }
-		catch (err) {alert('err');}
+		catch (err) {alert(err.toString());}
 </script>
 
 <div class="csm_container_center_700">
