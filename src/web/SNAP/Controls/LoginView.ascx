@@ -15,7 +15,7 @@
 		);
 </script>
 <script type="text/javascript">
-		try { pageTracker._trackPageview("/LoginView"); }
+		try { pageTracker._trackPageview(); }
 		catch (err) { }
 </script>
 
