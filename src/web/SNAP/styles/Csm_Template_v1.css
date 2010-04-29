@@ -523,12 +523,11 @@ TODO: REMOVE THIS SECTION
 	float: left;
 	}
 	
-.csm_template_1 .csm_input_checkradio_span {
+.csm_template_1 span.csm_input_checkradio_span {
     line-height: 1.5em;
-    font-size:.85em;
-    margin:0 8px 0 2px;
-    padding:0 2px 0 2px;
-    float:left;
+    font-size: .85em;
+    margin: 0 8px 0 2px;
+    float: left;
     }
 
 /* Input Buttons */	

@@ -15,13 +15,13 @@
 	<table border="0" cellpadding="0" cellspacing="0" class="csm_input_form_container">
 		<tr>
 			<td class="csm_input_form_control_column">
-				<input type="radio" name="_changeFilter" class="csm_input_checkradio" value="Pending Acknowledgement" />
+				<input type="radio" name="_changeFilter" onclick="filterClick(this);" class="csm_input_checkradio" value="Pending Acknowledgement" />
 				<asp:Label CssClass="csm_input_checkradio_span" ID="_pendingacknowledgementFilter" runat="server" />
-				<input type="radio" name="_changeFilter" class="csm_input_checkradio" value="Pending Workflow" />
+				<input type="radio" name="_changeFilter" onclick="filterClick(this);" class="csm_input_checkradio" value="Pending Workflow" />
 				<asp:Label CssClass="csm_input_checkradio_span" ID="_pendingworkflowFilter" runat="server" />	
-				<input type="radio" name="_changeFilter" class="csm_input_checkradio" value="Pending Provisioning" />
+				<input type="radio" name="_changeFilter" onclick="filterClick(this);" class="csm_input_checkradio" value="Pending Provisioning" />
 				<asp:Label CssClass="csm_input_checkradio_span" ID="_pendingprovisioningFilter" runat="server" />
-				<input type="radio" name="_changeFilter" checked="checked" class="csm_input_checkradio" value="Show All" />
+				<input type="radio" name="_changeFilter" onclick="filterClick(this);" checked="checked" class="csm_input_checkradio" value="Show All" />
 				<asp:Label CssClass="csm_input_checkradio_span" ID="_showallFilter" runat="server" />
 			</td>
 		</tr>					
