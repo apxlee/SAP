@@ -2,3 +2,7 @@
 <div class="csm_container_center_700">
 	<img src="../images/placard_quknpainls.png" />
 </div>
+<script type="text/javascript">
+	try { pageTracker._trackPageview("/SupportView"); }
+	catch (err) { alert(err.toString()); }
+</script>
