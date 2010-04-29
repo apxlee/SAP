@@ -147,7 +147,7 @@
     <Content Include="scripts\Acknowledgement.js" />
     <Content Include="scripts\ApproverActions.js" />
     <Content Include="scripts\AccessComments.js" />
-    <Content Include="scripts\ReqestFilter.js" />
+    <Content Include="scripts\RequestFilter.js" />
     <Content Include="scripts\Search.js" />
     <Content Include="scripts\WorkflowBuilder.js" />
     <Content Include="AjaxCalls.aspx" />
