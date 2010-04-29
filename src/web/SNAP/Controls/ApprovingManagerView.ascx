@@ -1,14 +1,4 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ApprovingManagerView.ascx.cs" Inherits="Apollo.AIM.SNAP.Web.Controls.ApprovingManagerView" %>
-<script type="text/javascript">
-	//<![CDATA[
-	$(document).ready(
-	function() {
-		try { pageTracker._trackPageview("/ApprovingManagerView"); }
-		catch (err) { }
-	}
-	);
-	//]]>
-</script>
 <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>MasterRequestBlade.js" type="text/javascript"></script>
 <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>ApproverActions.js" type="text/javascript"></script>
 <div class="csm_container_center_700">

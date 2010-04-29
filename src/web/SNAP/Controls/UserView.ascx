@@ -1,14 +1,14 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="UserView.ascx.cs" Inherits="Apollo.AIM.SNAP.Web.Controls.UserView" %>
-<script type="text/javascript">
-    //<![CDATA[
-    $(document).ready(
-	function() {
-	    try { pageTracker._trackPageview("/UserView"); }
-	    catch (err) { }
-	}
-	);
-    //]]>
-</script>
+
+
+
+
+
+
+
+
+
+
 <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>MasterRequestBlade.js" type="text/javascript"></script>
 <div class="csm_container_center_700">
 	
@@ -29,3 +29,7 @@
 	</asp:Panel>	
 
 </div>
+<script type="text/javascript">
+	//<![CDATA[
+	//]]>
+</script>

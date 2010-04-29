@@ -20,12 +20,11 @@
 			<asp:Button ID="_searchButton" Text="Search" CssClass="csm_html_button" OnClientClick="return validateInput(this);" OnClick="Search_Click" runat="server" />
 		</div>
 	</div>
-		<h1>Search Results</h1>
-		<asp:PlaceHolder ID="_searchResultsContainer" runat="server"></asp:PlaceHolder>
-		<asp:Panel ID="_nullDataMessage_SearchRequests" runat="server" CssClass="csm_content_container" Visible="false">
-			<div class="csm_text_container">
-				<p>There are no Search Requests at this time.</p>
-			</div>
-		</asp:Panel>
-	
+	<h1>Search Results</h1>
+	<asp:PlaceHolder ID="_searchResultsContainer" runat="server"></asp:PlaceHolder>
+	<asp:Panel ID="_nullDataMessage_SearchRequests" runat="server" CssClass="csm_content_container" Visible="false">
+		<div class="csm_text_container">
+			<p>There are no Search Requests at this time.</p>
+		</div>
+	</asp:Panel>
 </div>
