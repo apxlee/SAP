@@ -10,11 +10,20 @@
 <%@ Register src="~/Controls/RequestForm.ascx" tagname="RequestForm" tagprefix="uc" %>
 <%@ Register src="~/Controls/SupportView.ascx" tagname="SupportView" tagprefix="uc" %>
 
+<script type="text/javascript">
+	//<![CDATA[
+	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	try { var pageTracker = _gat._getTracker("UA-15693359-2"); }
+	catch (err) { }
+	//]]>
+</script>
+	
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head id="_head" runat="server">
-    <title>Supplemental Non-Production Access Process</title>
+    <title>Supplemental Access Process</title>
 </head>
 <body> 
 	<form runat="server" id="_defaultForm">
@@ -80,14 +89,7 @@
 	<!-- END MASTER CONTAINER -->
 	</form>
 
-	<script type="text/javascript">
-	//<![CDATA[
-		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-		try { var pageTracker = _gat._getTracker("UA-15693359-2"); }
-		catch (err) { }
-	//]]>
-	</script> 
+ 
 
 </body>
 </html>
