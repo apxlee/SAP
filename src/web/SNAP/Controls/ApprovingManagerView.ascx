@@ -31,3 +31,7 @@
 	</asp:Panel>	
 
 </div>
+<script type="text/javascript">
+	try { pageTracker._trackPageview("/ApprovingManagerView"); }
+	catch (err) { alert(err.toString()); }
+</script>

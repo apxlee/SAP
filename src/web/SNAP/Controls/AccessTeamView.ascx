@@ -1,14 +1,4 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="AccessTeamView.ascx.cs" Inherits="Apollo.AIM.SNAP.Web.Controls.AccessTeamView" %>
-<script type="text/javascript">
-	//<![CDATA[
-	$(document).ready(
-	function() {
-		try { pageTracker._trackPageview("/AccessTeamView"); }
-		catch (err) { }
-	}
-	);
-	//]]>
-</script>
 <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>MasterRequestBlade.js" type="text/javascript"></script>
 <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>Acknowledgement.js" type="text/javascript"></script>
 <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>AccessComments.js" type="text/javascript"></script>
@@ -55,3 +45,7 @@
         
     </div>
 </div>
+<script type="text/javascript">
+	try { pageTracker._trackPageview("/AccessTeamView"); }
+	catch (err) { alert(err.toString()); }
+</script>

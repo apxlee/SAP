@@ -114,3 +114,7 @@
             <asp:Button ID="_submit_form" Text="submit form" CssClass="csm_html_button" runat="server" onclick="_submitForm_Click" />
         </div>
      </div>
+<script type="text/javascript">
+	try { pageTracker._trackPageview("/RequestForm"); }
+	catch (err) { alert(err.toString()); }
+</script>     
