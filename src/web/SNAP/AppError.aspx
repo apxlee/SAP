@@ -39,5 +39,9 @@
 	</div>
 	<!-- END MASTER CONTAINER -->
 	</form>
+	<script type="text/javascript">
+		try { pageTracker._trackPageview("/AppError"); }
+		catch (err) { alert(err.toString()); }
+	</script>	
 </body>
 </html>
