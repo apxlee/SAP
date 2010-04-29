@@ -4,7 +4,7 @@
 	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
 	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
 	try { var pageTracker = _gat._getTracker("UA-15693359-2"); }
-	catch (err) { }
+	catch (err) {alert(err.toString());}
 </script>    
 
 <link href="styles/Csm_Reset.css" rel="stylesheet" type="text/css" />
