@@ -13,9 +13,6 @@
 	
 	<h1>Open Requests</h1>
 	<asp:PlaceHolder ID="_openRequestsContainer" runat="server"></asp:PlaceHolder>
-	<div class="csm_content_container">
-		<p>These are requests that have been approved by you, but are pending completion.</p>
-	</div>
 	<asp:Panel ID="_nullDataMessage_OpenRequests" runat="server" CssClass="csm_content_container" Visible="false">
 		<div class="csm_text_container">
 			<p>There are no Open Requests at this time.</p>
