@@ -66,8 +66,19 @@ namespace Apollo.AIM.SNAP.Web
 		{
 			// TODO: test to make sure this isn't null assignment?
 			SnapSession.SelectedRequestId = Request.QueryString[QueryStringConstants.REQUEST_ID];
-			ViewIndex requestedViewIndex = (ViewIndex)Enum.Parse(typeof(ViewIndex), Request.QueryString[QueryStringConstants.REQUESTED_VIEW_INDEX]);
-			Role currentRole = SnapSession.CurrentUser.CurrentRole;
+
+            // PONG!!! TODO - ask jds????
+            ViewIndex requestedViewIndex = ViewIndex.request_form;
+            try
+            {
+                requestedViewIndex =(ViewIndex)Enum.Parse(typeof(ViewIndex), Request.QueryString[QueryStringConstants.REQUESTED_VIEW_INDEX]);
+            }
+            catch (Exception ex)
+            {
+                
+            }
+
+		    Role currentRole = SnapSession.CurrentUser.CurrentRole;
 
 			switch (requestedViewIndex)
 			{

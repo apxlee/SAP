@@ -35,9 +35,9 @@ namespace Apollo.AIM.SNAP.Web.Controls
 				_managerName.Text = SnapSession.CurrentUser.ManagerName;
 			}
         
-            _requestFormData = loadRequestFormData();
+            _requestFormData =loadRequestFormData();
 
-            if (!brandNewRequest())
+            if (!brandNewRequest() && !Page.IsPostBack)
             {
                 this.UserName = _requestFormData[0].userDisplayName;
                 this.UserLoginId = _requestFormData[0].userId;
@@ -135,8 +135,10 @@ namespace Apollo.AIM.SNAP.Web.Controls
                 }
                 else
                 {
+                    requestID = System.Convert.ToInt32(SnapSession.SelectedRequestId);
+                    updateRequestUsrInfo(requestID, SnapSession.CurrentUser.LoginId, UserLoginId, UserName, ManagerLoginId, ManagerName);
                     RequestData.UpdateRequestData(newRequestDataList, _requestFormData);
-                    requestID = System.Convert.ToInt32(Request.QueryString["RequestId"]);
+                    
                     var accessReq = new AccessRequest(requestID);
                     accessReq.RequestChanged();
                 }
@@ -184,51 +186,81 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
         private List<usp_open_request_tabResult> loadRequestFormData()
         {
-			if (!string.IsNullOrEmpty(Request.QueryString["RequestId"]))
+            if (!string.IsNullOrEmpty(Request.QueryString[QueryStringConstants.REQUEST_ID]))
 			{
-				var requestId = System.Convert.ToInt32(Request.QueryString["RequestId"]);
+                var requestId = System.Convert.ToInt32(Request.QueryString[QueryStringConstants.REQUEST_ID]);
 				var db = new SNAPDatabaseDataContext();
 				var formData = db.usp_open_request_tab(SnapSession.CurrentUser.LoginId, requestId);
 				// formData contain history of all data fields, we are only interested in the latest
 
 				return formData.ToList();
 			}
-			else
-			{
-				return new List<usp_open_request_tabResult>();
-			}
+			return new List<usp_open_request_tabResult>();
 
-			//var requestId = Request.QueryString["RequestId"];
-			//int reqId = 0;
-			//// 1003
-			//try
-			//{
-			//    if (requestId != null)
-			//        reqId = System.Convert.ToInt32(requestId);
-			//}
-			//catch (Exception ex)
-			//{
-			//    Logger.Error("SNAP: Request Form - Request id convert error", ex);
-			//}
-
-
-			//if (reqId != 0)
-			//{
-			//    var db = new SNAPDatabaseDataContext();
-			//    var formData = db.usp_open_request_tab(WebUtilities.CurrentLoginUserId, reqId);
-			//    // formData contain history of all data fields, we are only interested in the latest
-
-			//    return formData.ToList();
-			//}
-			//else
-			//{
-			//    return new List<usp_open_request_tabResult>();
-			//}
         }
 
         private bool brandNewRequest()
         {
             return _requestFormData == null ||_requestFormData.Count() == 0;
         }
+
+        private void updateRequestUsrInfo(long requestId,
+                        string submitterId,
+                        string userId,
+                        string userName,
+                        string mgrId,
+                        string mgrName)
+        {
+            var change = false;
+            ADUserDetail usrDetail = null;
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.pkId == requestId);
+
+
+                if (req.submittedBy != submitterId)
+                {
+                    req.submittedBy = submitterId;
+                    change = true;
+                }
+
+
+                if (req.userId != userId)
+                {
+                    req.userId = userId;
+                    usrDetail = Apollo.AIM.SNAP.CA.DirectoryServices.GetUserByLoginName(userId);
+                    req.userTitle = usrDetail.Title;
+                    change = true;
+                }
+
+                if (req.userDisplayName != userName)
+                {
+                    req.userDisplayName = userName;
+                    change = true;
+                }
+
+                if (req.managerUserId != mgrId)
+                {
+                    req.managerUserId = mgrId;
+                    change = true;
+                }
+
+                if (req.managerDisplayName != mgrName)
+                {
+                    req.managerDisplayName = mgrName;
+                    change = true;
+                }
+
+
+                if (change)
+                {
+                    req.lastModifiedDate = DateTime.Now;
+                    db.SubmitChanges();
+                }
+            }
+
+        }
+
     }
 }

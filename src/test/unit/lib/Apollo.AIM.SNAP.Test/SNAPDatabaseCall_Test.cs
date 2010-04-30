@@ -22,10 +22,10 @@ namespace Apollo.AIM.SNAP.Test
         {
             using (var db = new SNAPDatabaseDataContext())
             {
-
-                Console.WriteLine("Access Team Requests:");
-                db.GetAllRequests("clschwim", "accessteam");
-
+                var t1 = DateTime.Now;
+                Console.WriteLine("Access Team Requests:") ;
+                db.GetAllRequests("pxlee", "accessteam");
+                
                 Console.WriteLine("\tOpen Requests:");
                 output(db.OpenRquests);
                 Console.WriteLine("\tClose Requests:");
@@ -33,7 +33,7 @@ namespace Apollo.AIM.SNAP.Test
 
                 Console.WriteLine("\n======");
                 Console.WriteLine("My Requests:");
-                db.GetAllRequests("clschwim", "my");
+                db.GetAllRequests("pxlee", "my");
                 Console.WriteLine("\tOpen Requests:");
                 output(db.OpenRquests);
                 Console.WriteLine("\tClose Requests:");
@@ -41,11 +41,14 @@ namespace Apollo.AIM.SNAP.Test
 
                 Console.WriteLine("\n======");
                 Console.WriteLine("Approval Requests:");
-                db.GetAllRequests("clschwim", "approval");
+                db.GetAllRequests("pxlee", "approval");
                 Console.WriteLine("\tOpen Requests:");
                 output(db.OpenRquests);
                 Console.WriteLine("\tClose Requests:");
                 output(db.CloseRquests);
+                 
+                var t2 = DateTime.Now;
+                Console.WriteLine("Duration: " + (t2-t1).Duration());
 
             }    
 
@@ -56,9 +59,10 @@ namespace Apollo.AIM.SNAP.Test
             var reqDetails = (List<usp_open_my_request_detailsResult>)data["reqDetails"];
             Console.WriteLine("\t\tReq details cnt: " + reqDetails.Count);
 
+            
             foreach (var d in reqDetails)
             {
-                //Console.WriteLine(d.pkId + "," + d.statusEnum);
+                Console.WriteLine(d.pkId + "," + d.statusEnum);
             }
             var texts = (List<SNAP_Access_User_Text>)data["reqText"];
             Console.WriteLine("\t\tReq texts cnt: " + texts.Count);
@@ -85,6 +89,7 @@ namespace Apollo.AIM.SNAP.Test
             {
                 //Console.WriteLine(c.requestId + "," + c.commentText);
             }
+            
             
         }
         [Test]
