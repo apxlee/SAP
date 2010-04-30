@@ -22,9 +22,9 @@ function AccessComments(obj, requestId) {
             success: function(msg) { alert(msg.d); }
 		,
             error: function(XMLHttpRequest, textStatus, errorThrown) {
-                alert("GetNames Error: " + XMLHttpRequest);
-                alert("GetNames Error: " + textStatus);
-                alert("GetNames Error: " + errorThrown);
+                alert("Add Comment Error: " + XMLHttpRequest);
+                alert("Add Comment Error: " + textStatus);
+                alert("Add Comment Error: " + errorThrown);
             }
         });
     }
