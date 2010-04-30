@@ -80,9 +80,9 @@ function AccessTeamActions(obj, requestId, action) {
         }
 		,
         error: function(XMLHttpRequest, textStatus, errorThrown) {
-            alert("GetNames Error: " + XMLHttpRequest);
-            alert("GetNames Error: " + textStatus);
-            alert("GetNames Error: " + errorThrown);
+            alert("AccessTeamAction Error: " + XMLHttpRequest);
+            alert("AccessTeamAction Error: " + textStatus);
+            alert("AccessTeamAction Error: " + errorThrown);
         }
     });
 }

@@ -42,9 +42,9 @@ function ApproverActions(obj,requestId,action) {
 		success: function(msg) { alert(msg.d); }
 		,
 		error: function(XMLHttpRequest, textStatus, errorThrown) {
-			alert("GetNames Error: " + XMLHttpRequest);
-			alert("GetNames Error: " + textStatus);
-			alert("GetNames Error: " + errorThrown);
+			alert("ApproverAction Error: " + XMLHttpRequest);
+			alert("ApproverAction Error: " + textStatus);
+			alert("ApproverAction Error: " + errorThrown);
 		}
 	});
 }
