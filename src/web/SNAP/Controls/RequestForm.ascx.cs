@@ -55,7 +55,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
                 requestFormSection.ParentID = access.pkId.ToString();
 
-                if (!brandNewRequest())
+                if (!brandNewRequest() && !Page.IsPostBack)
                     requestFormSection.RequestData = _requestFormData;
 
                 Label outerDescription;
@@ -112,6 +112,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
         protected void _submitForm_Click(object sender, EventArgs e)
         {
             int requestID;
+            var sendEmail = true;
             try
             {
                 List<RequestData> newRequestDataList = RequestFormRequestData(_requestForm);
@@ -128,23 +129,37 @@ namespace Apollo.AIM.SNAP.Web.Controls
                         if (requestID > 0)
                         {
                             //TODO set Session variable to requestID
-                            
                         }
-                        else { Logger.Fatal("SNAP: Request Form -  Submit failure", "Unknown Error"); }
+                        else
+                        {
+                            Logger.Fatal("SNAP: Request Form -  Submit failure", "Unknown Error");
+                            sendEmail = false;
+                        }
                     }
                 }
                 else
                 {
-                    requestID = System.Convert.ToInt32(SnapSession.SelectedRequestId);
-                    updateRequestUsrInfo(requestID, SnapSession.CurrentUser.LoginId, UserLoginId, UserName, ManagerLoginId, ManagerName);
+                    //requestID = System.Convert.ToInt32(SnapSession.SelectedRequestId);
+                    requestID = System.Convert.ToInt32(Request.QueryString[QueryStringConstants.REQUEST_ID]);
+                    updateRequestUsrInfo(requestID, SnapSession.CurrentUser.LoginId, UserLoginId, UserName,
+                                         ManagerLoginId, ManagerName);
                     RequestData.UpdateRequestData(newRequestDataList, _requestFormData);
-                    
+
                     var accessReq = new AccessRequest(requestID);
-                    accessReq.RequestChanged();
+                    if (!accessReq.RequestChanged())
+                    {
+                        sendEmail = false;
+                    }
                 }
 
-                Email.UpdateRequesterStatus(SnapSession.CurrentUser.LoginId, UserName, requestID, WorkflowState.Pending_Acknowledgement, string.Empty);
-                Email.TaskAssignToApprover(ConfigurationManager.AppSettings["AIM-DG"], "Access Team", requestID, UserName);
+                if (sendEmail)
+                {
+                    Email.UpdateRequesterStatus(SnapSession.CurrentUser.LoginId, UserName, requestID,
+                                                WorkflowState.Pending_Acknowledgement, string.Empty);
+                    Email.TaskAssignToApprover(ConfigurationManager.AppSettings["AIM-DG"], "Access Team", requestID,
+                                               UserName);
+                }
+
 
             }
             catch (Exception ex)

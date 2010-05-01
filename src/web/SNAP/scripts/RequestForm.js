@@ -513,7 +513,7 @@ var userManager = {
         this.HandleEditManagerName();
         this.HandleClearClick();
         this.HandleSubmitClick();
-        this.Clear();
+        //this.Clear();
 
     }
 }
