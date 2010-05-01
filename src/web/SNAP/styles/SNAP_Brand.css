@@ -24,9 +24,9 @@
 	height: 58px;
 	}
 	
-/* LOGIN PAGE */
+/* Default PAGE */
 
-div#login_description_logo {
+div#Default_description_logo {
 	background: url('../images/logo_aim_small.png')  no-repeat;
 	width: 110px;
 	height: 110px;
@@ -109,47 +109,47 @@ li a.snap_aim_text_one_digit span {padding: 0 0 0 99px;}
 	
 /* LINK BUTTON DEFAULT SIZE */
 
-#login a {width: 47px;}	
-#request_form a {width: 98px;}
-#my_requests a {width: 90px;}
-#my_approvals a {width: 134px;}
-#access_team a {width: 129px;}
+#default a {width: 47px;}	
+#requestform a {width: 98px;}
+#myrequests a {width: 90px;}
+#myapprovals a {width: 134px;}
+#accessteam a {width: 129px;}
 #search a {width: 47px;}
 #support a {width: 56px;}
 
-#login a
-, #request_form a
-, #my_requests a
-, #my_approvals a
-, #access_team a
+#default a
+, #requestform a
+, #myrequests a
+, #myapprovals a
+, #accessteam a
 , #search a
 , #support a {
 	background: url('../images/slider_heading_links.png') no-repeat;
 	padding: 0 17px 0 17px !important;}
 
-#login a:hover {background-position: -1255px -100px;}
-#request_form a:hover {background-position: -34px -100px;}
-#my_requests a:hover {background-position: -239px -100px;}
-#my_approvals a:hover {background-position: -416px -100px;}
-#access_team a:hover {background-position: -618px -100px;}
+#default a:hover {background-position: -1255px -100px;}
+#requestform a:hover {background-position: -34px -100px;}
+#myrequests a:hover {background-position: -239px -100px;}
+#myapprovals a:hover {background-position: -416px -100px;}
+#accessteam a:hover {background-position: -618px -100px;}
 #search a:hover {background-position: -859px -100px;}
 #support a:hover {background-position: -1055px -100px;}
 
 /* YOU ARE HERE */
 
-#login a {background-position: -1255px 0px;}
-#request_form a {background-position: -34px 0px;}
-#my_requests a {background-position: -239px 0px;}
-#my_approvals a {background-position: -416px 0px;}
-#access_team a {background-position: -618px 0px;}
+#default a {background-position: -1255px 0px;}
+#requestform a {background-position: -34px 0px;}
+#myrequests a {background-position: -239px 0px;}
+#myapprovals a {background-position: -416px 0px;}
+#accessteam a {background-position: -618px 0px;}
 #search a {background-position: -859px 0px;}
 #support a {background-position: -1055px 0px;}
 
-div.login #login a {background-position: -1255px -50px;}
-div.request_form #request_form a {background-position: -34px -50px;}
-div.my_requests #my_requests a {background-position: -239px -50px;}
-div.my_approvals #my_approvals a {background-position: -416px -50px;}
-div.access_team #access_team a {background-position: -618px -50px;}
+div.default #default a {background-position: -1255px -50px;}
+div.requestform #requestform a {background-position: -34px -50px;}
+div.myrequests #myrequests a {background-position: -239px -50px;}
+div.myapprovals #myapprovals a {background-position: -416px -50px;}
+div.accessteam #accessteam a {background-position: -618px -50px;}
 div.search #search a {background-position: -859px -50px;}
 div.support #support a {background-position: -1055px -50px;}
 
