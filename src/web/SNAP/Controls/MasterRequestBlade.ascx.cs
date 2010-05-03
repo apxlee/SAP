@@ -30,13 +30,13 @@ namespace Apollo.AIM.SNAP.Web.Controls
                 LoadReadOnlyRequestPanel();
                 LoadRequestTrackingPanel();
 
-                switch (WebUtilities.GetPageName(Page))
+				switch (Page.GetType().Name.StripUnderscoreAndExtension().ToLower())
                 {
-                    case PageNames.APPROVING_MANAGER:
+                    case "myapprovals" :
                         LoadApprovingManagerPanel();
                         break;
                     
-                    case PageNames.ACCESS_TEAM:
+                    case "accessteam" :
                         LoadAccessTeamPanels();
                         break;
 
