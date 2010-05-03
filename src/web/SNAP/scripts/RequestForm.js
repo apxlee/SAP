@@ -481,6 +481,7 @@ var userManager = {
                 buttons: {
                     Acknowledge: function() {
                         $("#_requestFormControl__submit_form").trigger('click');
+                        //$("button[id$='_submit_form']").trigger('click');
                         $(this).dialog('close');
                     },
                     Cancel: function() {
