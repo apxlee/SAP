@@ -6,6 +6,9 @@
 		and Request for Change require a detailed description.</p>
 	</div>
 	
+	<!-- HIDDEN INPUTS -->
+    <input type="hidden" id="_currentUserDisplayName" runat="server" />
+    <input type="hidden" id="_currentUserId" runat="server" />
     		     
     <fieldset><!-- use fieldset for standards & compliance -->
 	<table border="0" cellpadding="0" cellspacing="0" class="csm_input_form_container">

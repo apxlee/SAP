@@ -23,7 +23,7 @@ function changeDenyClick(obj) {
 function ApproverActions(obj,requestId,action) {
     var comments;
     var textarea = $(obj).parent().prev().find("textarea");
-    var approverName = $("#_currentUserDisplayName").val()
+    var approverName = $("input[id$='_currentUserDisplayName']").val()
     switch (action) 
     {
         case '0':
@@ -69,7 +69,10 @@ function ApproverActions(obj,requestId,action) {
                             }
                         });
                         break;
-                }    
+                }
+            }
+            else {
+                alert("ApproverAction Error: Action returned false. requestId - " + requestId + " - action - " + action + " - actor - " + approverName);
             }
         }
 		,

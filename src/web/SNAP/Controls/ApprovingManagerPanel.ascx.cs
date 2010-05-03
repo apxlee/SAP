@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Apollo.AIM.SNAP.Model;
+using Apollo.AIM.SNAP.Web.Common;
 
 namespace Apollo.AIM.SNAP.Web.Controls
 {
@@ -19,6 +20,8 @@ namespace Apollo.AIM.SNAP.Web.Controls
             _requestChange.Disabled = true;
             _deny.Attributes.Add("onclick", "ApproverActions(this,'" + RequestId + "','" + (byte)WorkflowAction.Denied + "');");
             _deny.Disabled = true;
+            _currentUserDisplayName.Value = SnapSession.CurrentUser.FullName;
+            _currentUserId.Value = SnapSession.CurrentUser.LoginId;
         }
 	}
 }

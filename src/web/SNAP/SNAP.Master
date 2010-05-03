@@ -21,9 +21,6 @@
 	<form runat="server" id="_defaultForm">
 	
 	<uc:DefaultIncludes id="_includes" runat="server" />
-    <!-- HIDDEN INPUTS -->
-    <input type="hidden" id="_currentUserDisplayName" runat="server" />
-    <input type="hidden" id="_currentUserId" runat="server" />
 	
 	<!-- BEGIN MASTER CONTAINER -->
 	<div class="csm_container_100 csm_template_1">
