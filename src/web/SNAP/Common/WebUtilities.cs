@@ -29,6 +29,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 		
 		public static string GetPageName(Page currentPage)
 		{
+			// TODO: does this work?!?
 			return currentPage.GetType().Name.StripUnderscoreAndExtension().ToLower();
 		}
 		
@@ -68,7 +69,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 			
 			if (currentRole != Role.SuperUser)
 			{
-				switch (pageName)
+				switch (pageName.ToLower())
 				{
 					case PageNames.ACCESS_TEAM:
 						isRedirect = (currentRole == Role.AccessTeam) ? false : true;
