@@ -1,6 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SNAP.Master" AutoEventWireup="true" CodeBehind="MyApprovals.aspx.cs" Inherits="Apollo.AIM.SNAP.Web.MyApprovals" %>
-<asp:Content ID="Content1" ContentPlaceHolderID="_headPlaceHolder" runat="server">
-</asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="_contentPlaceHolder" runat="server">
-	<p>my approvals</p>
+<%@ Register src="~/Controls/ApprovingManagerView.ascx" tagname="ApprovingManagerView" tagprefix="uc" %>
+<asp:Content ID="_contentContainer" ContentPlaceHolderID="_contentPlaceHolder" runat="server">
+	<uc:ApprovingManagerView id="_approvingManagerViewControl" runat="server" />
 </asp:Content>

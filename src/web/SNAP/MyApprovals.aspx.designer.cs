@@ -12,5 +12,14 @@ namespace Apollo.AIM.SNAP.Web {
     
     
     public partial class MyApprovals {
+        
+        /// <summary>
+        /// _approvingManagerViewControl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Apollo.AIM.SNAP.Web.Controls.ApprovingManagerView _approvingManagerViewControl;
     }
 }
