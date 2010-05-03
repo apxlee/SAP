@@ -5,6 +5,7 @@ using System.Configuration;
 
 using Apollo.AIM.SNAP.Model;
 using Apollo.AIM.SNAP.CA;
+using Apollo.CA.Logging;
 
 namespace Apollo.AIM.SNAP.Web.Common
 {
@@ -15,10 +16,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 		public string ManagerName { get; set; }
 		public string ManagerLoginId { get; set; }
 		public Role CurrentRole { get; set; }
-		//public ViewIndex DefaultView { get; private set; } // TODO: remove
 		public string DefaultPage { get; private set; }
-
-		private bool _isAccessTeam = false;
 
 		public SnapUser(string networkId)
 		{
@@ -42,10 +40,6 @@ namespace Apollo.AIM.SNAP.Web.Common
 			try
 			{
 				ADUserDetail userDetail = CA.DirectoryServices.GetUserByLoginName(LoginId);
-				if (userDetail.MemberOf.ToLower().Trim().Contains("access"))
-				{
-					_isAccessTeam = true;
-				}
 				FullName = userDetail.FirstName + " " + userDetail.LastName;
 				ManagerName = userDetail.ManagerName;
 				ManagerLoginId = userDetail.Manager.LoginName; // TODO: is this id? what is full name?
@@ -61,35 +55,34 @@ namespace Apollo.AIM.SNAP.Web.Common
 		
 		private void SetRole()
 		{
-#if DEBUG
-	CurrentRole = Role.Requestor;
-	return;
-#endif
+//#if DEBUG
+//    CurrentRole = Role.Requestor;
+//    return;
+//#endif
+			CurrentRole = Role.Requestor;
 
-			using (var snapDb = new SNAPDatabaseDataContext())
+			using (var db = new SNAPDatabaseDataContext())
 			try
 			{
-				if (_isAccessTeam)
-				{
-					var rolecheck = snapDb.SNAP_Actors.Where(a => a.actor_groupId == (int)ActorGroupType.Workflow_Admin && a.userId == LoginId && a.isActive == true);
-					// TODO: we need to think about this... 
-					// if they aren't in the "Heather" subgroup, but are AIM members, should they really be superuser?
-					// could move the superuser list to web.config
-					// superUser list is the same as maintenanceUser?
-					if (rolecheck.Count() > 0) {CurrentRole = Role.SuperUser;}
-					else {CurrentRole = Role.AccessTeam;}
-				}
-				else
-				{
-                    var rolecheck = snapDb.SNAP_Actors.Where(a => a.actor_groupId != (int)ActorGroupType.Workflow_Admin && a.userId == LoginId && a.isActive == true);
-					if (rolecheck.Count() > 0) { CurrentRole = Role.ApprovingManager; }
-					else { CurrentRole = Role.Requestor; }
-				}
+				int approverCount = (from sa in db.SNAP_Actors
+					join sag in db.SNAP_Actor_Groups on sa.actor_groupId equals sag.pkId
+					where sa.userId == LoginId
+					&& (sag.actorGroupType == 0 || sag.actorGroupType == 1 || sag.actorGroupType == 2)
+					select new { sa.pkId }).Count();
+							 
+				int accessTeamCount = (from sa in db.SNAP_Actors
+					join sag in db.SNAP_Actor_Groups on sa.actor_groupId equals sag.pkId
+					where sa.userId == LoginId
+					&& sag.actorGroupType == 3
+					select new { sa.pkId }).Count();
+				
+				if (approverCount > 0) { CurrentRole = Role.ApprovingManager; }
+				if (accessTeamCount > 0) { CurrentRole = Role.AccessTeam; }
+				if ((approverCount > 0) && (accessTeamCount > 0)) { CurrentRole = Role.SuperUser; }
 			}
 			catch (Exception ex)
 			{
 				// TODO: Logger.Error("SnapUser > SetRole", ex);
-				CurrentRole = Role.NotAuthorized;
 			}
 		}
 		
@@ -116,32 +109,5 @@ namespace Apollo.AIM.SNAP.Web.Common
 					break;			
 			}
 		}
-		
-		//private void SetDefaultView() // TODO: remove
-		//{
-		//    //switch (CurrentRole)
-		//    //{
-		//    //    case Role.ApprovingManager:
-		//    //        DefaultView = ViewIndex.my_approvals;
-		//    //        break;
-
-		//    //    case Role.AccessTeam:
-		//    //        DefaultView = ViewIndex.access_team;
-		//    //        break;
-
-		//    //    case Role.SuperUser:
-		//    //        DefaultView = ViewIndex.my_requests;
-		//    //        break;
-
-		//    //    case Role.Requestor:
-		//    //        DefaultView = ViewIndex.my_requests;
-		//    //        break;
-
-		//    //    case Role.NotAuthorized:
-		//    //    default:
-		//    //        DefaultView = ViewIndex.login;
-		//    //        break;
-		//    //}
-		//}
 	}
 }
