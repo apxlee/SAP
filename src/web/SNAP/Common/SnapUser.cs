@@ -117,31 +117,31 @@ namespace Apollo.AIM.SNAP.Web.Common
 			}
 		}
 		
-		private void SetDefaultView() // TODO: remove
-		{
-			//switch (CurrentRole)
-			//{
-			//    case Role.ApprovingManager:
-			//        DefaultView = ViewIndex.my_approvals;
-			//        break;
+		//private void SetDefaultView() // TODO: remove
+		//{
+		//    //switch (CurrentRole)
+		//    //{
+		//    //    case Role.ApprovingManager:
+		//    //        DefaultView = ViewIndex.my_approvals;
+		//    //        break;
 
-			//    case Role.AccessTeam:
-			//        DefaultView = ViewIndex.access_team;
-			//        break;
+		//    //    case Role.AccessTeam:
+		//    //        DefaultView = ViewIndex.access_team;
+		//    //        break;
 
-			//    case Role.SuperUser:
-			//        DefaultView = ViewIndex.my_requests;
-			//        break;
+		//    //    case Role.SuperUser:
+		//    //        DefaultView = ViewIndex.my_requests;
+		//    //        break;
 
-			//    case Role.Requestor:
-			//        DefaultView = ViewIndex.my_requests;
-			//        break;
+		//    //    case Role.Requestor:
+		//    //        DefaultView = ViewIndex.my_requests;
+		//    //        break;
 
-			//    case Role.NotAuthorized:
-			//    default:
-			//        DefaultView = ViewIndex.login;
-			//        break;
-			//}
-		}
+		//    //    case Role.NotAuthorized:
+		//    //    default:
+		//    //        DefaultView = ViewIndex.login;
+		//    //        break;
+		//    //}
+		//}
 	}
 }

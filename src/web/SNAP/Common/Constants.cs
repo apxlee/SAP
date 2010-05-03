@@ -9,7 +9,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 	{
 		public const string DEMONSTRATION_ROLE = "role";
 		public const string REQUEST_ID = "requestId";
-		public const string REQUESTED_VIEW_INDEX = "viewIndex"; // remove
+		//public const string REQUESTED_VIEW_INDEX = "viewIndex"; // remove
 		public const string REFERRING_URL = "refurl";
 		public const string ERROR_REASON = "errorReason";
 	}
@@ -19,7 +19,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 		public const string CURRENT_USER = "CurrentUser";
 		public const string IS_USER_CREATED = "IsUserCreated";
 		public const string SELECTED_REQUEST_ID = "SelectedRequestId";
-		public const string REQUESTED_VIEW_INDEX = "RequestedViewIndex"; // remove
+		//public const string REQUESTED_VIEW_INDEX = "RequestedViewIndex"; // remove
 		public const string IS_REQUEST_PREPOPULATED = "IsRequestPrepopulated";
 		public const string REQUESTED_PAGE = "RequestedPage";
 	}
