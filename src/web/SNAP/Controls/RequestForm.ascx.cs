@@ -21,10 +21,10 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
         protected void Page_Load(object sender, EventArgs e)
         {
-			if (WebUtilities.CurrentViewIndex == ViewIndex.request_form || Page.IsPostBack)
-			{
+			//if (WebUtilities.CurrentViewIndex == ViewIndex.request_form || Page.IsPostBack)
+			//{
 				BuildRequestForm();
-			}
+			//}
         }
         
         private void BuildRequestForm()
