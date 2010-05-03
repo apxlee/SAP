@@ -14,42 +14,6 @@ namespace Apollo.AIM.SNAP.Web {
     public partial class AppError {
         
         /// <summary>
-        /// _head control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlHead _head;
-        
-        /// <summary>
-        /// _defaultForm control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm _defaultForm;
-        
-        /// <summary>
-        /// _includes control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Apollo.AIM.SNAP.Web.Controls.DefaultIncludes _includes;
-        
-        /// <summary>
-        /// _headerControl control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Apollo.AIM.SNAP.Web.Controls.Header _headerControl;
-        
-        /// <summary>
         /// _errorMessage control.
         /// </summary>
         /// <remarks>
@@ -57,14 +21,5 @@ namespace Apollo.AIM.SNAP.Web {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label _errorMessage;
-        
-        /// <summary>
-        /// _footerControl control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Apollo.AIM.SNAP.Web.Controls.Footer _footerControl;
     }
 }

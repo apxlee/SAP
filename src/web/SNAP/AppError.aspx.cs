@@ -3,7 +3,7 @@ using Apollo.AIM.SNAP.Web.Common;
 
 namespace Apollo.AIM.SNAP.Web
 {
-	public partial class AppError : System.Web.UI.Page
+	public partial class AppError : SnapPage
 	{
 		protected void Page_Load(object sender, EventArgs e)
 		{
@@ -17,10 +17,13 @@ namespace Apollo.AIM.SNAP.Web
 						_errorMessage.Text = "<p><strong>Unauthorized View</strong><br/>"
 							+ "It appears you are attempting to view a page that is not available to your role.<br/>"
 							+ "Please select one of the links in the header to continue.</p>";
-						_errorMessage.CssClass = "csm_error_text";
 						break;
 					
+					case "unhandled":
 					default :
+						_errorMessage.Text = "<p><strong>Unhandled Exception</strong><br/>"
+							+ "The application reported an error that was not handled.<br/>"
+							+ "Please select one of the links in the header to continue.</p>";
 						break;
 				}
 			}

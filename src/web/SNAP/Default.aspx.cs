@@ -15,9 +15,6 @@ namespace Apollo.AIM.SNAP.Web
 		protected void Page_Load(object sender, EventArgs e)
 		{
 			_password.Text = "Password1"; // TODO: REMOVE THIS AFTER DEV COMPLETE!!!
-
-			//WebUtilities.SetRibbonContainerClass("login");
-			//string blah = Page.GetType().Name;
 		}
 
 		private void DisplayMessage(string message, bool isError)
@@ -36,26 +33,21 @@ namespace Apollo.AIM.SNAP.Web
 			}
 			else
 			{
-				Session.Clear();
-
-				// TODO: make sure networkid is validated client-side so no nulls here
-				string networkId = _networkId.Text.ToLower().Trim();
-				string redirectUrl = "Default.aspx";
-
-				SnapUser currentUser = new SnapUser(networkId);
+				SnapSession.ClearCurrentUser();
+				SnapUser currentUser = new SnapUser(_networkId.Text.ToLower().Trim());  // TODO: make sure networkid is validated client-side so no nulls here
 				SnapSession.CurrentUser = currentUser;
 
-				if (!string.IsNullOrEmpty(Request.QueryString.ToString()))
+				string redirectConstant = SnapSession.CurrentUser.DefaultPage;
+
+				if (!string.IsNullOrEmpty(SnapSession.RequestedPage))
 				{
-					// TODO: strip out page name and append extra query string values to it
-					redirectUrl += "?" + Request.QueryString.ToString();
+					redirectConstant = SnapSession.RequestedPage;
 				}
 				else
 				{
 					if (_loginPathSelection.Value == "request_form" || _loginPathSelection.Value == "proxy_request")
 					{
-						//redirectUrl += "?" + QueryStringConstants.REQUESTED_VIEW_INDEX + "=" + (int)ViewIndex.request_form;
-						redirectUrl = "MyRequests.aspx";
+						redirectConstant = PageNames.REQUEST_FORM;
 					}
 
 					if (_loginPathSelection.Value == "request_form")
@@ -63,10 +55,8 @@ namespace Apollo.AIM.SNAP.Web
 						SnapSession.IsRequestPrePopulated = true;
 					}
 				}
-				
-				// TODO: logic to direct to page based on role
 
-				WebUtilities.Redirect(redirectUrl, false);
+				WebUtilities.Redirect(redirectConstant);
 			}
 		}
 

@@ -41,7 +41,7 @@ namespace Apollo.AIM.SNAP.Web
 				if (string.IsNullOrEmpty(Request.QueryString[QueryStringConstants.REQUEST_ID])
 					&& string.IsNullOrEmpty(Request.QueryString[QueryStringConstants.REQUESTED_VIEW_INDEX]))
 				{
-					WebUtilities.SetActiveView((int)SnapSession.CurrentUser.DefaultView);
+					//WebUtilities.SetActiveView((int)SnapSession.CurrentUser.DefaultView);
 				}
 				else
 				{
