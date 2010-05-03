@@ -1,7 +1,7 @@
 ﻿
 namespace Apollo.AIM.SNAP.Web.Common
 {
-	public enum ViewIndex
+	public enum ViewIndex // TODO: remove
 	{
 		login = 0,
 		request_form = 1,

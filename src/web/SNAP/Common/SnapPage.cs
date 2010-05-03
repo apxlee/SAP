@@ -19,7 +19,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 				, PageNames.APP_ERROR
 				, QueryStringConstants.ERROR_REASON);
 			
-			string currentPageName = Page.GetType().Name.StripUnderscoreAndExtension().ToLower();
+			string currentPageName = WebUtilities.GetPageName(Page);
 
 			if (Request.QueryString.Count > 0)
 			{
@@ -30,14 +30,15 @@ namespace Apollo.AIM.SNAP.Web.Common
 			
 			if (!SnapSession.IsUserCreated)
 			{
-				if (currentPageName != PageNames.DEFAULT_LOGIN.ToLower() && currentPageName != PageNames.SUPPORT.ToLower())
-					{WebUtilities.Redirect(PageNames.DEFAULT_LOGIN);}
+				if (currentPageName != PageNames.DEFAULT_LOGIN.ToLower() 
+					&& currentPageName != PageNames.SUPPORT.ToLower()
+					&& currentPageName != PageNames.APP_ERROR.ToLower() )
+					{
+						WebUtilities.Redirect(PageNames.DEFAULT_LOGIN);
+					}
 			}
 
 			base.OnLoad(e);
-			
-			// then check if auth'd for page requesting
-			// then check for query strings
 		}
 
 		protected override void OnPreRender(EventArgs e)

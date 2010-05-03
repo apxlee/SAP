@@ -27,6 +27,11 @@ namespace Apollo.AIM.SNAP.Web.Common
 			get { return HttpContext.Current.Server.MachineName; }
 		}
 		
+		public static string GetPageName(Page currentPage)
+		{
+			return currentPage.GetType().Name.StripUnderscoreAndExtension().ToLower();
+		}
+		
 		public static bool IsSuperUser(string networkId)
 		{
 			string[] superUsers = ConfigurationManager.AppSettings["SNAPSuperUsers"].ToString().Split(',');
@@ -55,38 +60,64 @@ namespace Apollo.AIM.SNAP.Web.Common
 			Panel ribbonContainer = (Panel)WebUtilities.FindControlRecursive(currentPage, "_ribbonContainerOuter");
 			ribbonContainer.CssClass = className;
 		}
-
-		public static void SetActiveView(int viewIndex)
-		{
-			Page currentPage = HttpContext.Current.Handler as Page;
-			MultiView multiView = (MultiView)WebUtilities.FindControlRecursive(currentPage, "_masterMultiView");
-			Panel ribbonContainer = (Panel)WebUtilities.FindControlRecursive(currentPage, "_ribbonContainerOuter");
-
-			try
-			{
-				multiView.ActiveViewIndex = viewIndex;
-				ribbonContainer.CssClass = Convert.ToString((ViewIndex)Enum.Parse(typeof(ViewIndex), viewIndex.ToString()));
-				SnapSession.RequestedView = (ViewIndex)viewIndex;
-			}
-			catch
-			{
-				multiView.ActiveViewIndex = -1;
-			}
-		}
 		
-		public static ViewIndex CurrentViewIndex
+		public static void RoleCheck(string pageName)
 		{
-			get 
-			{
-				Page currentPage = HttpContext.Current.Handler as Page;
-				MultiView multiView = (MultiView)WebUtilities.FindControlRecursive(currentPage, "_masterMultiView");
+			Role currentRole = SnapSession.CurrentUser.CurrentRole;
+			bool isRedirect = false;
 			
-				return (ViewIndex)multiView.ActiveViewIndex;
+			if (currentRole != Role.SuperUser)
+			{
+				switch (pageName)
+				{
+					case PageNames.ACCESS_TEAM:
+						isRedirect = (currentRole == Role.AccessTeam) ? false : true;
+						break;
+						
+					case PageNames.APPROVING_MANAGER:
+						isRedirect = (currentRole == Role.ApprovingManager) ? false : true;
+						break;
+						
+					default:
+						isRedirect = true;
+						break;
+				}
 			}
+
+			if (isRedirect) { WebUtilities.Redirect("AppError.aspx?errorReason=wrongRole", true); }
 		}
+
+		//public static void SetActiveView(int viewIndex) // TODO: remove
+		//{
+		//    Page currentPage = HttpContext.Current.Handler as Page;
+		//    MultiView multiView = (MultiView)WebUtilities.FindControlRecursive(currentPage, "_masterMultiView");
+		//    Panel ribbonContainer = (Panel)WebUtilities.FindControlRecursive(currentPage, "_ribbonContainerOuter");
+
+		//    try
+		//    {
+		//        multiView.ActiveViewIndex = viewIndex;
+		//        ribbonContainer.CssClass = Convert.ToString((ViewIndex)Enum.Parse(typeof(ViewIndex), viewIndex.ToString()));
+		//        SnapSession.RequestedView = (ViewIndex)viewIndex;
+		//    }
+		//    catch
+		//    {
+		//        multiView.ActiveViewIndex = -1;
+		//    }
+		//}
+		
+		//public static ViewIndex CurrentViewIndex
+		//{
+		//    get 
+		//    {
+		//        Page currentPage = HttpContext.Current.Handler as Page;
+		//        MultiView multiView = (MultiView)WebUtilities.FindControlRecursive(currentPage, "_masterMultiView");
+			
+		//        return (ViewIndex)multiView.ActiveViewIndex;
+		//    }
+		//}
 
 		// TODO: refactor into SNAPUser
-		public static string CurrentLoginUserId { get; set; }
+		//public static string CurrentLoginUserId { get; set; }
          
         public static void Redirect(string redirectUrl, bool endResponse)
         {
@@ -105,54 +136,8 @@ namespace Apollo.AIM.SNAP.Web.Common
         
         public static void Redirect(string pageConstant)
         {
-			//if (!string.IsNullOrEmpty(queryString))
-			//{
-			//    Redirect(pageConstant + ".aspx?" + queryString, true);
-			//}
-			//else
-			//{
-				Redirect(pageConstant + ".aspx", true);
-			//}
+			Redirect(pageConstant + ".aspx", true);
         } 
-        
-		//public static void Redirect(ViewIndex viewIndex)
-		//{
-		//    string redirectUrl = string.Empty;
-			
-		//    switch (viewIndex)
-		//    {
-		//        case ViewIndex.support:
-		//            redirectUrl = PageUrls.SUPPORT;
-		//            break;
-
-		//        case ViewIndex.search:
-		//            redirectUrl = PageUrls.SEARCH;
-		//            break;
-				
-		//        case ViewIndex.my_approvals:
-		//            redirectUrl = PageUrls.APPROVING_MANAGER;
-		//            break;
-					
-		//        case ViewIndex.my_requests:
-		//            redirectUrl = PageUrls.USER_VIEW;
-		//            break;
-					
-		//        case ViewIndex.request_form:
-		//            redirectUrl = PageUrls.REQUEST_FORM;
-		//            break;
-					
-		//        case ViewIndex.access_team:
-		//            redirectUrl = PageUrls.ACCESS_TEAM;
-		//            break;
-
-		//        case ViewIndex.login:
-		//        default:
-		//            redirectUrl = PageUrls.LOGIN;
-		//            break;
-		//    }
-			
-		//    Redirect(redirectUrl, true);
-		//}
      }
         
     public static class ExtensionMethods

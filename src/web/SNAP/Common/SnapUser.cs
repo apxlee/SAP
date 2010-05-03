@@ -15,7 +15,8 @@ namespace Apollo.AIM.SNAP.Web.Common
 		public string ManagerName { get; set; }
 		public string ManagerLoginId { get; set; }
 		public Role CurrentRole { get; set; }
-		public ViewIndex DefaultView { get; private set; }
+		//public ViewIndex DefaultView { get; private set; } // TODO: remove
+		public string DefaultPage { get; private set; }
 
 		private bool _isAccessTeam = false;
 
@@ -33,7 +34,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 				SetRole();
 			}
 			
-			SetDefaultView();
+			SetDefaultPage();
 		}
 		
 		private void SetADProperties()
@@ -92,31 +93,55 @@ namespace Apollo.AIM.SNAP.Web.Common
 			}
 		}
 		
-		private void SetDefaultView()
+		private void SetDefaultPage()
 		{
 			switch (CurrentRole)
 			{
 				case Role.ApprovingManager:
-					DefaultView = ViewIndex.my_approvals;
+					DefaultPage = PageNames.APPROVING_MANAGER;
 					break;
 
 				case Role.AccessTeam:
-					DefaultView = ViewIndex.access_team;
+					DefaultPage = PageNames.ACCESS_TEAM;
 					break;
 
 				case Role.SuperUser:
-					DefaultView = ViewIndex.my_requests;
-					break;
-
 				case Role.Requestor:
-					DefaultView = ViewIndex.my_requests;
+					DefaultPage = PageNames.USER_VIEW;
 					break;
 
 				case Role.NotAuthorized:
 				default:
-					DefaultView = ViewIndex.login;
-					break;
+					DefaultPage = PageNames.DEFAULT_LOGIN;
+					break;			
 			}
+		}
+		
+		private void SetDefaultView() // TODO: remove
+		{
+			//switch (CurrentRole)
+			//{
+			//    case Role.ApprovingManager:
+			//        DefaultView = ViewIndex.my_approvals;
+			//        break;
+
+			//    case Role.AccessTeam:
+			//        DefaultView = ViewIndex.access_team;
+			//        break;
+
+			//    case Role.SuperUser:
+			//        DefaultView = ViewIndex.my_requests;
+			//        break;
+
+			//    case Role.Requestor:
+			//        DefaultView = ViewIndex.my_requests;
+			//        break;
+
+			//    case Role.NotAuthorized:
+			//    default:
+			//        DefaultView = ViewIndex.login;
+			//        break;
+			//}
 		}
 	}
 }

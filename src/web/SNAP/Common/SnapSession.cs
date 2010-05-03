@@ -21,6 +21,14 @@ namespace Apollo.AIM.SNAP.Web.Common
 			}
 		}
 		
+		public static void ClearCurrentUser()
+		{
+			Page currentPage = HttpContext.Current.Handler as Page;
+			currentPage.Session.Remove(SessionVariables.CURRENT_USER);
+			currentPage.Session.Remove(SessionVariables.IS_USER_CREATED);
+			currentPage.Session.Remove(SessionVariables.IS_REQUEST_PREPOPULATED);
+		}
+		
 		public static bool IsUserCreated 
 		{
 			get
@@ -88,18 +96,18 @@ namespace Apollo.AIM.SNAP.Web.Common
 			}
 		}
 		
-		public static ViewIndex RequestedView //TODO: remove
-		{
-			get
-			{
-				Page currentPage = HttpContext.Current.Handler as Page;
-				return (ViewIndex)currentPage.Session[SessionVariables.REQUESTED_VIEW_INDEX];
-			}
-			set
-			{
-				Page currentPage = HttpContext.Current.Handler as Page;
-				currentPage.Session[SessionVariables.REQUESTED_VIEW_INDEX] = value;
-			}
-		}
+		//public static ViewIndex RequestedView //TODO: remove
+		//{
+		//    get
+		//    {
+		//        Page currentPage = HttpContext.Current.Handler as Page;
+		//        return (ViewIndex)currentPage.Session[SessionVariables.REQUESTED_VIEW_INDEX];
+		//    }
+		//    set
+		//    {
+		//        Page currentPage = HttpContext.Current.Handler as Page;
+		//        currentPage.Session[SessionVariables.REQUESTED_VIEW_INDEX] = value;
+		//    }
+		//}
 	}
 }
