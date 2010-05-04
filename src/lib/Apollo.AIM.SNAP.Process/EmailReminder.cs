@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
@@ -16,7 +17,7 @@ namespace Apollo.AIM.SNAP.Process
     {
         private Timer _timer = null;
         private  bool done = false;
-        private string fileName = @"d:\temp\EmailReminderlogger.txt";
+        //private string fileName = @"d:\temp\EmailReminderlogger.txt";
 
         public EmailReminder()
         {
@@ -29,7 +30,7 @@ namespace Apollo.AIM.SNAP.Process
 
             _timer = new Timer(1800000);
 
-             //   _timer = new Timer(30000);
+            //    _timer = new Timer(30000);
 
             // Now tell the timer when the timer fires
             // (the Elapsed event) call the _timer_Elapsed
@@ -78,9 +79,11 @@ namespace Apollo.AIM.SNAP.Process
 
         protected void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            outputMessage(" EmailReminderlogger: time elapsed ", EventLogEntryType.Information);
+            var checkTime = Convert.ToInt16(ConfigurationManager.AppSettings["CheckTimeInHour"]);
 
-            if (DateTime.Now.Hour >= 2 && !done)
+            outputMessage(" EmailReminderlogger: time elapsed, check time: " + checkTime, EventLogEntryType.Information);
+
+            if (DateTime.Now.Hour >= checkTime && !done)
             {
                 outputMessage(" EmailReminderlogger: DO it ", EventLogEntryType.Information);
 
@@ -90,7 +93,7 @@ namespace Apollo.AIM.SNAP.Process
 
             }
 
-            if (DateTime.Now.Hour < 2)
+            if (DateTime.Now.Hour < checkTime)
             {
                 done = false;
             }

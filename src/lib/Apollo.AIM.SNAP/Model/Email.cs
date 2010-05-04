@@ -13,14 +13,13 @@ namespace Apollo.AIM.SNAP.Model
 {
     public class Email
     {
-        //private static string link = @"http://access/snap/index.aspx?Requestid=";
         private static string prefix = @"http://";
         private static string url = @"http://";
 
         public static void OverdueTask(string toEmail, string toName, long id, string userName)
         {
             configPerEnvironment(id, PageNames.APPROVING_MANAGER);
-            /*
+            
             Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(toEmail,
                                                                      "Supplemental Network Access Process-Overdue Alert",
                                                                      absPath + ConfigurationManager.AppSettings["NagApproval"], // newTaskNotification.html",
@@ -32,7 +31,7 @@ namespace Apollo.AIM.SNAP.Model
                                                                              {"PREFIX", prefix}
                                                                          });
 
-             */
+             
         }
 
         public static void UpdateRequesterStatus(string submitterUserId, string name, long id, WorkflowState status, string reason)
