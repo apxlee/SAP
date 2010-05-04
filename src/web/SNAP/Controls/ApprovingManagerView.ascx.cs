@@ -16,10 +16,10 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		
 		protected void Page_Load(object sender, EventArgs e)
 		{
-			//if (WebUtilities.CurrentViewIndex == ViewIndex.my_approvals || SnapSession.RequestedView == ViewIndex.my_approvals)
-			//{
-				PopulateSections();
-			//}
+            if (!IsPostBack)
+            {
+                PopulateSections();
+            }
 		}
 		
 		private void PopulateSections()

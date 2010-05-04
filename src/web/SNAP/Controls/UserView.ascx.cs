@@ -13,9 +13,10 @@ namespace Apollo.AIM.SNAP.Web.Controls
 	{
 		protected void Page_Load(object sender, EventArgs e)
 		{
-			//if (WebUtilities.CurrentViewIndex == ViewIndex.my_requests || WebUtilities.CurrentViewIndex == ViewIndex.access_team)	{}
-
-			BuildUserView();
+			if (!IsPostBack)
+            {
+                BuildUserView();
+            }
 		}
 		
 		private void BuildUserView()
