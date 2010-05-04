@@ -68,7 +68,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 					, request.userDisplayName.StripTitleFromUserName()
                     , Convert.ToString((RequestState)Enum.Parse(typeof(RequestState)
 					, request.statusEnum.ToString())).StripUnderscore()
-					, request.createdDate.ToString("MMM d, yyyy")
+					, request.lastModifiedDate.ToString("MMM d, yyyy")
 					, (request.pkId.ToString().Trim() == selectedRequestId) ? true : false
                     );
                 // is this "last updated date" or "created date"?
