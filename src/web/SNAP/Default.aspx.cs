@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
+using Apollo.AIM.SNAP.Model;
 using Apollo.Ultimus.Web;
 using Apollo.AIM.SNAP.Web.Common;
 

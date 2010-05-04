@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.Web.UI;
+using Apollo.AIM.SNAP.Model;
 
 namespace Apollo.AIM.SNAP.Web.Common
 {

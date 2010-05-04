@@ -19,7 +19,7 @@ namespace Apollo.AIM.SNAP.Model
 
         public static void OverdueTask(string toEmail, string toName, long id, string userName)
         {
-            configPerEnvironment(id);
+            configPerEnvironment(id, PageNames.APPROVING_MANAGER);
             /*
             Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(toEmail,
                                                                      "Supplemental Network Access Process-Overdue Alert",
@@ -64,7 +64,7 @@ namespace Apollo.AIM.SNAP.Model
                     break;
             }
 
-            configPerEnvironment(id);
+            configPerEnvironment(id, PageNames.USER_VIEW);
 
             /*
             Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(emailAddress(submitterUserId),
@@ -84,7 +84,7 @@ namespace Apollo.AIM.SNAP.Model
 
         public static void TaskAssignToApprover(string toEmailAddress, string to, long id, string name)
         {
-            configPerEnvironment(id);
+            configPerEnvironment(id, PageNames.APPROVING_MANAGER);
             
             
             Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(toEmailAddress,
@@ -131,7 +131,7 @@ namespace Apollo.AIM.SNAP.Model
 
             }
         }
-        private static void configPerEnvironment(long id)
+        private static void configPerEnvironment(long id, string pageName)
         {
             prefix = @"http://";
             url = @"http://";
@@ -139,17 +139,17 @@ namespace Apollo.AIM.SNAP.Model
             if (Environment.UserDomainName.ToUpper().Contains("DEV"))
             {
                 prefix += Environment.MachineName + ".devapollogrp.edu/snap/images";
-                url += (Environment.MachineName + ".devapollogrp.edu/snap/index.aspx?RequestId=" + id);
+                url += (Environment.MachineName + ".devapollogrp.edu/snap/" + pageName + ".aspx?RequestId=" + id);
             }
             else if (Environment.UserDomainName.ToUpper().Contains("QA"))
             {
                 prefix += "access.qaapollogrp.edu/snap/images";
-                url += ("access.qaapollogrp.edu/snap/index.aspx?RequestId=" + id);
+                url += ("access.qaapollogrp.edu/snap/" + pageName + ".aspx?RequestId=" + id);
             }
             else
             {
                 prefix += "access.apollogrp.edu/snap/images";
-                url += ("access.apollogrp.edu/snap/index.aspx?RequestId=" + id);
+                url += ("access.apollogrp.edu/snap/" + pageName + ".aspx?RequestId=" + id);
             }
         }
     }

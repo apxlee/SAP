@@ -1840,7 +1840,7 @@ namespace Apollo.AIM.SNAP.Test
 
         }
 
-
+        [Ignore]
         [Test]
         public void ShouldHandleAccessTeamCloseAfterCreateTicket()
         {

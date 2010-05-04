@@ -29,6 +29,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
         
         private void BuildRequestForm()
         {
+
 			if (SnapSession.IsRequestPrePopulated)
 			{
 				_requestorId.Text = SnapSession.CurrentUser.FullName;
@@ -139,8 +140,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
                 }
                 else
                 {
-                    //requestID = System.Convert.ToInt32(SnapSession.SelectedRequestId);
-                    requestID = System.Convert.ToInt32(Request.QueryString[QueryStringConstants.REQUEST_ID]);
+                    requestID = System.Convert.ToInt32(SnapSession.SelectedRequestId);
                     updateRequestUsrInfo(requestID, SnapSession.CurrentUser.LoginId, UserLoginId, UserName,
                                          ManagerLoginId, ManagerName);
                     RequestData.UpdateRequestData(newRequestDataList, _requestFormData);
@@ -201,9 +201,9 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
         private List<usp_open_request_tabResult> loadRequestFormData()
         {
-            if (!string.IsNullOrEmpty(Request.QueryString[QueryStringConstants.REQUEST_ID]))
+            if (!string.IsNullOrEmpty(SnapSession.SelectedRequestId))
 			{
-                var requestId = System.Convert.ToInt32(Request.QueryString[QueryStringConstants.REQUEST_ID]);
+                var requestId = System.Convert.ToInt32(SnapSession.SelectedRequestId);
 				var db = new SNAPDatabaseDataContext();
 				var formData = db.usp_open_request_tab(SnapSession.CurrentUser.LoginId, requestId);
 				// formData contain history of all data fields, we are only interested in the latest

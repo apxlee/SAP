@@ -24,6 +24,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 		public const string REQUESTED_PAGE = "RequestedPage";
 	}
 
+    /*
 	public static class PageNames
 	{
 		public const string ACCESS_TEAM = "AccessTeam";
@@ -36,4 +37,5 @@ namespace Apollo.AIM.SNAP.Web.Common
 		public const string SEARCH = "Search";
 		public const string SUPPORT = "Support";
 	}
+     */
 }
