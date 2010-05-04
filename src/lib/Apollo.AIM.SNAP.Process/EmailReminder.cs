@@ -17,6 +17,7 @@ namespace Apollo.AIM.SNAP.Process
     {
         private Timer _timer = null;
         private  bool done = false;
+        private const int AccessTeamId = 1;
         //private string fileName = @"d:\temp\EmailReminderlogger.txt";
 
         public EmailReminder()
@@ -133,9 +134,7 @@ namespace Apollo.AIM.SNAP.Process
                             {
                                 // TODO - should be remind submitter to work on 'request to change', SLA is 3 days or does that matter
                                 if (state.workflowStatusEnum == (byte) WorkflowState.Pending_Approval
-                                    &&
-                                    state.SNAP_Workflow.SNAP_Actor.SNAP_Actor_Group.actorGroupType !=
-                                    (byte) ActorApprovalType.Workflow_Admin)
+                                    && state.SNAP_Workflow.SNAP_Actor.pkId != AccessTeamId)
                                 {
                                     // only remind approvers, not access team
 
