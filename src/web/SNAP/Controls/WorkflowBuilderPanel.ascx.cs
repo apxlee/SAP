@@ -94,7 +94,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
                     {
                         strGroupType = group.ActorGroupType.ToString();
                         Literal primaryLit = new Literal();
-                        primaryLit.Text = "<label>Primary Approvers</label>";
+                        primaryLit.Text = "<label>Team Approvers</label>";
 
                         PlaceHolder primarySectionName;
                         primarySectionName = (PlaceHolder)WebUtilities.FindControlRecursive(primaryApprover, "_approverSectionName");
@@ -108,7 +108,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
                     {
                         strGroupType = group.ActorGroupType.ToString();
                         Literal secondaryLit = new Literal();
-                        secondaryLit.Text = "<label>Secondary Approvers</label>";
+                        secondaryLit.Text = "<label>Technical Approvers</label>";
 
                         PlaceHolder secondarySectionName;
                         secondarySectionName = (PlaceHolder)WebUtilities.FindControlRecursive(secondaryApprover, "_approverSectionName");
@@ -149,7 +149,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
             if (approver.IsSelected) { strChecked = "checked=\"checked\""; }
 
             if (approver.IsDefault){strDisplayName = approver.DisplayName + " (Default)";}
-            else{strDisplayName = approver.DisplayName + " (Secondary)";}
+            else{strDisplayName = approver.DisplayName;}
 
             Literal litRadioButton = new Literal();
             litRadioButton.Text = "<tr><td>&nbsp;</td><td colspan=\"3\">";
