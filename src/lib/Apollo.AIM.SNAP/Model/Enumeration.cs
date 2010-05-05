@@ -38,16 +38,20 @@ namespace Apollo.AIM.SNAP.Model
         Workflow_Created = 10
     }
 
+	// TODO: need to tweak how comments are written to db
     public enum CommentsType
     {
         Denied = 1,
         Cancelled = 2,
         Requested_Change = 3,
         Email_Reminder = 4,
+        Commented = 10,
+        Acknowledged = 11,
         Access_Notes_Requestor = 5,
         Access_Notes_ApprovingManager = 6,
         Access_Notes_AccessTeam = 7,
         Access_Notes_SuperUser = 9
+        
     }
 
 	// TODO: rename this enum to match database table
