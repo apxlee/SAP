@@ -274,7 +274,7 @@ namespace Apollo.AIM.SNAP.Model
                         if (result)
                         {
                             createrApprovalWorkFlow(db, actorIds);
-                            addAccessTeamComment(accessTeamWF,"Due Date: ", CommentsType.Workflow_Created);
+                            addAccessTeamComment(accessTeamWF,"Due Date: " + dueDate, CommentsType.Workflow_Created);
                             db.SubmitChanges();
                         }
                     }
