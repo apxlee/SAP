@@ -787,6 +787,7 @@ TODO: REMOVE THIS SECTION
 .csm_template_1 .csm_icon_heading_container {
 	background-position: 0px 0px;
 	margin-bottom: 5px;
+	min-height: 55px;
     }
 
 .csm_template_1 .csm_icon_heading_container.border {
