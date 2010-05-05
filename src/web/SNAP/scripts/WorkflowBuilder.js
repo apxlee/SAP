@@ -31,43 +31,42 @@ function actionClicked(obj, requestId, state) {
     switch ($(obj).val()) {
         case "Closed Cancelled":
             builderActions(obj, requestId, state);
-            updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Cancelled");
-            animateActions(obj, "Closed Requests");
-            $(obj).closest("div.csm_container_center_700").find("tr.csm_stacked_heading_label").children().each(function() {
-            if ($(this).next().children().html() == "Open" || $(this).next().children().html() == "Pending") 
-                {
-                    $(this).next().children().html("Closed");
-                }
-            });
             break;
         case "Closed Completed":
             builderActions(obj, requestId, state);
-            updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Completed");
-            animateActions(obj, "Closed Requests");
-            $(obj).closest("div.csm_container_center_700").find("tr.csm_stacked_heading_label").children().each(function() {
+            break;
+        case "Create Ticket":
+            builderActions(obj, requestId, state);
+            break;
+        case "Edit Workflow":
+            editBuilder(obj, requestId);
+            break;
+        case "Create Workflow":
+            createWorkflow(obj, requestId);
+            break;
+        case "Continue Workflow":
+            editCreatedWorkflow(obj, requestId);
+            break;
+    }
+}
+function hideSections(obj) {
+    $(document).ready(function() {
+        $(obj).closest("div.csm_content_container").find("div.csm_text_container").each(function() {
+                if($(this).children().children().html() == "Access &amp; Identity Management - Acknowledgement" ||
+                $(this).children().children().html() == "Access &amp; Identity Management - Workflow Builder" ||
+                $(this).children().children().html() == "Access &amp; Identity Management - Comments")
+                {
+                    $(this).hide();
+                }
+            });
+        });
+    }
+function updateRequestStatus(obj){
+$(obj).closest("div.csm_content_container").find("tr.csm_stacked_heading_label").children().each(function() {
             if ($(this).next().children().html() == "Open" || $(this).next().children().html() == "Pending") {
                 $(this).next().children().html("Closed");
             }
             });
-            break;
-        case "Create Ticket":
-            alert("ticket created");
-            builderActions(obj, requestId, state);
-            break;
-        case "Edit Workflow":
-            alert("edit workflow");
-            editBuilder(obj, requestId);
-            break;
-        case "Create Workflow":
-            alert("workflow create");
-            createWorkflow(obj, requestId);
-            break;
-        case "Continue Workflow":
-            alert("workflow continued");
-            editCreatedWorkflow(obj, requestId);
-            disableBuilder(obj, requestId);
-            break;
-    }
 }
 function editBuilder(obj, requestId) {
     $(document).ready(function() {
@@ -122,13 +121,21 @@ function builderActions(obj, requestId, state)
         success: function(msg) {
             if (msg.d) {
                 switch (state) {
-                    case "2":
-                        alert("closed cancelled");
-                        break;
                     case "3":
-                        alert("closed completed");
+                        alert("closed cancelled");
+                        updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Cancelled");
+                        animateActions(obj, "Closed Requests");
+                        hideSections(obj);
+                        updateRequestStatus(obj);
                         break;
-                    case "8":
+                    case "6":
+                        alert("closed completed");
+                        updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Completed");
+                        animateActions(obj, "Closed Requests");
+                        hideSections(obj);
+                        updateRequestStatus(obj);
+                        break;
+                    case "5":
                         alert("ticket created");
                         break;
                 }
@@ -143,7 +150,6 @@ function builderActions(obj, requestId, state)
         }
     });
 }
-
 function updateRequestTracking(obj, approverName, newStatus) {
     $(obj).closest("div.csm_hidden_block").children().find("span").each(
         function() {
@@ -191,24 +197,7 @@ function createWorkflow(obj, requestId) {
                     alert(msg.d);
                     if (msg.d) {
                         alert("Workflow Created");
-
-                        var editLink = $(obj).parent().parent().find(".oospa_edit_icon");
-                        editLink.addClass("oospa_edit_icon_disabled");
-                        editLink.removeClass("oospa_edit_icon");
-                        editLink.unbind('click');
-
-                        $(obj).parent().parent().find("input[type=checkbox]").each(
-                          function() {
-                              $(this).attr("disabled", "disabled");
-                          });
-                        $(obj).parent().parent().find("input[type=radio]").each(
-                          function() {
-                              $(this).attr("disabled", "disabled");
-                          });
-                        $("#closed_cancelled_" + requestId).attr("disabled", "disabled");
-                        $("#edit_workflow_" + requestId).removeAttr("disabled");
-                        $(obj).attr("disabled", "disabled");
-                        $("#_selectedActors_" + requestId).val("");
+                        disableBuilder(obj, requestId);
                     }
                     else {
                         alert("Workflow Creation Failed");
@@ -244,28 +233,12 @@ function editCreatedWorkflow(obj, requestId) {
                 success: function(msg) {
                     alert(msg.d);
                     if (msg.d) {
-                        alert("Workflow Created");
+                        alert("Workflow Updated");
 
-                        var editLink = $(obj).parent().parent().find(".oospa_edit_icon");
-                        editLink.addClass("oospa_edit_icon_disabled");
-                        editLink.removeClass("oospa_edit_icon");
-                        editLink.unbind('click');
-
-                        $(obj).parent().parent().find("input[type=checkbox]").each(
-                          function() {
-                              $(this).attr("disabled", "disabled");
-                          });
-                        $(obj).parent().parent().find("input[type=radio]").each(
-                          function() {
-                              $(this).attr("disabled", "disabled");
-                          });
-                        $("#closed_cancelled_" + requestId).attr("disabled", "disabled");
-                        $("#edit_workflow_" + requestId).removeAttr("disabled");
-                        $(obj).attr("disabled", "disabled");
-                        $("#_selectedActors_" + requestId).val("");
+                        disableBuilder(obj, requestId);
                     }
                     else {
-                        alert("Workflow Creation Failed");
+                        alert("Workflow Update Failed");
                     }
                 },
 

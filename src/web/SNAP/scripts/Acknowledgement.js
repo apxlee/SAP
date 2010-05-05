@@ -19,7 +19,6 @@ function changeDenyCancelClick(obj) {
          }
      });
 }
-
 function AccessTeamActions(obj, requestId, action) {
     var comments;
     var textarea = $(obj).parent().prev().find("textarea");
@@ -55,25 +54,32 @@ function AccessTeamActions(obj, requestId, action) {
         success: function(msg) {
             if (msg.d) {
                 switch (action) {
-                    case '9':
-                        updateRequestTracking(obj, "Pending Acknowledgement", "Pending Workflow");
+                    case '4':
+                        updateRequestTracking(obj, "Access &amp; Identity Management", "Pending Workflow");
                         $(obj).attr("disabled", "disabled");
                         $(obj).next().attr("disabled", "disabled");
+                        editBuilder(obj, requestId);
                         break;
-                    case '1':
-                        updateRequestTracking(obj, "Pending Acknowledgement", "Change Requested");
+                    case '2':
+                        updateRequestTracking(obj, "Access &amp; Identity Management", "Change Requested");
                         disableBladeActions(obj);
                         addComments(obj, "Change Requested", comments);
                         break;
-                    case '2':
-                        updateRequestTracking(obj, "Pending Acknowledgement", "Closed Cancelled");
+                    case '3':
+                        updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Cancelled");
                         disableBladeActions(obj);
                         addComments(obj, "Closed Cancelled", comments);
+                        animateActions(obj, "Closed Requests");
+                        hideSections(obj);
+                        updateRequestStatus(obj);
                         break;
-                    case '4':
-                        updateRequestTracking(obj, "Pending Acknowledgement", "Closed Denied");
+                    case '1':
+                        updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Denied");
                         disableBladeActions(obj);
                         addComments(obj, "Closed Denied", comments);
+                        animateActions(obj, "Closed Requests");
+                        hideSections(obj);
+                        updateRequestStatus(obj);
                         break;
                 }
             }
@@ -86,41 +92,41 @@ function AccessTeamActions(obj, requestId, action) {
         }
     });
 }
-function updateRequestTracking(obj, oldstring, newstring) {
-    $(obj).closest("div.csm_hidden_block").children().find("span").each(
-     function() {
-         if ($(this).attr("id").indexOf("_workflowStatus") > -1) {
-             if ($(this).html() == oldstring) {
-                 $(this).parent().next().next().children().html("<span>" + curr_date + "</span>");
-                 $(this).closest("div.csm_padded_windowshade").append($(this).closest("div.csm_padded_windowshade").html().replace(oldstring, newstring));
-             }
+//function updateRequestTracking(obj, oldstring, newstring) {
+//    $(obj).closest("div.csm_hidden_block").children().find("span").each(
+//     function() {
+//         if ($(this).attr("id").indexOf("_workflowStatus") > -1) {
+//             if ($(this).html() == oldstring) {
+//                 $(this).parent().next().next().children().html("<span>" + curr_date + "</span>");
+//                 $(this).closest("div.csm_padded_windowshade").append($(this).closest("div.csm_padded_windowshade").html().replace(oldstring, newstring));
+//             }
+//         }
+//     });
+//     
+//     //find the new tracking blade and clear out the dates, might be a better way to do this.
+//     $(obj).closest("div.csm_hidden_block").children().find("span").each(
+//     function() {
+//         if ($(this).attr("id").indexOf("_workflowStatus") > -1) {
+//             if ($(this).html() == newstring) {
+//                 $(this).parent().next().children().html("<span>-</span>");
+//                 $(this).parent().next().next().children().html("<span>-</span>");
+//             }
+//         }
+//     });
+// }
+function disableBladeActions(obj) {
+ $(obj).closest("div.csm_content_container").find("input").each(function() {
+    $(this).attr("disabled", "disabled");
+ });
+}
+function addComments(obj, status, comments) {
+ var newcomment = "<p class='csm_error_text'><u>" + status + " by (GET ACTOR NAME) on " + curr_date + "</u><br />" + comments + "</p>"; 
+ $(obj).closest("div.csm_hidden_block").children().find("span").each(
+ function() {
+     if ($(this).attr("id").indexOf("_workflowStatus") > -1) {
+         if ($(this).html() == status) {
+             $(this).closest("div.csm_data_row").next().html($(this).closest("div.csm_data_row").next().html() + newcomment);
          }
-     });
-     
-     //find the new tracking blade and clear out the dates, might be a better way to do this.
-     $(obj).closest("div.csm_hidden_block").children().find("span").each(
-     function() {
-         if ($(this).attr("id").indexOf("_workflowStatus") > -1) {
-             if ($(this).html() == newstring) {
-                 $(this).parent().next().children().html("<span>-</span>");
-                 $(this).parent().next().next().children().html("<span>-</span>");
-             }
-         }
-     });
- }
- function disableBladeActions(obj) {
-     $(obj).closest("div.csm_content_container").find("input").each(function() {
-        $(this).attr("disabled", "disabled");
-     });
- }
- function addComments(obj, status, comments) {
-     var newcomment = "<p class='csm_error_text'><u>" + status + " by (GET ACTOR NAME) on " + curr_date + "</u><br />" + comments + "</p>"; 
-     $(obj).closest("div.csm_hidden_block").children().find("span").each(
-     function() {
-         if ($(this).attr("id").indexOf("_workflowStatus") > -1) {
-             if ($(this).html() == status) {
-                 $(this).closest("div.csm_data_row").next().html($(this).closest("div.csm_data_row").next().html() + newcomment);
-             }
-         }
-     });
- }
+     }
+ });
+}

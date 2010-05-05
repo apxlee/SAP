@@ -51,19 +51,19 @@ function ApproverActions(obj,requestId,action) {
 
                 switch (action) {
                     case '0':
-                        updateApproverRequestTracking(obj, approverName, "Approved");
-                        animateApproverActions(obj, "Open Requests");
+                        updateRequestTracking(obj, approverName, "Approved");
+                        animateActions(obj, "Open Requests");
                         break;
                     case '2':
-                        updateApproverRequestTracking(obj, approverName, "Change Requested");
+                        updateRequestTracking(obj, approverName, "Change Requested");
                         addComments(obj, approverName, "Change Requested", comments);
-                        animateApproverActions(obj, "Open Requests");
+                        animateActions(obj, "Open Requests");
                         break;
                     case '1':
-                        updateApproverRequestTracking(obj, approverName, "Closed Denied");
+                        updateRequestTracking(obj, approverName, "Closed Denied");
                         addComments(obj, approverName, "Closed Denied", comments);
-                        animateApproverActions(obj, "Closed Requests");
-                        $(obj).closest("div.csm_container_center_700").find("tr.csm_stacked_heading_label").children().each(function() {
+                        animateActions(obj, "Closed Requests");
+                        $(obj).closest("div.csm_content_container").find("tr.csm_stacked_heading_label").children().each(function() {
                             if ($(this).next().children().html() == "Pending") {
                                 $(this).next().children().html("Closed");
                             }
@@ -84,7 +84,7 @@ function ApproverActions(obj,requestId,action) {
     });
 
 }
-function updateApproverRequestTracking(obj, approverName, newStatus) {
+function updateRequestTracking(obj, approverName, newStatus) {
      $(obj).closest("div.csm_hidden_block").children().find("span").each(
         function() {
             if ($(this).attr("id").indexOf("_workflowActorName") > -1) {
@@ -97,7 +97,7 @@ function updateApproverRequestTracking(obj, approverName, newStatus) {
             }
         });
 }
-function animateApproverActions(obj, newSection) {
+function animateActions(obj, newSection) {
     var blade = $(obj).closest("div.csm_content_container");
     $(obj).closest("div.csm_text_container").fadeOut("slow", function() {
         $(obj).closest("div.csm_content_container").children().next().slideUp("fast", function() {
