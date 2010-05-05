@@ -25,7 +25,51 @@
           });
     });
 }
-function editWorkflow(obj,requestId) {
+
+function actionClicked(obj, requestId, state) {
+    //TODO: hide acknowledgment and comments
+    switch ($(obj).val()) {
+        case "Closed Cancelled":
+            builderActions(obj, requestId, state);
+            updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Cancelled");
+            animateActions(obj, "Closed Requests");
+            $(obj).closest("div.csm_container_center_700").find("tr.csm_stacked_heading_label").children().each(function() {
+            if ($(this).next().children().html() == "Open" || $(this).next().children().html() == "Pending") 
+                {
+                    $(this).next().children().html("Closed");
+                }
+            });
+            break;
+        case "Closed Completed":
+            builderActions(obj, requestId, state);
+            updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Completed");
+            animateActions(obj, "Closed Requests");
+            $(obj).closest("div.csm_container_center_700").find("tr.csm_stacked_heading_label").children().each(function() {
+            if ($(this).next().children().html() == "Open" || $(this).next().children().html() == "Pending") {
+                $(this).next().children().html("Closed");
+            }
+            });
+            break;
+        case "Create Ticket":
+            alert("ticket created");
+            builderActions(obj, requestId, state);
+            break;
+        case "Edit Workflow":
+            alert("edit workflow");
+            editBuilder(obj, requestId);
+            break;
+        case "Create Workflow":
+            alert("workflow create");
+            createWorkflow(obj, requestId);
+            break;
+        case "Continue Workflow":
+            alert("workflow continued");
+            editCreatedWorkflow(obj, requestId);
+            disableBuilder(obj, requestId);
+            break;
+    }
+}
+function editBuilder(obj, requestId) {
     $(document).ready(function() {
         $(obj).parent().parent().find("input[type=checkbox]").each(
           function() {
@@ -34,9 +78,9 @@ function editWorkflow(obj,requestId) {
                   approverGroupChecked(this, requestId);
               }
           });
-        $("#closed_cancelled_" + requestId).removeAttr("disabled");
-        $("#create_workflow_" + requestId).removeAttr("disabled");
-        $(obj).attr("disabled", "disabled");
+        //$("#closed_cancelled_" + requestId).removeAttr("disabled");
+        //$("#create_workflow_" + requestId).removeAttr("disabled");
+        //$(obj).attr("disabled", "disabled");
 
         var editLink = $(obj).parent().parent().find(".oospa_edit_icon_disabled");
         editLink.addClass("oospa_edit_icon");
@@ -44,6 +88,25 @@ function editWorkflow(obj,requestId) {
         editLink.click(function() {
             managerEdit(this);
         });
+    });
+}
+function disableBuilder(obj, requestId) {
+    $(document).ready(function() {
+        $(obj).parent().parent().find("input[type=checkbox]").each(
+          function() {
+              if ($(this).attr("id").indexOf("_requiredCheck") < 0) {
+                  $(this).attr("disabled", "disabled");
+              }
+          });
+        $("#_selectedActors_" + requestId).val("");
+        //$("#closed_cancelled_" + requestId).attr("disabled", "disabled");
+        //$("#create_workflow_" + requestId).attr("disabled", "disabled");
+        //$(obj).attr("disabled", "disabled");
+
+        var editLink = $(obj).parent().parent().find(".oospa_edit_icon");
+        editLink.addClass("oospa_edit_icon_disabled");
+        editLink.removeClass("oospa_edit_icon");
+        editLink.unbind("click");
     });
 }
 function builderActions(obj, requestId, state)
@@ -80,6 +143,38 @@ function builderActions(obj, requestId, state)
         }
     });
 }
+
+function updateRequestTracking(obj, approverName, newStatus) {
+    $(obj).closest("div.csm_hidden_block").children().find("span").each(
+        function() {
+            if ($(this).attr("id").indexOf("_workflowActorName") > -1) {
+                if ($(this).html() == approverName) {
+                    if ($(this).parent().next().next().next().children().html() == "-") {
+                        $(this).parent().next().children().html(newStatus);
+                        $(this).parent().next().next().next().children().html("<span>" + curr_date + "</span>")
+                    }
+                }
+            }
+        });
+}
+function animateActions(obj, newSection) {
+    var blade = $(obj).closest("div.csm_content_container");
+    $(obj).closest("div.csm_text_container").fadeOut("slow", function() {
+        $(obj).closest("div.csm_content_container").children().next().slideUp("fast", function() {
+            $(obj).closest("div.csm_container_center_700").find("h1").each(
+            function() {
+                var section = $(this);
+                if ($(this).html() == newSection) {
+                    blade.fadeOut(1000, function() {
+                        $(this).insertAfter(section);
+                        $(this).fadeIn(1000);
+                    });
+                }
+            });
+        });
+    });
+}
+
 function createWorkflow(obj, requestId) {
     $(document).ready(function() {
         if ($("#_managerUserId_" + requestId).val() > "") {

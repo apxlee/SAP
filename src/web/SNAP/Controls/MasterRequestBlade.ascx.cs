@@ -142,12 +142,12 @@ namespace Apollo.AIM.SNAP.Web.Controls
                 //        break;
                 //}
 
-                buttonLit.Text += BuildButtons("closed_cancelled_" + RequestId.ToString(), "Closed Cancelled", "builderActions(this,'" + RequestId.ToString() + "','3');", false);
-                buttonLit.Text += BuildButtons("closed_completed_" + RequestId.ToString(), "Closed Completed", "builderActions(this,'" + RequestId.ToString() + "','6');", false);
-                buttonLit.Text += BuildButtons("create_ticket_" + RequestId.ToString(), "Create Ticket", "builderActions(this,'" + RequestId.ToString() + "','5');", false);
-                buttonLit.Text += BuildButtons("edit_workflow_" + RequestId.ToString(), "Edit Workflow", "editWorkflow(this,'" + RequestId.ToString() + "');", false);
-                buttonLit.Text += BuildButtons("create_workflow_" + RequestId.ToString(), "Create Workflow", "createWorkflow(this,'" + RequestId.ToString() + "');", false);
-                buttonLit.Text += BuildButtons("continue_workflow_" + RequestId.ToString(), "Continue Workflow", "editCreatedWorkflow(this,'" + RequestId.ToString() + "');", false);
+                buttonLit.Text += BuildButtons("closed_cancelled_" + RequestId.ToString(), "Closed Cancelled", "actionClicked(this,'" + RequestId.ToString() + "','3');", false);
+                buttonLit.Text += BuildButtons("closed_completed_" + RequestId.ToString(), "Closed Completed", "actionClicked(this,'" + RequestId.ToString() + "','6');", false);
+                buttonLit.Text += BuildButtons("create_ticket_" + RequestId.ToString(), "Create Ticket", "actionClicked(this,'" + RequestId.ToString() + "','5');", false);
+                buttonLit.Text += BuildButtons("edit_workflow_" + RequestId.ToString(), "Edit Workflow", "actionClicked(this,'" + RequestId.ToString() + "','');", false);
+                buttonLit.Text += BuildButtons("create_workflow_" + RequestId.ToString(), "Create Workflow", "actionClicked(this,'" + RequestId.ToString() + "','');", false);
+                buttonLit.Text += BuildButtons("continue_workflow_" + RequestId.ToString(), "Continue Workflow", "actionClicked(this,'" + RequestId.ToString() + "','');", false);
                         
 
                 PlaceHolder dynamicButtonsContainer;
