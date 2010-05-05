@@ -266,6 +266,7 @@ namespace Apollo.AIM.SNAP.Model
                         if (result)
                         {
                             createrApprovalWorkFlow(db, actorIds);
+                            addAccessTeamComment(accessTeamWF,"Workflow created @" + DateTime.Now, CommentsType.Access_Notes_AccessTeam);
                             db.SubmitChanges();
                         }
                     }
@@ -323,6 +324,8 @@ namespace Apollo.AIM.SNAP.Model
                                         InformNewPendingApproverNewDueDate(wf, currentPendingApproverType);
                                     }
                                 }
+
+                                addAccessTeamComment(accessTeamWF, "Workflow editted @" + DateTime.Now, CommentsType.Access_Notes_AccessTeam);
                                 db.SubmitChanges();
                             }
                             else
