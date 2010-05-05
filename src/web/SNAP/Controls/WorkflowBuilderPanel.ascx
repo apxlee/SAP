@@ -1,5 +1,4 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="WorkflowBuilderPanel.ascx.cs" Inherits="Apollo.AIM.SNAP.Web.Controls.WorkflowBuilderPanel" %>
-
 <!-- WORKFLOW BUILDER SECTION -->
 <div class="csm_text_container csm_top5">
 

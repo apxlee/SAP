@@ -22,7 +22,42 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			
 			// TODO: if there are no blades (which would be odd), then build 'no data' message
 			
+			//string expression = "workflow_actor_name = 'access & identity management'";
+			//string sortOrder = "workflow_pkid ASC";
+			//DataRow[] foundRows;
+			//foundRows = workflowBladeTable.Select(expression, sortOrder);
+			//for(int i = 0; i < foundRows.Length; i++)
+			//{
+			//    Response.Write(foundRows[i][0]);
+			//}
+
+			//EnumerableRowCollection<DataRow> query =
+			//    from actor_name in workflowBladeTable.AsEnumerable()
+			//    where actor_name.Field<string>("workflow_actor_name") == "access & identity management"
+			//    select actor_name;
+			//DataView view = query.AsDataView();
+
+			//DataRow query = (
+			//    from bladeRow in workflowBladeTable.AsEnumerable()
+			//    where (string)bladeRow["workflow_actor_name"] == "Access & Identity Management"
+			//    //where (string)bladeRow["workflow_status"] == "Pending Acknowledgement"
+			//    select bladeRow).Last();
+
+			////query.SetField("actor_group_id", 10);
+
+			//DataTable filteredTable = new DataTable();
+			//filteredTable.Columns.Add("workflow_actor_name", typeof(string));
+			//filteredTable.Columns.Add("workflow_status", typeof(string));
+			//filteredTable.Columns.Add("workflow_due_date", typeof(string));
+			//filteredTable.Columns.Add("workflow_completed_date", typeof(DateTime));
+			//filteredTable.Columns.Add("workflow_pkid", typeof(int));
+			//filteredTable.Columns.Add("actor_group_id", typeof(int));
+			
+			//filteredTable.ImportRow(query);
+				
+			
 			foreach (DataRow workflowRow in workflowBladeTable.Rows)
+			//foreach (DataRow workflowRow in filteredTable.Rows)
 			{
 				WorkflowBlade workflowBlade;
 				workflowBlade = LoadControl("~/Controls/WorkflowBlade.ascx") as WorkflowBlade;
@@ -69,9 +104,9 @@ namespace Apollo.AIM.SNAP.Web.Controls
 					// TODO: move string to config file?
 					workflowComments.AppendFormat("<p{0}><u>{1} by {2} on {3}</u><br />{4}</p>"
 						, (bool)comment["is_new"] ? " class=csm_error_text" : string.Empty
-						, comment["action"].ToString()
+						, Convert.ToString((CommentsType)Enum.Parse(typeof(CommentsType), comment["action"].ToString())).StripUnderscore()
 						, comment["workflow_actor"].ToString()
-						, comment["comment_date"].ToString()
+						, Convert.ToDateTime(comment["comment_date"]).ToString("MMM d, yyyy")
 						, comment["comment"].ToString());
 				}
 
@@ -112,29 +147,25 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
             foreach (usp_open_my_request_workflow_commentsResult list in details)
             {
-                table.Rows.Add(list.commentTypeEnum, actorName, list.createdDate, list.commentText, true);
+                table.Rows.Add(list.commentTypeEnum
+					, (actorName == "Access & Identity Management") ? "AIM" : actorName
+					, list.createdDate
+					, list.commentText
+					, (list.commentTypeEnum == (int)CommentsType.Requested_Change) ? true : false);
             }
-
-			/*
-			table.Rows.Add("Acknowledged", "AIM", "Jan. 24, 2010", "Due Date: Jan. 20, 2010", false);
-			table.Rows.Add("Change Requested", "AIM", "Jan. 24, 2010", "The 'justification' section on the form was not completed.", false);
-			table.Rows.Add("Acknowledged", "AIM", "Jan. 25, 2010", "Due Date: Jan. 25, 2010", false);
-			table.Rows.Add("Change Requested", "AIM", "Jan. 26, 2010", "Please complete the form as requested.", true);
-			*/
 
 			return table;
 		}
 
 		DataTable GetWorkflowBlade()
 		{
-			// TODO: where RequestId = this.RequestId
-			//
 			DataTable table = new DataTable();
 			table.Columns.Add("workflow_actor_name", typeof(string));
-			table.Columns.Add("workflow_status", typeof(string));
+			table.Columns.Add("workflow_status", typeof(int));
 			table.Columns.Add("workflow_due_date", typeof(string));
 			table.Columns.Add("workflow_completed_date", typeof(DateTime));
 			table.Columns.Add("workflow_pkid", typeof(int));
+			table.Columns.Add("actor_group_id", typeof(int));
 
             var wfDetails = Common.Request.WfDetails(RequestState);
             var details = wfDetails.Where(x => x.requestId.ToString() == RequestId)
@@ -142,7 +173,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
             foreach (usp_open_my_request_workflow_detailsResult list in details)
             {
-                table.Rows.Add(list.displayName, list.workflowStatusEnum, list.dueDate, list.completedDate, list.workflowId);
+                table.Rows.Add(list.displayName, Convert.ToInt32(list.workflowStatusEnum), list.dueDate, list.completedDate, list.workflowId);
                 // why is workflowStatusEnum byte instead of int?
             }
 
