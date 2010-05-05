@@ -322,6 +322,13 @@ namespace Apollo.AIM.SNAP.Model
                                     if (wf.actorId != AccessTeamActorId && newActorIds.Contains(wf.actorId))
                                     {
                                         InformNewPendingApproverNewDueDate(wf, currentPendingApproverType);
+
+                                        // update the request table
+                                        if (wf.SNAP_Actor.SNAP_Actor_Group.actorGroupType == (byte)ActorApprovalType.Manager)
+                                        {
+                                            req.managerUserId = wf.SNAP_Actor.userId;
+                                            req.managerDisplayName = wf.SNAP_Actor.displayName;
+                                        }
                                     }
                                 }
 
