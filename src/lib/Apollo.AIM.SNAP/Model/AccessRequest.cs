@@ -51,7 +51,7 @@ namespace Apollo.AIM.SNAP.Model
 
                     if (result)
                     {
-                        addAccessTeamComment(accessTeamWF, "Due Date: " + dueDate, CommentsType.Acknowledged);
+						addAccessTeamComment(accessTeamWF, "Due Date: " + Convert.ToDateTime(dueDate).ToString("MMM d, yyyy"), CommentsType.Acknowledged);
                         db.SubmitChanges();
                     }
 
