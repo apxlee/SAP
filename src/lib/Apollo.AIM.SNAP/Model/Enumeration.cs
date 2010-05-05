@@ -47,6 +47,8 @@ namespace Apollo.AIM.SNAP.Model
         Email_Reminder = 4,
         Commented = 10,
         Acknowledged = 11,
+        Workflow_Created = 12,
+        Ticket_Created = 13,
         Access_Notes_Requestor = 5,
         Access_Notes_ApprovingManager = 6,
         Access_Notes_AccessTeam = 7,

@@ -40,6 +40,10 @@ namespace Apollo.AIM.SNAP.Model
                 {
                     var req = db.SNAP_Requests.Single(r => r.pkId == _id);
                     var accessTeamWF = req.SNAP_Workflows.Single(x => x.actorId == AccessTeamActorId);
+                    var dueDate = accessTeamWF.SNAP_Workflow_States.Single(
+                            s =>
+                            s.completedDate == null &&
+                            s.workflowStatusEnum == (byte) WorkflowState.Pending_Acknowledgement).dueDate;
                     
                     result = reqStateTransition(req, RequestState.Open, RequestState.Pending,
                                                 accessTeamWF, WorkflowState.Pending_Acknowledgement,
@@ -47,7 +51,7 @@ namespace Apollo.AIM.SNAP.Model
 
                     if (result)
                     {
-                        addAccessTeamComment(accessTeamWF, "Ack @" + DateTime.Now, CommentsType.Access_Notes_AccessTeam);
+                        addAccessTeamComment(accessTeamWF, "Due Date: " + dueDate, CommentsType.Acknowledged);
                         db.SubmitChanges();
                     }
 
@@ -254,6 +258,10 @@ namespace Apollo.AIM.SNAP.Model
                 {
                     var req = db.SNAP_Requests.Single(r => r.pkId == _id);
                     var accessTeamWF = req.SNAP_Workflows.Single(x => x.actorId == AccessTeamActorId);
+                    var dueDate = accessTeamWF.SNAP_Workflow_States.Single(
+                            s =>
+                            s.completedDate == null &&
+                            s.workflowStatusEnum == (byte)WorkflowState.Pending_Workflow).dueDate;
 
                     result = reqStateTransition(req, RequestState.Pending, RequestState.Pending,
                                                 accessTeamWF, WorkflowState.Pending_Workflow,
@@ -266,7 +274,7 @@ namespace Apollo.AIM.SNAP.Model
                         if (result)
                         {
                             createrApprovalWorkFlow(db, actorIds);
-                            addAccessTeamComment(accessTeamWF,"Workflow created @" + DateTime.Now, CommentsType.Access_Notes_AccessTeam);
+                            addAccessTeamComment(accessTeamWF,"Due Date: ", CommentsType.Workflow_Created);
                             db.SubmitChanges();
                         }
                     }
@@ -332,7 +340,7 @@ namespace Apollo.AIM.SNAP.Model
                                     }
                                 }
 
-                                addAccessTeamComment(accessTeamWF, "Workflow editted @" + DateTime.Now, CommentsType.Access_Notes_AccessTeam);
+                                //addAccessTeamComment(accessTeamWF, "Workflow editted @" + DateTime.Now, CommentsType.Access_Notes_AccessTeam);
                                 db.SubmitChanges();
                             }
                             else
@@ -477,7 +485,12 @@ namespace Apollo.AIM.SNAP.Model
                 {
 
                     var req = db.SNAP_Requests.Single(r => r.pkId == _id);
-                    var accessTeamWF = req.SNAP_Workflows.Single(x => x.actorId == AccessTeamActorId); 
+                    var accessTeamWF = req.SNAP_Workflows.Single(x => x.actorId == AccessTeamActorId);
+                    var dueDate = accessTeamWF.SNAP_Workflow_States.Single(
+                            s =>
+                            s.completedDate == null &&
+                            s.workflowStatusEnum == (byte)WorkflowState.Approved).dueDate;
+
                     result = reqStateTransition(req, RequestState.Pending, RequestState.Pending,
                                                 accessTeamWF, WorkflowState.Approved,
                                                 WorkflowState.Pending_Provisioning);
@@ -505,8 +518,8 @@ namespace Apollo.AIM.SNAP.Model
                         //req.ticketNumber = "123456";
 
                         addAccessTeamComment(accessTeamWF, 
-                            "Service Desk ticket: " + req.ticketNumber + " created @" + DateTime.Now, 
-                            CommentsType.Access_Notes_AccessTeam);
+                            "Service Desk Ticket" + req.ticketNumber + ". Due Date: " + dueDate, 
+                            CommentsType.Ticket_Created);
 
                         db.SubmitChanges();
                     }
