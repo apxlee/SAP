@@ -38,7 +38,7 @@ VALUES('Manager',NULL,2,1)
 --// Insert Actors
 print 'Insert actors'
 INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actors]([actor_groupId],[userId],[displayName],[emailAddress],[isDefault],[isActive])
-VALUES(0,'','Access Team','insertaccessteam@email.com',1,1)
+VALUES(1,'','Access Team','insertaccessteam@email.com',1,1)
 INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actors]([actor_groupId],[userId],[displayName],[emailAddress],[isDefault],[isActive])
 VALUES(1,'clschwim','Chris Schwimmer','clschwim@apollogrp.edu',1,1)
 INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actors]([actor_groupId],[userId],[displayName],[emailAddress],[isDefault],[isActive])
