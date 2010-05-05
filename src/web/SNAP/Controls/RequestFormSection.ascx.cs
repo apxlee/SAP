@@ -125,7 +125,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
                      */
                     return item.fieldText;
                 }
-                else
+                else if (items.Count == 1)
                 {
                     return items[0].fieldText;
                 }

@@ -48,11 +48,14 @@ namespace Apollo.AIM.SNAP.Model
                     requestItem = temp[0];
                      */
                 }
-                else
+                else if (requestDataItems.Count() == 1)
                 {
                     requestItem = requestDataItems[0];
                 }
-
+                else
+                {
+                    continue;
+                }
 
                 if (requestItem.fieldText != newData.UserText)
                 {
