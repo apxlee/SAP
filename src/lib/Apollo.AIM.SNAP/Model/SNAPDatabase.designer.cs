@@ -238,13 +238,6 @@ namespace Apollo.AIM.SNAP.Model
 			return ((ISingleResult<usp_open_my_request_workflow_commentsResult>)(result.ReturnValue));
 		}
 		
-		[Function(Name="dbo.usp_open_my_request_workflow_details")]
-		public ISingleResult<usp_open_my_request_workflow_detailsResult> usp_open_my_request_workflow_details([Parameter(DbType="NVarChar(10)")] string userId)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId);
-			return ((ISingleResult<usp_open_my_request_workflow_detailsResult>)(result.ReturnValue));
-		}
-		
 		[Function(Name="dbo.usp_open_request_details")]
 		public ISingleResult<usp_open_request_detailsResult> usp_open_request_details([Parameter(DbType="NVarChar(10)")] string userId, [Parameter(DbType="Int")] System.Nullable<int> requestId)
 		{
@@ -259,6 +252,15 @@ namespace Apollo.AIM.SNAP.Model
 			return ((ISingleResult<usp_open_request_tabResult>)(result.ReturnValue));
 		}
 		
+        /*
+		[Function(Name="dbo.usp_requests")]
+		public ISingleResult<usp_requestsResult> usp_requests([Parameter(DbType="NVarChar(10)")] string userId, [Parameter(DbType="NVarChar(10)")] string role)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId, role);
+			return ((ISingleResult<usp_requestsResult>)(result.ReturnValue));
+		}
+		*/
+
 		[Function(Name="dbo.udf_get_next_business_day", IsComposable=true)]
 		public System.Nullable<System.DateTime> udf_get_next_business_day([Parameter(DbType="SmallDateTime")] System.Nullable<System.DateTime> startDate, [Parameter(DbType="Int")] System.Nullable<int> numDays)
 		{
@@ -272,11 +274,27 @@ namespace Apollo.AIM.SNAP.Model
 			return ((int)(result.ReturnValue));
 		}
 		
+        /*
+		[Function(Name="dbo.usp_search_requests")]
+		public ISingleResult<usp_search_requestsResult> usp_search_requests([Parameter(DbType="NVarChar(100)")] string search)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), search);
+			return ((ISingleResult<usp_search_requestsResult>)(result.ReturnValue));
+		}
+         */
+		
 		[Function(Name="dbo.usp_request_details")]
 		public ISingleResult<usp_request_detailsResult> usp_request_details([Parameter(DbType="Int")] System.Nullable<int> requestId)
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), requestId);
 			return ((ISingleResult<usp_request_detailsResult>)(result.ReturnValue));
+		}
+		
+		[Function(Name="dbo.usp_open_my_request_workflow_details")]
+		public ISingleResult<usp_open_my_request_workflow_detailsResult> usp_open_my_request_workflow_details([Parameter(DbType="NVarChar(10)")] string userId)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId);
+			return ((ISingleResult<usp_open_my_request_workflow_detailsResult>)(result.ReturnValue));
 		}
 	}
 	
@@ -3280,266 +3298,6 @@ namespace Apollo.AIM.SNAP.Model
 		}
 	}
 	
-	public partial class usp_open_my_request_workflow_detailsResult
-	{
-		
-		private int _requestId;
-		
-		private int _pkId;
-		
-		private int _workflowId;
-		
-		private byte _workflowStatusEnum;
-		
-		private System.Nullable<System.DateTime> _notifyDate;
-		
-		private System.Nullable<System.DateTime> _dueDate;
-		
-		private System.Nullable<System.DateTime> _completedDate;
-		
-		private int _pkId1;
-		
-		private int _actor_groupId;
-		
-		private string _userId;
-		
-		private string _displayName;
-		
-		private string _emailAddress;
-		
-		private bool _isDefault;
-		
-		private bool _isActive;
-		
-		public usp_open_my_request_workflow_detailsResult()
-		{
-		}
-		
-		[Column(Storage="_requestId", DbType="Int NOT NULL")]
-		public int requestId
-		{
-			get
-			{
-				return this._requestId;
-			}
-			set
-			{
-				if ((this._requestId != value))
-				{
-					this._requestId = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_pkId", DbType="Int NOT NULL")]
-		public int pkId
-		{
-			get
-			{
-				return this._pkId;
-			}
-			set
-			{
-				if ((this._pkId != value))
-				{
-					this._pkId = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_workflowId", DbType="Int NOT NULL")]
-		public int workflowId
-		{
-			get
-			{
-				return this._workflowId;
-			}
-			set
-			{
-				if ((this._workflowId != value))
-				{
-					this._workflowId = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_workflowStatusEnum", DbType="TinyInt NOT NULL")]
-		public byte workflowStatusEnum
-		{
-			get
-			{
-				return this._workflowStatusEnum;
-			}
-			set
-			{
-				if ((this._workflowStatusEnum != value))
-				{
-					this._workflowStatusEnum = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_notifyDate", DbType="SmallDateTime")]
-		public System.Nullable<System.DateTime> notifyDate
-		{
-			get
-			{
-				return this._notifyDate;
-			}
-			set
-			{
-				if ((this._notifyDate != value))
-				{
-					this._notifyDate = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_dueDate", DbType="SmallDateTime")]
-		public System.Nullable<System.DateTime> dueDate
-		{
-			get
-			{
-				return this._dueDate;
-			}
-			set
-			{
-				if ((this._dueDate != value))
-				{
-					this._dueDate = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_completedDate", DbType="SmallDateTime")]
-		public System.Nullable<System.DateTime> completedDate
-		{
-			get
-			{
-				return this._completedDate;
-			}
-			set
-			{
-				if ((this._completedDate != value))
-				{
-					this._completedDate = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_pkId1", DbType="Int NOT NULL")]
-		public int pkId1
-		{
-			get
-			{
-				return this._pkId1;
-			}
-			set
-			{
-				if ((this._pkId1 != value))
-				{
-					this._pkId1 = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_actor_groupId", DbType="Int NOT NULL")]
-		public int actor_groupId
-		{
-			get
-			{
-				return this._actor_groupId;
-			}
-			set
-			{
-				if ((this._actor_groupId != value))
-				{
-					this._actor_groupId = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_userId", DbType="NVarChar(10)")]
-		public string userId
-		{
-			get
-			{
-				return this._userId;
-			}
-			set
-			{
-				if ((this._userId != value))
-				{
-					this._userId = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_displayName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
-		public string displayName
-		{
-			get
-			{
-				return this._displayName;
-			}
-			set
-			{
-				if ((this._displayName != value))
-				{
-					this._displayName = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_emailAddress", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string emailAddress
-		{
-			get
-			{
-				return this._emailAddress;
-			}
-			set
-			{
-				if ((this._emailAddress != value))
-				{
-					this._emailAddress = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_isDefault", DbType="Bit NOT NULL")]
-		public bool isDefault
-		{
-			get
-			{
-				return this._isDefault;
-			}
-			set
-			{
-				if ((this._isDefault != value))
-				{
-					this._isDefault = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_isActive", DbType="Bit NOT NULL")]
-		public bool isActive
-		{
-			get
-			{
-				return this._isActive;
-			}
-			set
-			{
-				if ((this._isActive != value))
-				{
-					this._isActive = value;
-				}
-			}
-		}
-	}
-	
 	public partial class usp_open_request_detailsResult
 	{
 		
@@ -4817,6 +4575,284 @@ namespace Apollo.AIM.SNAP.Model
 				if ((this._createdDate != value))
 				{
 					this._createdDate = value;
+				}
+			}
+		}
+	}
+	
+	public partial class usp_open_my_request_workflow_detailsResult
+	{
+		
+		private int _requestId;
+		
+		private int _pkId;
+		
+		private int _workflowId;
+		
+		private byte _workflowStatusEnum;
+		
+		private System.Nullable<System.DateTime> _notifyDate;
+		
+		private System.Nullable<System.DateTime> _dueDate;
+		
+		private System.Nullable<System.DateTime> _completedDate;
+		
+		private int _pkId1;
+		
+		private int _actor_groupId;
+		
+		private string _userId;
+		
+		private string _displayName;
+		
+		private string _emailAddress;
+		
+		private bool _isDefault;
+		
+		private bool _isActive;
+		
+		private System.Nullable<byte> _actorGroupType;
+		
+		public usp_open_my_request_workflow_detailsResult()
+		{
+		}
+		
+		[Column(Storage="_requestId", DbType="Int NOT NULL")]
+		public int requestId
+		{
+			get
+			{
+				return this._requestId;
+			}
+			set
+			{
+				if ((this._requestId != value))
+				{
+					this._requestId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_pkId", DbType="Int NOT NULL")]
+		public int pkId
+		{
+			get
+			{
+				return this._pkId;
+			}
+			set
+			{
+				if ((this._pkId != value))
+				{
+					this._pkId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_workflowId", DbType="Int NOT NULL")]
+		public int workflowId
+		{
+			get
+			{
+				return this._workflowId;
+			}
+			set
+			{
+				if ((this._workflowId != value))
+				{
+					this._workflowId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_workflowStatusEnum", DbType="TinyInt NOT NULL")]
+		public byte workflowStatusEnum
+		{
+			get
+			{
+				return this._workflowStatusEnum;
+			}
+			set
+			{
+				if ((this._workflowStatusEnum != value))
+				{
+					this._workflowStatusEnum = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_notifyDate", DbType="SmallDateTime")]
+		public System.Nullable<System.DateTime> notifyDate
+		{
+			get
+			{
+				return this._notifyDate;
+			}
+			set
+			{
+				if ((this._notifyDate != value))
+				{
+					this._notifyDate = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_dueDate", DbType="SmallDateTime")]
+		public System.Nullable<System.DateTime> dueDate
+		{
+			get
+			{
+				return this._dueDate;
+			}
+			set
+			{
+				if ((this._dueDate != value))
+				{
+					this._dueDate = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_completedDate", DbType="SmallDateTime")]
+		public System.Nullable<System.DateTime> completedDate
+		{
+			get
+			{
+				return this._completedDate;
+			}
+			set
+			{
+				if ((this._completedDate != value))
+				{
+					this._completedDate = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_pkId1", DbType="Int NOT NULL")]
+		public int pkId1
+		{
+			get
+			{
+				return this._pkId1;
+			}
+			set
+			{
+				if ((this._pkId1 != value))
+				{
+					this._pkId1 = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_actor_groupId", DbType="Int NOT NULL")]
+		public int actor_groupId
+		{
+			get
+			{
+				return this._actor_groupId;
+			}
+			set
+			{
+				if ((this._actor_groupId != value))
+				{
+					this._actor_groupId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_userId", DbType="NVarChar(10)")]
+		public string userId
+		{
+			get
+			{
+				return this._userId;
+			}
+			set
+			{
+				if ((this._userId != value))
+				{
+					this._userId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_displayName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string displayName
+		{
+			get
+			{
+				return this._displayName;
+			}
+			set
+			{
+				if ((this._displayName != value))
+				{
+					this._displayName = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_emailAddress", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string emailAddress
+		{
+			get
+			{
+				return this._emailAddress;
+			}
+			set
+			{
+				if ((this._emailAddress != value))
+				{
+					this._emailAddress = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_isDefault", DbType="Bit NOT NULL")]
+		public bool isDefault
+		{
+			get
+			{
+				return this._isDefault;
+			}
+			set
+			{
+				if ((this._isDefault != value))
+				{
+					this._isDefault = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_isActive", DbType="Bit NOT NULL")]
+		public bool isActive
+		{
+			get
+			{
+				return this._isActive;
+			}
+			set
+			{
+				if ((this._isActive != value))
+				{
+					this._isActive = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_actorGroupType", DbType="TinyInt")]
+		public System.Nullable<byte> actorGroupType
+		{
+			get
+			{
+				return this._actorGroupType;
+			}
+			set
+			{
+				if ((this._actorGroupType != value))
+				{
+					this._actorGroupType = value;
 				}
 			}
 		}

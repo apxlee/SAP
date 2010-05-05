@@ -61,6 +61,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
         private string CompareManagerName(string userId, string mgrUserId)
         {
+            
 			try
 			{
 				ADUserDetail userDetail = Apollo.AIM.SNAP.CA.DirectoryServices.GetUserByLoginName(userId);
@@ -73,6 +74,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			{
 				// TODO: Logger.Error("ReadOnlyRequestPanel > CompareManagerName", ex);
 			}
+            
 
 			return string.Empty;
         }

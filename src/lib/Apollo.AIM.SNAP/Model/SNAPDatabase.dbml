@@ -180,25 +180,6 @@
       <Column Name="createdDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
-  <Function Name="dbo.usp_open_my_request_workflow_details" Method="usp_open_my_request_workflow_details">
-    <Parameter Name="userId" Type="System.String" DbType="NVarChar(10)" />
-    <ElementType Name="usp_open_my_request_workflow_detailsResult">
-      <Column Name="requestId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="pkId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="workflowId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="workflowStatusEnum" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
-      <Column Name="notifyDate" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
-      <Column Name="dueDate" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
-      <Column Name="completedDate" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
-      <Column Name="pkId1" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="actor_groupId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="userId" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
-      <Column Name="displayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="emailAddress" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="isDefault" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="isActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-    </ElementType>
-  </Function>
   <Function Name="dbo.usp_open_request_details" Method="usp_open_request_details">
     <Parameter Name="userId" Type="System.String" DbType="NVarChar(10)" />
     <Parameter Name="requestId" Type="System.Int32" DbType="Int" />
@@ -309,6 +290,26 @@
       <Column Name="isChanged" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="statusEnum" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
       <Column Name="createdDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_open_my_request_workflow_details" Method="usp_open_my_request_workflow_details">
+    <Parameter Name="userId" Type="System.String" DbType="NVarChar(10)" />
+    <ElementType Name="usp_open_my_request_workflow_detailsResult">
+      <Column Name="requestId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="pkId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="workflowId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="workflowStatusEnum" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="notifyDate" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+      <Column Name="dueDate" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+      <Column Name="completedDate" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+      <Column Name="pkId1" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="actor_groupId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="userId" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="displayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="emailAddress" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="isDefault" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="isActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="actorGroupType" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
     </ElementType>
   </Function>
 </Database>
