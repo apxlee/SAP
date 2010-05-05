@@ -34,7 +34,10 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			{
 				_requestorId.Text = SnapSession.CurrentUser.FullName;
 				_managerName.Text = SnapSession.CurrentUser.ManagerName;
+                 this._managerLoginId.Text = SnapSession.CurrentUser.ManagerLoginId;
+                 this._requestorLoginId.Text = SnapSession.CurrentUser.LoginId;
 			}
+
         
             _requestFormData =loadRequestFormData();
 
@@ -42,8 +45,10 @@ namespace Apollo.AIM.SNAP.Web.Controls
             {
                 this.UserName = _requestFormData[0].userDisplayName;
                 this.UserLoginId = _requestFormData[0].userId;
+                this._requestorLoginId.Text = _requestFormData[0].userId;
                 this.ManagerName = _requestFormData[0].managerDisplayName;
                 this.ManagerLoginId = _requestFormData[0].managerUserId;
+                this._managerLoginId.Text = _requestFormData[0].managerUserId;
             }
 
             RequestFormSection requestFormSection=null;
