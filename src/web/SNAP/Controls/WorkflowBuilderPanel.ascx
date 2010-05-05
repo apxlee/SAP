@@ -5,6 +5,7 @@
 
     <div class="csm_icon_heading_container oospa_aim_builder">
         <h2>Access & Identity Management - Workflow Builder</h2>
+        <p class="">Please review the access details above and select an appropriate action below.</p>
     </div>
 	
 	<fieldset>	
