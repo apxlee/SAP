@@ -87,38 +87,6 @@ namespace Apollo.AIM.SNAP.Web.Common
 
 			if (isRedirect) { WebUtilities.Redirect("AppError.aspx?errorReason=wrongRole", true); }
 		}
-
-		//public static void SetActiveView(int viewIndex) // TODO: remove
-		//{
-		//    Page currentPage = HttpContext.Current.Handler as Page;
-		//    MultiView multiView = (MultiView)WebUtilities.FindControlRecursive(currentPage, "_masterMultiView");
-		//    Panel ribbonContainer = (Panel)WebUtilities.FindControlRecursive(currentPage, "_ribbonContainerOuter");
-
-		//    try
-		//    {
-		//        multiView.ActiveViewIndex = viewIndex;
-		//        ribbonContainer.CssClass = Convert.ToString((ViewIndex)Enum.Parse(typeof(ViewIndex), viewIndex.ToString()));
-		//        SnapSession.RequestedView = (ViewIndex)viewIndex;
-		//    }
-		//    catch
-		//    {
-		//        multiView.ActiveViewIndex = -1;
-		//    }
-		//}
-		
-		//public static ViewIndex CurrentViewIndex
-		//{
-		//    get 
-		//    {
-		//        Page currentPage = HttpContext.Current.Handler as Page;
-		//        MultiView multiView = (MultiView)WebUtilities.FindControlRecursive(currentPage, "_masterMultiView");
-			
-		//        return (ViewIndex)multiView.ActiveViewIndex;
-		//    }
-		//}
-
-		// TODO: refactor into SNAPUser
-		//public static string CurrentLoginUserId { get; set; }
          
         public static void Redirect(string redirectUrl, bool endResponse)
         {
