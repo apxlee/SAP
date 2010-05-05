@@ -34,8 +34,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
             searchLoader.searchText = _searchInput.Text;
             searchLoader.Load();
 
-            ViewBaseUtilities.BuildRequestBlades(RequestState.Search, _searchResultsContainer
-                , _nullDataMessage_SearchRequests, null);
+            ViewBaseUtilities.BuildRequests(this.Page, RequestState.Search, _searchResultsContainer, _nullDataMessage_SearchRequests, false);
         }
 	}
 }

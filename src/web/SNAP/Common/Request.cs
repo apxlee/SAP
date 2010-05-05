@@ -125,8 +125,9 @@ namespace Apollo.AIM.SNAP.Web.Common
                             join sws in db.SNAP_Workflow_States on sw.pkId equals sws.workflowId
                             join sa in db.SNAP_Actors on sw.actorId equals sa.pkId
                             where sa.userId == UserID 
-                            && sws.workflowStatusEnum == 7 
-                            && (sr.statusEnum == 0 || sr.statusEnum == 1 || sr.statusEnum == 2)
+                            && sws.workflowStatusEnum == 7
+                            && sws.completedDate == null
+                            && sr.statusEnum == 2
                             select new {sr.pkId}).GroupBy(p=> p.pkId).Count();
 
                 return result;

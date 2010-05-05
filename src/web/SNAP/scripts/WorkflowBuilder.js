@@ -25,9 +25,7 @@
           });
     });
 }
-
 function actionClicked(obj, requestId, state) {
-    //TODO: hide acknowledgment and comments
     switch ($(obj).val()) {
         case "Closed Cancelled":
             builderActions(obj, requestId, state);
@@ -180,7 +178,6 @@ function animateActions(obj, newSection) {
         });
     });
 }
-
 function createWorkflow(obj, requestId) {
     $(document).ready(function() {
         if ($("#_managerUserId_" + requestId).val() > "") {
@@ -216,8 +213,6 @@ function createWorkflow(obj, requestId) {
         }
     });
 }
-
-
 function editCreatedWorkflow(obj, requestId) {
     $(document).ready(function() {
         if ($("#_managerUserId_" + requestId).val() > "") {
@@ -254,7 +249,6 @@ function editCreatedWorkflow(obj, requestId) {
         }
     });
 }
-
 function managerEdit(obj) {
     $(document).ready(function() {
         var managerLabelSection = $(obj).prev().prev().prev().prev()
@@ -283,7 +277,6 @@ function managerEdit(obj) {
         });
     });
 }
-
 function GetNames(name) {
     var indicator = $('.oospa_ajax_indicator');
     var selection = $('select[id$=_managerSelection]');
@@ -337,7 +330,6 @@ function FillAllFields(name, names) {
     managerInputSection.hide();
     managerLabelSection.show();
 }
-
 function FillErrorFields(name) {
     var managerInputDisplayName = $(name).parent().children("input[type=text]");
     var managerInputUserId = $(name).parent().prev().children("span").next();

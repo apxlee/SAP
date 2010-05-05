@@ -1095,13 +1095,15 @@ namespace Apollo.AIM.SNAP.Model
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var query = from sw in db.SNAP_Workflows
+                var query = from a in db.SNAP_Actors
+                            join sw in db.SNAP_Workflows on a.pkId equals sw.actorId
                             join sws in db.SNAP_Workflow_States on sw.pkId equals sws.workflowId
                             where sw.requestId == requestId
-                            group sw by new { sw.requestId, sw.actorId } into wfGroup
+                            group sw by new { a.userId, sw.requestId, sw.actorId } into wfGroup
                             select new
                             {
                                 ActorId = wfGroup.Key.actorId,
+                                UserId = wfGroup.Key.userId,
                                 WorkflowId = wfGroup.Max(sw => sw.pkId) 
                             };
 
@@ -1109,6 +1111,7 @@ namespace Apollo.AIM.SNAP.Model
                 {
                     AccessApprover newApprover = new AccessApprover();
                     newApprover.ActorId = approver.ActorId;
+                    newApprover.UserId = approver.UserId;
                     newApprover.WorkflowState = (WorkflowState)GetWorkflowState(approver.WorkflowId);
                     approverList.Add(newApprover);
                 }

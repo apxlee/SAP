@@ -26,9 +26,9 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		{
 			var requestLoader = new Common.MyApprovalLoader();
 			requestLoader.Load();
-			
-			ViewBaseUtilities.BuildRequestBlades(RequestState.Open, _pendingApprovalsContainer
-				, _nullDataMessage_PendingApprovals, SnapSession.SelectedRequestId);
+
+            ViewBaseUtilities.BuildApproverRequests(this.Page, RequestState.Open, _pendingApprovalsContainer, _nullDataMessage_OpenRequests);
+            ViewBaseUtilities.BuildRequests(this.Page, RequestState.Closed, _closedRequestsContainer, _nullDataMessage_ClosedRequests, false);
 		}
 	}
 }
