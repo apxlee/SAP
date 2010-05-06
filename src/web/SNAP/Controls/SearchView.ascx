@@ -7,7 +7,7 @@
 			<p>Currently, the Search only accepts User ID, Username and Request ID as search criteria. 
 			The results ONLY return the AFFECTED USER matching the criteria in the new application environment. 
 			Searches for old requested forms within the Sharepoint environment need to be made through filtering 
-			from the legacy <a target="_blank" href="http://apolloiandt/SiteDirectory/infraops/ITOC/Lists/Paper3/Robust%20View.aspx">Sharepoint Privileged Access</a> site.</p>
+			from the legacy <a href="http://apolloiandt/SiteDirectory/infraops/ITOC/Lists/Paper3/Robust%20View.aspx">Sharepoint Privileged Access</a> site.</p>
 		</div>
 		<table border="0" cellpadding="0" cellspacing="0" class="csm_input_form_container">
 				<tr>
