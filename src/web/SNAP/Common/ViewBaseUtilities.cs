@@ -44,41 +44,15 @@ namespace Apollo.AIM.SNAP.Web.Common
 
                 if (ApproverState == WorkflowState.Pending_Approval)
                 {
-                    pendingContainer.Controls.Add(buildMasterBlade(request, currentPage, requestState, null));
+                    pendingContainer.Controls.Add(BuildMasterBlade(request, currentPage, requestState, null));
                 }
                 else
                 {
-                    openContainer.Controls.Add(buildMasterBlade(request, currentPage, requestState, null));
+                    openContainer.Controls.Add(BuildMasterBlade(request, currentPage, requestState, null));
                 }
             }
 		}
 		
-		static DataTable GetRequests(RequestState requestState, string selectedRequestId)
-		{
-            DataTable requestTable = new DataTable();
-            requestTable.Columns.Add("request_id", typeof(string));
-			requestTable.Columns.Add("affected_end_user_name", typeof(string));
-			requestTable.Columns.Add("overall_request_status", typeof(string));
-			requestTable.Columns.Add("last_updated_date", typeof(string));
-			requestTable.Columns.Add("is_selected", typeof(bool));
-
-            var reqDetails = Common.Request.Details(requestState);
-            foreach (usp_open_my_request_detailsResult request in reqDetails)
-            {
-                requestTable.Rows.Add(
-					request.pkId
-					, request.userDisplayName.StripTitleFromUserName()
-                    , Convert.ToString((RequestState)Enum.Parse(typeof(RequestState)
-					, request.statusEnum.ToString())).StripUnderscore()
-					, request.lastModifiedDate.ToString("MMM d, yyyy")
-					, (request.pkId.ToString().Trim() == selectedRequestId) ? true : false
-                    );
-                // is this "last updated date" or "created date"?
-            }
-
-			return requestTable;
-		}
-
         public static DataTable GetRequestDetails(int requestId)
         {
             DataTable detailsTable = new DataTable();
@@ -103,47 +77,49 @@ namespace Apollo.AIM.SNAP.Web.Common
             return detailsTable;
         }
 
-        public static void BuildRequests(Page page, RequestState requestState, PlaceHolder bladeContainer, Panel nullMessage, bool IsNullRecordTest)
+        public static void BuildRequests(Page page, RequestState requestState, PlaceHolder bladeContainer, Panel nullMessage)
         {
-            DataTable requestTable = ViewBaseUtilities.GetRequests(requestState, null);
+			//string selectedRequestId = SnapSession
+            DataTable requestTable = ViewBaseUtilities.GetRequests(requestState, SnapSession.SelectedRequestId);
             List<AccessGroup> availableGroups = ApprovalWorkflow.GetAvailableGroups();
-            /*
-            List<AccessGroup> availableGroups = new List<AccessGroup>();
-            
-            using (var db = new SNAPDatabaseDataContext())
-            {
-                availableGroups = ApprovalWorkflow.GetAvailableGroups();
-            }
-            */
 
-            if (!IsNullRecordTest)
-            {
-                foreach (DataRow request in requestTable.Rows)
-                {
-                    /*
-                    MasterRequestBlade requestBlade;
-                    requestBlade = page.LoadControl("~/Controls/MasterRequestBlade.ascx") as MasterRequestBlade;
-                    requestBlade.RequestId = request["request_id"].ToString();
-                    requestBlade.RequestState = RequestState;
-                    requestBlade.AffectedEndUserName = request["affected_end_user_name"].ToString();
-                    requestBlade.OverallRequestStatus = request["overall_request_status"].ToString();
-                    requestBlade.LastUpdatedDate = request["last_updated_date"].ToString();
-                    requestBlade.IsSelectedRequest = (bool)request["is_selected"];
-                    requestBlade.AvailableGroups = availableGroups;
-                    */
-
-                    bladeContainer.Controls.Add(buildMasterBlade(request, page, requestState, availableGroups));
-
-                }
-            }
-            else
-            {
-                nullMessage.Visible = true;
-            }
+			if (requestTable.Rows.Count > 0)
+			{
+				foreach (DataRow request in requestTable.Rows)
+				{
+					bladeContainer.Controls.Add(BuildMasterBlade(request, page, requestState, availableGroups));
+				}
+			}
+			else { nullMessage.Visible = true; }
         }
 
+		static DataTable GetRequests(RequestState requestState, string selectedRequestId)
+		{
+			DataTable requestTable = new DataTable();
+			requestTable.Columns.Add("request_id", typeof(string));
+			requestTable.Columns.Add("affected_end_user_name", typeof(string));
+			requestTable.Columns.Add("overall_request_status", typeof(string));
+			requestTable.Columns.Add("last_updated_date", typeof(string));
+			requestTable.Columns.Add("is_selected", typeof(bool));
 
-        static MasterRequestBlade buildMasterBlade(DataRow request, Page page, RequestState RequestState, List<AccessGroup> AvailableGroups)
+			var reqDetails = Common.Request.Details(requestState);
+			foreach (usp_open_my_request_detailsResult request in reqDetails)
+			{
+				requestTable.Rows.Add(
+					request.pkId
+					, request.userDisplayName.StripTitleFromUserName()
+					, Convert.ToString((RequestState)Enum.Parse(typeof(RequestState)
+					, request.statusEnum.ToString())).StripUnderscore()
+					, request.lastModifiedDate.ToString("MMM d, yyyy")
+					, (request.pkId.ToString().Trim() == selectedRequestId) ? true : false
+					);
+				// is this "last updated date" or "created date"?
+			}
+
+			return requestTable;
+		}        
+
+        private static MasterRequestBlade BuildMasterBlade(DataRow request, Page page, RequestState RequestState, List<AccessGroup> AvailableGroups)
         {
             MasterRequestBlade requestBlade;
             requestBlade = page.LoadControl("~/Controls/MasterRequestBlade.ascx") as MasterRequestBlade;
