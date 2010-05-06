@@ -37,11 +37,11 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			//    select actor_name;
 			//DataView view = query.AsDataView();
 
-			//DataRow query = (
-			//    from bladeRow in workflowBladeTable.AsEnumerable()
-			//    where (string)bladeRow["workflow_actor_name"] == "Access & Identity Management"
-			//    //where (string)bladeRow["workflow_status"] == "Pending Acknowledgement"
-			//    select bladeRow).Last();
+			DataRow query = (
+				from bladeRow in workflowBladeTable.AsEnumerable()
+				where (string)bladeRow["workflow_actor_name"] == "Access & Identity Management"
+				//where (string)bladeRow["workflow_status"] == "Pending Acknowledgement"
+				select bladeRow).Last();
 
 			////query.SetField("actor_group_id", 10);
 

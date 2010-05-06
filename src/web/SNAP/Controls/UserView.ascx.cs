@@ -24,9 +24,10 @@ namespace Apollo.AIM.SNAP.Web.Controls
             var requesterLoader = new Common.MyRequestLoader();
 		    requesterLoader.Load();
 
-            ViewBaseUtilities.BuildRequests(this.Page, RequestState.Open, _openRequestsContainer, _nullDataMessage_OpenRequests, false);
-            //ViewBaseUtilities.BuildRequests(this.Page, RequestState.Closed, _closedRequestsContainer, _nullDataMessage_ClosedRequests, true);
-            ViewBaseUtilities.BuildRequests(this.Page, RequestState.Closed, _closedRequestsContainer, _nullDataMessage_ClosedRequests, false);
+			// TODO: refactor buildrequests... don't need to pass in all these parms
+			//
+            ViewBaseUtilities.BuildRequests(this.Page, RequestState.Open, _openRequestsContainer, _nullDataMessage_OpenRequests);
+            ViewBaseUtilities.BuildRequests(this.Page, RequestState.Closed, _closedRequestsContainer, _nullDataMessage_ClosedRequests);
 		}
 		
 	}

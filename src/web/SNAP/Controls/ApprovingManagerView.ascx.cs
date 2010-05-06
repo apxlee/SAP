@@ -28,7 +28,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			requestLoader.Load();
 
             ViewBaseUtilities.BuildApproverRequests(this.Page, RequestState.Open, _pendingApprovalsContainer, _nullDataMessage_OpenRequests);
-            ViewBaseUtilities.BuildRequests(this.Page, RequestState.Closed, _closedRequestsContainer, _nullDataMessage_ClosedRequests, false);
+            ViewBaseUtilities.BuildRequests(this.Page, RequestState.Closed, _closedRequestsContainer, _nullDataMessage_ClosedRequests);
 		}
 	}
 }
