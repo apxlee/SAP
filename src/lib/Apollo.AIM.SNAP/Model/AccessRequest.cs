@@ -721,8 +721,6 @@ namespace Apollo.AIM.SNAP.Model
             }
              
 
-            //if (req.SNAP_Workflows.Count == 1 && req.SNAP_Workflows[0].actorId == 1) // brand new wf
-            //{
             foreach (var actId in actorIds)
             {
                 SNAP_Workflow wf;
@@ -742,10 +740,8 @@ namespace Apollo.AIM.SNAP.Model
 
                 ActorApprovalType t = (ActorApprovalType) agt;
 
-                //stateTransition(t, wf, WorkflowState.Not_Active, WorkflowState.Pending_Approval);
                 stateTransition(t, wf, WorkflowState.Not_Active, WorkflowState.Not_Active);
             }
-            //}
 
         }
 
@@ -803,7 +799,6 @@ namespace Apollo.AIM.SNAP.Model
 
                     ActorApprovalType t = (ActorApprovalType)agt;
 
-                    //stateTransition(t, wf, WorkflowState.Not_Active, WorkflowState.Pending_Approval);
                     stateTransition(t, wf, WorkflowState.Not_Active, WorkflowState.Not_Active);
                 }
             }
@@ -849,6 +844,10 @@ namespace Apollo.AIM.SNAP.Model
                         var actorType = (ActorApprovalType) (wf.SNAP_Actor.SNAP_Actor_Group.actorGroupType ?? 3); // default workflow admin
 
                         stateTransition(actorType, wf, WorkflowState.Not_Active, WorkflowState.Pending_Approval);
+
+                        // if we have multple team approvers, we need to sequential them, not all out 
+                        if (actorType == ActorApprovalType.Team_Approver)
+                            break;
                     }
 
                 }
@@ -1273,7 +1272,7 @@ namespace Apollo.AIM.SNAP.Model
             var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
             var totalApproved = 0;
             var state = accessTeamWF.SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Workflow_Created
-                && s.completedDate == null); // get lastest 'pending approval' for the workflowadmin state
+                && s.completedDate == null); // get lastest 'worflow created' for the workflowadmin state
 
             foreach (var w in wfs)
             {
