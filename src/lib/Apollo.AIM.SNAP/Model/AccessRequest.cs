@@ -38,12 +38,21 @@ namespace Apollo.AIM.SNAP.Model
             {
                 using (var db = new SNAPDatabaseDataContext())
                 {
+                    /*
                     var req = db.SNAP_Requests.Single(r => r.pkId == _id);
                     var accessTeamWF = req.SNAP_Workflows.Single(x => x.actorId == AccessTeamActorId);
                     var dueDate = accessTeamWF.SNAP_Workflow_States.Single(
                             s =>
                             s.completedDate == null &&
                             s.workflowStatusEnum == (byte) WorkflowState.Pending_Acknowledgement).dueDate;
+                    
+                    */
+                    
+                    SNAP_Workflow accessTeamWF;
+                    DateTime? dueDate;
+                    SNAP_Request req;
+
+                    initializeData(db, WorkflowState.Pending_Acknowledgement, out req, out accessTeamWF, out dueDate);
                     
                     result = reqStateTransition(req, RequestState.Open, RequestState.Pending,
                                                 accessTeamWF, WorkflowState.Pending_Acknowledgement,
@@ -256,12 +265,22 @@ namespace Apollo.AIM.SNAP.Model
             {
                 using (var db = new SNAPDatabaseDataContext())
                 {
+                    /*
                     var req = db.SNAP_Requests.Single(r => r.pkId == _id);
                     var accessTeamWF = req.SNAP_Workflows.Single(x => x.actorId == AccessTeamActorId);
                     var dueDate = accessTeamWF.SNAP_Workflow_States.Single(
                             s =>
                             s.completedDate == null &&
                             s.workflowStatusEnum == (byte)WorkflowState.Pending_Workflow).dueDate;
+
+                    */
+                    
+                    SNAP_Workflow accessTeamWF;
+                    DateTime? dueDate;
+                    SNAP_Request req; 
+
+                    initializeData(db, WorkflowState.Pending_Workflow, out req, out accessTeamWF, out dueDate);
+                    
 
                     result = reqStateTransition(req, RequestState.Pending, RequestState.Pending,
                                                 accessTeamWF, WorkflowState.Pending_Workflow,
@@ -483,13 +502,11 @@ namespace Apollo.AIM.SNAP.Model
             {
                 using (var db = new SNAPDatabaseDataContext())
                 {
-
-                    var req = db.SNAP_Requests.Single(r => r.pkId == _id);
-                    var accessTeamWF = req.SNAP_Workflows.Single(x => x.actorId == AccessTeamActorId);
-                    var dueDate = accessTeamWF.SNAP_Workflow_States.Single(
-                            s =>
-                            s.completedDate == null &&
-                            s.workflowStatusEnum == (byte)WorkflowState.Approved).dueDate;
+                    SNAP_Workflow accessTeamWF;
+                    DateTime? dueDate;
+                    SNAP_Request req; 
+                        
+                    initializeData(db, WorkflowState.Approved, out req, out accessTeamWF, out dueDate);
 
                     result = reqStateTransition(req, RequestState.Pending, RequestState.Pending,
                                                 accessTeamWF, WorkflowState.Approved,
@@ -530,6 +547,16 @@ namespace Apollo.AIM.SNAP.Model
                 Logger.Error("SNAP - AccessRequst: Create Service Desk Ticket", ex); 
             }
             return result;
+        }
+
+        private void initializeData(SNAPDatabaseDataContext db, WorkflowState state, out SNAP_Request req, out SNAP_Workflow accessTeamWF, out DateTime? dueDate)
+        {
+            req = db.SNAP_Requests.Single(r => r.pkId == _id);
+            accessTeamWF = req.SNAP_Workflows.Single(x => x.actorId == AccessTeamActorId);
+            dueDate = accessTeamWF.SNAP_Workflow_States.Single(
+                s =>
+                s.completedDate == null &&
+                s.workflowStatusEnum == (byte)state).dueDate;
         }
 
         public bool FinalizeRequest()
