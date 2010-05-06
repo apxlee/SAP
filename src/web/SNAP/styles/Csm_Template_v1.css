@@ -930,3 +930,30 @@ div.modal_li
 	vertical-align: top;
 	padding-top: 4px;
 	}
+	
+.messageBox {  
+    width:350px;
+    height:175px;
+    text-align: center;  
+    background-image: url('../images/modal_small.png');
+	background-repeat: no-repeat;
+    position:fixed;
+    top:40%;
+    left:50%;
+    margin-left: -175px;
+    z-index:10; 
+}
+.messageBox h2 {
+    margin-top: 5px;
+	margin-bottom: 5px;
+	padding: 35px 2px 2px 3px;
+	font-size: 1.2em;
+	font-family: Arial;
+	font-weight: bold;
+}
+.messageBox p {
+    font-family: Calibri, "Trebuchet MS", Helvetica, Sans-Serif;
+	font-size: .90em;
+	line-height: 1.5em;
+	padding:10px 50px 5px 50px;
+}

@@ -2,7 +2,7 @@
 <!-- TODO: make server side user controls -->
 <div class="csm_text_container">
 	<div class="csm_icon_heading_container oospa_aim_acknowledgement">
-		<h2>Access & Identity Management - Comments</h2>
+		<h2>Comments</h2>
 		<p>Enter comments that relate to the current request.  Optionally select the community who will be able to see the comments.</p>
 	</div>
     		     

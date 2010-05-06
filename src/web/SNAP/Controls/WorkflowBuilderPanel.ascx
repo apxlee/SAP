@@ -3,7 +3,7 @@
 <div class="csm_text_container csm_top5">
 
     <div class="csm_icon_heading_container oospa_aim_builder">
-        <h2>Access & Identity Management - Workflow Builder</h2>
+        <h2>Workflow Builder</h2>
         <p class="">Please review the access details above and select an appropriate action below.</p>
     </div>
 	
@@ -26,7 +26,7 @@
 				        </td>
 				        <td>&nbsp</td>
 						<td width="20" class="">&nbsp;</td>
-						<td width="20" class="oospa_edit_icon_disabled">&nbsp;</td>
+						<td width="20" onclick="managerEdit(this);" class="oospa_edit_icon">&nbsp;</td>
 					</tr>
 				</table>							
 			</td>

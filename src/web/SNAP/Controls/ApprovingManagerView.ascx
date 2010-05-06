@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ApprovingManagerView.ascx.cs" Inherits="Apollo.AIM.SNAP.Web.Controls.ApprovingManagerView" %>
 <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>MasterRequestBlade.js" type="text/javascript"></script>
-<script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>ApproverActions.js" type="text/javascript"></script>
+<script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>ApprovingManagerView.js" type="text/javascript"></script>
 <div class="csm_container_center_700">
 	
 	<h1>Pending Approval</h1>
@@ -25,8 +25,14 @@
 		<div class="csm_text_container">
 			<p>There are no Closed Requests at this time.</p>
 		</div>
-	</asp:Panel>	
-
+	</asp:Panel>
+		
+    <div id="_actionMessageDiv" style="display:none;">
+        <div class="messageBox"> 
+            <h2>header</h2>
+            <p>message</p>
+        </div>
+    </div>
 </div>
 <script type="text/javascript">
 	try { pageTracker._trackPageview("/ApprovingManagerView"); }

@@ -59,7 +59,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			
 			if (IsSelectedRequest)
 			{
-				_toggleIconContainer.CssClass = "csm_toggle_icon_up";
+				//_toggleIconContainer.CssClass = "csm_toggle_icon_up";
 				_toggledContentContainer.CssClass = "csm_displayed_block";
 			}
 		}

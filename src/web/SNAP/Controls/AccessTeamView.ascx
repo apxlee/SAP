@@ -1,9 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="AccessTeamView.ascx.cs" Inherits="Apollo.AIM.SNAP.Web.Controls.AccessTeamView" %>
 <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>MasterRequestBlade.js" type="text/javascript"></script>
-<script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>Acknowledgement.js" type="text/javascript"></script>
-<script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>AccessComments.js" type="text/javascript"></script>
-<script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>WorkflowBuilder.js" type="text/javascript"></script>
-<script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>RequestFilter.js" type="text/javascript"></script>
+<script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>AccessTeamView.js" type="text/javascript"></script>
 <div class="csm_container_center_700">
 	
 	<h1>Access Team Request Filter</h1>
@@ -45,6 +42,13 @@
       </div>
       <select style="display:none;" size="3" class="oospa_select_user" name="managerSelection" id="_managerSelection"></select>
         
+    </div>
+    
+    <div id="_actionMessageDiv" style="display:none;">
+        <div class="messageBox"> 
+            <h2>header</h2>
+            <p>message</p>
+        </div>
     </div>
 </div>
 <script type="text/javascript">
