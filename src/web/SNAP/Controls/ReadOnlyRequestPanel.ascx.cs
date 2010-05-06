@@ -35,9 +35,11 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			var requestDemographics = Common.Request.Details(RequestState).Single(x => x.pkId.ToString() == RequestId);
 
 			_affectedEndUserTitle.Text = requestDemographics.userTitle;
-			_managerName.Text = requestDemographics.managerDisplayName.ToString();
+			_managerName.Text = requestDemographics.managerDisplayName;
 			_adManagerName.Text = CompareManagerName(requestDemographics.userId, requestDemographics.managerUserId);
-			_requestorName.Text = GetFullNameFromAD(requestDemographics.submittedBy);
+			//_requestorName.Text = GetFullNameFromAD(requestDemographics.submittedBy);
+		    _requestorName.Text = requestDemographics.userDisplayName;
+             
 		}
 
 		private string GetFullNameFromAD(string userId)
