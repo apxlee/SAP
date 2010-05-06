@@ -81,6 +81,8 @@ namespace Apollo.AIM.SNAP.Web.Common
         {
 			//string selectedRequestId = SnapSession
             DataTable requestTable = ViewBaseUtilities.GetRequests(requestState, SnapSession.SelectedRequestId);
+            //only use it once the clear requestId
+            SnapSession.SelectedRequestId = "";
             List<AccessGroup> availableGroups = ApprovalWorkflow.GetAvailableGroups();
 
 			if (requestTable.Rows.Count > 0)

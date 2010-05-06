@@ -21,10 +21,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
         protected void Page_Load(object sender, EventArgs e)
         {
-			//if (WebUtilities.CurrentViewIndex == ViewIndex.request_form || Page.IsPostBack)
-			//{
-				BuildRequestForm();
-			//}
+            BuildRequestForm();
         }
         
         private void BuildRequestForm()
@@ -134,7 +131,8 @@ namespace Apollo.AIM.SNAP.Web.Controls
                         requestID = db.usp_insert_request_xml(xmlInput, SnapSession.CurrentUser.LoginId, UserLoginId, UserName, detail.Title, ManagerLoginId, ManagerName);
                         if (requestID > 0)
                         {
-                            //TODO set Session variable to requestID
+                            SnapSession.SelectedRequestId = requestID.ToString();
+                            Response.Redirect("MyRequests.aspx");
                         }
                         else
                         {
