@@ -340,7 +340,7 @@ namespace Apollo.AIM.SNAP.Test
                     Console.WriteLine(s.workflowId + "," + s.workflowStatusEnum + "," + ((s.completedDate != null) ? s.completedDate.ToString() : "TBD"));
                 }
 
-                verifyWorkflowState(accessTeamWF, WorkflowState.Pending_Approval);
+                verifyWorkflowState(accessTeamWF, WorkflowState.Workflow_Created);
                 var managerWF = db.SNAP_Workflows.Single(x => x.requestId == req.pkId && x.actorId == managerActorId);
                 var managerWFStates = db.SNAP_Workflow_States.Where(x => x.workflowId == managerWF.pkId);
                 foreach (var s in managerWFStates)
@@ -385,7 +385,7 @@ namespace Apollo.AIM.SNAP.Test
                     Console.WriteLine(s.workflowId + "," + s.workflowStatusEnum + "," + ((s.completedDate != null) ? s.completedDate.ToString() : "TBD"));
                 }
 
-                verifyWorkflowState(accessTeamWF, WorkflowState.Pending_Approval);
+                verifyWorkflowState(accessTeamWF, WorkflowState.Workflow_Created);
                 var managerWF = db.SNAP_Workflows.Single(x => x.requestId == req.pkId && x.actorId == managerActorId);
                 var managerWFStates = db.SNAP_Workflow_States.Where(x => x.workflowId == managerWF.pkId);
                 foreach (var s in managerWFStates)
@@ -447,7 +447,7 @@ namespace Apollo.AIM.SNAP.Test
                                       ((s.completedDate != null) ? s.completedDate.ToString() : "TBD"));
                 }
 
-                verifyWorkflowState(accessTeamWF, WorkflowState.Pending_Approval);
+                verifyWorkflowState(accessTeamWF, WorkflowState.Workflow_Created);
                 var managerWF = db.SNAP_Workflows.Single(x => x.requestId == req.pkId && x.actorId == secondManagerActorId);
                 var managerWFStates = db.SNAP_Workflow_States.Where(x => x.workflowId == managerWF.pkId);
                 foreach (var s in managerWFStates)
@@ -502,7 +502,7 @@ namespace Apollo.AIM.SNAP.Test
                     Console.WriteLine(s.workflowId + "," + s.workflowStatusEnum + "," + ((s.completedDate != null) ? s.completedDate.ToString() : "TBD"));
                 }
 
-                verifyWorkflowState(accessTeamWF, WorkflowState.Pending_Approval);
+                verifyWorkflowState(accessTeamWF, WorkflowState.Workflow_Created);
 
                 var managerWF = db.SNAP_Workflows.Single(x => x.requestId == req.pkId && x.actorId == newManagerActorId);
                 var managerWFStates = db.SNAP_Workflow_States.Where(x => x.workflowId == managerWF.pkId);
@@ -795,7 +795,7 @@ namespace Apollo.AIM.SNAP.Test
                 verifyWorkflowTransition(wfs[0], WorkflowState.Pending_Approval, WorkflowState.Approved);
 
                 wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
-                verifyWorkflowTransition(wfs[0], WorkflowState.Pending_Approval, WorkflowState.Approved);
+                verifyWorkflowTransition(wfs[0], WorkflowState.Workflow_Created, WorkflowState.Approved);
 
 
                 /*
@@ -1026,7 +1026,7 @@ namespace Apollo.AIM.SNAP.Test
                 var accessReq = new AccessRequest(req.pkId);
 
                 var accessTeamWF = req.SNAP_Workflows.Single(w => w.actorId == 1); // actid = 1 => accessTeam
-                var accessTeamState = accessTeamWF.SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval);
+                var accessTeamState = accessTeamWF.SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Workflow_Created);
 
                 Assert.IsTrue(accessTeamState.completedDate == null);  // can't complete this yet, need to wait for all technical approvals
 
@@ -1142,7 +1142,7 @@ namespace Apollo.AIM.SNAP.Test
 
                 //var accessTeamWF = req.SNAP_Workflows.Single(w => w.actorId == 1); // actid = 1 => accessTeam
                 var accessTeamWF = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin)[0]; // there is only on workflow admin
-                var accessTeamState = accessTeamWF.SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval);
+                var accessTeamState = accessTeamWF.SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Workflow_Created);
 
                 Assert.IsTrue(accessTeamState.completedDate != null);  // all technical approval received, complete it
 
@@ -1721,7 +1721,7 @@ namespace Apollo.AIM.SNAP.Test
 
 
                     var accessWF = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
-                    var state = accessWF[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval
+                    var state = accessWF[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Workflow_Created
                         && s.completedDate == null); // get lastest 'pending approval' for the workflowadmin state
 
                     // get manager approal
@@ -1980,7 +1980,7 @@ namespace Apollo.AIM.SNAP.Test
                 var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
                 var accessReq = new AccessRequest(req.pkId);
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
-                verifyWorkflowStateComplete(wfs[0], WorkflowState.Pending_Approval);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Workflow_Created);
                 verifyWorkflowStateComplete(wfs[0], WorkflowState.Closed_Denied);
 
                 Assert.IsTrue(req.statusEnum == (byte)RequestState.Closed);
@@ -2035,7 +2035,7 @@ namespace Apollo.AIM.SNAP.Test
                 var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
                 var accessReq = new AccessRequest(req.pkId);
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
-                verifyWorkflowStateComplete(wfs[0], WorkflowState.Pending_Approval);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Workflow_Created);
                 verifyWorkflowStateComplete(wfs[0], WorkflowState.Closed_Denied);
 
                 Assert.IsTrue(req.statusEnum == (byte)RequestState.Closed);
@@ -2089,7 +2089,7 @@ namespace Apollo.AIM.SNAP.Test
                 var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
                 var accessReq = new AccessRequest(req.pkId);
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
-                verifyWorkflowStateComplete(wfs[0], WorkflowState.Pending_Approval);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Workflow_Created);
                 verifyWorkflowStateComplete(wfs[0], WorkflowState.Closed_Denied);
 
                 Assert.IsTrue(req.statusEnum == (byte)RequestState.Closed);
@@ -2146,7 +2146,7 @@ namespace Apollo.AIM.SNAP.Test
                 var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
                 var accessReq = new AccessRequest(req.pkId);
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
-                verifyWorkflowStateComplete(wfs[0], WorkflowState.Pending_Approval);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Workflow_Created);
                 verifyWorkflowStateComplete(wfs[0], WorkflowState.Closed_Denied);
 
 

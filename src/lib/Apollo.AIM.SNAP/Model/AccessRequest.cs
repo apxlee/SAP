@@ -284,7 +284,7 @@ namespace Apollo.AIM.SNAP.Model
 
                     result = reqStateTransition(req, RequestState.Pending, RequestState.Pending,
                                                 accessTeamWF, WorkflowState.Pending_Workflow,
-                                                WorkflowState.Pending_Approval);
+                                                WorkflowState.Workflow_Created);
 
 
                     if (result)
@@ -338,7 +338,7 @@ namespace Apollo.AIM.SNAP.Model
                                 accessTeamWF.SNAP_Workflow_States.Count(
                                     s =>
                                     s.completedDate == null &&
-                                    s.workflowStatusEnum == (byte) WorkflowState.Pending_Approval) == 1)
+                                    s.workflowStatusEnum == (byte) WorkflowState.Workflow_Created) == 1)
                             {
                                 var newActorIds = editApprovalWorkFlow(db, actorIDs);
                                 db.SubmitChanges();
@@ -977,7 +977,7 @@ namespace Apollo.AIM.SNAP.Model
                         day = System.Convert.ToInt16(slaCfg.TechnicalApprovalInDays);
                         break;
                     case ActorApprovalType.Workflow_Admin:
-                        if (to == WorkflowState.Pending_Approval) // same as the due day for technical approval since workflow admin depend on it
+                        if (to == WorkflowState.Workflow_Created) // same as the due day for technical approval since workflow admin depend on it
                             day = System.Convert.ToInt16(slaCfg.TechnicalApprovalInDays);
                         break;
                 }
@@ -1272,7 +1272,7 @@ namespace Apollo.AIM.SNAP.Model
         {
             var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
             var totalApproved = 0;
-            var state = accessTeamWF.SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval
+            var state = accessTeamWF.SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Workflow_Created
                 && s.completedDate == null); // get lastest 'pending approval' for the workflowadmin state
 
             foreach (var w in wfs)
@@ -1287,7 +1287,7 @@ namespace Apollo.AIM.SNAP.Model
 
             if (totalApproved == wfs.Count)
             {
-                AccessRequest.stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, WorkflowState.Pending_Approval, WorkflowState.Approved);
+                AccessRequest.stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, WorkflowState.Workflow_Created, WorkflowState.Approved);
             }
 
         }
@@ -1316,7 +1316,7 @@ namespace Apollo.AIM.SNAP.Model
 
         protected void approvalRequestToChange(string comment)
         {
-            AccessRequest.stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, WorkflowState.Pending_Approval, WorkflowState.Change_Requested);
+            AccessRequest.stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, WorkflowState.Workflow_Created, WorkflowState.Change_Requested);
             //db.SubmitChanges();
 
             //var req = db.SNAP_Requests.Single(w => w.pkId == _id);
@@ -1378,7 +1378,7 @@ namespace Apollo.AIM.SNAP.Model
                         commentTypeEnum = (byte)CommentsType.Denied
                     });
                     // set accessTeam WF and request to close-denied
-                    AccessRequest.stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, WorkflowState.Pending_Approval, WorkflowState.Closed_Denied);
+                    AccessRequest.stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, WorkflowState.Workflow_Created, WorkflowState.Closed_Denied);
                     req.statusEnum = (byte)RequestState.Closed;
                     Email.UpdateRequesterStatus(req.submittedBy, req.userDisplayName, req.pkId, WorkflowState.Closed_Denied, comment);
                     break;
