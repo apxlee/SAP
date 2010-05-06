@@ -32,6 +32,15 @@ namespace Apollo.AIM.SNAP.Web.Controls {
         protected global::System.Web.UI.WebControls.TextBox _managerName;
         
         /// <summary>
+        /// _managerEditButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableCell _managerEditButton;
+        
+        /// <summary>
         /// _dynamicApproversContainer control.
         /// </summary>
         /// <remarks>

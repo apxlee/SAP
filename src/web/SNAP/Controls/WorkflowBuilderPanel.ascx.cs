@@ -18,9 +18,11 @@ namespace Apollo.AIM.SNAP.Web.Controls
         public RequestState RequestState { get; set; }
         public List<AccessApprover> RequestApprovers { get; set; }
         public List<AccessGroup> AvailableGroups { get; set; }
+        public WorkflowState AccessTeamState { get; set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            bool builderDisabled = AccessTeamState != WorkflowState.Pending_Workflow ? true : false;           
 
             List<AccessGroup> UpdatedGroups = new List<AccessGroup>();
             string strGroupType = "";
@@ -127,7 +129,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
                 if (group.IsSelected) { strChecked = "checked=\"checked\""; }
 
                 string strDisabled = "";
-                if (group.IsDisabled) { strDisabled = "disabled=\"disabled\""; }
+                if (group.IsDisabled || builderDisabled) { strDisabled = "disabled=\"disabled\""; }
 
                 approverGroupLit.Text = "<input type=\"checkbox\" ID=\"_approverGroupCheckbox\"" + strDisabled + " " + strChecked + " onclick=\"approverGroupChecked(this,'" + RequestId.ToString() + "');\" class=\"csm_input_checkradio\" />";
                 approverCheckBoxSection.Controls.Add(approverGroupLit);

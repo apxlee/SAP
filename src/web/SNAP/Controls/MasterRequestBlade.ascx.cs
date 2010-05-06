@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.UI.HtmlControls;
 using Apollo.AIM.SNAP.Model;
 using Apollo.AIM.SNAP.Web.Common;
 
@@ -97,6 +98,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
                 acknowledgementPanel = LoadControl("~/Controls/AcknowledgementPanel.ascx") as AcknowledgementPanel;
                 acknowledgementPanel.RequestId = RequestId.ToString();
+                acknowledgementPanel.AccessTeamState = AccessTeamState;
 
                 accessCommentsPanel = LoadControl("~/Controls/AccessCommentsPanel.ascx") as AccessCommentsPanel;
                 accessCommentsPanel.RequestId = RequestId.ToString();
@@ -106,6 +108,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
                 workflowBuilderPanel.RequestState = RequestState;
                 workflowBuilderPanel.RequestApprovers = ApprovalWorkflow.GetRequestApprovers(Convert.ToInt32(RequestId));
                 workflowBuilderPanel.AvailableGroups = AvailableGroups;
+                workflowBuilderPanel.AccessTeamState = AccessTeamState;
 
                 DataTable managerInfo = new DataTable();
                 managerInfo = GetManagerInfo();
@@ -119,6 +122,19 @@ namespace Apollo.AIM.SNAP.Web.Controls
                 PlaceHolder managerInfoSection = new PlaceHolder();
                 managerInfoSection = (PlaceHolder)WebUtilities.FindControlRecursive(workflowBuilderPanel, "_managerInfoSection");
                 managerInfoSection.Controls.Add(managerInfoLit);
+
+                HtmlContainerControl managerEditButton;
+                managerEditButton = (HtmlContainerControl)WebUtilities.FindControlRecursive(workflowBuilderPanel, "_managerEditButton");
+                if (AccessTeamState == WorkflowState.Pending_Workflow)
+                {
+                    managerEditButton.Attributes.Add("onclick", "managerEdit(this);");
+                    managerEditButton.Attributes.Add("class", "oospa_edit_icon");
+                }
+                else
+                {
+                    managerEditButton.Attributes.Add("class", "oospa_edit_icon_disabled");
+                }
+                
 
                 Literal buttonLit = new Literal();
                 buttonLit.Text = "<input type=\"hidden\" id=\"_selectedActors_" + RequestId.ToString() + "\" />";

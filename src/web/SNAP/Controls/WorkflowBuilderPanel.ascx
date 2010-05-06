@@ -26,7 +26,7 @@
 				        </td>
 				        <td>&nbsp</td>
 						<td width="20" class="">&nbsp;</td>
-						<td width="20" onclick="managerEdit(this);" class="oospa_edit_icon">&nbsp;</td>
+						<td width="20" runat="server" id="_managerEditButton">&nbsp;</td>
 					</tr>
 				</table>							
 			</td>
