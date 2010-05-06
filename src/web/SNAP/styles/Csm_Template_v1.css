@@ -162,7 +162,7 @@ TODO: REMOVE THIS SECTION
 .csm_template_1 .csm_static_hover_style {
 	background: #fff url('../images/hover_slice.png') bottom repeat-x !important;
 	background-color: #fff !important;
-	cursor: hand;
+	cursor: pointer;
 	}
 	
 .csm_template_1 .csm_static_menu_style {
