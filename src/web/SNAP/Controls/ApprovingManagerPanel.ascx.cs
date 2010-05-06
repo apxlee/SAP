@@ -12,10 +12,13 @@ namespace Apollo.AIM.SNAP.Web.Controls
 	public partial class ApprovingManagerPanel : System.Web.UI.UserControl
 	{
 		public string RequestId { get; set; }
+        public bool IsLastRequest { get; set; }
 		
 		protected void Page_Load(object sender, EventArgs e)
 		{
-            _approve.Attributes.Add("onclick","return ApproverActions(this,'" + RequestId + "','" + (byte)WorkflowAction.Approved + "');");
+            if (IsLastRequest) { _approveAndMoveNext.Visible = false; }
+            _approve.Attributes.Add("onclick","ApproverActions(this,'" + RequestId + "','" + (byte)WorkflowAction.Approved + "');");
+            _approveAndMoveNext.Attributes.Add("onclick", "ApproverActions(this,'" + RequestId + "','" + (byte)WorkflowAction.Approved + "');");
             _requestChange.Attributes.Add("onclick", "ApproverActions(this,'" + RequestId + "','" + (byte)WorkflowAction.Change + "');");
             _requestChange.Disabled = true;
             _deny.Attributes.Add("onclick", "ApproverActions(this,'" + RequestId + "','" + (byte)WorkflowAction.Denied + "');");

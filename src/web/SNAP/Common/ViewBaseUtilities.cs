@@ -28,6 +28,8 @@ namespace Apollo.AIM.SNAP.Web.Common
             {
                 nullMessage.Visible = true;
             }
+            int lastRow = 1;
+            bool IsLastRow = false;
 
             foreach (DataRow request in requestTable.Rows)
             {
@@ -44,11 +46,13 @@ namespace Apollo.AIM.SNAP.Web.Common
 
                 if (ApproverState == WorkflowState.Pending_Approval)
                 {
-                    pendingContainer.Controls.Add(BuildMasterBlade(request, currentPage, requestState, null));
+                    if (lastRow == requestTable.Rows.Count) { IsLastRow = true; }
+                    pendingContainer.Controls.Add(BuildMasterBlade(request, currentPage, requestState, null, false));
+                    lastRow++;
                 }
                 else
                 {
-                    openContainer.Controls.Add(BuildMasterBlade(request, currentPage, requestState, null));
+                    openContainer.Controls.Add(BuildMasterBlade(request, currentPage, requestState, null, false));
                 }
             }
 		}
@@ -84,13 +88,13 @@ namespace Apollo.AIM.SNAP.Web.Common
             //only use it once the clear requestId
             SnapSession.SelectedRequestId = "";
             List<AccessGroup> availableGroups = ApprovalWorkflow.GetAvailableGroups();
-
+            
 			if (requestTable.Rows.Count > 0)
 			{
 				foreach (DataRow request in requestTable.Rows)
 				{
-					bladeContainer.Controls.Add(BuildMasterBlade(request, page, requestState, availableGroups));
-				}
+                    bladeContainer.Controls.Add(BuildMasterBlade(request, page, requestState, availableGroups, false));
+                }
 			}
 			else { nullMessage.Visible = true; }
         }
@@ -119,9 +123,9 @@ namespace Apollo.AIM.SNAP.Web.Common
 			}
 
 			return requestTable;
-		}        
+		}
 
-        private static MasterRequestBlade BuildMasterBlade(DataRow request, Page page, RequestState RequestState, List<AccessGroup> AvailableGroups)
+        private static MasterRequestBlade BuildMasterBlade(DataRow request, Page page, RequestState RequestState, List<AccessGroup> AvailableGroups, bool IsLastRequest)
         {
             MasterRequestBlade requestBlade;
             requestBlade = page.LoadControl("~/Controls/MasterRequestBlade.ascx") as MasterRequestBlade;
@@ -132,6 +136,7 @@ namespace Apollo.AIM.SNAP.Web.Common
             requestBlade.LastUpdatedDate = request["last_updated_date"].ToString();
             requestBlade.IsSelectedRequest = (bool)request["is_selected"];
             requestBlade.AvailableGroups = AvailableGroups;
+            requestBlade.IsLastRequest = IsLastRequest;
 
             return requestBlade;
         }

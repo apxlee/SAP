@@ -25,8 +25,8 @@
 				<tr>
 					<td><div id="login_description_logo"></div></td>
 					<td style="vertical-align:middle;padding-left:10px;"><!--<p style="font-size:.90em;"><strong>Access & Identity Management</strong></p>-->
-						<p style="font-size:.90em;padding-right:15px;">The Supplemental Non-Production Access Process (SNAP) application augments the rights being 
-						provisioned through the <a href="http://access.apollogrp.edu/cap/" style="color:Blue;">Computer Access Process (CAP)</a>, which handles Production systems.</p>
+						<p style="font-size:.90em;padding-right:15px;">The Supplemental Access Process (SNAP) application augments the rights being 
+						provisioned through the <a href="http://access.apollogrp.edu/cap/" style="color:Blue;">Computer Access Process (CAP)</a>, which handles Production systems.<br /><br />Below you may specify the reason for you visit and the application will drop you at that point with minimal user effort.</p>
 					</td>
 				</tr>
 			</table>
@@ -43,7 +43,7 @@
 			<table border="0" cellpadding="0" cellspacing="0" class="csm_input_form_container">
 				<tr>
 					<td class="csm_input_form_label_column csm_input_required_field">
-						<label for="_loginViewControl__networkId">Network Login</label>
+						<label for="_loginViewControl__networkId">Network Login:</label>
 					</td>
 					<td class="csm_input_form_control_column">
 						<asp:TextBox ID="_networkId" runat="server" CssClass="csm_text_input_short"></asp:TextBox>
@@ -52,7 +52,7 @@
 
 				<tr>
 					<td class="csm_input_form_label_column csm_input_required_field">
-						<label for="_loginViewControl__password">Password</label>
+						<label for="_loginViewControl__password">Password:</label>
 					</td>
 					<td class="csm_input_form_control_column">
 						<asp:TextBox TextMode="SingleLine" ID="_password" runat="server" CssClass="csm_text_input_short"></asp:TextBox>
@@ -69,15 +69,15 @@
 										<h2>I am requesting access for myself.</h2>
 										<p>You will be taken to the request form with credentials automatically 
 										verified in the system.<br />In the event the username or manager are incorrect, 
-										please use the EDIT and CHECK controls to correct the request to reflect 
-										your current status within the organization.</p>
+										please use the EDIT then CHECK controls to correct the request to reflect 
+										your current personal details.</p>
 									</td>
 								</tr>
 								<tr>
 									<td><div id="_loginCheck2" class="aim_checkbox_unchecked" value="proxy_request"></div></td>
 									<td>
 										<h2>I am a manager or supervisor requesting access for a team member.</h2>
-										<p>You will be required to enter your team members' username on the the request form.</p>
+										<p>You will be required to enter your team member's username on the the request form.</p>
 									</td>
 								</tr>
 								<tr>

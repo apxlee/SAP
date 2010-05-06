@@ -6,12 +6,11 @@
 	<div class="csm_content_container">
 		
 		<div class="csm_text_container">
-		    <p>Use this form to request things you want but don't have. Would you like a pony? You can't use this form.  Would you like
-		    access to a network share?  It's likely this form will work for you.  But we can't make any promises.  Some other type of access is
-		    handled with a <a href="http://access.apollogrp.edu/cap/" style="color:Blue;">Computer Access Process (CAP) request.</a></p>
-		    <p>Please Note: It's possible this form is NOT used for requesting application or database access, depending on your blood type
-		    and/or star sign.  Windows Sql Server database access often requires an "a.dot" account (you may request "a.dot" accounts with this application).  
-		    Otherwise, database access is completed using a Rubber Chicken ticket assigned to the database group.</p>
+		    <p>The Supplemental Access Process (SNAP) application augments the rights being 
+			provisioned through the <a href="http://access.apollogrp.edu/cap/" style="color:Blue;">Computer Access Process (CAP)</a>, 
+			which handles Production systems.<br /><br />
+			Please fill out the form below and follow the prescribed formats when applicable.  Examples have been provided to assist in your request.
+			</p>
 		</div>
 		
 		<fieldset><!-- use fieldset for standards & compliance -->
@@ -29,13 +28,12 @@
 		<table border="0" cellpadding="0" cellspacing="0" class="csm_input_form_container">
 			<tr>
 				<td class="csm_input_form_label_column csm_input_required_field">
-					<label for="_requestFormControl__requestorId">Affected End User</label>
-					<p>Please enter the full name or username of the person this request will affect.</p>
+					<label for="_requestFormControl__requestorId">Affected End User:</label>
 				</td>
 				<td class="csm_input_form_control_column">
 					<asp:TextBox ID="_requestorId" runat="server" CssClass="csm_text_input_short" ></asp:TextBox>
 					<button type='button' id='_checkRequestorId' class="csm_html_button">Check</button>
-			        <p><em>Example: axuser (domain name is not needed) or Full Name</em></p>
+					<p><em>Enter the Display Name or User ID of the Affected End User.</em></p>
 				</td>
                 <td>
                     <asp:TextBox ID="_requestorLoginId" runat="server" style="display:none" ></asp:TextBox>
@@ -45,8 +43,7 @@
 
 			<tr>
 				<td class="csm_input_form_label_column csm_input_required_field">
-					<label for="_requestFormControl__managerName">Manager Name</label>
-					<p>Please verify your manager name</p>
+					<label for="_requestFormControl__managerName">Affected User's Manager:</label>
 				</td>
 				<td class="csm_input_form_control_column">
 					<asp:TextBox ID="_managerName" runat="server" CssClass="csm_text_input_short" ></asp:TextBox>
@@ -54,7 +51,8 @@
 			        <button type='button' id="_editManagerName" class="csm_html_button">Edit</button>
 			        <div id="_notificationManager" style="display:none;">
                         <img alt='loading...' src="images/ajax_indicator.gif" width="16" height="16" />
-                    </div>			        
+                    </div>
+                    <p><em>Verify the Affected User's Manager</em></p>			        
 				</td>
 				<td>&nbsp</td>
 	            <td>
