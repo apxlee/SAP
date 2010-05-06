@@ -290,7 +290,7 @@ TODO: REMOVE THIS SECTION
 .csm_template_1 .csm_toggle_hover {
 	background: #fff url('../images/slice_hover') bottom repeat-x !important;
 	background-color: #fff !important;
-	cursor: hand;
+	cursor: pointer;
 	}
 	
 /* Floating Toggle */
@@ -658,7 +658,7 @@ TODO: REMOVE THIS SECTION
 	color: Red;
 	font-weight: normal;
 	text-decoration: underline;
-	cursor: help;
+	cursor: pointer;
 	}
 
 .csm_template_1 .csm_input_validation_summary ul {
