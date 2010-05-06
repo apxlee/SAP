@@ -207,8 +207,8 @@ var userManager = {
         });
 
         //check static fields
-        if (userManager.userLoginId.val() == '') { strSections = strSections + "[User Name,_requestFormControl__requestorId]"; status = false; }
-        if (userManager.mgrLoginId.val() == '') { strSections = strSections + "[Manager Name,_requestFormControl__managerName]"; userManager.mgrEdit.click(); status = false; }
+        if (userManager.userLoginId.val() == '') { strSections = strSections + "[Affected End User,ctl00__contentPlaceHolder__requestFormControl__requestorId]"; status = false; }
+        if (userManager.mgrLoginId.val() == '') { strSections = strSections + "[Manager Name,ctl00__contentPlaceHolder__requestFormControl__managerName]"; userManager.mgrEdit.click(); status = false; }
 
         //test validation bit
         if (!status) {

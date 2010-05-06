@@ -14,7 +14,7 @@
 			</td>
 			<td class="csm_input_form_control_column">
 				<input type="button" id="_acknowledge" value="Acknowledge" class="csm_html_button" runat="server" />
-	            <input type="button" id="_acknowledgeAndMoveNext" value="Acknowledge and Review Next" class="csm_html_button" runat="server" />
+	            <!-- <input type="button" id="_acknowledgeAndMoveNext" value="Acknowledge and Review Next" class="csm_html_button" runat="server" /> -->
 			</td>
 		</tr>
 		<tr>
