@@ -225,7 +225,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
             foreach (DataRow comment in changeComments.Rows)
             {
-                changeLit.Text += string.Format("<p style=\"padding-left:5px;\" class=\"csm_error_text\"><b>{0}:</b><br />{1}<p>", comment[0], comment[1]);
+                changeLit.Text += string.Format("<p style=\"padding-left:5px;\" class=\"csm_error_text\"><b>{0} has request a change:</b><br />{1}<p>", comment[0], comment[1]);
             }
             _changeComments.Controls.Add(changeLit);
         }
