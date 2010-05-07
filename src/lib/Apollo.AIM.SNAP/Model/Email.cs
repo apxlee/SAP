@@ -66,20 +66,18 @@ namespace Apollo.AIM.SNAP.Model
 
 			ConfigPerEnvironment(requestId, PageNames.USER_VIEW);
 
-			/*
-			Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(emailAddress(submitterUserId),
-																	 subject,
-																	 emailTemplatePath, // newTaskNotification.html",
-																	 new Hashtable()
-																		 {
-																			 //{"APPROVERNAME", name},
-																			 {"NAME", affectedEndUser},
-																			 {"URL", _followLinkUrl},
-																			 {"REASON", reason},
-																			 {"PREFIX", _imageUrl}
-																		 });
+			//Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(emailAddress(submitterUserId),
+			//                                                         subject,
+			//                                                         emailTemplatePath, // newTaskNotification.html",
+			//                                                         new Hashtable()
+			//                                                             {
+			//                                                                 {"APPROVERNAME", name},
+			//                                                                 {"NAME", affectedEndUser},
+			//                                                                 {"URL", _followLinkUrl},
+			//                                                                 {"REASON", reason},
+			//                                                                 {"PREFIX", _imageUrl}
+			//                                                             });
 
-			 */
 		}
 
         public static void TaskAssignToApprover(string toEmailAddress, string to, long requestId, string affectedEndUser)
@@ -99,6 +97,21 @@ namespace Apollo.AIM.SNAP.Model
 
              
         }
+
+		public static void AccessTeamAcknowledge(string toEmailAddress, string to, long requestId, string affectedEndUser)
+		{
+			ConfigPerEnvironment(requestId, PageNames.APPROVING_MANAGER);
+
+			Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(toEmailAddress,
+																	 "Supplemental Access Process - Acknowledgement Needed",
+																	 AbsolutePath + ConfigurationManager.AppSettings["Acknowledgement"],
+																	 new Hashtable()
+                                                                         {
+                                                                             {"NAME", affectedEndUser},
+                                                                             {"URL", _followLinkUrl},
+                                                                             {"PREFIX", _imageUrl}
+                                                                         });
+		}
 
 
         private static string emailAddress(string usrId)
