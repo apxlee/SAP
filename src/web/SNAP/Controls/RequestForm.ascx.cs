@@ -12,6 +12,7 @@ using Apollo.AIM.SNAP.CA;
 using Apollo.AIM.SNAP.Web.Common;
 using Apollo.AIM.SNAP.Model;
 using Apollo.CA.Logging;
+using System.Threading;
 using MyRequest = Apollo.AIM.SNAP.Web.Common.Request;
 
 namespace Apollo.AIM.SNAP.Web.Controls
@@ -163,13 +164,13 @@ namespace Apollo.AIM.SNAP.Web.Controls
                     Email.AccessTeamAcknowledge(ConfigurationManager.AppSettings["AIM-DG"], "Access Team", requestID,
                                                UserName);
                 }
-
-                Response.Redirect("MyRequests.aspx");
+                
             }
             catch (Exception ex)
             {
                 Logger.Fatal("SNAP: Request Form -  Submit failure", ex);
             }
+            WebUtilities.Redirect(PageNames.USER_VIEW);
         }
 
         private List<RequestData> RequestFormRequestData(Control controlRoot)

@@ -72,55 +72,6 @@ function AccessTeamActions(obj, requestId, action) {
             break;
     }
 
-//    switch (action) {
-//        case '4':
-//            ActionMessage("Acknowledged", "You have just acknowledged this request.");
-//            updateRequestTracking(obj, "Access &amp; Identity Management", "Pending Workflow");
-//            $(obj).attr("disabled", "disabled");
-//            $(obj).next().attr("disabled", "disabled");
-//            $(obj).closest("tr").next().children("td.csm_input_form_control_column").find("input").each(function() {
-//                $(this).removeAttr("disabled");
-//            });
-//            $(obj).closest("div.csm_content_container").find("tr.csm_stacked_heading_label").children().each(function() {
-//                if ($(this).next().children().html() == "Open") {
-//                    $(this).next().children().html("Pending");
-//                }
-//            });
-//            var obj = $("#closed_cancelled_" + requestId);
-//            addComments(obj, "Access &amp; Identity Management", "Acknowledged", "");
-//            editBuilder(obj, requestId);
-//            break;
-//        case '2':
-//            ActionMessage("Change Requested", "You have just requested a change.");
-//            updateRequestTracking(obj, "Access &amp; Identity Management", "Change Requested");
-//            disableBladeActions(obj);
-//            addComments(obj, "Access &amp; Identity Management", "Change Requested", comments);
-//            $(obj).closest("div.csm_content_container").find("tr.csm_stacked_heading_label").children().each(function() {
-//                if ($(this).next().children().html() == "Pending") {
-//                    $(this).next().children().html("Change Requested");
-//                }
-//            });
-//            break;
-//        case '3':
-//            ActionMessage("Closed Cancelled", "You have just closed this request.");
-//            updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Cancelled");
-//            disableBladeActions(obj);
-//            addComments(obj, "Access &amp; Identity Management", "Closed Cancelled", comments);
-//            animateActions(obj, "Closed Requests");
-//            hideSections(obj);
-//            updateRequestStatus(obj);
-//            break;
-//        case '1':
-//            ActionMessage("Closed Denied", "This request has been closed.");
-//            updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Denied");
-//            disableBladeActions(obj);
-//            addComments(obj, "Access &amp; Identity Management", "Closed Denied", comments);
-//            animateActions(obj, "Closed Requests");
-//            hideSections(obj);
-//            updateRequestStatus(obj);
-//            break;
-//    }
-
     var postData = "{'requestId':'" + requestId.toString() + "','action':'" + action + "','comments':'" + comments + "'}";
     textarea.val("");
     $.ajax({
