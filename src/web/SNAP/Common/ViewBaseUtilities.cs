@@ -49,14 +49,14 @@ namespace Apollo.AIM.SNAP.Web.Common
                 if (ApproverState == WorkflowState.Pending_Approval)
                 {
                     if (lastRow == approvalCount) { IsLastRow = true; }
-                    pendingContainer.Controls.Add(BuildMasterBlade(request, currentPage, requestState, null, IsLastRow));
-                    
+                    pendingContainer.Controls.Add(BuildMasterBlade(request, currentPage, requestState, null, true, IsLastRow));
+                    lastRow++;
                 }
                 else
                 {
-                    openContainer.Controls.Add(BuildMasterBlade(request, currentPage, requestState, null, false));
+                    openContainer.Controls.Add(BuildMasterBlade(request, currentPage, requestState, null, false, false));
                 }
-                lastRow++;
+                
             }
 		}
 		
@@ -96,7 +96,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 			{
 				foreach (DataRow request in requestTable.Rows)
 				{
-                    bladeContainer.Controls.Add(BuildMasterBlade(request, page, requestState, availableGroups, false));
+                    bladeContainer.Controls.Add(BuildMasterBlade(request, page, requestState, availableGroups, false, false));
                 }
 			}
 			else { nullMessage.Visible = true; }
@@ -128,7 +128,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 			return requestTable;
 		}
 
-        private static MasterRequestBlade BuildMasterBlade(DataRow request, Page page, RequestState RequestState, List<AccessGroup> AvailableGroups, bool IsLastRequest)
+        private static MasterRequestBlade BuildMasterBlade(DataRow request, Page page, RequestState RequestState, List<AccessGroup> AvailableGroups,bool IsPendingApproval, bool IsLastRequest)
         {
             MasterRequestBlade requestBlade;
             requestBlade = page.LoadControl("~/Controls/MasterRequestBlade.ascx") as MasterRequestBlade;
@@ -139,6 +139,7 @@ namespace Apollo.AIM.SNAP.Web.Common
             requestBlade.LastUpdatedDate = request["last_updated_date"].ToString();
             requestBlade.IsSelectedRequest = (bool)request["is_selected"];
             requestBlade.AvailableGroups = AvailableGroups;
+            requestBlade.IsPendingApproval = IsPendingApproval;
             requestBlade.IsLastRequest = IsLastRequest;
 
             return requestBlade;

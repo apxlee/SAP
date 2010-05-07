@@ -19,6 +19,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		public string OverallRequestStatus { get; set; }
 		public string LastUpdatedDate { get; set; }
 		public bool IsSelectedRequest { get; set; }
+        public bool IsPendingApproval { get; set; }
         public bool IsLastRequest { get; set; }
         public List<AccessGroup> AvailableGroups { get; set; }
         private WorkflowState AccessTeamState;
@@ -35,7 +36,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			    switch (Page.GetType().Name.StripUnderscoreAndExtension().ToLower())
 			    {
 				    case "myapprovals" :
-					    LoadApprovingManagerPanel();
+                        if (IsPendingApproval) { LoadApprovingManagerPanel(); }
 					    break;
                     
 				    case "accessteam" :
