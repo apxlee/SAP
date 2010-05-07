@@ -32,6 +32,33 @@ namespace Apollo.AIM.SNAP.Web.Controls {
         protected global::System.Web.UI.HtmlControls.HtmlInputButton _acknowledgeAndMoveNext;
         
         /// <summary>
+        /// _radioChange control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputRadioButton _radioChange;
+        
+        /// <summary>
+        /// _radioDeny control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputRadioButton _radioDeny;
+        
+        /// <summary>
+        /// _radioCancel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputRadioButton _radioCancel;
+        
+        /// <summary>
         /// _requestChange control.
         /// </summary>
         /// <remarks>

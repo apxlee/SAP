@@ -14,6 +14,33 @@ namespace Apollo.AIM.SNAP.Web.Controls {
     public partial class AccessCommentsPanel {
         
         /// <summary>
+        /// _radio7 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputRadioButton _radio7;
+        
+        /// <summary>
+        /// _radio6 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputRadioButton _radio6;
+        
+        /// <summary>
+        /// _radio5 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputRadioButton _radio5;
+        
+        /// <summary>
         /// _submitComments control.
         /// </summary>
         /// <remarks>

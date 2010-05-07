@@ -39,6 +39,7 @@ function filterClick(obj) {
         });
 }
 function changeDenyCancelClick(obj) {
+    $(obj).parent().children("textarea").removeAttr("disabled");
     $(obj).closest("table").next().find("input[type=button]").each(
      function() {
          if ($(this).val() == $(obj).val()) {
@@ -87,6 +88,10 @@ function AccessTeamActions(obj, requestId, action) {
                         updateRequestTracking(obj, "Access &amp; Identity Management", "Pending Workflow");
                         $(obj).attr("disabled", "disabled");
                         $(obj).next().attr("disabled", "disabled");
+                        $(obj).closest("tr").next().children("td.csm_input_form_control_column").find("input").each(function() {
+                            $(this).removeAttr("disabled");
+                        });
+                        var obj = $("#closed_cancelled_" + requestId);
                         editBuilder(obj, requestId);
                         break;
                     case '2':
@@ -256,9 +261,8 @@ function editBuilder(obj, requestId) {
                   approverGroupChecked(this, requestId);
               }
           });
-        //$("#closed_cancelled_" + requestId).removeAttr("disabled");
-        //$("#create_workflow_" + requestId).removeAttr("disabled");
-        //$(obj).attr("disabled", "disabled");
+        $("#closed_cancelled_" + requestId).removeAttr("disabled");
+        $("#create_workflow_" + requestId).removeAttr("disabled");
 
         var editLink = $(obj).parent().parent().find(".oospa_edit_icon_disabled");
         editLink.addClass("oospa_edit_icon");

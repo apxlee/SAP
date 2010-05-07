@@ -22,11 +22,11 @@
 				<label>Request Change, Deny or Cancel</label>
 			</td>
 			<td class="csm_input_form_control_column">
-				<input type="radio" name="_changeDenyCancel" class="csm_input_checkradio" value="Request Change" onclick="changeDenyCancelClick(this);" /><span class="" style="line-height: 1.5em;font-size:.85em;margin:0 8px 0 2px;float:left;">Request Change</span>
-				<input type="radio" name="_changeDenyCancel" class="csm_input_checkradio" value="Deny" onclick="changeDenyCancelClick(this);" /><span class="" style="line-height: 1.5em;font-size:.85em;margin:0 8px 0 2px;float:left;">Deny</span>
-				<input type="radio" name="_changeDenyCancel" class="csm_input_checkradio" value="Cancel" onclick="changeDenyCancelClick(this);" /><span class="" style="line-height: 1.5em;font-size:.85em;margin:0 8px 0 2px;float:left;">Cancel</span>				
+				<input type="radio" name="_changeDenyCancel" class="csm_input_checkradio" value="Request Change" runat="server" id="_radioChange"  /><span class="" style="line-height: 1.5em;font-size:.85em;margin:0 8px 0 2px;float:left;">Request Change</span>
+				<input type="radio" name="_changeDenyCancel" class="csm_input_checkradio" value="Deny" runat="server" id="_radioDeny" /><span class="" style="line-height: 1.5em;font-size:.85em;margin:0 8px 0 2px;float:left;">Deny</span>
+				<input type="radio" name="_changeDenyCancel" class="csm_input_checkradio" value="Cancel" runat="server" id="_radioCancel" /><span class="" style="line-height: 1.5em;font-size:.85em;margin:0 8px 0 2px;float:left;">Cancel</span>				
 				<div class="csm_clear">&nbsp;</div>
-				<textarea rows="10" cols="" class="csm_text_input csm_textarea_short"></textarea>
+				<textarea rows="10" cols="" class="csm_text_input csm_textarea_short" disabled="disabled"></textarea>
 				<p><em><strong>Note:&nbsp;</strong>Specific reasons for Request Changes, Denial or Cancellation are required.</em></p>
 			</td>
 		</tr>					
