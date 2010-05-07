@@ -119,7 +119,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
 				#region Blade Labels
 				Label workflowActorName = (Label)WebUtilities.FindControlRecursive(workflowBlade, "_workflowActorName");
-				workflowActorName.Text = workflowRow["workflow_actor_name"].ToString() + " [" + workflowRow["actor_group_type"].ToString() +"]";
+				workflowActorName.Text = workflowRow["workflow_actor_name"].ToString(); // + " [" + workflowRow["actor_group_type"].ToString() +"]";
 				
 				Label workflowStatus = (Label)WebUtilities.FindControlRecursive(workflowBlade, "_workflowStatus");
 				workflowStatus.Text = Convert.ToString((WorkflowState)Enum.Parse(typeof(WorkflowState), workflowRow["workflow_status"].ToString())).StripUnderscore();
