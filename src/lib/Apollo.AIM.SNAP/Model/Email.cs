@@ -13,8 +13,8 @@ namespace Apollo.AIM.SNAP.Model
 {
     public class Email
     {
-        private static string prefix = @"http://";
-        private static string url = @"http://";
+        private static string _imageUrl = @"http://";
+        private static string _followLinkUrl = @"http://";
 
         public static void OverdueTask(string toEmail, string toName, long requestId, string userName)
         {
@@ -27,8 +27,8 @@ namespace Apollo.AIM.SNAP.Model
                                                                          {
                                                                              {"APPROVERNAME", toName},
                                                                              {"NAME", userName},
-                                                                             {"URL", url},
-                                                                             {"PREFIX", prefix}
+                                                                             {"URL", _followLinkUrl},
+                                                                             {"PREFIX", _imageUrl}
                                                                          });
 
              
@@ -66,26 +66,25 @@ namespace Apollo.AIM.SNAP.Model
 
 			ConfigPerEnvironment(requestId, PageNames.USER_VIEW);
 
-            /*
-            Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(emailAddress(submitterUserId),
-                                                                     subject,
-                                                                     emailTemplatePath, // newTaskNotification.html",
-                                                                     new Hashtable()
-                                                                         {
-                                                                             //{"APPROVERNAME", name},
-                                                                             {"NAME", name},
-                                                                             {"URL", url},
-                                                                             {"REASON", reason},
-                                                                             {"PREFIX", prefix}
-                                                                         });
+			/*
+			Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(emailAddress(submitterUserId),
+																	 subject,
+																	 emailTemplatePath, // newTaskNotification.html",
+																	 new Hashtable()
+																		 {
+																			 //{"APPROVERNAME", name},
+																			 {"NAME", affectedEndUser},
+																			 {"URL", _followLinkUrl},
+																			 {"REASON", reason},
+																			 {"PREFIX", _imageUrl}
+																		 });
 
-             */
-        }
+			 */
+		}
 
         public static void TaskAssignToApprover(string toEmailAddress, string to, long requestId, string affectedEndUser)
         {
 			ConfigPerEnvironment(requestId, PageNames.APPROVING_MANAGER);
-            
             
             Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(toEmailAddress,
                                                                      "Supplemental Access Process - Approval Needed",
@@ -94,8 +93,8 @@ namespace Apollo.AIM.SNAP.Model
                                                                          {
                                                                              {"APPROVERNAME", to},
                                                                              {"NAME", affectedEndUser},
-                                                                             {"URL", url},
-                                                                             {"PREFIX", prefix}
+                                                                             {"URL", _followLinkUrl},
+                                                                             {"PREFIX", _imageUrl}
                                                                          });
 
              
@@ -133,23 +132,23 @@ namespace Apollo.AIM.SNAP.Model
         }
         private static void ConfigPerEnvironment(long requestId, string pageName)
         {
-            prefix = @"http://";
-            url = @"http://";
+            _imageUrl = @"http://";
+            _followLinkUrl = @"http://";
 
             if (Environment.UserDomainName.ToUpper().Contains("DEV"))
             {
-                prefix += Environment.MachineName + ".devapollogrp.edu/snap/images";
-				url += (Environment.MachineName + ".devapollogrp.edu/snap/" + pageName + ".aspx?RequestId=" + requestId);
+                _imageUrl += Environment.MachineName + ".devapollogrp.edu/snap/images";
+				_followLinkUrl += (Environment.MachineName + ".devapollogrp.edu/snap/" + pageName + ".aspx?RequestId=" + requestId);
             }
             else if (Environment.UserDomainName.ToUpper().Contains("QA"))
             {
-                prefix += "access.qaapollogrp.edu/snap/images";
-				url += ("access.qaapollogrp.edu/snap/" + pageName + ".aspx?RequestId=" + requestId);
+                _imageUrl += "access.qaapollogrp.edu/snap/images";
+				_followLinkUrl += ("access.qaapollogrp.edu/snap/" + pageName + ".aspx?RequestId=" + requestId);
             }
             else
             {
-                prefix += "access.apollogrp.edu/snap/images";
-				url += ("access.apollogrp.edu/snap/" + pageName + ".aspx?RequestId=" + requestId);
+                _imageUrl += "access.apollogrp.edu/snap/images";
+				_followLinkUrl += ("access.apollogrp.edu/snap/" + pageName + ".aspx?RequestId=" + requestId);
             }
         }
     }
