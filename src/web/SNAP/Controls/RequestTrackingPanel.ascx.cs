@@ -21,58 +21,105 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			DataTable workflowBladeTable = GetWorkflowBlade();
 			
 			// TODO: if there are no blades (which would be odd), then build 'no data' message
-			
-			//string expression = "workflow_actor_name = 'access & identity management'";
-			//string sortOrder = "workflow_pkid ASC";
-			//DataRow[] foundRows;
-			//foundRows = workflowBladeTable.Select(expression, sortOrder);
-			//for(int i = 0; i < foundRows.Length; i++)
-			//{
-			//    Response.Write(foundRows[i][0]);
-			//}
 
-			//EnumerableRowCollection<DataRow> query =
-			//    from actor_name in workflowBladeTable.AsEnumerable()
-			//    where actor_name.Field<string>("workflow_actor_name") == "access & identity management"
-			//    select actor_name;
-			//DataView view = query.AsDataView();
+			DataTable filteredTable = new DataTable();
+			filteredTable.Columns.Add("workflow_actor_name", typeof(string));
+			filteredTable.Columns.Add("workflow_status", typeof(string));
+			filteredTable.Columns.Add("workflow_due_date", typeof(string));
+			filteredTable.Columns.Add("workflow_completed_date", typeof(DateTime));
+			filteredTable.Columns.Add("workflow_pkid", typeof(int));
+			filteredTable.Columns.Add("actor_group_type", typeof(int));
 
-			DataRow query = (
+			DataRow selectedRow;
+
+			// Build Top AIM blades
+			//
+			try
+			{
+			selectedRow = (
 				from bladeRow in workflowBladeTable.AsEnumerable()
-				where (string)bladeRow["workflow_actor_name"] == "Access & Identity Management"
-				//where (string)bladeRow["workflow_status"] == "Pending Acknowledgement"
+				where (int)bladeRow["actor_group_type"] == (int)ActorGroupType.Workflow_Admin
 				select bladeRow).Last();
 
-			////query.SetField("actor_group_id", 10);
+			filteredTable.ImportRow(selectedRow);
+			}
+			catch {}
+			
+			// Build Manager blades
+			//
+			try
+			{
+			selectedRow = (
+				from bladeRow in workflowBladeTable.AsEnumerable()
+				where (int)bladeRow["actor_group_type"] == (int)ActorGroupType.Manager
+				select bladeRow).Last();
 
-			//DataTable filteredTable = new DataTable();
-			//filteredTable.Columns.Add("workflow_actor_name", typeof(string));
-			//filteredTable.Columns.Add("workflow_status", typeof(string));
-			//filteredTable.Columns.Add("workflow_due_date", typeof(string));
-			//filteredTable.Columns.Add("workflow_completed_date", typeof(DateTime));
-			//filteredTable.Columns.Add("workflow_pkid", typeof(int));
-			//filteredTable.Columns.Add("actor_group_id", typeof(int));
+			filteredTable.ImportRow(selectedRow);
+			}
+			catch {}
 			
-			//filteredTable.ImportRow(query);
-				
+			// Build Team Approver blades
+			//
+			try
+			{
+				var distinctTeamApprovers = (
+					from bladeRow in workflowBladeTable.AsEnumerable()
+					where (int)bladeRow["actor_group_type"] == (int)ActorGroupType.Team_Approver
+					select bladeRow["workflow_actor_name"]).Distinct();
+					
+				foreach(string teamApprover in distinctTeamApprovers)
+				{
+					selectedRow = (
+						from bladeRow in workflowBladeTable.AsEnumerable()
+						where (string)bladeRow["workflow_actor_name"] == teamApprover
+						where (int)bladeRow["actor_group_type"] == (int)ActorGroupType.Team_Approver
+						select bladeRow).Last();
+
+					filteredTable.ImportRow(selectedRow);
+				}
+			}
+			catch { }
 			
-			foreach (DataRow workflowRow in workflowBladeTable.Rows)
-			//foreach (DataRow workflowRow in filteredTable.Rows)
+			// Build Technical Approver blades
+			//
+			try
+			{
+				var distinctTechnicalApprovers = (
+					from bladeRow in workflowBladeTable.AsEnumerable()
+					where (int)bladeRow["actor_group_type"] == (int)ActorGroupType.Technical_Approver
+					select bladeRow["workflow_actor_name"]).Distinct();
+
+				foreach (string technicalApprover in distinctTechnicalApprovers)
+				{
+					selectedRow = (
+						from bladeRow in workflowBladeTable.AsEnumerable()
+						where (string)bladeRow["workflow_actor_name"] == technicalApprover
+						where (int)bladeRow["actor_group_type"] == (int)ActorGroupType.Technical_Approver
+						select bladeRow).Last();
+
+					filteredTable.ImportRow(selectedRow);
+				}
+			}
+			catch { }			
+			
+			
+			//foreach (DataRow workflowRow in workflowBladeTable.Rows)
+			foreach (DataRow workflowRow in filteredTable.Rows)
 			{
 				WorkflowBlade workflowBlade;
 				workflowBlade = LoadControl("~/Controls/WorkflowBlade.ascx") as WorkflowBlade;
 
 				Panel workflowBladeData;
 				workflowBladeData = (Panel)WebUtilities.FindControlRecursive(workflowBlade, "_workflowBladeData");
-				
-				if (workflowRow["workflow_actor_name"].ToString().ToLower() == "access & identity management")
+
+				if ((int)workflowRow["actor_group_type"] == (int)ActorGroupType.Workflow_Admin)
 				{
 					workflowBladeData.CssClass = workflowBladeData.CssClass + " csm_alternating_bg";
 				}
 
 				#region Blade Labels
 				Label workflowActorName = (Label)WebUtilities.FindControlRecursive(workflowBlade, "_workflowActorName");
-				workflowActorName.Text = workflowRow["workflow_actor_name"].ToString();
+				workflowActorName.Text = workflowRow["workflow_actor_name"].ToString() + " [" + workflowRow["actor_group_type"].ToString() +"]";
 				
 				Label workflowStatus = (Label)WebUtilities.FindControlRecursive(workflowBlade, "_workflowStatus");
 				workflowStatus.Text = Convert.ToString((WorkflowState)Enum.Parse(typeof(WorkflowState), workflowRow["workflow_status"].ToString())).StripUnderscore();
@@ -165,7 +212,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			table.Columns.Add("workflow_due_date", typeof(string));
 			table.Columns.Add("workflow_completed_date", typeof(DateTime));
 			table.Columns.Add("workflow_pkid", typeof(int));
-			table.Columns.Add("actor_group_id", typeof(int));
+			table.Columns.Add("actor_group_type", typeof(int));
 
             var wfDetails = Common.Request.WfDetails(RequestState);
             var details = wfDetails.Where(x => x.requestId.ToString() == RequestId)
@@ -173,7 +220,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
             foreach (usp_open_my_request_workflow_detailsResult list in details)
             {
-                table.Rows.Add(list.displayName, Convert.ToInt32(list.workflowStatusEnum), list.dueDate, list.completedDate, list.workflowId);
+                table.Rows.Add(list.displayName, Convert.ToInt32(list.workflowStatusEnum), list.dueDate, list.completedDate, list.workflowId, list.actorGroupType);
                 // why is workflowStatusEnum byte instead of int?
             }
 
