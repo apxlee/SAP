@@ -293,7 +293,7 @@ namespace Apollo.AIM.SNAP.Model
                         if (result)
                         {
                             createrApprovalWorkFlow(db, actorIds);
-                            addAccessTeamComment(accessTeamWF,"Due Date: " + dueDate, CommentsType.Workflow_Created);
+                            addAccessTeamComment(accessTeamWF, "Due Date: " + Convert.ToDateTime(dueDate).ToString("MMM d, yyyy"), CommentsType.Workflow_Created);
                             db.SubmitChanges();
                         }
                     }
@@ -533,10 +533,12 @@ namespace Apollo.AIM.SNAP.Model
                         
 
                         //req.ticketNumber = "123456";
-
+                        
+						// TODO: make ticket number a link to SD
                         addAccessTeamComment(accessTeamWF, 
-                            "Service Desk Ticket" + req.ticketNumber + ". Due Date: " + dueDate, 
-                            CommentsType.Ticket_Created);
+                            "Service Desk Ticket" + req.ticketNumber + ". Due Date: " + Convert.ToDateTime(dueDate).ToString("MMM d, yyyy"), CommentsType.Ticket_Created);
+//                            ". Due Date: " + Convert.ToDateTime(dueDate).ToString("MMM d, yyyy"), CommentsType.Ticket_Created);
+//                            CommentsType.Ticket_Created);
 
                         db.SubmitChanges();
                     }
