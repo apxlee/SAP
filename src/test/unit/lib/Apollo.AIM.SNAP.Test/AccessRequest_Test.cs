@@ -1781,7 +1781,7 @@ namespace Apollo.AIM.SNAP.Test
                 }
         }
         
-        [Ignore]
+        //[Ignore]
         [Test]
         public void ShouldHandleCreateSDTicket()
         {
@@ -1840,7 +1840,7 @@ namespace Apollo.AIM.SNAP.Test
 
         }
 
-        [Ignore]
+        //[Ignore]
         [Test]
         public void ShouldHandleAccessTeamCloseAfterCreateTicket()
         {
@@ -1891,7 +1891,7 @@ namespace Apollo.AIM.SNAP.Test
             }
         }
 
-        [Ignore]
+        //[Ignore]
         [Test]
         public void ShouldHandleFinalizeRequest()
         {

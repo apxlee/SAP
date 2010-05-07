@@ -546,7 +546,8 @@ namespace Apollo.AIM.SNAP.Model
             }
             catch (Exception ex)
             {
-                Logger.Error("SNAP - AccessRequst: Create Service Desk Ticket", ex); 
+                Logger.Error("SNAP - AccessRequst: Create Service Desk Ticket", ex);
+                result = false;
             }
             return result;
         }
@@ -743,6 +744,18 @@ namespace Apollo.AIM.SNAP.Model
                 ActorApprovalType t = (ActorApprovalType) agt;
 
                 stateTransition(t, wf, WorkflowState.Not_Active, WorkflowState.Not_Active);
+
+
+                // check to make sure we can update manager in the req table
+                if (t == ActorApprovalType.Manager)
+                {
+                    if (req.managerUserId != actor.userId)
+                    {
+                        req.managerUserId = actor.userId;
+                        req.managerDisplayName = actor.displayName;
+                    }
+
+                }
             }
 
         }
