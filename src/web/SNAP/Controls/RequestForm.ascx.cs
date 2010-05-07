@@ -132,7 +132,6 @@ namespace Apollo.AIM.SNAP.Web.Controls
                         if (requestID > 0)
                         {
                             SnapSession.SelectedRequestId = requestID.ToString();
-                            Response.Redirect("MyRequests.aspx");
                         }
                         else
                         {
@@ -163,7 +162,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
                                                UserName);
                 }
 
-
+                Response.Redirect("MyRequests.aspx");
             }
             catch (Exception ex)
             {
