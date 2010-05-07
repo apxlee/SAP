@@ -31,11 +31,11 @@ function ApproverActions(obj,requestId,action) {
             break;
         case '2':
             if (textarea.val() == "") { ActionMessage("Validation Error","please specify the change"); return false; }
-            else { comments = textarea.val(); }
+            else { comments = "<br />" + textarea.val(); }
         break;
         case '1':
             if (textarea.val() == "") { ActionMessage("Validation Error","please specify the reason for denial"); return false; }
-            else { comments = textarea.val(); }
+            else { comments = "<br />" + textarea.val(); }
         break;
 }
 
@@ -133,18 +133,29 @@ function openNext(obj) {
         });
     });
 }
-function addComments(obj, approverName, status, comments) {
-    var newcomment = "<p class='csm_error_text'><u>" + status + " by " + approverName + " on " + curr_date + "</u><br />" + comments + "</p>";
-    $(obj).closest("div.csm_hidden_block").children().find("span").each(
-    function() {
+function addComments(obj, approverName, action, comments) {
+    var newcomment = "";
+    $(obj).closest("div.csm_hidden_block").children().find("span").each(function() {
         if ($(this).attr("id").indexOf("_workflowActorName") > -1) {
             if ($(this).html() == approverName) {
-                if ($(this).parent().next().children().html() == status) {
-                    $(this).closest("div.csm_data_row").parent().html($(this).closest("div.csm_data_row").parent().html() + newcomment);
+                var commentsContainer = $(this).closest("div.csm_data_row").parent().find("div.csm_text_container_nodrop");
+                if (commentsContainer.html() == null) {
+                    newcomment = "<div class='csm_text_container_nodrop'><p><u>"
+                    + action + " by AIM on " + curr_date + "</u>" + comments + "<br />" +
+                    "Due Date: " + $(this).parent().next().next().children().html() + "</p></div>";
+                    $(newcomment).appendTo($(this).closest("div.csm_data_row").parent());
                 }
+                else {
+                    newcomment = "<p><u>"
+                    + action + " by AIM on " + curr_date + "</u>" + comments + "<br />" +
+                    "Due Date: " + $(this).parent().next().next().children().html() + "</p>"
+                    $(newcomment).appendTo(commentsContainer);
+                }
+
             }
         }
     });
+
 }
 function ActionMessage(header, message) {
     $(document).ready(function() {

@@ -60,17 +60,66 @@ function AccessTeamActions(obj, requestId, action) {
             break;
         case '2':
             if (textarea.val() == "") { ActionMessage("Validation Error", "Please specify the change."); return false; }
-            else { comments = textarea.val(); }
+            else { comments = "<br />" + textarea.val(); }
             break;
         case '3':
             if (textarea.val() == "") { ActionMessage("Validation Error", "Please specify the reason for cancel."); return false; }
-            else { comments = textarea.val(); }
+            else { comments = "<br />" + textarea.val(); }
             break;
         case '1':
             if (textarea.val() == "") { ActionMessage("Validation Error", "Please specify the reason for denial."); return false; }
-            else { comments = textarea.val(); }
+            else { comments = "<br />" + textarea.val(); }
             break;
     }
+
+//    switch (action) {
+//        case '4':
+//            ActionMessage("Acknowledged", "You have just acknowledged this request.");
+//            updateRequestTracking(obj, "Access &amp; Identity Management", "Pending Workflow");
+//            $(obj).attr("disabled", "disabled");
+//            $(obj).next().attr("disabled", "disabled");
+//            $(obj).closest("tr").next().children("td.csm_input_form_control_column").find("input").each(function() {
+//                $(this).removeAttr("disabled");
+//            });
+//            $(obj).closest("div.csm_content_container").find("tr.csm_stacked_heading_label").children().each(function() {
+//                if ($(this).next().children().html() == "Open") {
+//                    $(this).next().children().html("Pending");
+//                }
+//            });
+//            var obj = $("#closed_cancelled_" + requestId);
+//            addComments(obj, "Access &amp; Identity Management", "Acknowledged", "");
+//            editBuilder(obj, requestId);
+//            break;
+//        case '2':
+//            ActionMessage("Change Requested", "You have just requested a change.");
+//            updateRequestTracking(obj, "Access &amp; Identity Management", "Change Requested");
+//            disableBladeActions(obj);
+//            addComments(obj, "Access &amp; Identity Management", "Change Requested", comments);
+//            $(obj).closest("div.csm_content_container").find("tr.csm_stacked_heading_label").children().each(function() {
+//                if ($(this).next().children().html() == "Pending") {
+//                    $(this).next().children().html("Change Requested");
+//                }
+//            });
+//            break;
+//        case '3':
+//            ActionMessage("Closed Cancelled", "You have just closed this request.");
+//            updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Cancelled");
+//            disableBladeActions(obj);
+//            addComments(obj, "Access &amp; Identity Management", "Closed Cancelled", comments);
+//            animateActions(obj, "Closed Requests");
+//            hideSections(obj);
+//            updateRequestStatus(obj);
+//            break;
+//        case '1':
+//            ActionMessage("Closed Denied", "This request has been closed.");
+//            updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Denied");
+//            disableBladeActions(obj);
+//            addComments(obj, "Access &amp; Identity Management", "Closed Denied", comments);
+//            animateActions(obj, "Closed Requests");
+//            hideSections(obj);
+//            updateRequestStatus(obj);
+//            break;
+//    }
 
     var postData = "{'requestId':'" + requestId.toString() + "','action':'" + action + "','comments':'" + comments + "'}";
     textarea.val("");
@@ -91,20 +140,31 @@ function AccessTeamActions(obj, requestId, action) {
                         $(obj).closest("tr").next().children("td.csm_input_form_control_column").find("input").each(function() {
                             $(this).removeAttr("disabled");
                         });
+                        $(obj).closest("div.csm_content_container").find("tr.csm_stacked_heading_label").children().each(function() {
+                            if ($(this).next().children().html() == "Open") {
+                                $(this).next().children().html("Pending");
+                            }
+                        });
                         var obj = $("#closed_cancelled_" + requestId);
+                        addComments(obj, "Access &amp; Identity Management", "Acknowledged", "");
                         editBuilder(obj, requestId);
                         break;
                     case '2':
                         ActionMessage("Change Requested", "You have just requested a change.");
                         updateRequestTracking(obj, "Access &amp; Identity Management", "Change Requested");
                         disableBladeActions(obj);
-                        addComments(obj, "Change Requested", comments);
+                        addComments(obj, "Access &amp; Identity Management", "Change Requested", comments);
+                        $(obj).closest("div.csm_content_container").find("tr.csm_stacked_heading_label").children().each(function() {
+                            if ($(this).next().children().html() == "Pending") {
+                                $(this).next().children().html("Change Requested");
+                            }
+                        });
                         break;
                     case '3':
                         ActionMessage("Closed Cancelled", "You have just closed this request.");
                         updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Cancelled");
                         disableBladeActions(obj);
-                        addComments(obj, "Closed Cancelled", comments);
+                        addComments(obj, "Access &amp; Identity Management", "Closed Cancelled", comments);
                         animateActions(obj, "Closed Requests");
                         hideSections(obj);
                         updateRequestStatus(obj);
@@ -113,7 +173,7 @@ function AccessTeamActions(obj, requestId, action) {
                         ActionMessage("Closed Denied", "This request has been closed.");
                         updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Denied");
                         disableBladeActions(obj);
-                        addComments(obj, "Closed Denied", comments);
+                        addComments(obj, "Access &amp; Identity Management", "Closed Denied", comments);
                         animateActions(obj, "Closed Requests");
                         hideSections(obj);
                         updateRequestStatus(obj);
@@ -137,16 +197,29 @@ function disableBladeActions(obj) {
         $(this).attr("disabled", "disabled");
     });
 }
-function addComments(obj, status, comments) {
-    var newcomment = "<p class='csm_error_text'><u>" + status + " by (GET ACTOR NAME) on " + curr_date + "</u><br />" + comments + "</p>";
-    $(obj).closest("div.csm_hidden_block").children().find("span").each(
- function() {
-     if ($(this).attr("id").indexOf("_workflowStatus") > -1) {
-         if ($(this).html() == status) {
-             $(this).closest("div.csm_data_row").next().html($(this).closest("div.csm_data_row").next().html() + newcomment);
-         }
-     }
- });
+function addComments(obj, approverName, action, comments) {
+    var newcomment = "";
+    $(obj).closest("div.csm_hidden_block").children().find("span").each(function() {
+        if ($(this).attr("id").indexOf("_workflowActorName") > -1) {
+            if ($(this).html() == approverName) {
+                var commentsContainer = $(this).closest("div.csm_data_row").parent().find("div.csm_text_container_nodrop");
+                if (commentsContainer.html() == null) {
+                    newcomment = "<div class='csm_text_container_nodrop'><p><u>"
+                    + action + " by AIM on " + curr_date + "</u>" + comments + "<br />" +
+                    "Due Date: " + $(this).parent().next().next().children().html() + "</p></div>";
+                    $(newcomment).appendTo($(this).closest("div.csm_data_row").parent());
+                }
+                else {
+                    newcomment = "<p><u>"
+                    + action + " by AIM on " + curr_date + "</u>" + comments + "<br />" +
+                    "Due Date: " + $(this).parent().next().next().children().html() + "</p>"
+                    $(newcomment).appendTo(commentsContainer);
+                }
+
+            }
+        }
+    });
+
 }
 function audienceClick(obj) {
     $(obj).closest("table").next().find("input[type=button]").removeAttr("disabled");
@@ -262,8 +335,9 @@ function editBuilder(obj, requestId) {
               }
           });
         $("#closed_cancelled_" + requestId).removeAttr("disabled");
-        $("#create_workflow_" + requestId).removeAttr("disabled");
-
+        $("#continue_workflow_" + requestId).removeAttr("disabled");
+        $(obj).attr("disabled", "disabled");
+        
         var editLink = $(obj).parent().parent().find(".oospa_edit_icon_disabled");
         editLink.addClass("oospa_edit_icon");
         editLink.removeClass("oospa_edit_icon_disabled");
@@ -281,9 +355,9 @@ function disableBuilder(obj, requestId) {
               }
           });
         $("#_selectedActors_" + requestId).val("");
-        //$("#closed_cancelled_" + requestId).attr("disabled", "disabled");
-        //$("#create_workflow_" + requestId).attr("disabled", "disabled");
-        //$(obj).attr("disabled", "disabled");
+        $("#closed_cancelled_" + requestId).attr("disabled", "disabled");
+        $("#create_workflow_" + requestId).attr("disabled", "disabled");
+        $(obj).attr("disabled", "disabled");
 
         var editLink = $(obj).parent().parent().find(".oospa_edit_icon");
         editLink.addClass("oospa_edit_icon_disabled");
