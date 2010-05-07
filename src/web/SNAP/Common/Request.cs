@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using Apollo.AIM.SNAP.Model;
@@ -101,6 +102,30 @@ namespace Apollo.AIM.SNAP.Web.Common
             {
                 return SnapSession.CurrentUser.LoginId + "-" + "SearchRequests";
             }
+        }
+
+        public static DataTable GetChangeComments(int requestId)
+        {
+            DataTable table = new DataTable();
+            table.Columns.Add("ActorDisplayName", typeof(string));
+            table.Columns.Add("Comment", typeof(string));
+
+            using(var db = new SNAPDatabaseDataContext())
+            {
+                var changeComments = (from sr in db.SNAP_Requests
+                                      join sw in db.SNAP_Workflows on sr.pkId equals sw.requestId
+                                      join swc in db.SNAP_Workflow_Comments on sw.pkId equals swc.workflowId
+                                      join sa in db.SNAP_Actors on sw.actorId equals sa.pkId
+                                      where sr.pkId == requestId
+                                      && swc.commentTypeEnum == 3
+                                      select new { sa.displayName, swc.commentText });
+                foreach (var comment in changeComments)
+                {
+                    table.Rows.Add(comment.displayName, comment.commentText);
+                }
+            }
+           
+            return table;
         }
 
         public static int AccessTeamCount()

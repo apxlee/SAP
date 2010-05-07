@@ -12,6 +12,7 @@ using Apollo.AIM.SNAP.CA;
 using Apollo.AIM.SNAP.Web.Common;
 using Apollo.AIM.SNAP.Model;
 using Apollo.CA.Logging;
+using MyRequest = Apollo.AIM.SNAP.Web.Common.Request;
 
 namespace Apollo.AIM.SNAP.Web.Controls
 {
@@ -46,6 +47,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
                 this.ManagerName = _requestFormData[0].managerDisplayName;
                 this.ManagerLoginId = _requestFormData[0].managerUserId;
                 this._managerLoginId.Text = _requestFormData[0].managerUserId;
+                loadChangeComments();
             }
 
             RequestFormSection requestFormSection=null;
@@ -214,6 +216,18 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			}
 			return new List<usp_open_request_tabResult>();
 
+        }
+
+        private void loadChangeComments()
+        {
+            DataTable changeComments = MyRequest.GetChangeComments(Convert.ToInt32(SnapSession.SelectedRequestId));
+            Literal changeLit = new Literal();
+
+            foreach (DataRow comment in changeComments.Rows)
+            {
+                changeLit.Text += string.Format("<p style=\"padding-left:5px;\" class=\"csm_error_text\"><b>{0}:</b><br />{1}<p>", comment[0], comment[1]);
+            }
+            _changeComments.Controls.Add(changeLit);
         }
 
         private bool brandNewRequest()

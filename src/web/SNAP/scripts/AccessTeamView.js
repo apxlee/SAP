@@ -114,6 +114,9 @@ function AccessTeamActions(obj, requestId, action) {
                         break;
                 }
             }
+            else {
+                ActionMessage("Action Failed", "");
+            }
         }
 		,
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -361,7 +364,7 @@ function createWorkflow(obj, requestId) {
         if ($("#_managerUserId_" + requestId).val() > "") {
             var postData = "{'requestId':'" + requestId.toString() + "','managerUserId':'" + $("#_managerUserId_" + requestId).val() + "','actorIds':'" + $("#_selectedActors_" + requestId).val() + "'}";
             //TODO: (added parameter managerUserId)format postdata to match AjaxCalls.aspx\CreateWorkflow parameter"
-
+            alert(postData);
             $.ajax({
                 type: "POST",
                 contentType: "application/json; character=utf-8",
