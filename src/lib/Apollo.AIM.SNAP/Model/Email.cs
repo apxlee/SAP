@@ -16,13 +16,13 @@ namespace Apollo.AIM.SNAP.Model
         private static string prefix = @"http://";
         private static string url = @"http://";
 
-        public static void OverdueTask(string toEmail, string toName, long id, string userName)
+        public static void OverdueTask(string toEmail, string toName, long requestId, string userName)
         {
-            configPerEnvironment(id, PageNames.APPROVING_MANAGER);
+			ConfigPerEnvironment(requestId, PageNames.APPROVING_MANAGER);
             
             Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(toEmail,
-                                                                     "Supplemental Network Access Process-Overdue Alert",
-                                                                     absPath + ConfigurationManager.AppSettings["NagApproval"], // newTaskNotification.html",
+                                                                     "Supplemental Access Process - Overdue Alert",
+                                                                     AbsolutePath + ConfigurationManager.AppSettings["NagApproval"], // newTaskNotification.html",
                                                                      new Hashtable()
                                                                          {
                                                                              {"APPROVERNAME", toName},
@@ -34,36 +34,37 @@ namespace Apollo.AIM.SNAP.Model
              
         }
 
-        public static void UpdateRequesterStatus(string submitterUserId, string name, long id, WorkflowState status, string reason)
+        public static void UpdateRequesterStatus(string submitterUserId, string name, long requestId, WorkflowState workflowState, string reason)
         {
 
             string subject = "";
-            string emailTemplatePath = absPath;
-            switch (status)
+            string emailTemplatePath = AbsolutePath;
+			
+			switch (workflowState)
             {
                 case WorkflowState.Pending_Acknowledgement:
-                    subject = "Supplemental Network Access Process-Submitted";
+                    subject = "Supplemental Access Process - Submitted";
                     emailTemplatePath +=  ConfigurationManager.AppSettings["ConfirmSubmitToSubmitter"];
                     break;
                 case WorkflowState.Closed_Completed:
-                    subject = "Supplemental Network Access Process-Complete";
+                    subject = "Supplemental Access Process - Completed";
                     emailTemplatePath += ConfigurationManager.AppSettings["CompleteToSubmitter"];
                     break;
                 case WorkflowState.Change_Requested:
-                    subject = "Supplemental Network Access Process-Request Change";
+                    subject = "Supplemental Access Process - Request Change";
                     emailTemplatePath += ConfigurationManager.AppSettings["RequestChangeToSubmitter"];
                     break;
                 case WorkflowState.Closed_Denied:
-                    subject = "Supplemental Network Access Process-Denied";
+                    subject = "Supplemental Access Process - Denied";
                     emailTemplatePath += ConfigurationManager.AppSettings["DenyToSubmitter"];
                     break;
                 case WorkflowState.Closed_Cancelled:
-                    subject = "Supplemental Network Access Process-Cancelled";
+                    subject = "Supplemental Access Process - Cancelled";
                     emailTemplatePath += ConfigurationManager.AppSettings["DenyToSubmitter"];
                     break;
             }
 
-            configPerEnvironment(id, PageNames.USER_VIEW);
+			ConfigPerEnvironment(requestId, PageNames.USER_VIEW);
 
             /*
             Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(emailAddress(submitterUserId),
@@ -81,18 +82,18 @@ namespace Apollo.AIM.SNAP.Model
              */
         }
 
-        public static void TaskAssignToApprover(string toEmailAddress, string to, long id, string name)
+        public static void TaskAssignToApprover(string toEmailAddress, string to, long requestId, string affectedEndUser)
         {
-            configPerEnvironment(id, PageNames.APPROVING_MANAGER);
+			ConfigPerEnvironment(requestId, PageNames.APPROVING_MANAGER);
             
             
             Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(toEmailAddress,
-                                                                     "Supplemental Network Access Process-Approval Needed",
-                                                                     absPath + ConfigurationManager.AppSettings["Approval"], // newTaskNotification.html",
+                                                                     "Supplemental Access Process - Approval Needed",
+                                                                     AbsolutePath + ConfigurationManager.AppSettings["Approval"], // newTaskNotification.html",
                                                                      new Hashtable()
                                                                          {
                                                                              {"APPROVERNAME", to},
-                                                                             {"NAME", name},
+                                                                             {"NAME", affectedEndUser},
                                                                              {"URL", url},
                                                                              {"PREFIX", prefix}
                                                                          });
@@ -113,7 +114,7 @@ namespace Apollo.AIM.SNAP.Model
             return detail.EmailAddress;
         }
 
-        private static string absPath
+        private static string AbsolutePath
         {
             get
             {
@@ -130,7 +131,7 @@ namespace Apollo.AIM.SNAP.Model
 
             }
         }
-        private static void configPerEnvironment(long id, string pageName)
+        private static void ConfigPerEnvironment(long requestId, string pageName)
         {
             prefix = @"http://";
             url = @"http://";
@@ -138,17 +139,17 @@ namespace Apollo.AIM.SNAP.Model
             if (Environment.UserDomainName.ToUpper().Contains("DEV"))
             {
                 prefix += Environment.MachineName + ".devapollogrp.edu/snap/images";
-                url += (Environment.MachineName + ".devapollogrp.edu/snap/" + pageName + ".aspx?RequestId=" + id);
+				url += (Environment.MachineName + ".devapollogrp.edu/snap/" + pageName + ".aspx?RequestId=" + requestId);
             }
             else if (Environment.UserDomainName.ToUpper().Contains("QA"))
             {
                 prefix += "access.qaapollogrp.edu/snap/images";
-                url += ("access.qaapollogrp.edu/snap/" + pageName + ".aspx?RequestId=" + id);
+				url += ("access.qaapollogrp.edu/snap/" + pageName + ".aspx?RequestId=" + requestId);
             }
             else
             {
                 prefix += "access.apollogrp.edu/snap/images";
-                url += ("access.apollogrp.edu/snap/" + pageName + ".aspx?RequestId=" + id);
+				url += ("access.apollogrp.edu/snap/" + pageName + ".aspx?RequestId=" + requestId);
             }
         }
     }
