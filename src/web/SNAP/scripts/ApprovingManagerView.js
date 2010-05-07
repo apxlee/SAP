@@ -37,7 +37,7 @@ function ApproverActions(obj,requestId,action) {
             if (textarea.val() == "") { ActionMessage("Validation Error","please specify the reason for denial"); return false; }
             else { comments = textarea.val(); }
         break;
-    }
+}
 
     var postData = "{'requestId':'" + requestId.toString() + "','action':'" + action + "','comments':'" + comments + "'}";
     $.ajax({
@@ -54,6 +54,9 @@ function ApproverActions(obj,requestId,action) {
                         ActionMessage("Approved", "You have approved this request.");
                         updateRequestTracking(obj, approverName, "Approved");
                         animateActions(obj, "Open Requests");
+
+                        if ($(obj).attr("id").indexOf("_approveAndMoveNext") > -1) { openNext(obj); }
+                        
                         break;
                     case '2':
                         ActionMessage("Change Requested", "You have just requested a change.");
@@ -119,6 +122,14 @@ function animateActions(obj, newSection) {
                     });
                 }
             });
+        });
+    });
+}
+function openNext(obj) {
+    var blade = $(obj).closest("div.csm_content_container");
+    $(obj).closest("div.csm_text_container").fadeOut("slow", function() {
+        $(obj).closest("div.csm_content_container").children().next().slideUp("fast", function() {
+            $(obj).closest("div.csm_content_container").next().next().children().next().slideDown("fast");
         });
     });
 }

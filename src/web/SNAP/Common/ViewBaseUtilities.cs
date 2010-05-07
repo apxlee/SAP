@@ -28,7 +28,9 @@ namespace Apollo.AIM.SNAP.Web.Common
             {
                 nullMessage.Visible = true;
             }
+
             int lastRow = 1;
+            int approvalCount = Request.ApprovalCount(SnapSession.CurrentUser.LoginId);
             bool IsLastRow = false;
 
             foreach (DataRow request in requestTable.Rows)
@@ -46,14 +48,15 @@ namespace Apollo.AIM.SNAP.Web.Common
 
                 if (ApproverState == WorkflowState.Pending_Approval)
                 {
-                    if (lastRow == requestTable.Rows.Count) { IsLastRow = true; }
-                    pendingContainer.Controls.Add(BuildMasterBlade(request, currentPage, requestState, null, false));
-                    lastRow++;
+                    if (lastRow == approvalCount) { IsLastRow = true; }
+                    pendingContainer.Controls.Add(BuildMasterBlade(request, currentPage, requestState, null, IsLastRow));
+                    
                 }
                 else
                 {
                     openContainer.Controls.Add(BuildMasterBlade(request, currentPage, requestState, null, false));
                 }
+                lastRow++;
             }
 		}
 		

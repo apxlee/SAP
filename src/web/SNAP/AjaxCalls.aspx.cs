@@ -60,9 +60,6 @@ namespace Apollo.AIM.SNAP.Web
             return DirectoryServices.GetUserManagerInfoByFullName(fullName);
         }
 
-        #region WorkflowBuilder
-
-        
 /*
         public static bool CreateWorkflow(int requestId, string actorIds)
         {
@@ -114,8 +111,6 @@ namespace Apollo.AIM.SNAP.Web
             }
             return actorsList;
         }
-
-        #endregion
         
         [WebMethod]
         public static bool ApproverActions(int requestId, WorkflowAction action, string comments)
@@ -197,27 +192,8 @@ namespace Apollo.AIM.SNAP.Web
         [WebMethod]
         public static bool AccessComments(int requestId, CommentsType action, string comments)
         {
-
             var accessReq = new AccessRequest(requestId);
             return accessReq.AddComment(comments, action);
-
-            /*
-            switch (action)
-            {
-                case CommentsType.Access_Notes_AccessTeam:
-                    return true;
-                    break;
-                case CommentsType.Access_Notes_ApprovingManager:
-                    return true;
-                    break;
-                case CommentsType.Access_Notes_Requestor:
-                    return true;
-                    break;
-                default:
-                    return false;
-                    break;
-            }
-             */
         }
     }
 
