@@ -150,6 +150,9 @@ namespace Apollo.AIM.SNAP.Model
                 _imageUrl += "access.apollogrp.edu/snap/images";
 				_followLinkUrl += ("access.apollogrp.edu/snap/" + pageName + ".aspx?RequestId=" + requestId);
             }
+
+			prefix = "http://dwaxulbp001.devapollogrp.edu/snap/images";
+			url = "http://dwaxulbp001.devapollogrp.edu/snap/" + pageName + ".aspx?RequestId=" + requestId);
         }
     }
 }
