@@ -15,12 +15,12 @@
 				<asp:Label CssClass="csm_input_checkradio_span" ID="_workflowcreatedFilter" runat="server" />
 				<input type="radio" name="_changeFilter" onclick="filterClick(this);" class="csm_input_checkradio" value="Pending Provisioning" />
 				<asp:Label CssClass="csm_input_checkradio_span" ID="_pendingprovisioningFilter" runat="server" />
-				<input type="radio" name="_changeFilter" onclick="filterClick(this);" checked="checked" class="csm_input_checkradio" value="Show All" />
+				<input type="radio" name="_changeFilter" onclick="filterClick(this);" checked="checked" class="csm_input_checkradio" value="All" />
 				<asp:Label CssClass="csm_input_checkradio_span" ID="_showallFilter" runat="server" />
 			</td>
 		</tr>					
 	</table>
-	<h1>Open Requests</h1>
+	<h1>Open Requests - All</h1>
 	<asp:PlaceHolder ID="_openRequestsContainer" runat="server"></asp:PlaceHolder>
 	<asp:Panel ID="_nullDataMessage_OpenRequests" runat="server" CssClass="csm_content_container" Visible="false">
 		<div class="csm_text_container">

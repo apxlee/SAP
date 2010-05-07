@@ -12,10 +12,11 @@ var curr_date = m_names[curr_month] + " " + curr_day + ", " + curr_year;
 function filterClick(obj) {
     var blade = "";
     var filter = $(obj).val();
+    $(obj).closest("table").next().html("Open Requests" + " - " + filter);
     $(obj).closest("div.csm_container_center_700").find("div.csm_content_container").each(
         function() {
             blade = this;
-            if (filter == "Show All") {
+            if (filter == "All") {
                 $(blade).show();
             }
             else {
