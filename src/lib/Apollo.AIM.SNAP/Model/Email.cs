@@ -5,7 +5,10 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Text;
+
+using Apollo.Ultimus.CAP;
 using Apollo.AIM.SNAP.CA;
+using Apollo.CA.Logging;
 
 using System.Web;
 
@@ -94,23 +97,47 @@ namespace Apollo.AIM.SNAP.Model
                                                                              {"URL", _followLinkUrl},
                                                                              {"PREFIX", _imageUrl}
                                                                          });
-
-             
         }
 
 		public static void AccessTeamAcknowledge(string toEmailAddress, string to, long requestId, string affectedEndUser)
 		{
-			ConfigPerEnvironment(requestId, PageNames.APPROVING_MANAGER);
+			//ConfigPerEnvironment(requestId, PageNames.APPROVING_MANAGER);
 
-			Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(toEmailAddress,
-																	 "Supplemental Access Process - Acknowledgement Needed",
-																	 AbsolutePath + ConfigurationManager.AppSettings["Acknowledgement"],
-																	 new Hashtable()
-                                                                         {
-                                                                             {"NAME", affectedEndUser},
-                                                                             {"URL", _followLinkUrl},
-                                                                             {"PREFIX", _imageUrl}
-                                                                         });
+			Hashtable bodyParameters = new Hashtable()
+				{
+					{"ROOT_PATH", Utilities.WebRootUrl},
+					{"RECIPIENT_NAME", "Access Team"},
+					{"AFFECTED_END_USER", affectedEndUser},
+					{"FOLLOW_URL", PageNames.APPROVING_MANAGER+  ".aspx?requestId=" +  requestId}
+				};
+			
+			SendEmail(toEmailAddress
+				, "Supplemental Access Process - Acknowledgement Needed"
+				, AbsolutePath +  ConfigurationManager.AppSettings["Acknowledgement"]
+				, bodyParameters);
+
+			//Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(toEmailAddress,
+			//                                                         "Supplemental Access Process - Acknowledgement Needed",
+			//                                                         AbsolutePath + ConfigurationManager.AppSettings["Acknowledgement"],
+			//                                                         new Hashtable()
+			//                                                             {
+			//                                                                {"RECIPIENT_NAME", "Access Team"},
+			//                                                                {"AFFECTED_END_USER", affectedEndUser},
+			//                                                                {"FOLLOW_URL", _followLinkUrl},
+			//                                                                {"IMAGE_PATH", _imageUrl}
+			//                                                             });
+		}
+
+		private static void SendEmail(string recipientEmailAddress, string subject, string templatePath, Hashtable bodyParameters)
+		{
+			try
+			{
+				FormattedEmailTool.SendFormattedEmail(recipientEmailAddress, subject, templatePath, bodyParameters);
+			}
+			catch (Exception ex)
+			{
+				Logger.Error("Email > SendEmail", ex);
+			}
 		}
 
 
@@ -143,6 +170,8 @@ namespace Apollo.AIM.SNAP.Model
 
             }
         }
+        
+        // TODO: need to put this in utilities so write comments works
         private static void ConfigPerEnvironment(long requestId, string pageName)
         {
             _imageUrl = @"http://";
