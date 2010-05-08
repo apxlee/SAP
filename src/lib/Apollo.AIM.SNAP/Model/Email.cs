@@ -108,7 +108,7 @@ namespace Apollo.AIM.SNAP.Model
 					{"ROOT_PATH", Utilities.WebRootUrl},
 					{"RECIPIENT_NAME", "Access Team"},
 					{"AFFECTED_END_USER", affectedEndUser},
-					{"FOLLOW_URL", Utilities.WebRootUrl + PageNames.APPROVING_MANAGER+  ".aspx?requestId=" +  requestId}
+					{"FOLLOW_URL", Utilities.WebRootUrl + PageNames.ACCESS_TEAM +  ".aspx?requestId=" +  requestId}
 				};
 			
 			SendEmail(toEmailAddress
@@ -155,6 +155,7 @@ namespace Apollo.AIM.SNAP.Model
 
         private static string AbsolutePath
         {
+			// C:\Apollo\idm\snap\trunk\release\build\src\web\SNAP\EmailTemplate
             get
             {
                 string x = string.Empty;
