@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Web;
 using System.Configuration;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Apollo.CA.Logging;
 
 namespace Apollo.AIM.SNAP.Model
 {
@@ -13,6 +15,22 @@ namespace Apollo.AIM.SNAP.Model
 			// TODO: make this dynamic
 			get { return ConfigurationManager.AppSettings["EnvironmentPath"]; }
 		}
+
+		public static string AbsolutePath
+		{
+			get
+			{
+				try
+				{
+					return HttpRuntime.AppDomainAppPath;  // C:\Apollo\idm\snap\trunk\release\build\src\web\SNAP\EmailTemplate
+				}
+				catch (Exception ex)
+				{
+					Logger.Error("Utilities > AbsolutePath", ex);
+					return string.Empty;
+				}
+			}
+		}		
 
 		//private static void ConfigPerEnvironment(long requestId, string pageName)
 		//{

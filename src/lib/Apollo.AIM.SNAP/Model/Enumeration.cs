@@ -53,7 +53,6 @@ namespace Apollo.AIM.SNAP.Model
         Access_Notes_ApprovingManager = 6,
         Access_Notes_AccessTeam = 7,
         Access_Notes_SuperUser = 9
-        
     }
 
 	// TODO: rename this enum to match database table
@@ -82,5 +81,13 @@ namespace Apollo.AIM.SNAP.Model
         Ack = 4,
         Ticket = 5,
         Complete = 6
+    }
+    
+    public enum EmailTaskType
+    {
+		Overdue,
+		UpdateRequester,
+		AssignToApprover,
+		AccessTeamAcknowledge
     }
 }
