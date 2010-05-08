@@ -108,7 +108,7 @@ namespace Apollo.AIM.SNAP.Model
 					{"ROOT_PATH", Utilities.WebRootUrl},
 					{"RECIPIENT_NAME", "Access Team"},
 					{"AFFECTED_END_USER", affectedEndUser},
-					{"FOLLOW_URL", PageNames.APPROVING_MANAGER+  ".aspx?requestId=" +  requestId}
+					{"FOLLOW_URL", Utilities.WebRootUrl + PageNames.APPROVING_MANAGER+  ".aspx?requestId=" +  requestId}
 				};
 			
 			SendEmail(toEmailAddress
