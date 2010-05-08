@@ -389,9 +389,11 @@ namespace Apollo.AIM.SNAP.Model
                 wf.SNAP_Workflow_States[0].notifyDate = DateTime.Now;
                 wf.SNAP_Workflow_States[0].completedDate = DateTime.Now;
 
-                Email.TaskAssignToApprover(wf.SNAP_Actor.emailAddress,
-                                           wf.SNAP_Actor.displayName, _id,
-                                           wf.SNAP_Request.userDisplayName);
+				//Email.TaskAssignToApprover(wf.SNAP_Actor.emailAddress,
+				//                           wf.SNAP_Actor.displayName, _id,
+				//                           wf.SNAP_Request.userDisplayName);
+                                           
+                Email.SendTaskEmail(EmailTaskType.AssignToApprover, wf.SNAP_Actor.emailAddress, wf.SNAP_Actor.displayName, _id, wf.SNAP_Request.userDisplayName);
 
                 stateTransition((ActorApprovalType) wf.SNAP_Actor.SNAP_Actor_Group.actorGroupType, 
                     wf,WorkflowState.Not_Active, WorkflowState.Pending_Approval);
@@ -846,7 +848,14 @@ namespace Apollo.AIM.SNAP.Model
                         //if (state.notifyDate == null && state.workflowStatusEnum == (byte)WorkflowState.Pending_Approval)
                         if (state.notifyDate == null && state.workflowStatusEnum == (byte)WorkflowState.Not_Active)
                         {
-                            Email.TaskAssignToApprover(state.SNAP_Workflow.SNAP_Actor.emailAddress, state.SNAP_Workflow.SNAP_Actor.displayName, _id, state.SNAP_Workflow.SNAP_Request.userDisplayName);
+                            //Email.TaskAssignToApprover(state.SNAP_Workflow.SNAP_Actor.emailAddress, state.SNAP_Workflow.SNAP_Actor.displayName, _id, state.SNAP_Workflow.SNAP_Request.userDisplayName);
+
+							Email.SendTaskEmail(EmailTaskType.AssignToApprover
+								, state.SNAP_Workflow.SNAP_Actor.emailAddress
+								, state.SNAP_Workflow.SNAP_Actor.displayName
+								, _id
+								, state.SNAP_Workflow.SNAP_Request.userDisplayName);
+                            
                             state.notifyDate = DateTime.Now;
                             state.completedDate = DateTime.Now;
                             done = true;

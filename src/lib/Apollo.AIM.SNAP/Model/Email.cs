@@ -19,7 +19,7 @@ namespace Apollo.AIM.SNAP.Model
 		//private static string _imageUrl = @"http://";
 		//private static string _followLinkUrl = @"http://";
 
-		public static bool SendTaskEmail(EmailTaskType taskType, string toEmailAddress, long requestId, string affectedEndUser) //, WorkflowState workflowState, string reason
+		public static bool SendTaskEmail(EmailTaskType taskType, string toEmailAddress, string toName, long requestId, string affectedEndUser) //, WorkflowState workflowState, string reason
 		{
 			string recipientName = string.Empty;
 			string followPageName = string.Empty;
@@ -34,6 +34,20 @@ namespace Apollo.AIM.SNAP.Model
 					subjectAction += "Acknowledgement Needed";
 					templatePath += ConfigurationManager.AppSettings["Acknowledgement"];
 					break;
+					
+				case EmailTaskType.Overdue:
+					recipientName = toName;
+					followPageName = PageNames.APPROVING_MANAGER;
+					subjectAction += "Overdue Alert";
+					templatePath += ConfigurationManager.AppSettings["NagApproval"];
+					break;
+					
+				case EmailTaskType.AssignToApprover:
+					recipientName = toName;
+					followPageName = PageNames.APPROVING_MANAGER;
+					subjectAction += "Approval Needed";
+					templatePath += ConfigurationManager.AppSettings["Approval"];
+					break;							
 			}
 			
 			Hashtable bodyParameters = new Hashtable()
@@ -47,23 +61,21 @@ namespace Apollo.AIM.SNAP.Model
 			return SendEmail(toEmailAddress, subjectAction, templatePath, bodyParameters);						
 		}
 
-        public static void OverdueTask(string toEmail, string toName, long requestId, string userName)
-        {
-			//ConfigPerEnvironment(requestId, PageNames.APPROVING_MANAGER);
+		//public static void OverdueTask(string toEmail, string toName, long requestId, string userName)
+		//{
+		//    //ConfigPerEnvironment(requestId, PageNames.APPROVING_MANAGER);
             
-			//Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(toEmail,
-			//                                                         "Supplemental Access Process - Overdue Alert",
-			//                                                         AbsolutePath + ConfigurationManager.AppSettings["NagApproval"], // newTaskNotification.html",
-			//                                                         new Hashtable()
-			//                                                             {
-			//                                                                 {"APPROVERNAME", toName},
-			//                                                                 {"NAME", userName},
-			//                                                                 {"URL", _followLinkUrl},
-			//                                                                 {"PREFIX", _imageUrl}
-			//                                                             });
-
-             
-        }
+		//    //Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(toEmail,
+		//    //                                                         "Supplemental Access Process - Overdue Alert",
+		//    //                                                         AbsolutePath + ConfigurationManager.AppSettings["NagApproval"], // newTaskNotification.html",
+		//    //                                                         new Hashtable()
+		//    //                                                             {
+		//    //                                                                 {"APPROVERNAME", toName},
+		//    //                                                                 {"NAME", userName},
+		//    //                                                                 {"URL", _followLinkUrl},
+		//    //                                                                 {"PREFIX", _imageUrl}
+		//    //                                                             });
+		//}
 
         public static void UpdateRequesterStatus(string submitterUserId, string name, long requestId, WorkflowState workflowState, string reason)
         {
@@ -111,37 +123,37 @@ namespace Apollo.AIM.SNAP.Model
 
 		}
 
-        public static void TaskAssignToApprover(string toEmailAddress, string to, long requestId, string affectedEndUser)
-        {
-			//ConfigPerEnvironment(requestId, PageNames.APPROVING_MANAGER);
+		//public static void TaskAssignToApprover(string toEmailAddress, string to, long requestId, string affectedEndUser)
+		//{
+		//    //ConfigPerEnvironment(requestId, PageNames.APPROVING_MANAGER);
             
-			//Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(toEmailAddress,
-			//                                                         "Supplemental Access Process - Approval Needed",
-			//                                                         AbsolutePath + ConfigurationManager.AppSettings["Approval"], // newTaskNotification.html",
-			//                                                         new Hashtable()
-			//                                                             {
-			//                                                                 {"APPROVERNAME", to},
-			//                                                                 {"NAME", affectedEndUser},
-			//                                                                 {"URL", _followLinkUrl},
-			//                                                                 {"PREFIX", _imageUrl}
-			//                                                             });
-        }
+		//    //Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(toEmailAddress,
+		//    //                                                         "Supplemental Access Process - Approval Needed",
+		//    //                                                         AbsolutePath + ConfigurationManager.AppSettings["Approval"], // newTaskNotification.html",
+		//    //                                                         new Hashtable()
+		//    //                                                             {
+		//    //                                                                 {"APPROVERNAME", to},
+		//    //                                                                 {"NAME", affectedEndUser},
+		//    //                                                                 {"URL", _followLinkUrl},
+		//    //                                                                 {"PREFIX", _imageUrl}
+		//    //                                                             });
+		//}
 
-		public static void AccessTeamAcknowledge(string toEmailAddress, long requestId, string affectedEndUser)
-		{
-			//Hashtable bodyParameters = new Hashtable()
-			//    {
-			//        {"ROOT_PATH", Utilities.WebRootUrl},
-			//        {"RECIPIENT_NAME", "Access Team"},
-			//        {"AFFECTED_END_USER", affectedEndUser},
-			//        {"FOLLOW_URL", Utilities.WebRootUrl + PageNames.ACCESS_TEAM +  ".aspx?requestId=" +  requestId}
-			//    };
+		//public static void AccessTeamAcknowledge(string toEmailAddress, long requestId, string affectedEndUser)
+		//{
+		//    //Hashtable bodyParameters = new Hashtable()
+		//    //    {
+		//    //        {"ROOT_PATH", Utilities.WebRootUrl},
+		//    //        {"RECIPIENT_NAME", "Access Team"},
+		//    //        {"AFFECTED_END_USER", affectedEndUser},
+		//    //        {"FOLLOW_URL", Utilities.WebRootUrl + PageNames.ACCESS_TEAM +  ".aspx?requestId=" +  requestId}
+		//    //    };
 			
-			//SendEmail(toEmailAddress
-			//    , "Supplemental Access Process - Acknowledgement Needed"
-			//    , Utilities.AbsolutePath + ConfigurationManager.AppSettings["Acknowledgement"]
-			//    , bodyParameters);
-		}
+		//    //SendEmail(toEmailAddress
+		//    //    , "Supplemental Access Process - Acknowledgement Needed"
+		//    //    , Utilities.AbsolutePath + ConfigurationManager.AppSettings["Acknowledgement"]
+		//    //    , bodyParameters);
+		//}
 
 		private static bool SendEmail(string recipientEmailAddress, string subject, string templatePath, Hashtable bodyParameters)
 		{
