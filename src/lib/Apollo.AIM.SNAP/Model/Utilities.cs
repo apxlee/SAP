@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,8 @@ namespace Apollo.AIM.SNAP.Model
 	{
 		public static string WebRootUrl
 		{
-			get { return @"http://" + Environment.MachineName + Environment.UserDomainName + ".edu/snap"; }
+			// TODO: make this dynamic
+			get { return ConfigurationManager.AppSettings["EnvironmentPath"]; }
 		}
 
 		//private static void ConfigPerEnvironment(long requestId, string pageName)
