@@ -165,11 +165,18 @@ namespace Apollo.AIM.SNAP.Process
 
                                             outputMessage("WF id: " + state.SNAP_Workflow.pkId + " gets email nag",
                                                           EventLogEntryType.Information);
-
-                                            Email.OverdueTask(state.SNAP_Workflow.SNAP_Actor.emailAddress,
-                                                              state.SNAP_Workflow.SNAP_Actor.displayName,
-                                                              state.SNAP_Workflow.SNAP_Request.pkId,
-                                                              state.SNAP_Workflow.SNAP_Request.userDisplayName);
+                                                          
+											//Email.OverdueTask(state.SNAP_Workflow.SNAP_Actor.emailAddress,
+											//                  state.SNAP_Workflow.SNAP_Actor.displayName,
+											//                  state.SNAP_Workflow.SNAP_Request.pkId,
+											//                  state.SNAP_Workflow.SNAP_Request.userDisplayName);
+                                                              
+											Email.SendTaskEmail(EmailTaskType.Overdue
+												, state.SNAP_Workflow.SNAP_Actor.emailAddress
+												, state.SNAP_Workflow.SNAP_Actor.displayName
+												, state.SNAP_Workflow.SNAP_Request.pkId
+												, state.SNAP_Workflow.SNAP_Request.userDisplayName);
+                                                              
                                             db.SubmitChanges();
                                         }
 
