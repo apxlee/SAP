@@ -161,11 +161,8 @@ namespace Apollo.AIM.SNAP.Web.Controls
                 {
                     Email.UpdateRequesterStatus(SnapSession.CurrentUser.LoginId, UserName, requestID,
                                                 WorkflowState.Pending_Acknowledgement, string.Empty);
-                    
-					//Email.AccessTeamAcknowledge(ConfigurationManager.AppSettings["AIM-DG"], "Access Team", requestID,
-					//                           UserName);
                                                
-					Email.SendTaskEmail(EmailTaskType.AccessTeamAcknowledge, ConfigurationManager.AppSettings["AIM-DG"], requestID, UserName);
+					Email.SendTaskEmail(EmailTaskType.AccessTeamAcknowledge, ConfigurationManager.AppSettings["AIM-DG"], null, requestID, UserName);
                 }
                 
             }
