@@ -455,6 +455,7 @@
     <Content Include="AccessTeam.aspx" />
     <Content Include="Controls\HeaderStandalone.ascx" />
     <Content Include="Default.aspx" />
+    <Content Include="EmailTemplate\aimAcknowledge.html" />
     <Content Include="images\example_oracle.png" />
     <Content Include="images\example_SQL.png" />
     <Content Include="images\logo_aim_small.png" />
