@@ -1,25 +1,21 @@
 ﻿using System;
 using System.Collections;
-
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
 
-using Apollo.Ultimus.CAP;
 using Apollo.AIM.SNAP.CA;
 using Apollo.CA.Logging;
-
-using System.Web;
+using Apollo.Ultimus.CAP;
 
 namespace Apollo.AIM.SNAP.Model
 {
     public class Email
     {
-		//private static string _imageUrl = @"http://";
-		//private static string _followLinkUrl = @"http://";
-
-		public static bool SendTaskEmail(EmailTaskType taskType, string toEmailAddress, string toName, long requestId, string affectedEndUser) //, WorkflowState workflowState, string reason
+		public static bool SendTaskEmail(EmailTaskType taskType, string toEmailAddress, string toName, long requestId, string affectedEndUser)
+		{
+			return SendTaskEmail(taskType, toEmailAddress, toName, requestId, affectedEndUser, WorkflowState.Not_Active, null);
+		}    
+		
+		public static bool SendTaskEmail(EmailTaskType taskType, string toEmailAddress, string toName, long requestId, string affectedEndUser, WorkflowState workflowState, string reason)
 		{
 			string recipientName = string.Empty;
 			string followPageName = string.Empty;
@@ -47,7 +43,40 @@ namespace Apollo.AIM.SNAP.Model
 					followPageName = PageNames.APPROVING_MANAGER;
 					subjectAction += "Approval Needed";
 					templatePath += ConfigurationManager.AppSettings["Approval"];
-					break;							
+					break;
+					
+				case EmailTaskType.UpdateRequester:
+					recipientName = toName;
+
+					switch (workflowState)
+					{
+						case WorkflowState.Pending_Acknowledgement:
+							subjectAction += "Submitted";
+							followPageName = PageNames.USER_VIEW;
+							templatePath += ConfigurationManager.AppSettings["ConfirmSubmitToSubmitter"];
+							break;
+						case WorkflowState.Closed_Completed:
+							subjectAction += "Completed";
+							followPageName = PageNames.USER_VIEW;
+							templatePath += ConfigurationManager.AppSettings["CompleteToSubmitter"];
+							break;
+						case WorkflowState.Change_Requested:
+							subjectAction += "Request Change";
+							followPageName = PageNames.REQUEST_FORM;
+							templatePath += ConfigurationManager.AppSettings["RequestChangeToSubmitter"];
+							break;
+						case WorkflowState.Closed_Denied:
+							subjectAction += "Denied";
+							followPageName = PageNames.USER_VIEW;
+							templatePath += ConfigurationManager.AppSettings["DenyToSubmitter"];
+							break;
+						case WorkflowState.Closed_Cancelled:
+							subjectAction += "Cancelled";
+							followPageName = PageNames.USER_VIEW;
+							templatePath += ConfigurationManager.AppSettings["DenyToSubmitter"];
+							break;
+					}
+					break;
 			}
 			
 			Hashtable bodyParameters = new Hashtable()
@@ -55,27 +84,13 @@ namespace Apollo.AIM.SNAP.Model
 					{"ROOT_PATH", Utilities.WebRootUrl},
 					{"RECIPIENT_NAME", recipientName},
 					{"AFFECTED_END_USER", affectedEndUser},
-					{"FOLLOW_URL", Utilities.WebRootUrl + followPageName + ".aspx?requestId=" +  requestId}
+					{"FOLLOW_URL", Utilities.WebRootUrl + followPageName + ".aspx?requestId=" +  requestId},
+					{"REASON", reason},
+					{"REQUEST_ID", requestId}
 				};
 
 			return SendEmail(toEmailAddress, subjectAction, templatePath, bodyParameters);						
 		}
-
-		//public static void OverdueTask(string toEmail, string toName, long requestId, string userName)
-		//{
-		//    //ConfigPerEnvironment(requestId, PageNames.APPROVING_MANAGER);
-            
-		//    //Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(toEmail,
-		//    //                                                         "Supplemental Access Process - Overdue Alert",
-		//    //                                                         AbsolutePath + ConfigurationManager.AppSettings["NagApproval"], // newTaskNotification.html",
-		//    //                                                         new Hashtable()
-		//    //                                                             {
-		//    //                                                                 {"APPROVERNAME", toName},
-		//    //                                                                 {"NAME", userName},
-		//    //                                                                 {"URL", _followLinkUrl},
-		//    //                                                                 {"PREFIX", _imageUrl}
-		//    //                                                             });
-		//}
 
         public static void UpdateRequesterStatus(string submitterUserId, string name, long requestId, WorkflowState workflowState, string reason)
         {
@@ -123,43 +138,15 @@ namespace Apollo.AIM.SNAP.Model
 
 		}
 
-		//public static void TaskAssignToApprover(string toEmailAddress, string to, long requestId, string affectedEndUser)
-		//{
-		//    //ConfigPerEnvironment(requestId, PageNames.APPROVING_MANAGER);
-            
-		//    //Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(toEmailAddress,
-		//    //                                                         "Supplemental Access Process - Approval Needed",
-		//    //                                                         AbsolutePath + ConfigurationManager.AppSettings["Approval"], // newTaskNotification.html",
-		//    //                                                         new Hashtable()
-		//    //                                                             {
-		//    //                                                                 {"APPROVERNAME", to},
-		//    //                                                                 {"NAME", affectedEndUser},
-		//    //                                                                 {"URL", _followLinkUrl},
-		//    //                                                                 {"PREFIX", _imageUrl}
-		//    //                                                             });
-		//}
-
-		//public static void AccessTeamAcknowledge(string toEmailAddress, long requestId, string affectedEndUser)
-		//{
-		//    //Hashtable bodyParameters = new Hashtable()
-		//    //    {
-		//    //        {"ROOT_PATH", Utilities.WebRootUrl},
-		//    //        {"RECIPIENT_NAME", "Access Team"},
-		//    //        {"AFFECTED_END_USER", affectedEndUser},
-		//    //        {"FOLLOW_URL", Utilities.WebRootUrl + PageNames.ACCESS_TEAM +  ".aspx?requestId=" +  requestId}
-		//    //    };
-			
-		//    //SendEmail(toEmailAddress
-		//    //    , "Supplemental Access Process - Acknowledgement Needed"
-		//    //    , Utilities.AbsolutePath + ConfigurationManager.AppSettings["Acknowledgement"]
-		//    //    , bodyParameters);
-		//}
-
 		private static bool SendEmail(string recipientEmailAddress, string subject, string templatePath, Hashtable bodyParameters)
 		{
 			try
 			{
-				FormattedEmailTool.SendFormattedEmail(recipientEmailAddress, subject, templatePath, bodyParameters);
+				FormattedEmailTool.SendFormattedEmail("CSMDG@phoenix.edu", subject, templatePath, bodyParameters);
+				
+				// TODO: Hardcoded above for development, don't want emails/nags going to managers
+				//
+				//FormattedEmailTool.SendFormattedEmail(recipientEmailAddress, subject, templatePath, bodyParameters);
 			}
 			catch (Exception ex)
 			{
@@ -168,41 +155,5 @@ namespace Apollo.AIM.SNAP.Model
 			}
 			return true;
 		}
-
-        private static string emailAddress(string usrId)
-        {
-			// for unit test only
-#if DEBUG
-	if (usrId == "UnitTester") {return "pong.lee@apollogrp.edu";}
-#endif
-            ADUserDetail detail = Apollo.AIM.SNAP.CA.DirectoryServices.GetUserByLoginName(usrId);
-            return detail.EmailAddress;
-        }
-
-        // TODO: need to put this in utilities so write comments works
-		//private static void ConfigPerEnvironment(long requestId, string pageName)
-		//{
-		//    _imageUrl = @"http://";
-		//    _followLinkUrl = @"http://";
-
-		//    if (Environment.UserDomainName.ToUpper().Contains("DEV"))
-		//    {
-		//        _imageUrl += Environment.MachineName + ".devapollogrp.edu/snap/images";
-		//        _followLinkUrl += (Environment.MachineName + ".devapollogrp.edu/snap/" + pageName + ".aspx?RequestId=" + requestId);
-		//    }
-		//    else if (Environment.UserDomainName.ToUpper().Contains("QA"))
-		//    {
-		//        _imageUrl += "access.qaapollogrp.edu/snap/images";
-		//        _followLinkUrl += ("access.qaapollogrp.edu/snap/" + pageName + ".aspx?RequestId=" + requestId);
-		//    }
-		//    else
-		//    {
-		//        _imageUrl += "access.apollogrp.edu/snap/images";
-		//        _followLinkUrl += ("access.apollogrp.edu/snap/" + pageName + ".aspx?RequestId=" + requestId);
-		//    }
-
-		//    _imageUrl = "http://dwaxulbp001.devapollogrp.edu/snap/images";
-		//    _followLinkUrl = "http://dwaxulbp001.devapollogrp.edu/snap/" + pageName + ".aspx?RequestId=" + requestId;
-		//}
     }
 }
