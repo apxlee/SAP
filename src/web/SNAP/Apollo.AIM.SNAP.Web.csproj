@@ -456,6 +456,12 @@
     <Content Include="Controls\HeaderStandalone.ascx" />
     <Content Include="Default.aspx" />
     <Content Include="EmailTemplate\aimAcknowledge.html" />
+    <Content Include="EmailTemplate\approval.html" />
+    <Content Include="EmailTemplate\completeToSubmitter.html" />
+    <Content Include="EmailTemplate\confirmSubmitToSubmitter.html" />
+    <Content Include="EmailTemplate\denyToSubmitter.html" />
+    <Content Include="EmailTemplate\nagApproval.html" />
+    <Content Include="EmailTemplate\requestChangeToSubmitter.html" />
     <Content Include="images\example_oracle.png" />
     <Content Include="images\example_SQL.png" />
     <Content Include="images\logo_aim_small.png" />
