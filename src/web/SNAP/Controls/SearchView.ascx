@@ -4,9 +4,9 @@
 <div class="csm_container_center_700">
 	<div class="csm_content_container">	
 		<div class="csm_text_container csm_bottom5">
-			<p>Currently, the Search only accepts User ID, Username and Request ID as search criteria. 
-			The results ONLY return the AFFECTED USER matching the criteria in the new application environment. 
-			Searches for old requested forms within the Sharepoint environment need to be made through filtering 
+			<p>Search accepts <strong>User ID</strong>, <strong>Username</strong> and <strong>Request ID</strong> as search criteria. 
+			The results only return the AFFECTED END USER (or REQUEST ID) matching the criteria for requests created in this application.</p>
+			<p>Searches for requests created within the Sharepoint environment need to be made through filtering 
 			from the legacy <a href="http://apolloiandt/SiteDirectory/infraops/ITOC/Lists/Paper3/Robust%20View.aspx">Sharepoint Privileged Access</a> site.</p>
 		</div>
 		<table border="0" cellpadding="0" cellspacing="0" class="csm_input_form_container">
@@ -16,7 +16,7 @@
 					</td>
 					<td class="csm_input_form_control_column">
 						<asp:TextBox ID="_searchInput" runat="server" CssClass="csm_text_input_short" ></asp:TextBox>
-						<p><em>Display Name, User ID, or Request ID</em></p>
+						<p><em>Enter: User ID, Username, or Request ID</em></p>
 					</td>
 				</tr>
 		</table>
