@@ -587,11 +587,23 @@ namespace Apollo.AIM.SNAP.Model
 						Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy, req.userDisplayName, _id, req.submittedBy, WorkflowState.Closed_Completed, null);
                         db.SubmitChanges();
                     }
+                    else
+                    {
+                        result = reqStateTransition(req, RequestState.Pending, RequestState.Closed,
+                                                accessTeamWF, WorkflowState.Approved,
+                                                WorkflowState.Closed_Completed);
+                        if (result)
+                        {
+                            Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy, req.userDisplayName, _id, req.submittedBy, WorkflowState.Closed_Completed, null);
+                            db.SubmitChanges();                            
+                        }
+                    }
                 }
             }
             catch (Exception ex)
             {
-                Logger.Error("SNAP - AccessRequst: Finalize Request", ex); 
+                Logger.Error("SNAP - AccessRequst: Finalize Request", ex);
+                result = false;
             }
 
             return result;

@@ -1946,6 +1946,60 @@ namespace Apollo.AIM.SNAP.Test
 
         }
 
+        [Test]
+        public void ShouldHandleFinalizeRequestWithSDticket()
+        {
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+
+                var accessReq = new AccessRequest(req.pkId);
+                accessReq.Ack();
+                accessReq.CreateWorkflow(new List<int>()
+                                             {
+                                                 managerActorId,
+                                                 teamApprovalActorId,
+                                                 windowsServerActorId,
+                                                 //databaseActorId,
+                                                 //networkShareActorId
+                                             });
+
+                // get manager approal
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
+                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate == null);
+
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+
+                // get team approval
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Team_Approver);
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+
+
+                // get technical approval
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+
+                // create SD ticket
+                //accessReq.CreateServiceDeskTicket();
+
+                // finalize it
+                accessReq.FinalizeRequest();
+
+            }
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+                var accessReq = new AccessRequest(req.pkId);
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
+                //verifyWorkflowStateComplete(wfs[0], WorkflowState.Pending_Provisioning);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Closed_Completed);
+                Assert.IsTrue(req.statusEnum == (byte)RequestState.Closed);
+            }
+
+        }
+
 
         [Test]
         public void ShouldHandleManagerDeniedRequest()
