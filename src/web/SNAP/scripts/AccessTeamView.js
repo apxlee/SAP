@@ -400,6 +400,7 @@ function animateActions(obj, newSection) {
                 var section = $(this);
                 if ($(this).html() == newSection) {
                     blade.fadeOut(1000, function() {
+                        $(section).next().hide();
                         $(emptyDiv).insertAfter(section);
                         $(this).insertAfter(section);
                         $(this).fadeIn(1000);
