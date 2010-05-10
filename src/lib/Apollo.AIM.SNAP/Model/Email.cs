@@ -96,7 +96,6 @@ namespace Apollo.AIM.SNAP.Model
 			return SendEmail(toEmailAddress, subjectAction, templatePath, bodyParameters);						
 		}
 
- 		private static bool SendEmail(string recipientEmailAddress, string subject, string templatePath, Hashtable bodyParameters)
 		private static bool SendEmail(string recipientEmailAddress, string subject, string templatePath, Hashtable bodyParameters)
 		{
 			try
