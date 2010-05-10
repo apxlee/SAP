@@ -522,7 +522,7 @@ namespace Apollo.AIM.SNAP.Model
                     {
                         // TODO - uncommentthis out so SD can be created!!!
 
-                        
+                        /* DEV SD Server is always down.
                         var changeRequest = new ServiceDesk.ChangeRequest(Apollo.ServiceDesk.SDConfig.Instance.Login, Apollo.ServiceDesk.SDConfig.Instance.Password);
 
                         changeRequest.CategoryName = "Server.Systems.Privileged Access";
@@ -536,13 +536,13 @@ namespace Apollo.AIM.SNAP.Model
 
 
                         req.ticketNumber = changeRequest.Number;
-                        
+                        */
 
-                        //req.ticketNumber = "123456";
+                        req.ticketNumber = "123456";
                         
 						// TODO: make ticket number a link to SD
                         addAccessTeamComment(accessTeamWF, 
-                            "Service Desk Ticket" + req.ticketNumber + ". Due Date: " + Convert.ToDateTime(dueDate).ToString("MMM d, yyyy"), CommentsType.Ticket_Created);
+                            "Service Desk Ticket " + req.ticketNumber + ". Due Date: " + Convert.ToDateTime(dueDate).ToString("MMM d, yyyy"), CommentsType.Ticket_Created);
 //                            ". Due Date: " + Convert.ToDateTime(dueDate).ToString("MMM d, yyyy"), CommentsType.Ticket_Created);
 //                            CommentsType.Ticket_Created);
 

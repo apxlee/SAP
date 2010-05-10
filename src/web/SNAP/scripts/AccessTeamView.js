@@ -355,6 +355,8 @@ function builderActions(obj, requestId, state) {
                         $('#_indicatorDiv').hide();
                         ActionMessage("Pending Provisioning", "A ticket has been created to provision the access for this request.");
                         updateRequestTracking(obj, "Access &amp; Identity Management", "Pending Provisioning");
+                        $("#closed_completed_" + requestId).removeAttr("disabled");
+                        $("#create_ticket_" + requestId).attr("disabled","disabled");
                         break;
                 }
             }
@@ -413,7 +415,6 @@ function createWorkflow(obj, requestId) {
         if ($("#_managerUserId_" + requestId).val() > "") {
             var postData = "{'requestId':'" + requestId.toString() + "','managerUserId':'" + $("#_managerUserId_" + requestId).val() + "','actorIds':'" + $("#_selectedActors_" + requestId).val() + "'}";
             //TODO: (added parameter managerUserId)format postdata to match AjaxCalls.aspx\CreateWorkflow parameter"
-            alert(postData);
             $.ajax({
                 type: "POST",
                 contentType: "application/json; character=utf-8",
