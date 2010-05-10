@@ -20,7 +20,7 @@ namespace Apollo.AIM.SNAP.Web.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder _changeComments;
+        protected global::System.Web.UI.WebControls.Label _changeComments;
         
         /// <summary>
         /// _submitForm control.

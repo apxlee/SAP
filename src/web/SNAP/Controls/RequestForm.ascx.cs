@@ -68,10 +68,6 @@ namespace Apollo.AIM.SNAP.Web.Controls
                 outerDescription = (Label)WebUtilities.FindControlRecursive(requestFormSection, "_outerDescription");
                 outerDescription.Text = access.description;
 
-				//Label outerLabel;
-				//outerLabel = (Label)WebUtilities.FindControlRecursive(requestFormSection, "_outerLabel");
-				//outerLabel.Text = access.label;
-				
 				Literal htmlLabelText = new Literal();
 				htmlLabelText.Text = access.label;
 
@@ -222,13 +218,11 @@ namespace Apollo.AIM.SNAP.Web.Controls
         private void loadChangeComments()
         {
             DataTable changeComments = MyRequest.GetChangeComments(Convert.ToInt32(SnapSession.SelectedRequestId));
-            Literal changeLit = new Literal();
 
             foreach (DataRow comment in changeComments.Rows)
             {
-                changeLit.Text += string.Format("<p style=\"padding-left:5px;\" class=\"csm_error_text\"><b>{0} has request a change:</b><br />{1}<p>", comment[0], comment[1]);
+                _changeComments.Text += string.Format("<p style=\"padding-left:5px;\" class=\"csm_error_text\"><b>{0} has request a change:</b><br />{1}<p>", comment[0], comment[1]);
             }
-            _changeComments.Controls.Add(changeLit);
         }
 
         private bool brandNewRequest()

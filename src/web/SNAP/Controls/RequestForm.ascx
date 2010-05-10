@@ -17,7 +17,7 @@
         
         <div id="_formValidationTop"></div>
         
-        <asp:PlaceHolder ID="_changeComments" runat="server" />
+        <asp:Label ID="_changeComments" runat="server" />
 		
 		<div class="csm_input_buttons_container">
 			<input type="button" value="Clear Form" class="csm_html_button" id='_clearForm'/>
