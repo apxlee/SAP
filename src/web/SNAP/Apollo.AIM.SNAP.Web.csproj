@@ -197,9 +197,6 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\CommonAssemblyInfo.cs">
-      <Link>CommonAssemblyInfo.cs</Link>
-    </Compile>
     <Compile Include="AccessTeam.aspx.cs">
       <DependentUpon>AccessTeam.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -214,6 +211,7 @@
     <Compile Include="AppError.aspx.designer.cs">
       <DependentUpon>AppError.aspx</DependentUpon>
     </Compile>
+    <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Common\Constants.cs" />
     <Compile Include="Common\Enumerations.cs" />
     <Compile Include="Common\Request.cs" />
