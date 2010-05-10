@@ -55,21 +55,25 @@ namespace Apollo.AIM.SNAP.Model
 							followPageName = PageNames.USER_VIEW;
 							templatePath += ConfigurationManager.AppSettings["ConfirmSubmitToSubmitter"];
 							break;
+							
 						case WorkflowState.Closed_Completed:
 							subjectAction += "Completed";
 							followPageName = PageNames.USER_VIEW;
 							templatePath += ConfigurationManager.AppSettings["CompleteToSubmitter"];
 							break;
+							
 						case WorkflowState.Change_Requested:
 							subjectAction += "Request Change";
 							followPageName = PageNames.REQUEST_FORM;
 							templatePath += ConfigurationManager.AppSettings["RequestChangeToSubmitter"];
 							break;
+							
 						case WorkflowState.Closed_Denied:
 							subjectAction += "Denied";
 							followPageName = PageNames.USER_VIEW;
 							templatePath += ConfigurationManager.AppSettings["DenyToSubmitter"];
 							break;
+							
 						case WorkflowState.Closed_Cancelled:
 							subjectAction += "Cancelled";
 							followPageName = PageNames.USER_VIEW;
