@@ -12,7 +12,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 {
     public class ViewBaseUtilities
     {
-        public static void BuildApproverRequests(Page page, RequestState requestState, PlaceHolder bladeContainer, Panel nullMessage)
+        public static void BuildApproverRequests(Page page, RequestState requestState, PlaceHolder bladeContainer)
 		{
 			Page currentPage = HttpContext.Current.Handler as Page;
             DataTable requestTable = ViewBaseUtilities.GetRequests(requestState, null);
@@ -21,17 +21,21 @@ namespace Apollo.AIM.SNAP.Web.Common
             PlaceHolder pendingContainer = new PlaceHolder();
             pendingContainer = (PlaceHolder)WebUtilities.FindControlRecursive(page, "_pendingApprovalsContainer");
 
+            Panel pendingNullData = new Panel();
+            pendingNullData = (Panel)WebUtilities.FindControlRecursive(page, "_nullDataMessage_PendingApprovals");
+
             PlaceHolder openContainer = new PlaceHolder();
             openContainer = (PlaceHolder)WebUtilities.FindControlRecursive(page, "_openRequestsContainer");
 
-            if (requestTable.Rows.Count < 1)
-            {
-                nullMessage.Visible = true;
-            }
+            Panel openNullData = new Panel();
+            openNullData = (Panel)WebUtilities.FindControlRecursive(page, "_nullDataMessage_OpenRequests");
 
             int lastRow = 1;
             int approvalCount = Request.ApprovalCount(SnapSession.CurrentUser.LoginId);
             bool IsLastRow = false;
+
+            if (approvalCount == 0) { pendingNullData.Visible = true; }
+            if ((requestTable.Rows.Count - approvalCount) < 1) { openNullData.Visible = true; }
 
             foreach (DataRow request in requestTable.Rows)
             {
