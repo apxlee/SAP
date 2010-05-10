@@ -132,7 +132,9 @@ namespace Apollo.AIM.SNAP.Model
                     if (result)
                     {
                         addAccessTeamComment(accessTeamWF, comment, commentType);
-                        Email.UpdateRequesterStatus(req.submittedBy, req.userDisplayName, _id, wfState, comment);
+                        //Email.UpdateRequesterStatus(req.submittedBy, req.userDisplayName, _id, wfState, comment);
+                        
+                        Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy, req.userDisplayName, _id, req.submittedBy, (WorkflowState)wfState, comment);
                         db.SubmitChanges();
                     }
 
@@ -195,7 +197,9 @@ namespace Apollo.AIM.SNAP.Model
                     if (result)
                     {
                         addAccessTeamComment(accessTeamWF, comment, CommentsType.Requested_Change);
-                        Email.UpdateRequesterStatus(req.submittedBy, req.userDisplayName, _id, WorkflowState.Change_Requested, comment);
+                        //Email.UpdateRequesterStatus(req.submittedBy, req.userDisplayName, _id, WorkflowState.Change_Requested, comment);
+						
+						Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy, req.userDisplayName, _id, req.submittedBy, WorkflowState.Change_Requested, comment);
                         db.SubmitChanges();
                     }
 
@@ -579,7 +583,8 @@ namespace Apollo.AIM.SNAP.Model
 
                     if (result)
                     {
-                        Email.UpdateRequesterStatus(req.submittedBy, req.userDisplayName, _id, WorkflowState.Closed_Completed, string.Empty);
+                        //Email.UpdateRequesterStatus(req.submittedBy, req.userDisplayName, _id, WorkflowState.Closed_Completed, string.Empty);
+						Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy, req.userDisplayName, _id, req.submittedBy, WorkflowState.Closed_Completed, null);
                         db.SubmitChanges();
                     }
                 }
@@ -1362,7 +1367,9 @@ namespace Apollo.AIM.SNAP.Model
                 commentTypeEnum = (byte)CommentsType.Requested_Change,
                 createdDate = DateTime.Now
             });
-            Email.UpdateRequesterStatus(req.submittedBy, req.userDisplayName, req.pkId, WorkflowState.Change_Requested, comment);
+            //Email.UpdateRequesterStatus(req.submittedBy, req.userDisplayName, req.pkId, WorkflowState.Change_Requested, comment);
+			Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy, req.userDisplayName, req.pkId, req.submittedBy, WorkflowState.Change_Requested, comment);
+            
         }
 
         protected bool denyBy(ActorApprovalType approvalType, string comment)
@@ -1403,7 +1410,8 @@ namespace Apollo.AIM.SNAP.Model
                     // set accessTeam WF and request to close-denied
                     AccessRequest.stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, WorkflowState.Workflow_Created, WorkflowState.Closed_Denied);
                     req.statusEnum = (byte)RequestState.Closed;
-                    Email.UpdateRequesterStatus(req.submittedBy, req.userDisplayName, req.pkId, WorkflowState.Closed_Denied, comment);
+                    //Email.UpdateRequesterStatus(req.submittedBy, req.userDisplayName, req.pkId, WorkflowState.Closed_Denied, comment);
+					Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy, req.userDisplayName, req.pkId, req.submittedBy, WorkflowState.Closed_Denied, comment);
                     break;
                 }
 
