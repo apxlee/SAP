@@ -47,7 +47,13 @@
     <div id="_actionMessageDiv" style="display:none;">
         <div class="messageBox"> 
             <h2>header</h2>
+            <div id="_indicatorDiv" style="display:none;text-align:center;padding-top:15px;">
+                <img alt="creating ticket..." src="images/ajax_indicator.gif" width="16" height="16" />
+            </div>
             <p>message</p>
+            <div id="_closeMessageDiv" style="display:none;">
+                <input type="button" value="Close" onclick="$('#_actionMessageDiv').hide();$('#_closeMessageDiv').hide();" />
+            </div>
         </div>
     </div>
 </div>

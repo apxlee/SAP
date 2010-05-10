@@ -244,6 +244,7 @@ function actionClicked(obj, requestId, state) {
             builderActions(obj, requestId, state);
             break;
         case "Create Ticket":
+            ProcessingMessage("Creating Ticket", "")
             builderActions(obj, requestId, state);
             break;
         case "Edit Workflow":
@@ -315,6 +316,15 @@ function disableBuilder(obj, requestId) {
         editLink.unbind("click");
     });
 }
+function ProcessingMessage(header, message) {
+    $(document).ready(function() {
+        $('#_closeMessageDiv').hide();
+        $('div.messageBox').children("h2").html(header);
+        $('div.messageBox').children("p").html(message);
+        $('#_indicatorDiv').show();
+        $('#_actionMessageDiv').fadeIn();
+    });
+}
 function builderActions(obj, requestId, state) {
 
     var postData = "{'requestId':'" + requestId.toString() + "','action':'" + state + "'}";
@@ -342,12 +352,22 @@ function builderActions(obj, requestId, state) {
                         updateRequestStatus(obj);
                         break;
                     case "5":
+                        $('#_indicatorDiv').hide();
                         ActionMessage("Pending Provisioning", "A ticket has been created to provision the access for this request.");
                         updateRequestTracking(obj, "Access &amp; Identity Management", "Pending Provisioning");
                         break;
                 }
             }
-            else { ActionMessage("Action Failed",""); }
+            else {
+                if (state == 5) {
+                    $('#_indicatorDiv').hide();
+                    $('#_closeMessageDiv').show();
+                    $('div.messageBox').children("h2").html("Ticket Creation Failed");
+                    $('div.messageBox').children("p").html("Please try again or create the ticket manually.<br /> If manual, please add the ticket number within the comments section.");
+                    $("#closed_completed_" + requestId).removeAttr("disabled");
+                }
+                else {ActionMessage("Action Failed", "");}
+            }
         }
 		,
         error: function(XMLHttpRequest, textStatus, errorThrown) {
