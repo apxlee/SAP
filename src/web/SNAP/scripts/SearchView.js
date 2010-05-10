@@ -1,6 +1,6 @@
 ﻿function validateInput(obj) {
     if($(obj).parent().parent().find("input").val() > ""){return true;}
-    else{alert("Search Input Required!");return false;}
+    else { ActionMessage("Validation Error", "Search Criteria required."); return false; }
 }
 function clickButton(e, buttonid) {
     var evt = e ? e : window.event;
@@ -11,4 +11,11 @@ function clickButton(e, buttonid) {
             return false;
         }
     }
+}
+function ActionMessage(header, message) {
+    $(document).ready(function() {
+        $('div.messageBox').children("h2").html(header);
+        $('div.messageBox').children("p").html(message);
+        $('#_actionMessageDiv').fadeIn().delay(2000).fadeOut();
+    });
 }
