@@ -382,16 +382,15 @@ function updateRequestTracking(obj, approverName, newStatus) {
         function() {
             if ($(this).attr("id").indexOf("_workflowActorName") > -1) {
                 if ($(this).html() == approverName) {
-                    //                    if ($(this).parent().next().next().next().children().html() == "-") {
                     $(this).parent().next().children().html(newStatus);
                     $(this).parent().next().next().next().children().html("<span>" + curr_date + "</span>")
-                    //                    }
                 }
             }
         });
 }
 function animateActions(obj, newSection) {
     var blade = $(obj).closest("div.csm_content_container");
+    var emptyDiv = "<div class='csm_clear'></div>";
     $(obj).closest("div.csm_text_container").fadeOut("slow", function() {
         $(obj).closest("div.csm_content_container").children().next().slideUp("fast", function() {
             $(obj).closest("div.csm_container_center_700").find("h1").each(
@@ -399,6 +398,7 @@ function animateActions(obj, newSection) {
                 var section = $(this);
                 if ($(this).html() == newSection) {
                     blade.fadeOut(1000, function() {
+                        $(emptyDiv).insertAfter(section);
                         $(this).insertAfter(section);
                         $(this).fadeIn(1000);
                     });
