@@ -96,52 +96,7 @@ namespace Apollo.AIM.SNAP.Model
 			return SendEmail(toEmailAddress, subjectAction, templatePath, bodyParameters);						
 		}
 
-		//public static void UpdateRequesterStatus(string submitterUserId, string name, long requestId, WorkflowState workflowState, string reason)
-		//{
-
-		//    //string subject = "";
-		//    //string emailTemplatePath = AbsolutePath;
-			
-		//    //switch (workflowState)
-		//    //{
-		//    //    case WorkflowState.Pending_Acknowledgement:
-		//    //        subject = "Supplemental Access Process - Submitted";
-		//    //        emailTemplatePath +=  ConfigurationManager.AppSettings["ConfirmSubmitToSubmitter"];
-		//    //        break;
-		//    //    case WorkflowState.Closed_Completed:
-		//    //        subject = "Supplemental Access Process - Completed";
-		//    //        emailTemplatePath += ConfigurationManager.AppSettings["CompleteToSubmitter"];
-		//    //        break;
-		//    //    case WorkflowState.Change_Requested:
-		//    //        subject = "Supplemental Access Process - Request Change";
-		//    //        emailTemplatePath += ConfigurationManager.AppSettings["RequestChangeToSubmitter"];
-		//    //        break;
-		//    //    case WorkflowState.Closed_Denied:
-		//    //        subject = "Supplemental Access Process - Denied";
-		//    //        emailTemplatePath += ConfigurationManager.AppSettings["DenyToSubmitter"];
-		//    //        break;
-		//    //    case WorkflowState.Closed_Cancelled:
-		//    //        subject = "Supplemental Access Process - Cancelled";
-		//    //        emailTemplatePath += ConfigurationManager.AppSettings["DenyToSubmitter"];
-		//    //        break;
-		//    //}
-
-		//    //ConfigPerEnvironment(requestId, PageNames.USER_VIEW);
-
-		//    //Apollo.Ultimus.CAP.FormattedEmailTool.SendFormattedEmail(emailAddress(submitterUserId),
-		//    //                                                         subject,
-		//    //                                                         emailTemplatePath, // newTaskNotification.html",
-		//    //                                                         new Hashtable()
-		//    //                                                             {
-		//    //                                                                 {"APPROVERNAME", name},
-		//    //                                                                 {"NAME", affectedEndUser},
-		//    //                                                                 {"URL", _followLinkUrl},
-		//    //                                                                 {"REASON", reason},
-		//    //                                                                 {"PREFIX", _imageUrl}
-		//    //                                                             });
-
-		//}
-
+ 		private static bool SendEmail(string recipientEmailAddress, string subject, string templatePath, Hashtable bodyParameters)
 		private static bool SendEmail(string recipientEmailAddress, string subject, string templatePath, Hashtable bodyParameters)
 		{
 			try
