@@ -115,9 +115,9 @@ namespace Apollo.AIM.SNAP.Test
         {
             //Email.RequestAsssignToAccessTeam(1, "submiter_first_name", "submitter last_name");
             //Email.OverdueTask("mplee168@hotmail.com", "Pong Lee", 1, "Requester Name" );
-            Email.UpdateRequesterStatus("pxlee", "Your Name", 1, WorkflowState.Closed_Completed, "The reason");
-            Email.UpdateRequesterStatus("pxlee", "Your Name", 1, WorkflowState.Closed_Denied, "The reason deny");
-            Email.UpdateRequesterStatus("pxlee", "Your Name", 1, WorkflowState.Change_Requested, "The reason change");
+			//Email.UpdateRequesterStatus("pxlee", "Your Name", 1, WorkflowState.Closed_Completed, "The reason");
+            //Email.UpdateRequesterStatus("pxlee", "Your Name", 1, WorkflowState.Closed_Denied, "The reason deny");
+            //Email.UpdateRequesterStatus("pxlee", "Your Name", 1, WorkflowState.Change_Requested, "The reason change");
             //Email.TaskAssignToApprover("pong.lee@apollogrp.edu", "Pong Lee", 1, "RequestName Here");
         }
 
