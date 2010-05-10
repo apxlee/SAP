@@ -15,7 +15,7 @@
 						<label>Search Criteria:</label>
 					</td>
 					<td class="csm_input_form_control_column">
-						<asp:TextBox ID="_searchInput" runat="server" CssClass="csm_text_input_short" ></asp:TextBox>
+						<input type="text" id="_searchInput" runat="server" class="csm_text_input_short" />
 						<p><em>Enter: User ID, Username, or Request ID</em></p>
 					</td>
 				</tr>
@@ -28,7 +28,7 @@
 	<asp:PlaceHolder ID="_searchResultsContainer" runat="server"></asp:PlaceHolder>
 	<asp:Panel ID="_nullDataMessage_SearchRequests" runat="server" CssClass="csm_content_container" Visible="false">
 		<div class="csm_text_container">
-			<p>There are no Search Requests at this time.</p>
+			<p>There are no Search Results.</p>
 		</div>
 	</asp:Panel>
 </div>
