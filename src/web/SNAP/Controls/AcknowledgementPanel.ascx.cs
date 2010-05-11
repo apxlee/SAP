@@ -29,6 +29,9 @@ namespace Apollo.AIM.SNAP.Web.Controls
                     _radioCancel.Disabled = true;
                     _radioChange.Disabled = true;
                     _radioDeny.Disabled = true;
+                    _requestChange.Disabled = true;
+                    _deny.Disabled = true;
+                    _cancel.Disabled = true;
                     break;
                 case WorkflowState.Pending_Workflow:
                     _acknowledge.Disabled = true;

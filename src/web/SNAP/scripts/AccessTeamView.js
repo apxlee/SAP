@@ -53,7 +53,7 @@ function changeDenyCancelClick(obj) {
 function AccessTeamActions(obj, requestId, action) {
     var comments;
     var textarea = $(obj).parent().prev().find("textarea");
-    textarea.val(textarea.val().replace(/(<([^>]+)>)/ig, ''));
+    if (textarea.val() > "") { textarea.val(textarea.val().replace(/(<([^>]+)>)/ig, '')); }
     
     switch (action) {
         case '4':
