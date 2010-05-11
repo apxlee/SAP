@@ -157,7 +157,8 @@ namespace Apollo.AIM.SNAP.Web.Controls
                 {
                     //Email.UpdateRequesterStatus(SnapSession.CurrentUser.LoginId, UserName, requestID, WorkflowState.Pending_Acknowledgement, string.Empty);
 					Email.SendTaskEmail(EmailTaskType.AccessTeamAcknowledge, ConfigurationManager.AppSettings["AIM-DG"], null, requestID, UserName);
-					Email.SendTaskEmail(EmailTaskType.UpdateRequester, UserLoginId, UserName, requestID, UserName, WorkflowState.Pending_Acknowledgement, null);
+					Email.SendTaskEmail(EmailTaskType.UpdateRequester, UserLoginId + "@apollogrp.edu", UserName, requestID, UserName, WorkflowState.Pending_Acknowledgement, null);
+					// TODO: UserLoginId concatenates with @apollogrp, but that may not be the addy.
                 }
                 
             }
