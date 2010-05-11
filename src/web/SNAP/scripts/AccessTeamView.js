@@ -59,15 +59,15 @@ function AccessTeamActions(obj, requestId, action) {
             comments = ""
             break;
         case '2':
-            if (textarea.val() == "") { ActionMessage("Validation Error", "Please specify the change."); return false; }
+            if (textarea.val() == "") { ActionMessage("Required Input", "Please specify the change required."); return false; }
             else { comments = "<br />" + textarea.val(); }
             break;
         case '3':
-            if (textarea.val() == "") { ActionMessage("Validation Error", "Please specify the reason for cancel."); return false; }
+            if (textarea.val() == "") { ActionMessage("Required Input", "Please specify the reason for cancel."); return false; }
             else { comments = "<br />" + textarea.val(); }
             break;
         case '1':
-            if (textarea.val() == "") { ActionMessage("Validation Error", "Please specify the reason for denial."); return false; }
+            if (textarea.val() == "") { ActionMessage("Required Input", "Please specify the reason for denial."); return false; }
             else { comments = "<br />" + textarea.val(); }
             break;
     }
@@ -84,7 +84,7 @@ function AccessTeamActions(obj, requestId, action) {
             if (msg.d) {
                 switch (action) {
                     case '4':
-                        ActionMessage("Acknowledged", "You have just acknowledged this request.");
+                        ActionMessage("Acknowledged", "You have just acknowledged this request, you may now create its workflow.");
                         updateRequestTracking(obj, "Access &amp; Identity Management", "Pending Workflow");
                         $(obj).attr("disabled", "disabled");
                         $(obj).closest("tr").next().children("td.csm_input_form_control_column").find("input").each(function() {
@@ -111,7 +111,7 @@ function AccessTeamActions(obj, requestId, action) {
                         addComments(obj, "Access &amp; Identity Management", "Change Requested", comments);
                         break;
                     case '3':
-                        ActionMessage("Closed Cancelled", "You have just closed this request.");
+                        ActionMessage("Closed Cancelled", "You have just closed this request with this cancellation.");
                         updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Cancelled");
                         disableBladeActions(obj);
                         addComments(obj, "Access &amp; Identity Management", "Closed Cancelled", comments);
@@ -120,7 +120,7 @@ function AccessTeamActions(obj, requestId, action) {
                         updateRequestStatus(obj);
                         break;
                     case '1':
-                        ActionMessage("Closed Denied", "This request has been closed.");
+                        ActionMessage("Closed Denied", "You have just closed this request with this denial.");
                         updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Denied");
                         disableBladeActions(obj);
                         addComments(obj, "Access &amp; Identity Management", "Closed Denied", comments);
@@ -194,7 +194,7 @@ function AccessComments(obj, requestId) {
                     ActionMessage("Access Comment", "Your comment has been added to this request.");
                 }
                 else {
-                    ActionMessage("Action Failed","");
+                    ActionMessage("Action Failed", "");
                 }
             }
 		,
@@ -206,8 +206,8 @@ function AccessComments(obj, requestId) {
         });
     }
     else {
-        ActionMessage("Validation Error","Please insert comment");
-    }  
+        ActionMessage("Validation Error", "Please insert comment");
+    }
 }
 function approverGroupChecked(obj, requestId) {
     $(document).ready(function() {
@@ -288,7 +288,7 @@ function editBuilder(obj, requestId) {
           });
         $("#closed_cancelled_" + requestId).removeAttr("disabled");
         $("#continue_workflow_" + requestId).removeAttr("disabled");
-        
+
         var editLink = $(obj).parent().parent().find(".oospa_edit_icon_disabled");
         editLink.addClass("oospa_edit_icon");
         editLink.removeClass("oospa_edit_icon_disabled");
@@ -356,7 +356,7 @@ function builderActions(obj, requestId, state) {
                         ActionMessage("Pending Provisioning", "A ticket has been created to provision the access for this request.");
                         updateRequestTracking(obj, "Access &amp; Identity Management", "Pending Provisioning");
                         $("#closed_completed_" + requestId).removeAttr("disabled");
-                        $("#create_ticket_" + requestId).attr("disabled","disabled");
+                        $("#create_ticket_" + requestId).attr("disabled", "disabled");
                         break;
                 }
             }
@@ -368,7 +368,7 @@ function builderActions(obj, requestId, state) {
                     $('div.messageBox').children("p").html("Please try again or create the ticket manually.<br /> If manual, please add the ticket number within the comments section.");
                     $("#closed_completed_" + requestId).removeAttr("disabled");
                 }
-                else {ActionMessage("Action Failed", "");}
+                else { ActionMessage("Action Failed", ""); }
             }
         }
 		,

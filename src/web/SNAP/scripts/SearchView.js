@@ -1,6 +1,6 @@
 ﻿function validateInput(obj) {
     if($(obj).parent().parent().find("input").val() > ""){return true;}
-    else { ActionMessage("Validation Error", "Search Criteria required."); return false; }
+    else { ActionMessage("No input", "Input criteria is required for a successful search."); return false; }
 }
 function clickButton(e, buttonid) {
     var evt = e ? e : window.event;

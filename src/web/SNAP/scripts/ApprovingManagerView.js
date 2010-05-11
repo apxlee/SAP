@@ -19,25 +19,24 @@ function changeDenyClick(obj) {
              $(this).attr("disabled", "disabled");
          }
      });
- }
-function ApproverActions(obj,requestId,action) {
+}
+function ApproverActions(obj, requestId, action) {
     var comments;
     var textarea = $(obj).parent().prev().find("textarea");
     var approverName = $("input[id$='_currentUserDisplayName']").val()
-    switch (action) 
-    {
+    switch (action) {
         case '0':
             comments = ""
             break;
         case '2':
-            if (textarea.val() == "") { ActionMessage("Validation Error","please specify the change"); return false; }
+            if (textarea.val() == "") { ActionMessage("Required Input", "Please detail the specific change required."); return false; }
             else { comments = "<br />" + textarea.val(); }
-        break;
+            break;
         case '1':
-            if (textarea.val() == "") { ActionMessage("Validation Error","please specify the reason for denial"); return false; }
+            if (textarea.val() == "") { ActionMessage("Required Input", "Please specify the reason for denial."); return false; }
             else { comments = "<br />" + textarea.val(); }
-        break;
-}
+            break;
+    }
 
     var postData = "{'requestId':'" + requestId.toString() + "','action':'" + action + "','comments':'" + comments + "'}";
     $.ajax({
@@ -51,12 +50,12 @@ function ApproverActions(obj,requestId,action) {
 
                 switch (action) {
                     case '0':
-                        ActionMessage("Approved", "You have approved this request.");
+                        ActionMessage("Approved", "You have successfully approved this request.");
                         updateRequestTracking(obj, approverName, "Approved");
                         animateActions(obj, "Open Requests");
 
                         if ($(obj).attr("id").indexOf("_approveAndMoveNext") > -1) { openNext(obj); }
-                        
+
                         break;
                     case '2':
                         ActionMessage("Change Requested", "You have just requested a change.");
@@ -96,7 +95,7 @@ function ApproverActions(obj,requestId,action) {
 
 }
 function updateRequestTracking(obj, approverName, newStatus) {
-     $(obj).closest("div.csm_hidden_block").children().find("span").each(
+    $(obj).closest("div.csm_hidden_block").children().find("span").each(
         function() {
             if ($(this).attr("id").indexOf("_workflowActorName") > -1) {
                 if ($(this).html() == approverName) {
