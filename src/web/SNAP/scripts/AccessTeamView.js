@@ -57,18 +57,19 @@ function AccessTeamActions(obj, requestId, action) {
     switch (action) {
         case '4':
             comments = ""
+            ProcessingMessage("Updating Request", "");
             break;
         case '2':
             if (textarea.val() == "") { ActionMessage("Required Input", "Please specify the change required."); return false; }
-            else { comments = "<br />" + textarea.val(); }
+            else { comments = "<br />" + textarea.val(); ProcessingMessage("Updating Request", ""); }
             break;
         case '3':
             if (textarea.val() == "") { ActionMessage("Required Input", "Please specify the reason for cancel."); return false; }
-            else { comments = "<br />" + textarea.val(); }
+            else { comments = "<br />" + textarea.val(); ProcessingMessage("Updating Request", ""); }
             break;
         case '1':
             if (textarea.val() == "") { ActionMessage("Required Input", "Please specify the reason for denial."); return false; }
-            else { comments = "<br />" + textarea.val(); }
+            else { comments = "<br />" + textarea.val(); ProcessingMessage("Updating Request", ""); }
             break;
     }
 
@@ -84,6 +85,7 @@ function AccessTeamActions(obj, requestId, action) {
             if (msg.d) {
                 switch (action) {
                     case '4':
+                        $('#_indicatorDiv').hide();
                         ActionMessage("Acknowledged", "You have just acknowledged this request, you may now create its workflow.");
                         updateRequestTracking(obj, "Access &amp; Identity Management", "Pending Workflow");
                         $(obj).attr("disabled", "disabled");
@@ -100,6 +102,7 @@ function AccessTeamActions(obj, requestId, action) {
                         });
                         break;
                     case '2':
+                        $('#_indicatorDiv').hide();
                         $(obj).closest("div.csm_content_container").find("tr.csm_stacked_heading_label").children().each(function() {
                             if ($(this).next().children().html() == "Pending") {
                                 $(this).next().children().html("Change Requested");
@@ -111,6 +114,7 @@ function AccessTeamActions(obj, requestId, action) {
                         addComments(obj, "Access &amp; Identity Management", "Change Requested", comments);
                         break;
                     case '3':
+                        $('#_indicatorDiv').hide();
                         ActionMessage("Closed Cancelled", "You have just closed this request with this cancellation.");
                         updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Cancelled");
                         disableBladeActions(obj);
@@ -120,6 +124,7 @@ function AccessTeamActions(obj, requestId, action) {
                         updateRequestStatus(obj);
                         break;
                     case '1':
+                        $('#_indicatorDiv').hide();
                         ActionMessage("Closed Denied", "You have just closed this request with this denial.");
                         updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Denied");
                         disableBladeActions(obj);
@@ -131,7 +136,10 @@ function AccessTeamActions(obj, requestId, action) {
                 }
             }
             else {
-                ActionMessage("Action Failed", "");
+                $('#_indicatorDiv').hide();
+                $('#_closeMessageDiv').show();
+                $('div.messageBox').children("h2").html("Action Failed");
+                $('div.messageBox').children("p").html("Please try again.");
             }
         }
 		,
@@ -179,7 +187,8 @@ function AccessComments(obj, requestId) {
     var comments;
     var action = $(obj).parent().prev().find("input[name=_audience]:checked").val();
     var textarea = $(obj).parent().prev().find("textarea");
-
+    ProcessingMessage("Adding Comments", "");
+    
     if (textarea.val() != "") {
         comments = textarea.val();
         var postData = "{'requestId':'" + requestId.toString() + "','action':'" + action + "','comments':'" + comments + "'}";
@@ -191,10 +200,14 @@ function AccessComments(obj, requestId) {
             dataType: "json",
             success: function(msg) {
                 if (msg.d) {
+                    $('#_indicatorDiv').hide();
                     ActionMessage("Access Comment", "Your comment has been added to this request.");
                 }
                 else {
-                    ActionMessage("Action Failed", "");
+                    $('#_indicatorDiv').hide();
+                    $('#_closeMessageDiv').show();
+                    $('div.messageBox').children("h2").html("Action Failed");
+                    $('div.messageBox').children("p").html("Please try again.");
                 }
             }
 		,
@@ -238,9 +251,11 @@ function approverGroupChecked(obj, requestId) {
 function actionClicked(obj, requestId, state) {
     switch ($(obj).val()) {
         case "Closed Cancelled":
+            ProcessingMessage("Updating Request", "");
             builderActions(obj, requestId, state);
             break;
         case "Closed Completed":
+            ProcessingMessage("Updating Request", "");
             builderActions(obj, requestId, state);
             break;
         case "Create Ticket":
@@ -252,9 +267,11 @@ function actionClicked(obj, requestId, state) {
             $(obj).attr("disabled", "disabled");
             break;
         case "Create Workflow":
+            ProcessingMessage("Creating Workflow", "");
             createWorkflow(obj, requestId);
             break;
         case "Continue Workflow":
+            ProcessingMessage("Updating Workflow", "");
             editCreatedWorkflow(obj, requestId);
             break;
     }
@@ -316,15 +333,6 @@ function disableBuilder(obj, requestId) {
         editLink.unbind("click");
     });
 }
-function ProcessingMessage(header, message) {
-    $(document).ready(function() {
-        $('#_closeMessageDiv').hide();
-        $('div.messageBox').children("h2").html(header);
-        $('div.messageBox').children("p").html(message);
-        $('#_indicatorDiv').show();
-        $('#_actionMessageDiv').fadeIn();
-    });
-}
 function builderActions(obj, requestId, state) {
 
     var postData = "{'requestId':'" + requestId.toString() + "','action':'" + state + "'}";
@@ -338,6 +346,7 @@ function builderActions(obj, requestId, state) {
             if (msg.d) {
                 switch (state) {
                     case "3":
+                        $('#_indicatorDiv').hide();
                         ActionMessage("Closed Cancelled", "You have just cancelled this request.");
                         updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Cancelled");
                         animateActions(obj, "Closed Requests");
@@ -345,6 +354,7 @@ function builderActions(obj, requestId, state) {
                         updateRequestStatus(obj);
                         break;
                     case "6":
+                        $('#_indicatorDiv').hide();
                         ActionMessage("Closed Completed", "You have just completed this request.");
                         updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Completed");
                         animateActions(obj, "Closed Requests");
@@ -368,7 +378,12 @@ function builderActions(obj, requestId, state) {
                     $('div.messageBox').children("p").html("Please try again or create the ticket manually.<br /> If manual, please add the ticket number within the comments section.");
                     $("#closed_completed_" + requestId).removeAttr("disabled");
                 }
-                else { ActionMessage("Action Failed", ""); }
+                else {
+                    $('#_indicatorDiv').hide();
+                    $('#_closeMessageDiv').show();
+                    $('div.messageBox').children("h2").html("Action Failed");
+                    $('div.messageBox').children("p").html("Please try again.");
+                }
             }
         }
 		,
@@ -424,12 +439,16 @@ function createWorkflow(obj, requestId) {
                 dataType: "json",
                 success: function(msg) {
                     if (msg.d) {
+                        $('#_indicatorDiv').hide();
                         ActionMessage("Workflow Created", "The workflow has been created for this request.");
                         updateRequestTracking(obj, "Access &amp; Identity Management", "Workflow Created");
                         disableBuilder(obj, requestId);
                     }
                     else {
-                        ActionMessage("Workflow Creation Failed", "The workflow creation failed.");
+                        $('#_indicatorDiv').hide();
+                        $('#_closeMessageDiv').show();
+                        $('div.messageBox').children("h2").html("Workflow Creation Failed");
+                        $('div.messageBox').children("p").html("The workflow creation failed.");
                     }
                 },
 
@@ -459,11 +478,15 @@ function editCreatedWorkflow(obj, requestId) {
                 dataType: "json",
                 success: function(msg) {
                     if (msg.d) {
+                        $('#_indicatorDiv').hide();
                         ActionMessage("Workflow Updated", "The workflow has been updated for this request.");
                         disableBuilder(obj, requestId);
                     }
                     else {
-                        ActionMessage("Workflow Updated Failed", "The workflow update failed. No changes where made.");
+                        $('#_indicatorDiv').hide();
+                        $('#_closeMessageDiv').show();
+                        $('div.messageBox').children("h2").html("Workflow Updated Failed");
+                        $('div.messageBox').children("p").html("TThe workflow update failed. No changes where made.");
                     }
                 },
 
@@ -625,6 +648,15 @@ function OpenDialog(name) {
         }
     });
 
+}
+function ProcessingMessage(header, message) {
+    $(document).ready(function() {
+        $('#_closeMessageDiv').hide();
+        $('div.messageBox').children("h2").html(header);
+        $('div.messageBox').children("p").html(message);
+        $('#_indicatorDiv').show();
+        $('#_actionMessageDiv').fadeIn();
+    });
 }
 function ActionMessage(header, message) {
     $(document).ready(function() {

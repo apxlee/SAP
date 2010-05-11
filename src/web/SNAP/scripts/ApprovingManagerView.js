@@ -27,14 +27,15 @@ function ApproverActions(obj, requestId, action) {
     switch (action) {
         case '0':
             comments = ""
+            ProcessingMessage("Updating Request", "");
             break;
         case '2':
             if (textarea.val() == "") { ActionMessage("Required Input", "Please detail the specific change required."); return false; }
-            else { comments = "<br />" + textarea.val(); }
+            else { comments = "<br />" + textarea.val(); ProcessingMessage("Updating Request", ""); }
             break;
         case '1':
             if (textarea.val() == "") { ActionMessage("Required Input", "Please specify the reason for denial."); return false; }
-            else { comments = "<br />" + textarea.val(); }
+            else { comments = "<br />" + textarea.val(); ProcessingMessage("Updating Request", ""); }
             break;
     }
 
@@ -50,14 +51,14 @@ function ApproverActions(obj, requestId, action) {
 
                 switch (action) {
                     case '0':
+                        $('#_indicatorDiv').hide();
                         ActionMessage("Approved", "You have successfully approved this request.");
                         updateRequestTracking(obj, approverName, "Approved");
                         animateActions(obj, "Open Requests");
-
                         if ($(obj).attr("id").indexOf("_approveAndMoveNext") > -1) { openNext(obj); }
-
                         break;
                     case '2':
+                        $('#_indicatorDiv').hide();
                         ActionMessage("Change Requested", "You have just requested a change.");
                         updateRequestTracking(obj, approverName, "Change Requested");
                         addComments(obj, approverName, "Change Requested", comments);
@@ -69,6 +70,7 @@ function ApproverActions(obj, requestId, action) {
                         });
                         break;
                     case '1':
+                        $('#_indicatorDiv').hide();
                         ActionMessage("Closed Denied", "You have just denied this request.");
                         updateRequestTracking(obj, approverName, "Closed Denied");
                         addComments(obj, approverName, "Closed Denied", comments);
@@ -82,7 +84,10 @@ function ApproverActions(obj, requestId, action) {
                 }
             }
             else {
-                ActionMessage("Action Failed", "");
+                $('#_indicatorDiv').hide();
+                $('#_closeMessageDiv').show();
+                $('div.messageBox').children("h2").html("Action Failed");
+                $('div.messageBox').children("p").html("Please try again.");
             }
         }
 		,
@@ -156,6 +161,15 @@ function addComments(obj, approverName, action, comments) {
         }
     });
 
+}
+function ProcessingMessage(header, message) {
+    $(document).ready(function() {
+        $('#_closeMessageDiv').hide();
+        $('div.messageBox').children("h2").html(header);
+        $('div.messageBox').children("p").html(message);
+        $('#_indicatorDiv').show();
+        $('#_actionMessageDiv').fadeIn();
+    });
 }
 function ActionMessage(header, message) {
     $(document).ready(function() {
