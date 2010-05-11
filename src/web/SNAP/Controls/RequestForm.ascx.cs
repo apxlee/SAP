@@ -218,13 +218,11 @@ namespace Apollo.AIM.SNAP.Web.Controls
         private void loadChangeComments()
         {
             DataTable changeComments = MyRequest.GetChangeComments(Convert.ToInt32(SnapSession.SelectedRequestId));
-            Literal commentText = new Literal();
 
             foreach (DataRow comment in changeComments.Rows)
             {
-				commentText.Text += string.Format("<p style=\"padding-left:5px;\" class=\"csm_error_text\"><b>{0} has request a change:</b><br />{1}<p>", comment[0], comment[1]);
+                _changeComments.Text += string.Format("<p style=\"padding-left:5px;\" class=\"csm_error_text\"><b>{0} has request a change:</b><br />{1}<p>", comment[0], comment[1]);
             }
-            _changeComments.Controls.Add(commentText);
         }
 
         private bool brandNewRequest()
