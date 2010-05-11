@@ -38,7 +38,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
             //int total = filterList[0] + filterList[1] + filterList[2];
             _pendingacknowledgementFilter.Text = "Pending Acknowledgement"; //(" + filterList[0].ToString() + ")";
             _pendingworkflowFilter.Text = "Pending Workflow"; //(" + filterList[1].ToString() + ")";
-            _awaitingapprovalFilter.Text = "Awaiting Approval";
+            _inWorkflowFilter.Text = "In Workflow";
             _pendingprovisioningFilter.Text = "Pending Provisioning"; //(" + filterList[2].ToString() + ")";
             _showallFilter.Text = "Show All"; //(" + total.ToString() + ")";
         }
