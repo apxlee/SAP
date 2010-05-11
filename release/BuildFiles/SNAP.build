@@ -76,6 +76,7 @@
         <include name="**/*.config" />
         <include name="**/*.html" />
         <include name="**/*.exe" />
+        <include name="**/*.bat" />
         <include name="**/*.xml" />
         <include name="**/*.pdb" if="${configuration=='debug'}" />
         
