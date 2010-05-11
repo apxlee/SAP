@@ -503,7 +503,7 @@ TODO: REMOVE THIS SECTION
 	}		
 	
 .csm_template_1 textarea {
-	min-height: 150px !important;
+	min-height: 100px !important;
 	line-height: 1.3em !important;
 	padding-top: 5px !important;
 	}
