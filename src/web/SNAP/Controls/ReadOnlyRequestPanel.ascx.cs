@@ -39,7 +39,6 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			_adManagerName.Text = CompareManagerName(requestDemographics.userId, requestDemographics.managerUserId);
 			//_requestorName.Text = GetFullNameFromAD(requestDemographics.submittedBy);
 		    _requestorName.Text = requestDemographics.userDisplayName;
-             
 		}
 
 		private string GetFullNameFromAD(string userId)
@@ -63,7 +62,6 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
         private string CompareManagerName(string userId, string mgrUserId)
         {
-            
 			try
 			{
 				ADUserDetail userDetail = Apollo.AIM.SNAP.CA.DirectoryServices.GetUserByLoginName(userId);
@@ -76,7 +74,6 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			{
 				// TODO: Logger.Error("ReadOnlyRequestPanel > CompareManagerName", ex);
 			}
-            
 
 			return string.Empty;
         }
@@ -87,8 +84,35 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
 			if (accessCommentsTable.Rows.Count > 0)
 			{
+				DataRow[] filteredRows;
 				StringBuilder accessComments = new StringBuilder();
-				foreach (DataRow comment in accessCommentsTable.Rows)
+				string commentFilter = string.Empty;
+
+				switch (userRole)
+				{
+					case Role.AccessTeam:
+					case Role.SuperUser:
+						commentFilter = string.Format("IN ({0},{1},{2})"
+							, (int)CommentsType.Access_Notes_Requestor
+							, (int)CommentsType.Access_Notes_ApprovingManager
+							, (int)CommentsType.Access_Notes_AccessTeam);
+						break;
+
+					case Role.ApprovingManager:
+						commentFilter = string.Format("IN ({0},{1})"
+							, (int)CommentsType.Access_Notes_Requestor
+							, (int)CommentsType.Access_Notes_ApprovingManager);
+						break;
+
+					case Role.Requestor:
+					default:
+						commentFilter = string.Format("IN ({0})"
+							, (int)CommentsType.Access_Notes_Requestor);
+						break;
+				}
+				
+				filteredRows = accessCommentsTable.Select("audience " + commentFilter);
+				foreach (DataRow comment in filteredRows)
 				{
 					accessComments.AppendFormat("<p><u>{0}&nbsp;at&nbsp;{1}&nbsp;for&nbsp;{2}</u><br />{3}</p>"
 						, Convert.ToDateTime(comment["comment_date"].ToString()).ToString("MMM d, yyyy")
@@ -132,29 +156,6 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			table.Columns.Add("audience", typeof(string));
 			table.Columns.Add("comment_date", typeof(string));
 			table.Columns.Add("comment", typeof(string));
-
-			// TODO: this switch isn't working yet
-			//
-			string commentType = string.Empty;
-			switch (userRole)
-			{
-				case Role.AccessTeam:
-				case Role.SuperUser:
-					// where (no filter, can see everything)
-					commentType = "*";
-					break;
-				
-				case Role.ApprovingManager:
-					// where (UserRole == Role.Requestor || UserRole == Role.ApprovingManager)
-					commentType = "5 or 6";
-					break;
-					
-				case Role.Requestor:
-				default:
-					// where (UserRole == Role.Requestor)
-					commentType = "5";
-					break;
-			}					
 
             var reqComments = Common.Request.Comments(RequestState);
             var comments = reqComments.Where(x => x.requestId.ToString() == RequestId).ToList();
