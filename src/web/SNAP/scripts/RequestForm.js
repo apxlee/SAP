@@ -188,12 +188,7 @@ var userManager = {
 
         //remove special characters
         userManager.textAreas.each(function() {
-            $(this).val($(this).val().replace(/[^a-zA-Z 0-9]+/g, ''));
-        });
-
-        //remove special characters
-        userManager.inputFields.each(function() {
-            $(this).val($(this).val().replace(/[^a-zA-Z 0-9]+/g, ''));
+            $(this).val($(this).val().replace(/(<([^>]+)>)/ig, ''));
         });
         
         //check dynamic fields

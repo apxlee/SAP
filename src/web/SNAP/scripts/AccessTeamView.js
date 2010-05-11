@@ -53,7 +53,8 @@ function changeDenyCancelClick(obj) {
 function AccessTeamActions(obj, requestId, action) {
     var comments;
     var textarea = $(obj).parent().prev().find("textarea");
-
+    textarea.val(textarea.val().replace(/(<([^>]+)>)/ig, ''));
+    
     switch (action) {
         case '4':
             comments = ""
@@ -189,7 +190,9 @@ function AccessComments(obj, requestId) {
     var action = $(obj).parent().prev().find("input[name=_audience]:checked").val();
     var notesFor = $(obj).parent().prev().find("input[name=_audience]:checked").next().html();
     var textarea = $(obj).parent().prev().find("textarea");
-    //ProcessingMessage("Adding Comments", "");
+    textarea.val(textarea.val().replace(/(<([^>]+)>)/ig, ''));
+    
+    ProcessingMessage("Adding Comments", "");
     
     if (textarea.val() != "") {
         comments = textarea.val();
