@@ -24,7 +24,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
 			DataTable filteredTable = new DataTable();
 			filteredTable.Columns.Add("workflow_actor_name", typeof(string));
-			filteredTable.Columns.Add("workflow_status", typeof(string));
+			filteredTable.Columns.Add("workflow_status", typeof(int));
 			filteredTable.Columns.Add("workflow_due_date", typeof(string));
 			filteredTable.Columns.Add("workflow_completed_date", typeof(DateTime));
 			filteredTable.Columns.Add("workflow_pkid", typeof(int));
@@ -40,6 +40,17 @@ namespace Apollo.AIM.SNAP.Web.Controls
 				from bladeRow in workflowBladeTable.AsEnumerable()
 				where (int)bladeRow["actor_group_type"] == (int)ActorGroupType.Workflow_Admin
 				select bladeRow).Last();
+				
+			if ((int)selectedRow["workflow_status"] == (int)WorkflowState.Workflow_Created)
+			{
+				selectedRow.SetField("workflow_status", WorkflowState.Awaiting_Approval);
+				selectedRow.SetField("workflow_due_date", string.Empty);
+			}
+
+			if ((int)selectedRow["workflow_status"] == (int)WorkflowState.Approved)
+			{
+				selectedRow.SetField("workflow_status", WorkflowState.Pending_Provisioning);
+			}			
 
 			filteredTable.ImportRow(selectedRow);
 			}
