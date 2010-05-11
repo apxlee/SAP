@@ -32,13 +32,13 @@ namespace Apollo.AIM.SNAP.Web.Controls {
         protected global::System.Web.UI.WebControls.Label _pendingworkflowFilter;
         
         /// <summary>
-        /// _workflowcreatedFilter control.
+        /// _awaitingapprovalFilter control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label _workflowcreatedFilter;
+        protected global::System.Web.UI.WebControls.Label _awaitingapprovalFilter;
         
         /// <summary>
         /// _pendingprovisioningFilter control.
