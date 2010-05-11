@@ -29,6 +29,9 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
             ViewBaseUtilities.BuildApproverRequests(this.Page, RequestState.Open, _pendingApprovalsContainer);
             ViewBaseUtilities.BuildRequests(this.Page, RequestState.Closed, _closedRequestsContainer, _nullDataMessage_ClosedRequests);
-		}
+
+            //only use it once then clear requestId
+            SnapSession.SelectedRequestId = "";
+        }
 	}
 }

@@ -15,7 +15,7 @@ namespace Apollo.AIM.SNAP.Web.Common
         public static void BuildApproverRequests(Page page, RequestState requestState, PlaceHolder bladeContainer)
 		{
 			Page currentPage = HttpContext.Current.Handler as Page;
-            DataTable requestTable = ViewBaseUtilities.GetRequests(requestState, null);
+            DataTable requestTable = ViewBaseUtilities.GetRequests(requestState, SnapSession.SelectedRequestId);
             WorkflowState ApproverState = WorkflowState.Not_Active;
 
             PlaceHolder pendingContainer = new PlaceHolder();
@@ -90,10 +90,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 
         public static void BuildRequests(Page page, RequestState requestState, PlaceHolder bladeContainer, Panel nullMessage)
         {
-			//string selectedRequestId = SnapSession
             DataTable requestTable = ViewBaseUtilities.GetRequests(requestState, SnapSession.SelectedRequestId);
-            //only use it once the clear requestId
-            SnapSession.SelectedRequestId = "";
             List<AccessGroup> availableGroups = ApprovalWorkflow.GetAvailableGroups();
             
 			if (requestTable.Rows.Count > 0)

@@ -28,7 +28,10 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			//
             ViewBaseUtilities.BuildRequests(this.Page, RequestState.Open, _openRequestsContainer, _nullDataMessage_OpenRequests);
             ViewBaseUtilities.BuildRequests(this.Page, RequestState.Closed, _closedRequestsContainer, _nullDataMessage_ClosedRequests);
-		}
+            
+            //only use it once then clear requestId
+            SnapSession.SelectedRequestId = "";
+        }
 		
 	}
 
