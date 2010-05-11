@@ -30,9 +30,9 @@ namespace Apollo.AIM.SNAP.Process
             // (remember the timer is in millisecond resolution,
             //  so 1000 = 1 second. )
 
-            //_timer = new Timer(1800000);
+            _timer = new Timer(1800000);
 
-                _timer = new Timer(30000);
+            //    _timer = new Timer(30000);
 
             // Now tell the timer when the timer fires
             // (the Elapsed event) call the _timer_Elapsed
