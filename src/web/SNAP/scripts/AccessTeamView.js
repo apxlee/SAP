@@ -184,13 +184,17 @@ function audienceClick(obj) {
 }
 
 function AccessComments(obj, requestId) {
-    var comments;
+    var comments = "";
+    var newNotes = true;
     var action = $(obj).parent().prev().find("input[name=_audience]:checked").val();
+    var notesFor = $(obj).parent().prev().find("input[name=_audience]:checked").next().html();
     var textarea = $(obj).parent().prev().find("textarea");
-    ProcessingMessage("Adding Comments", "");
+    //ProcessingMessage("Adding Comments", "");
     
     if (textarea.val() != "") {
         comments = textarea.val();
+        textarea.val("");
+
         var postData = "{'requestId':'" + requestId.toString() + "','action':'" + action + "','comments':'" + comments + "'}";
         $.ajax({
             type: "POST",
@@ -202,6 +206,23 @@ function AccessComments(obj, requestId) {
                 if (msg.d) {
                     $('#_indicatorDiv').hide();
                     ActionMessage("Access Comment", "Your comment has been added to this request.");
+                    $(obj).closest("div.csm_content_container").find("div.oospa_request_details").next().find("tr").each(function() {
+                        if ($(this).children().children().html() == "Access Notes:") {
+                            var accessNotes = "<p><u>" + curr_date + "&nbsp;for&nbsp;" +
+				            notesFor + "</u><br />" + comments + "</p>";
+                            $(accessNotes).insertAfter($(this).children().next().children());
+                            newNotes = false;
+                        }
+                    });
+
+                    //if not found
+                    if (newNotes) {
+                        var accessNotes = "<tr style='line-height:1.2em;color:Red;'>" +
+				        "<td style='text-align:right;width:140px;padding-right:4px;'><p>Access Notes&#58;</p></td>" +
+				        "<td style='padding:1px 10px 1px 4px;'><p><u>" + curr_date + "&nbsp;for&nbsp;" +
+				        notesFor + "</u><br />" + comments + "</p></td></tr>";
+                        $(accessNotes).insertAfter($(obj).closest("div.csm_content_container").find("div.oospa_request_details").next().children());
+                    }
                 }
                 else {
                     $('#_indicatorDiv').hide();
@@ -219,7 +240,7 @@ function AccessComments(obj, requestId) {
         });
     }
     else {
-        ActionMessage("Validation Error", "Please insert comment");
+        ActionMessage("Required Input", "Please insert comment");
     }
 }
 function approverGroupChecked(obj, requestId) {
@@ -521,7 +542,7 @@ function managerEdit(obj) {
 
         managerInputCheckButton.click(function() {
             if (managerInputUserId.val() == "") {
-                GetNames(managerInputDisplayName);
+                GetNames(obj,managerInputDisplayName);
             }
             else {
                 managerInputSection.hide();
@@ -530,7 +551,7 @@ function managerEdit(obj) {
         });
     });
 }
-function GetNames(name) {
+function GetNames(obj,name) {
     var indicator = $('.oospa_ajax_indicator');
     var selection = $('select[id$=_managerSelection]');
     var postData = "{'name':'" + name.val().replace("(", "").replace(")", "").replace(/\\/, "").replace("'", "\\'") + "'}";
@@ -554,12 +575,12 @@ function GetNames(name) {
 
             // direct match
             if (names.length == 1) {
-                FillAllFields(name, names);
+                FillAllFields(obj, name, names);
             }
 
             // match list of names
             if (names.length > 1) {
-                FillSelection(name, names);
+                FillSelection(obj, name, names);
             }
         },
 
@@ -571,7 +592,7 @@ function GetNames(name) {
         }
     });
 }
-function FillAllFields(name, names) {
+function FillAllFields(obj, name, names) {
     var managerLabelSection = $(name).parent().prev();
     var managerLabelDispalyName = $(name).parent().prev().children("span");
     var managerInputUserId = managerLabelDispalyName.next();
@@ -582,17 +603,17 @@ function FillAllFields(name, names) {
     managerLabelDispalyName.html(names[0].Name);
     managerInputSection.hide();
     managerLabelSection.show();
+    updateManagerName(obj, names[0].Name);
 }
 function FillErrorFields(name) {
     var managerInputDisplayName = $(name).parent().children("input[type=text]");
     var managerInputUserId = $(name).parent().prev().children("span").next();
-
     $("#_managerSelectionDiv").dialog("destroy");
     managerInputDisplayName.val("No such name! Try again");
     managerInputUserId.val("");
     managerInputDisplayName.focus();
 }
-function FillSelection(name, names) {
+function FillSelection(obj, name, names) {
     var managerLabelSection = $(name).parent().prev();
     var managerLabelDispalyName = $(name).parent().prev().children("span");
     var managerInputUserId = managerLabelDispalyName.next();
@@ -607,6 +628,7 @@ function FillSelection(name, names) {
         managerLabelSection.show();
         managerInputUserId.val($('#' + selection.attr('id') + ' :selected').val());
         $("#_managerSelectionDiv").dialog("destroy");
+        updateManagerName(obj, $('#' + selection.attr('id') + ' :selected').text());
     });
 
     var listItems = [];
@@ -648,6 +670,13 @@ function OpenDialog(name) {
         }
     });
 
+}
+function updateManagerName(obj, newManager) {
+    $(obj).closest("div.csm_content_container").find("div.oospa_request_details").next().find("tr").each(function() {
+        if ($(this).children().children().html() == "Manager Name:") {
+            $(this).children().next().children().html(newManager);
+        }
+    });
 }
 function ProcessingMessage(header, message) {
     $(document).ready(function() {
