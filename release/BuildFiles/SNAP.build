@@ -74,6 +74,7 @@
       <fileset basedir="${build.snap.process.dir}">
         <include name="**/*.dll" />
         <include name="**/*.config" />
+        <include name="**/*.html" />
         <include name="**/*.exe" />
         <include name="**/*.xml" />
         <include name="**/*.pdb" if="${configuration=='debug'}" />
