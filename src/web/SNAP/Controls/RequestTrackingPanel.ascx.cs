@@ -43,7 +43,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 				
 			if ((int)selectedRow["workflow_status"] == (int)WorkflowState.Workflow_Created)
 			{
-				selectedRow.SetField("workflow_status", WorkflowState.Awaiting_Approval);
+				selectedRow.SetField("workflow_status", WorkflowState.In_Workflow);
 				selectedRow.SetField("workflow_due_date", string.Empty);
 			}
 
