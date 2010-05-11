@@ -197,8 +197,8 @@ namespace Apollo.AIM.SNAP.Model
                                                 accessTeamWF, WorkflowState.Pending_Workflow,
                                                 WorkflowState.Change_Requested);
                                                 
-					comment.Replace("<br />", "");
-					comment += string.Format("<br /><a href=\"{0}.aspx?requestId={1}\''>View</a>", PageNames.REQUEST_FORM, _id);
+					//comment.Replace("<br />", "");
+					//comment += string.Format("<br /><a href=\"{0}.aspx?requestId={1}\''>View</a>", PageNames.REQUEST_FORM, _id);
 
                     if (result)
                     {
