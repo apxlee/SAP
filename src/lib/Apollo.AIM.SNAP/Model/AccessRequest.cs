@@ -542,7 +542,7 @@ namespace Apollo.AIM.SNAP.Model
                         
 						// TODO: make ticket number a link to SD
                         addAccessTeamComment(accessTeamWF, 
-                            "Service Desk Ticket " + req.ticketNumber + ". Due Date: " + Convert.ToDateTime(dueDate).ToString("MMM d, yyyy"), CommentsType.Ticket_Created);
+                            "Due Date: " + Convert.ToDateTime(dueDate).ToString("MMM d, yyyy") + "&nbsp;Service Desk Ticket:&nbsp;" + req.ticketNumber, CommentsType.Ticket_Created);
 //                            ". Due Date: " + Convert.ToDateTime(dueDate).ToString("MMM d, yyyy"), CommentsType.Ticket_Created);
 //                            CommentsType.Ticket_Created);
 
