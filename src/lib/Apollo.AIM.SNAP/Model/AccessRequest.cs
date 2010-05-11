@@ -525,31 +525,25 @@ namespace Apollo.AIM.SNAP.Model
 
                     if (result)
                     {
-                        // TODO - uncommentthis out so SD can be created!!!
-
-                        /* DEV SD Server is always down.
                         var changeRequest = new ServiceDesk.ChangeRequest(Apollo.ServiceDesk.SDConfig.Instance.Login, Apollo.ServiceDesk.SDConfig.Instance.Password);
 
                         changeRequest.CategoryName = "Server.Systems.Privileged Access";
-
                         changeRequest.Submitter.Get("svc_Cap");
                         changeRequest.AffectedUser.Get(req.userId);  // req.userId???
-
                         changeRequest.Attributes["description"] = requestDescription;
 
                         changeRequest.Create();
 
-
                         req.ticketNumber = changeRequest.Number;
-                        */
+                        var handler = changeRequest.Handle.Split(':')[1]; // chg:12345
+                        var sdlink = ConfigurationManager.AppSettings["SDLink"] + handler;
 
-                        req.ticketNumber = "123456";
+                        //req.ticketNumber = "123456";
                         
-						// TODO: make ticket number a link to SD
                         addAccessTeamComment(accessTeamWF,
-							string.Format("Due Date: {0} | Service Desk Ticket: <a href=\"[TODO: SERVICE DESK URL]\">{1}</a>", Convert.ToDateTime(dueDate).ToString("MMM d, yyyy"), Convert.ToDateTime(dueDate).ToString("MMM d, yyyy")
-								, req.ticketNumber), CommentsType.Ticket_Created);
-
+                                             string.Format(
+                                                 "Due Date: {0} | Service Desk Ticket: <a href=\"" + sdlink +
+                                                 "\">{1}</a>", Convert.ToDateTime(dueDate).ToString("MMM d, yyyy"), req.ticketNumber), CommentsType.Ticket_Created); 
                         db.SubmitChanges();
                     }
                 }
@@ -689,7 +683,7 @@ namespace Apollo.AIM.SNAP.Model
                     foreach (var text in requestTexts)
                     {
                         sb.AppendLine(text.userText);
-                        sb.AppendLine(Environment.NewLine);
+                        sb.AppendLine("");
                     }
                 }
 
