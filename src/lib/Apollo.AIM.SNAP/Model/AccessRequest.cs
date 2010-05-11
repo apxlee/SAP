@@ -69,6 +69,7 @@ namespace Apollo.AIM.SNAP.Model
             catch (Exception ex)
             {
                 Logger.Error("SNAP - AccessRequst: Ack failed", ex);
+                result = false;
             }
 
             return result;
@@ -95,6 +96,7 @@ namespace Apollo.AIM.SNAP.Model
             catch (Exception ex)
             {
                 Logger.Error("SNAP - AccessRequst: AddComment failed", ex);
+                result = false;
             }
             return result;
         }
@@ -143,6 +145,7 @@ namespace Apollo.AIM.SNAP.Model
             catch (Exception ex)
             {
                 Logger.Error("SNAP - AccessRequst: No access failed", ex);
+                result = false;
             }
             return result;
 
@@ -208,6 +211,7 @@ namespace Apollo.AIM.SNAP.Model
             catch (Exception ex)
             {
                 Logger.Error("SNAP - AccessRequst: Request To Change", ex);
+                result = false;
             }
 
             return result;
@@ -238,6 +242,7 @@ namespace Apollo.AIM.SNAP.Model
             {
 
                 Logger.Error("SNAP - AccessRequst: Request Changed", ex);
+                result = false;
             }
 
             return result;
