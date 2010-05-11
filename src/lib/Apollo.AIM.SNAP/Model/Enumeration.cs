@@ -36,7 +36,7 @@ namespace Apollo.AIM.SNAP.Model
         Pending_Provisioning = 8,
         Pending_Workflow = 9,
         Workflow_Created = 10,
-        Awaiting_Approval = 11
+        In_Workflow = 11
     }
 
 	// TODO: need to tweak how comments are written to db
