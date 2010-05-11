@@ -689,7 +689,7 @@ namespace Apollo.AIM.SNAP.Model
                     foreach (var text in requestTexts)
                     {
                         sb.AppendLine(text.userText);
-                        sb.AppendLine("");
+                        sb.AppendLine(Environment.NewLine);
                     }
                 }
 
