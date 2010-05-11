@@ -196,6 +196,9 @@ namespace Apollo.AIM.SNAP.Model
                     result = reqStateTransition(req, RequestState.Pending, RequestState.Change_Requested,
                                                 accessTeamWF, WorkflowState.Pending_Workflow,
                                                 WorkflowState.Change_Requested);
+                                                
+					comment.Replace("<br />", "");
+					comment += string.Format("<br /><a href=\"{0}.aspx?requestId={1}\''>View</a>", PageNames.REQUEST_FORM, _id);
 
                     if (result)
                     {
