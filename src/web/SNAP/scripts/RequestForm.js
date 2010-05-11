@@ -170,7 +170,7 @@ var userManager = {
 
 
     Clear: function() {
-		userManager.textAreas.val('');
+        userManager.textAreas.val('');
         // NOTE: when requestor info is pre-populated (server-side), this was clearing it out.
         //userManager.inputFields.val('');
         userManager.mgrNameCheck.attr("disabled", true);
@@ -186,6 +186,16 @@ var userManager = {
         var strElement = '';
         var strName = '';
 
+        //remove special characters
+        userManager.textAreas.each(function() {
+            $(this).val($(this).val().replace(/[^a-zA-Z 0-9]+/g, ''));
+        });
+
+        //remove special characters
+        userManager.inputFields.each(function() {
+            $(this).val($(this).val().replace(/[^a-zA-Z 0-9]+/g, ''));
+        });
+        
         //check dynamic fields
         userManager.labels.each(function() {
             if ($(this).hasClass("csm_input_required_field")) {
