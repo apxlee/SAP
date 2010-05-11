@@ -1,0 +1,1 @@
+installutil /u Apollo.AIM.SNAP.Process.exe

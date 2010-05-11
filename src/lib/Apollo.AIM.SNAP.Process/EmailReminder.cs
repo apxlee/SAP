@@ -10,6 +10,7 @@ using System.ServiceProcess;
 using System.Text;
 using System.Timers;
 using Apollo.AIM.SNAP.Model;
+using Apollo.CA.Logging;
 
 namespace Apollo.AIM.SNAP.Process
 {
@@ -29,9 +30,9 @@ namespace Apollo.AIM.SNAP.Process
             // (remember the timer is in millisecond resolution,
             //  so 1000 = 1 second. )
 
-            _timer = new Timer(1800000);
+            //_timer = new Timer(1800000);
 
-            //    _timer = new Timer(30000);
+                _timer = new Timer(30000);
 
             // Now tell the timer when the timer fires
             // (the Elapsed event) call the _timer_Elapsed
@@ -44,6 +45,7 @@ namespace Apollo.AIM.SNAP.Process
         protected override void OnStart(string[] args)
         {
             outputMessage(" EmailReminderlogger: Service Start \n", EventLogEntryType.Information);
+            Logger.Info("SNAP Email Reminder started");
             _timer.Start();
 
         }
@@ -51,6 +53,7 @@ namespace Apollo.AIM.SNAP.Process
         protected override void OnStop()
         {
             outputMessage(" EmailReminderlogger: Service Stop \n", EventLogEntryType.Information);
+            Logger.Info("SNAP Email Reminder stopped");
             _timer.Stop();
 
         }
@@ -81,13 +84,11 @@ namespace Apollo.AIM.SNAP.Process
         protected void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             var checkTime = Convert.ToInt16(ConfigurationManager.AppSettings["CheckTimeInHour"]);
-
             outputMessage(" EmailReminderlogger: time elapsed, check time: " + checkTime, EventLogEntryType.Information);
-
+                                                              
             if (DateTime.Now.Hour >= checkTime && !done)
             {
                 outputMessage(" EmailReminderlogger: DO it ", EventLogEntryType.Information);
-
                 emailApproverForOverdueTask();
 
                 done = true;
