@@ -222,7 +222,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
             foreach (DataRow comment in changeComments.Rows)
             {
-                _changeComments.Text += string.Format("<span>{0} has requested a change:</span><p>{1}</p>", comment[0], comment[1]);
+                _changeComments.Text += string.Format("<span>{2} - {0} has requested a change:</span><p>{1}</p>", comment[0], comment[1], Convert.ToDateTime(comment[2]).ToString("MMM d, yyyy"));
             }
             
             //_changeComments.Controls.Add(commentInnerHtml);

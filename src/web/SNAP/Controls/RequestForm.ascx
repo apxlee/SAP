@@ -30,7 +30,7 @@
 		
 		<table border="0" cellpadding="0" cellspacing="0" class="csm_input_form_container">
 			<tr>
-				<td class="csm_input_form_label_column csm_input_required_field">
+				<td class="csm_input_form_label_column csm_input_required_field" style="vertical-align:inherit">
 					<label for="_requestFormControl__requestorId">Affected End User:</label>
 				</td>
 				<td class="csm_input_form_control_column">
@@ -45,7 +45,7 @@
 			</tr>
 
 			<tr>
-				<td class="csm_input_form_label_column csm_input_required_field">
+				<td class="csm_input_form_label_column csm_input_required_field" style="vertical-align:inherit">
 					<label for="_requestFormControl__managerName">Affected User's Manager:</label>
 				</td>
 				<td class="csm_input_form_control_column">

@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="AccessCommentsPanel.ascx.cs" Inherits="Apollo.AIM.SNAP.Web.Controls.AccessCommentsPanel" %>
 <!-- TODO: make server side user controls -->
-<div class="csm_text_container">
+<div class="csm_text_container csm_top5">
 	<div class="csm_icon_heading_container oospa_aim_acknowledgement">
 		<h2>Comments</h2>
 		<p>Enter comments that relate to the current request.  Optionally select the community who will be able to see the comments.</p>

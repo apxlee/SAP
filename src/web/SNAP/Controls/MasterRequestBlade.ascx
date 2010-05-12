@@ -9,7 +9,7 @@
 			            <td style="width:200px;">AFFECTED END USER</td>
 			            <td style="width:170px;">STATUS</td>
 			            <td style="width:110px;">LAST MODIFIED</td>
-			            <td style="width:115px;">REQUEST ID</td>
+			            <td style="width:90px;">REQUEST ID</td>
 			        </tr>
 			        <tr class="csm_stacked_heading_label">
 			            <td><asp:Label ID="_affectedEndUserName" runat="server"></asp:Label></td>
@@ -21,8 +21,8 @@
 			</div>
 			<div class="csm_float_right">
 				<div class="csm_toggle_container" onclick="csmToggle(this, 'ppnn');">
-					<span>Toggle</span>
-					<asp:Panel ID="_toggleIconContainer" runat="server"></asp:Panel>
+					<span>&nbsp;</span>
+					<!--<asp:Panel ID="_toggleIconContainer" runat="server"></asp:Panel>-->
 				</div>
 			</div>
 		</div>

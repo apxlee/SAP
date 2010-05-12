@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="AcknowledgementPanel.ascx.cs" Inherits="Apollo.AIM.SNAP.Web.Controls.AcknowledgementPanel" %>
-<div class="csm_text_container">
+<div class="csm_text_container csm_top5">
 	<div class="csm_icon_heading_container oospa_aim_acknowledgement">
 		<h2>Acknowledgement</h2>
 		<p class="">Please review the access details above and select an appropriate action below.  Denials
