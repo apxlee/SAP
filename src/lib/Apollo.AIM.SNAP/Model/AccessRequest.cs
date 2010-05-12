@@ -196,16 +196,17 @@ namespace Apollo.AIM.SNAP.Model
                     result = reqStateTransition(req, RequestState.Pending, RequestState.Change_Requested,
                                                 accessTeamWF, WorkflowState.Pending_Workflow,
                                                 WorkflowState.Change_Requested);
-                                                
-					//comment.Replace("<br />", "");
-					//comment += string.Format("<br /><a href=\"{0}.aspx?requestId={1}\''>View</a>", PageNames.REQUEST_FORM, _id);
+
+					//if (comment.Contains("<br")) {comment.Remove(0, 5);}
+					comment = comment.Replace("<br />", string.Empty);
+					comment += string.Format("<br /><a class='request_form_no_show' href='{0}.aspx?requestId={1}'>Edit Request Form</a>", PageNames.REQUEST_FORM, _id);
 
                     if (result)
                     {
                         addAccessTeamComment(accessTeamWF, comment, CommentsType.Requested_Change);
-                        //Email.UpdateRequesterStatus(req.submittedBy, req.userDisplayName, _id, WorkflowState.Change_Requested, comment);
+                        // OLD:  Email.UpdateRequesterStatus(req.submittedBy, req.userDisplayName, _id, WorkflowState.Change_Requested, comment);
 						
-						Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy, req.userDisplayName, _id, req.submittedBy, WorkflowState.Change_Requested, comment);
+						//Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy, req.userDisplayName, _id, req.submittedBy, WorkflowState.Change_Requested, comment);
                         db.SubmitChanges();
                     }
 
