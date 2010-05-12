@@ -197,7 +197,7 @@ namespace Apollo.AIM.SNAP.Model
                                                 accessTeamWF, WorkflowState.Pending_Workflow,
                                                 WorkflowState.Change_Requested);
 
-					comment = comment.Replace("<br />", Convert.ToDateTime(DateTime.Now).ToString("MMM d, yyyy") + "-&nbsp;");
+					comment = comment.Replace("<br />", Convert.ToDateTime(DateTime.Now).ToString("MMM d, yyyy") + "&nbsp;-&nbsp;");
 					comment += string.Format("<br /><a class='request_form_no_show' href='{0}.aspx?requestId={1}'>Edit Request Form</a>", PageNames.REQUEST_FORM, _id);
 
                     if (result)
