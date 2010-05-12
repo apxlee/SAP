@@ -109,6 +109,7 @@ namespace Apollo.AIM.SNAP.Web.Common
             DataTable table = new DataTable();
             table.Columns.Add("ActorDisplayName", typeof(string));
             table.Columns.Add("Comment", typeof(string));
+			table.Columns.Add("CommentDate", typeof(string));
 
             using(var db = new SNAPDatabaseDataContext())
             {
@@ -118,10 +119,10 @@ namespace Apollo.AIM.SNAP.Web.Common
                                       join sa in db.SNAP_Actors on sw.actorId equals sa.pkId
                                       where sr.pkId == requestId
                                       && swc.commentTypeEnum == 3
-                                      select new { sa.displayName, swc.commentText });
+                                      select new { sa.displayName, swc.commentText, swc.createdDate });
                 foreach (var comment in changeComments)
                 {
-                    table.Rows.Add(comment.displayName, comment.commentText);
+                    table.Rows.Add(comment.displayName, comment.commentText, comment.createdDate);
                 }
             }
            
