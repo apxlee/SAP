@@ -643,9 +643,27 @@ TODO: REMOVE THIS SECTION
 	font-weight: bold;
 	}
 	
+.csm_template_1 .request_form_change_comments {
+	margin: 5px 0 0 5px;
+	padding: 0;
+	color: Red;
+	font-weight: bold;
+	display: block;
+	font-family: Arial;
+	/*font-size: .90em;*/
+	}
+	
+.csm_template_1 .request_form_change_comments p {
+     font-weight: normal;
+     padding-right: 15px;
+     padding-left: 0;
+     margin-left: 0;
+     font-family:  Verdana, Arial;
+    }
+	
 .csm_template_1 .csm_input_validation_summary p {
      font-weight: normal;
-     padding-right: 5px;
+     padding-right: 15px;
     }
 	
 .csm_template_1 .csm_input_validation_summary label {
