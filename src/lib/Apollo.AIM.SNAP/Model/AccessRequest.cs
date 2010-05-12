@@ -525,6 +525,7 @@ namespace Apollo.AIM.SNAP.Model
 
                     if (result)
                     {
+                        /*
                         var changeRequest = new ServiceDesk.ChangeRequest(Apollo.ServiceDesk.SDConfig.Instance.Login, Apollo.ServiceDesk.SDConfig.Instance.Password);
 
                         changeRequest.CategoryName = "Server.Systems.Privileged Access";
@@ -537,8 +538,9 @@ namespace Apollo.AIM.SNAP.Model
                         req.ticketNumber = changeRequest.Number;
                         var handler = changeRequest.Handle.Split(':')[1]; // chg:12345
                         var sdlink = ConfigurationManager.AppSettings["SDLink"] + handler;
-
-                        //req.ticketNumber = "123456";
+                        */
+                        req.ticketNumber = "123456";
+                        var sdlink = "";
                         
                         addAccessTeamComment(accessTeamWF,
                                              string.Format(
@@ -1308,26 +1310,60 @@ namespace Apollo.AIM.SNAP.Model
 
         protected void completeRequestApprovalCheck()
         {
-            var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
-            var totalApproved = 0;
-            var state = accessTeamWF.SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Workflow_Created
-                && s.completedDate == null); // get lastest 'worflow created' for the workflowadmin state
+            var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Team_Approver);
+            var wfs2 = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
 
-            foreach (var w in wfs)
-            {
-                var cnt = w.SNAP_Workflow_States.Count(
-                    s => s.workflowStatusEnum == (byte)WorkflowState.Approved
-                    && s.completedDate != null
-                    && s.pkId >= state.pkId); // only check approval for the latest iteration, ignore previously approved interateion
 
-                totalApproved += cnt;
-            }
-
-            if (totalApproved == wfs.Count)
+            // only manager in the approal wf
+            if (wfs.Count == 0 && wfs2.Count == 0)
             {
                 AccessRequest.stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, WorkflowState.Workflow_Created, WorkflowState.Approved);
             }
+            else
+            {
+                // we may or may not have team approver in the wf, if we do make sure all team approvers are approved
+                var done = false;
 
+                foreach (var wf in wfs)
+                {
+                    if (
+                        wf.SNAP_Workflow_States.Count(
+                            s => s.completedDate != null && s.workflowStatusEnum == (byte) WorkflowState.Approved) == 1)
+                    {
+                        done = true;
+                    }
+                    else
+                    {
+                        done = false;
+                        break;
+                    }
+                }
+
+                // now check technical approvers
+                wfs = accessReq.FindApprovalTypeWF(db, (byte) ActorApprovalType.Technical_Approver);
+                var totalApproved = 0;
+                var state =
+                    accessTeamWF.SNAP_Workflow_States.Single(
+                        s => s.workflowStatusEnum == (byte) WorkflowState.Workflow_Created
+                             && s.completedDate == null); // get lastest 'worflow created' for the workflowadmin state
+
+                foreach (var w in wfs)
+                {
+                    var cnt = w.SNAP_Workflow_States.Count(
+                        s => s.workflowStatusEnum == (byte) WorkflowState.Approved
+                             && s.completedDate != null
+                             && s.pkId >= state.pkId);
+                        // only check approval for the latest iteration, ignore previously approved interateion
+
+                    totalApproved += cnt;
+                }
+
+                if (totalApproved == wfs.Count && done)
+                {
+                    AccessRequest.stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF,
+                                                  WorkflowState.Workflow_Created, WorkflowState.Approved);
+                }
+            }
         }
 
         protected bool requestToChangeBy(ActorApprovalType approvalType, string comment)

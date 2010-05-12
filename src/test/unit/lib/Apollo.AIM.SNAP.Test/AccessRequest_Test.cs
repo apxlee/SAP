@@ -922,6 +922,54 @@ namespace Apollo.AIM.SNAP.Test
         }
 
 
+
+        [Test]
+        public void ShouldHandleFromManagerToTeamOnly()
+        {
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+
+                var accessReq = new AccessRequest(req.pkId);
+                accessReq.Ack();
+                accessReq.CreateWorkflow(new List<int>()
+                                             {
+                                                 managerActorId,
+                                                 teamApprovalActorId,
+                                             });
+
+                // get manager approal
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
+                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate == null);
+
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+
+
+            }
+
+            
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+                var accessReq = new AccessRequest(req.pkId);
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Pending_Approval);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Approved);
+
+
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Team_Approver);
+                verifyWorkflowState(wfs[0], WorkflowState.Pending_Approval);
+
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
+                Assert.IsTrue(
+                    wfs[0].SNAP_Workflow_States.Count(
+                        w => w.completedDate == null && w.workflowStatusEnum == (byte) WorkflowState.Workflow_Created) == 1);
+
+            }
+            
+        }
+
         [Test]
         public void ShouldHandleFromManagerToTeamToTechicalApprove()
         {
@@ -1781,7 +1829,7 @@ namespace Apollo.AIM.SNAP.Test
                 }
         }
         
-        //[Ignore]
+        [Ignore]
         [Test]
         public void ShouldHandleCreateSDTicket()
         {
@@ -1840,7 +1888,7 @@ namespace Apollo.AIM.SNAP.Test
 
         }
 
-        //[Ignore]
+        [Ignore]
         [Test]
         public void ShouldHandleAccessTeamCloseAfterCreateTicket()
         {
@@ -1891,7 +1939,7 @@ namespace Apollo.AIM.SNAP.Test
             }
         }
 
-        //[Ignore]
+        [Ignore]
         [Test]
         public void ShouldHandleFinalizeRequest()
         {
@@ -1945,7 +1993,7 @@ namespace Apollo.AIM.SNAP.Test
             }
 
         }
-
+        [Ignore]
         [Test]
         public void ShouldHandleFinalizeRequestWithSDticket()
         {
