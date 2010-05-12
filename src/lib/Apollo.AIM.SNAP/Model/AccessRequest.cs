@@ -203,7 +203,7 @@ namespace Apollo.AIM.SNAP.Model
                     if (result)
                     {
                         addAccessTeamComment(accessTeamWF, comment, CommentsType.Requested_Change);
-						//Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy, req.userDisplayName, _id, req.submittedBy, WorkflowState.Change_Requested, comment);
+						Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy, req.userDisplayName, _id, req.submittedBy, WorkflowState.Change_Requested, comment);
                         db.SubmitChanges();
                     }
                 }
@@ -1406,6 +1406,16 @@ namespace Apollo.AIM.SNAP.Model
                             s.completedDate = DateTime.Now;
                     }
             }
+
+			comment = comment.Replace("<br />", string.Empty); //Convert.ToDateTime(DateTime.Now).ToString("MMM d, yyyy") + "&nbsp;-&nbsp;");
+			comment += string.Format("<br /><a class='request_form_no_show' href='{0}.aspx?requestId={1}'>Edit Request Form</a>", PageNames.REQUEST_FORM, req.pkId);
+
+			//if (result)
+			//{
+			//    addAccessTeamComment(accessTeamWF, comment, CommentsType.Requested_Change);
+			//    Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy, req.userDisplayName, _id, req.submittedBy, WorkflowState.Change_Requested, comment);
+			//    db.SubmitChanges();
+			//}
 
             wf.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
             {
