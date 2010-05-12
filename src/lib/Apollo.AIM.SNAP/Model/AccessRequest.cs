@@ -197,13 +197,13 @@ namespace Apollo.AIM.SNAP.Model
                                                 accessTeamWF, WorkflowState.Pending_Workflow,
                                                 WorkflowState.Change_Requested);
 
-					comment = comment.Replace("<br />", Convert.ToDateTime(DateTime.Now).ToString("MMM d, yyyy") + "&nbsp;-&nbsp;");
+					comment = comment.Replace("<br />", string.Empty); //Convert.ToDateTime(DateTime.Now).ToString("MMM d, yyyy") + "&nbsp;-&nbsp;");
 					comment += string.Format("<br /><a class='request_form_no_show' href='{0}.aspx?requestId={1}'>Edit Request Form</a>", PageNames.REQUEST_FORM, _id);
 
                     if (result)
                     {
                         addAccessTeamComment(accessTeamWF, comment, CommentsType.Requested_Change);
-						Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy, req.userDisplayName, _id, req.submittedBy, WorkflowState.Change_Requested, comment);
+						//Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy, req.userDisplayName, _id, req.submittedBy, WorkflowState.Change_Requested, comment);
                         db.SubmitChanges();
                     }
                 }

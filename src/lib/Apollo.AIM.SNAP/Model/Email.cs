@@ -63,7 +63,7 @@ namespace Apollo.AIM.SNAP.Model
 							break;
 							
 						case WorkflowState.Change_Requested:
-							subjectAction += "Request Change";
+							subjectAction += "Change Has Been Requested";
 							followPageName = PageNames.REQUEST_FORM;
 							templatePath += ConfigurationManager.AppSettings["RequestChangeToSubmitter"];
 							break;
