@@ -1,6 +1,9 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="RequestForm.ascx.cs" Inherits="Apollo.AIM.SNAP.Web.Controls.RequestForm" %>
 <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>RequestForm.js" type="text/javascript"></script>
 <script type="text/javascript"> $(document).ready(DocReady);</script>
+<style type="text/css" media="screen">
+	a.request_form_no_show {display:none;}
+</style>
 <div class="csm_container_center_700">
     
 	<div class="csm_content_container">
@@ -15,10 +18,10 @@
 		
 		<fieldset><!-- use fieldset for standards & compliance -->
         
-        <div id="_formValidationTop"></div>
+        <div id="_formValidationTop" class="csm_input_validation_summary"></div>
         
-        <asp:Label ID="_changeComments" runat="server" />
-		
+        <asp:Label ID="_changeComments" runat="server" CssClass="request_form_change_comments" />
+ 		
 		<div class="csm_input_buttons_container">
 			<input type="button" value="Clear Form" class="csm_html_button" id='_clearForm'/>
 			<asp:Button ID="_submitForm" Text="Submit" CssClass="csm_html_button" 

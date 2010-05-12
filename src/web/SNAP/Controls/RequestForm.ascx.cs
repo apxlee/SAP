@@ -218,11 +218,15 @@ namespace Apollo.AIM.SNAP.Web.Controls
         private void loadChangeComments()
         {
             DataTable changeComments = MyRequest.GetChangeComments(Convert.ToInt32(SnapSession.SelectedRequestId));
+            //Literal commentInnerHtml = new Literal();
 
             foreach (DataRow comment in changeComments.Rows)
             {
-                _changeComments.Text += string.Format("<p style=\"padding-left:5px;\" class=\"csm_error_text\"><b>{0} has request a change:</b><br />{1}<p>", comment[0], comment[1]);
+                _changeComments.Text += string.Format("<span>{0} has requested a change:</span><p>{1}</p>", comment[0], comment[1]);
             }
+            
+            //_changeComments.Controls.Add(commentInnerHtml);
+            // TODO: why does adding a control break the DOM?
         }
 
         private bool brandNewRequest()
