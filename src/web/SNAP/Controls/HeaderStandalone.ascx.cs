@@ -25,22 +25,22 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			BuildRibbon();
 		}
 
-		private PlaceHolder WrapControl(WebControl control, string element, string elementID)
-		{
-			PlaceHolder placeHolder = new PlaceHolder();
+		//private PlaceHolder WrapControl(WebControl control, string element, string elementID)
+		//{
+		//    PlaceHolder placeHolder = new PlaceHolder();
 
-			Literal openElement = new Literal();
-			openElement.Text = string.Format("<{0} id='{1}'>", element, elementID.ToLower());
+		//    Literal openElement = new Literal();
+		//    openElement.Text = string.Format("<{0} id='{1}'>", element, elementID.ToLower());
 
-			Literal closeElement = new Literal();
-			closeElement.Text = "</" + element + ">";
+		//    Literal closeElement = new Literal();
+		//    closeElement.Text = "</" + element + ">";
 
-			placeHolder.Controls.Add(openElement);
-			placeHolder.Controls.Add(control);
-			placeHolder.Controls.Add(closeElement);
+		//    placeHolder.Controls.Add(openElement);
+		//    placeHolder.Controls.Add(control);
+		//    placeHolder.Controls.Add(closeElement);
 
-			return placeHolder;
-		}
+		//    return placeHolder;
+		//}
 
 		private void BuildRibbon()
 		{
@@ -131,7 +131,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
 				// NOTE: Careful to add the LI & A wrapped controls before the loop ends
 				//
-				_ribbonContainerOuter.Controls.Add(WrapControl(link, "li", link.CommandName));
+				_ribbonContainerOuter.Controls.Add(WebUtilities.WrapControl(link, "li", link.CommandName));
 			}
 
 			// NOTE: Now close the UL and DIV and add the whole blob to the PlaceHolder

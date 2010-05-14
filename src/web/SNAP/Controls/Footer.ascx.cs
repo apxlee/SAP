@@ -21,22 +21,22 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			BuildFooterLinks();
 		}
 
-		private PlaceHolder WrapControl(WebControl control, string element, string elementID)
-		{
-			PlaceHolder placeHolder = new PlaceHolder();
+		//private PlaceHolder WrapControl(WebControl control, string element, string elementID)
+		//{
+		//    PlaceHolder placeHolder = new PlaceHolder();
 
-			Literal openElement = new Literal();
-			openElement.Text = string.Format("<{0}>", element, elementID.ToLower());
+		//    Literal openElement = new Literal();
+		//    openElement.Text = string.Format("<{0}>", element, elementID.ToLower());
 
-			Literal closeElement = new Literal();
-			closeElement.Text = "</" + element + ">";
+		//    Literal closeElement = new Literal();
+		//    closeElement.Text = "</" + element + ">";
 
-			placeHolder.Controls.Add(openElement);
-			placeHolder.Controls.Add(control);
-			placeHolder.Controls.Add(closeElement);
+		//    placeHolder.Controls.Add(openElement);
+		//    placeHolder.Controls.Add(control);
+		//    placeHolder.Controls.Add(closeElement);
 
-			return placeHolder;
-		}
+		//    return placeHolder;
+		//}
 
 		private void BuildFooterLinks()
 		{
@@ -86,7 +86,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 				link.Command += new CommandEventHandler(FooterLink_Click);
 				link.Text = link_name;
 
-				_applicationLinksContainer.Controls.Add(WrapControl(link, "li", link.CommandName));
+				_applicationLinksContainer.Controls.Add(WebUtilities.WrapControl(link, "li", string.Empty));
 			}
 
 			Literal closeElements = new Literal();
