@@ -34,7 +34,18 @@ div#login_description_logo {
 	
 /* RIBBON */
 
+span.aim_header_logout {
+	float:right;
+	margin-right:35px;
+	margin-top:8px;
+	font-size:10px;
+	font-family: Verdana;
+	color:#898989;
+	/*letter-spacing:0px;*/
+	}
+
 a.aim_logout_link {color: #797979;}
+a.aim_logout_link:hover {color: #ffffff;}
 
 div#csm_ribbon_container_outer {
 	height: 36px;
