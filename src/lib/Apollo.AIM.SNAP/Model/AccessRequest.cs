@@ -1372,16 +1372,16 @@ namespace Apollo.AIM.SNAP.Model
             if (req.statusEnum != (byte)RequestState.Pending)
                 return false;
 
-            using (TransactionScope ts = new TransactionScope())
-            {
+            //using (TransactionScope ts = new TransactionScope())
+            //{
                 if (wfStateChange(approvalType, WorkflowState.Change_Requested))
                 {
                     approvalRequestToChange(comment);
                     db.SubmitChanges();
-                    ts.Complete();
+                    //ts.Complete();
                     return true;
                 }
-            }
+            //}
             return false;
 
 
@@ -1434,18 +1434,18 @@ namespace Apollo.AIM.SNAP.Model
             if (req.statusEnum != (byte)RequestState.Pending)
                 return false;
 
-            using (TransactionScope ts = new TransactionScope())
-            {
+            //using (TransactionScope ts = new TransactionScope())
+            //{
 
                 if (wfStateChange(approvalType, WorkflowState.Closed_Denied))
                 {
                     approvalDeny(approvalType, comment);
                     db.SubmitChanges();
-                    ts.Complete();
+                    //ts.Complete();
                     return true;
                 }
 
-            }
+            //}
             return false;
 
         }
@@ -1532,16 +1532,16 @@ namespace Apollo.AIM.SNAP.Model
             if (req.statusEnum != (byte)RequestState.Pending)
                 return false;
 
-            using (TransactionScope ts = new TransactionScope())
-            {
+            //using (TransactionScope ts = new TransactionScope())
+            //{
                 if (wfStateChange(ActorApprovalType.Technical_Approver, WorkflowState.Approved))
                 {
                     completeRequestApprovalCheck();
                     db.SubmitChanges();
-                    ts.Complete();
+                    //ts.Complete();
                     return true;
                 }
-            }
+            //}
 
             return false;
         }
