@@ -64,7 +64,7 @@
 						<div class="csm_input_form_label_container">
 							<table cellpadding="0" cellspacing="0" border="0" class="snap_login">
 								<tr>
-									<td><div id="_loginCheck1" class="aim_checkbox_unchecked" value="request_form"></div></td>
+									<td><div id="_loginCheck1" class="aim_checkbox_checked" value="request_form"></div></td>
 									<td>
 										<h2>I am requesting access for myself.</h2>
 										<p>You will be taken to the request form with credentials automatically 
@@ -76,7 +76,7 @@
 								<tr>
 									<td><div id="_loginCheck2" class="aim_checkbox_unchecked" value="proxy_request"></div></td>
 									<td>
-										<h2>I am a manager or supervisor requesting access for a team member.</h2>
+										<h2>I requesting access for somone else.</h2>
 										<p>You will be required to enter your team member's username on the the request form.</p>
 									</td>
 								</tr>
@@ -95,7 +95,7 @@
 					</td>
 				</tr>
 			</table>
-			<input id="_loginPathSelection" type="hidden" value="role_default" runat="server" />
+			<input id="_loginPathSelection" type="hidden" value="request_form" runat="server" />
 		</fieldset>			
 
 	</div>
