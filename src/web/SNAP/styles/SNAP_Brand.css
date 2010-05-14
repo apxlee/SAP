@@ -34,6 +34,8 @@ div#login_description_logo {
 	
 /* RIBBON */
 
+a.aim_logout_link {color: #797979;}
+
 div#csm_ribbon_container_outer {
 	height: 36px;
 	/*width: 763px;*/
