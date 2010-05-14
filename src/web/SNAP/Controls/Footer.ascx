@@ -8,9 +8,7 @@
 					<!-- TODO: future iteration -->
 					<div class="csm_grid_3">
 						<h1>Application Links</h1>
-						<ul>
-							<li><asp:LinkButton ID="logout" runat="server" onclick="logout_Click">Logout</asp:LinkButton></li>
-						</ul>
+						<asp:PlaceHolder ID="_applicationLinksContainer" runat="server"></asp:PlaceHolder>
 					</div>
 					<div class="csm_grid_3">
 						<h1>Feedback</h1>

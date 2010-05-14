@@ -61,12 +61,14 @@ namespace Apollo.AIM.SNAP.Web.Controls
 						linkButtons.AddRange(new List<string> { "RequestForm", "MyRequests", "MyApprovals", "Search", "Support" });
 						linksContainerWidth = "600";
 						PendingApprovals = MyRequest.ApprovalCount(SnapSession.CurrentUser.LoginId);
+						_userNameHeader.Text = SnapSession.CurrentUser.FullName + "&nbsp;(Approving Manager)&nbsp;|&nbsp;";
 						break;
 
 					case Role.AccessTeam:
 						linkButtons.AddRange(new List<string> { "RequestForm", "MyRequests", "AccessTeam", "Search", "Support" });
 						linksContainerWidth = "600";
 						PendingAccessTeam = MyRequest.AccessTeamCount();
+						_userNameHeader.Text = SnapSession.CurrentUser.FullName + "&nbsp;(Access Team)&nbsp;|&nbsp;";
 						break;
 
 					case Role.SuperUser:
@@ -74,16 +76,19 @@ namespace Apollo.AIM.SNAP.Web.Controls
 						linksContainerWidth = "763";
 						PendingApprovals = MyRequest.ApprovalCount(SnapSession.CurrentUser.LoginId);
 						PendingAccessTeam = MyRequest.AccessTeamCount();
+						_userNameHeader.Text = SnapSession.CurrentUser.FullName + "&nbsp;(Super User)&nbsp;|&nbsp;";
 						break;
 
 					case Role.Requestor:
 						linkButtons.AddRange(new List<string> { "RequestForm", "MyRequests", "Search", "Support" });
 						linksContainerWidth = "430";
+						_userNameHeader.Text = SnapSession.CurrentUser.FullName + "&nbsp;(Requestor)&nbsp;|&nbsp;";
 						break;
 
 					case Role.NotAuthorized:
 					default:
 						linkButtons.AddRange(new List<string> { "Default", "Support" });
+						_logout.Visible = false;
 						break;
 				}
 			}
@@ -140,5 +145,11 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		{
 			WebUtilities.Redirect(e.CommandName + ".aspx", true);
 		}
+
+		protected void Logout_Click(object sender, EventArgs e)
+		{
+			Session.Clear();
+			WebUtilities.Redirect(PageNames.DEFAULT_LOGIN);
+		}		
 	}
 }
