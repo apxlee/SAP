@@ -61,6 +61,23 @@ namespace Apollo.AIM.SNAP.Web.Common
 			Panel ribbonContainer = (Panel)WebUtilities.FindControlRecursive(currentPage, "_ribbonContainerOuter");
 			ribbonContainer.CssClass = className;
 		}
+
+		public static PlaceHolder WrapControl(WebControl innerControl, string outerElementName, string outerElementID)
+		{
+			PlaceHolder placeHolder = new PlaceHolder();
+
+			Literal openElement = new Literal();
+			openElement.Text = string.Format("<{0} id='{1}'>", outerElementName, outerElementID.ToLower());
+
+			Literal closeElement = new Literal();
+			closeElement.Text = "</" + outerElementName + ">";
+
+			placeHolder.Controls.Add(openElement);
+			placeHolder.Controls.Add(innerControl);
+			placeHolder.Controls.Add(closeElement);
+
+			return placeHolder;
+		}		
 		
 		public static void RoleCheck(string pageName)
 		{
