@@ -8,8 +8,8 @@
 			<h1>Access News</h1>
 			<div class="csm_content_container">
 				<p><strong>May 27, 2010</strong><br />
-				Sharepoint Paperless Privileged Access will no longer support new access requests.  Please enter new requests by accessing
-				the "Request Form" link above.
+				Sharepoint Paperless Privileged Access will no longer support new access requests.  Please enter new requests by accessing 
+				the "Request Form" link from the top navigation bar when it appears after login.
 				</p>
 			</div>
 			
@@ -38,6 +38,7 @@
 			
 			<h1>Contact The Team</h1>
 			<div class="csm_content_container">
+				<span>[SMALL LOGO]</span>
 				<p>The Supplemental Access Process (SNAP) application is a product<br /> of Access & Identity Managment under the direction of Greg Belanger.</p>
 				<p>Please send comments or questions regarding SNAP to:<br /><strong><a href="mailto:DG C-APO-Corporate-IT-Access%20%26%20Identity%20Management%20SNAPFU?subject=SNAP%20Comments">SNAP Feedback and Usability</a></strong></p>
 				<p>You can also directly contact the &nbsp;<strong><a href="mailto:DG C-APO-Corporate-ITS Access Management?subject=SNAP%20Comments">Access & Identity Management Team</a></strong></p>
