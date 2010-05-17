@@ -21,23 +21,6 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			BuildFooterLinks();
 		}
 
-		//private PlaceHolder WrapControl(WebControl control, string element, string elementID)
-		//{
-		//    PlaceHolder placeHolder = new PlaceHolder();
-
-		//    Literal openElement = new Literal();
-		//    openElement.Text = string.Format("<{0}>", element, elementID.ToLower());
-
-		//    Literal closeElement = new Literal();
-		//    closeElement.Text = "</" + element + ">";
-
-		//    placeHolder.Controls.Add(openElement);
-		//    placeHolder.Controls.Add(control);
-		//    placeHolder.Controls.Add(closeElement);
-
-		//    return placeHolder;
-		//}
-
 		private void BuildFooterLinks()
 		{
 			List<string> linkButtons = new List<string> { };

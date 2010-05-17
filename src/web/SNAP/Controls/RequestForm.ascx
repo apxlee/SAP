@@ -9,9 +9,10 @@
 	<div class="csm_content_container">
 		
 		<div class="csm_text_container">
-		    <p>The Supplemental Access Process (SNAP) application augments the rights being 
+		    <p>The Supplemental Access Process application augments the rights being 
 			provisioned through the <a href="http://access.apollogrp.edu/cap/" style="color:Blue;">Computer Access Process (CAP)</a>, 
-			which handles Production systems.<br /><br />
+			which handles Production systems.<br /><br />A Service Desk ticket will be created once the approvals are received from the
+			Supplemental Access Process application.  Once the ticket is assigned, our goal is 2 to 3 business days for provisioning.<br /><br />
 			Please fill out the form below and follow the prescribed formats when applicable.  Examples have been provided to assist in your request.
 			</p>
 		</div>

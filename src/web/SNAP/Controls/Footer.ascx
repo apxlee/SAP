@@ -22,7 +22,7 @@
 				</div>
 				<div class="snap_copyright">
 					<span>&copy;2010 Apollo Group, Inc.&nbsp;|&nbsp;Access & Identity Management
-					<br />Supplemental Access Process (SNAP)&nbsp;<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.AppVersion %>
+					<br />Supplemental Access Process&nbsp;<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.AppVersion %>
 					&nbsp;on&nbsp;<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.CurrentServer %></span>
 				</div>
 				<div class="csm_clear">&nbsp;</div>									

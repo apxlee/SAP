@@ -25,23 +25,6 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			BuildRibbon();
 		}
 
-		//private PlaceHolder WrapControl(WebControl control, string element, string elementID)
-		//{
-		//    PlaceHolder placeHolder = new PlaceHolder();
-
-		//    Literal openElement = new Literal();
-		//    openElement.Text = string.Format("<{0} id='{1}'>", element, elementID.ToLower());
-
-		//    Literal closeElement = new Literal();
-		//    closeElement.Text = "</" + element + ">";
-
-		//    placeHolder.Controls.Add(openElement);
-		//    placeHolder.Controls.Add(control);
-		//    placeHolder.Controls.Add(closeElement);
-
-		//    return placeHolder;
-		//}
-
 		private void BuildRibbon()
 		{
 			// NOTE: linkButtons List<> must match the case of the Css names (Css is case-sensitive with Xhtml doctypes)
