@@ -50,6 +50,42 @@ namespace Apollo.AIM.SNAP.Web {
         protected global::System.Web.UI.WebControls.TextBox _password;
         
         /// <summary>
+        /// _loginCheck1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl _loginCheck1;
+        
+        /// <summary>
+        /// _loginCheck3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl _loginCheck3;
+        
+        /// <summary>
+        /// _followLinkMessage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label _followLinkMessage;
+        
+        /// <summary>
+        /// _followLinkRequestId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label _followLinkRequestId;
+        
+        /// <summary>
         /// _submitLogin control.
         /// </summary>
         /// <remarks>

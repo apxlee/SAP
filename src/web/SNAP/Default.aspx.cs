@@ -15,6 +15,15 @@ namespace Apollo.AIM.SNAP.Web
 		protected void Page_Load(object sender, EventArgs e)
 		{
 			_password.Text = "Password1"; // TODO: REMOVE THIS AFTER DEV COMPLETE!!!
+			
+			if (!string.IsNullOrEmpty(SnapSession.RequestedPage))
+			{
+				_loginCheck1.Attributes["class"] = "aim_checkbox_unchecked";
+				_loginCheck3.Attributes["class"] = "aim_checkbox_checked";
+				_loginPathSelection.Attributes["value"] = "role_default";
+				_followLinkRequestId.Text = SnapSession.SelectedRequestId;
+				_followLinkMessage.Visible = true;
+			}
 		}
 
 		private void DisplayMessage(string message, bool isError)

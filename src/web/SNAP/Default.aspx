@@ -25,8 +25,11 @@
 				<tr>
 					<td><div id="login_description_logo"></div></td>
 					<td style="vertical-align:middle;padding-left:10px;"><!--<p style="font-size:.90em;"><strong>Access & Identity Management</strong></p>-->
-						<p style="font-size:.90em;padding-right:15px;">The Supplemental Access Process (SNAP) application augments the rights being 
-						provisioned through the <a href="http://access.apollogrp.edu/cap/" style="color:Blue;">Computer Access Process (CAP)</a>, which handles Production systems.<br /><br />Below you may specify the reason for you visit and the application will drop you at that point with minimal user effort.</p>
+						<p style="font-size:.90em;padding-right:15px;">The Supplemental Access Process application augments the rights being 
+						provisioned through the <a href="http://access.apollogrp.edu/cap/" style="color:Blue;">Computer Access Process (CAP)</a>, which 
+						handles Production systems.<br /><br />A Service Desk ticket will be created once the approvals are received from the
+						Supplemental Access Process application.  Once the ticket is assigned, our goal is 2 to 3 business days for provisioning.<br /><br />
+						Below you may specify the reason for you visit and the application will drop you at that point with minimal user effort.</p>
 					</td>
 				</tr>
 			</table>
@@ -64,7 +67,7 @@
 						<div class="csm_input_form_label_container">
 							<table cellpadding="0" cellspacing="0" border="0" class="snap_login">
 								<tr>
-									<td><div id="_loginCheck1" class="aim_checkbox_checked" value="request_form"></div></td>
+									<td><div id="_loginCheck1" class="aim_checkbox_checked" value="request_form" runat="server"></div></td>
 									<td>
 										<h2>I am requesting access for myself.</h2>
 										<p>You will be taken to the request form with credentials automatically 
@@ -76,15 +79,17 @@
 								<tr>
 									<td><div id="_loginCheck2" class="aim_checkbox_unchecked" value="proxy_request"></div></td>
 									<td>
-										<h2>I requesting access for somone else.</h2>
-										<p>You will be required to enter your team member's username on the the request form.</p>
+										<h2>I am requesting access for somebody else.</h2>
+										<p>You will be required to enter the person's username on the request form.</p>
 									</td>
 								</tr>
 								<tr>
-									<td><div id="_loginCheck3" class="aim_checkbox_unchecked" value="role_default"></div></td>
+									<td><div id="_loginCheck3" class="aim_checkbox_unchecked" value="role_default" runat="server"></div></td>
 									<td>
-										<h2>I am checking my status, managing my tasks and approvals, or<br />updating a requested change.</h2>
-										<p>You will be taken to 'My Requests', 'My Approvals' or the request form automatically based on your role.</p>
+										<h2>I am managing my tasks and approvals, updating a requested change,<br />or checking my status.</h2>
+										<p><asp:Label ID="_followLinkMessage" runat="server" Visible="false"><em>The application has determined you are 
+										following an email link to Request Id:&nbsp;<asp:Label ID="_followLinkRequestId" runat="server"></asp:Label>.</em>&nbsp;</asp:Label>
+										You will be taken to 'My Requests', 'My Approvals' or the request form automatically based on your role.</p>
 									</td>
 								</tr>
 							</table>
