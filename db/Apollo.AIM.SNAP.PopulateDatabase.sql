@@ -37,7 +37,7 @@ VALUES('Software Group',NULL,0,0,1)
 INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actor_Group]([groupName],[description],[actorGroupType],[isLargeGroup],[isActive])
 VALUES('Windows',NULL,1,0,1)
 INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actor_Group]([groupName],[description],[actorGroupType],[isLargeGroup],[isActive])
-VALUES('Owners',NULL,1,0,1)
+VALUES('Owners',NULL,1,1,1)
 INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actor_Group]([groupName],[description],[actorGroupType],[isLargeGroup],[isActive])
 VALUES('Manager',NULL,2,0,1)
 
