@@ -41,7 +41,7 @@
 				</td>
                 <td>
                     <asp:TextBox ID="_requestorLoginId" runat="server" style="display:none" ></asp:TextBox>
-                    <input type="hidden" id="_whyDontYouUseThisInstead" runat="server" value="ThisWorksJustFineAndYouDontHaveToWorryAboutItBeingDisabled" />
+                    <input type="hidden" id="_hiddenAffectedEndUserId" runat="server" value="" />
                 </td>
 
 			</tr>

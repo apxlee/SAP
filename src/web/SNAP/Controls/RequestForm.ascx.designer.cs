@@ -50,13 +50,13 @@ namespace Apollo.AIM.SNAP.Web.Controls {
         protected global::System.Web.UI.WebControls.TextBox _requestorLoginId;
         
         /// <summary>
-        /// _whyDontYouUseThisInstead control.
+        /// _hiddenAffectedEndUserId control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputHidden _whyDontYouUseThisInstead;
+        protected global::System.Web.UI.HtmlControls.HtmlInputHidden _hiddenAffectedEndUserId;
         
         /// <summary>
         /// _managerName control.

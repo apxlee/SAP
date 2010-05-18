@@ -56,12 +56,12 @@ namespace Apollo.AIM.SNAP.Web.Controls
         
         private void BuildRequestForm()
         {
-			if (SnapSession.IsRequestPrePopulated)
+			if (SnapSession.IsRequestPrePopulated && !Page.IsPostBack)
 			{
 				_requestorId.Text = SnapSession.CurrentUser.FullName;
 				_managerName.Text = SnapSession.CurrentUser.ManagerName;
-				_managerLoginId.Text = SnapSession.CurrentUser.ManagerLoginId; // removed this keyword
-				_requestorLoginId.Text = SnapSession.CurrentUser.LoginId; // removed this keyword
+				_managerLoginId.Text = SnapSession.CurrentUser.ManagerLoginId;
+				_requestorLoginId.Text = SnapSession.CurrentUser.LoginId;
 			}
         
             _requestFormData =loadRequestFormData();
@@ -70,10 +70,8 @@ namespace Apollo.AIM.SNAP.Web.Controls
             {
 				_requestorId.Text = _requestFormData[0].userDisplayName;
 				_requestorLoginId.Text = _requestFormData[0].userId;
-                //this._requestorLoginId.Text = _requestFormData[0].userId;
 				_managerName.Text = _requestFormData[0].managerDisplayName;
 				_managerLoginId.Text = _requestFormData[0].managerUserId;
-                //this._managerLoginId.Text = _requestFormData[0].managerUserId;
                 
 				LoadChangeComments();
             }
