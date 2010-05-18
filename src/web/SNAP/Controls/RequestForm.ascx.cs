@@ -21,6 +21,34 @@ namespace Apollo.AIM.SNAP.Web.Controls
     {
         private List<usp_open_request_tabResult> _requestFormData;
 
+		#region Public Properties // TODO: remove these are redundant
+
+		//public string UserName
+		//{
+		//    get { return this._requestorId.Text; }
+		//    set { _requestorId.Text = value; }
+		//}
+
+		//public string UserLoginId
+		//{
+		//    get { return this._requestorLoginId.Text; }
+		//    set { _requestorLoginId.Text = value; }
+		//}
+
+		//public string ManagerName
+		//{
+		//    get { return this._managerName.Text; }
+		//    set { _managerName.Text = value; }
+		//}
+
+		//public string ManagerLoginId
+		//{
+		//    get { return this._managerLoginId.Text; }
+		//    set { _managerLoginId.Text = value; }
+		//}
+		
+		#endregion
+
         protected void Page_Load(object sender, EventArgs e)
         {
             BuildRequestForm();
@@ -28,27 +56,26 @@ namespace Apollo.AIM.SNAP.Web.Controls
         
         private void BuildRequestForm()
         {
-
 			if (SnapSession.IsRequestPrePopulated)
 			{
 				_requestorId.Text = SnapSession.CurrentUser.FullName;
 				_managerName.Text = SnapSession.CurrentUser.ManagerName;
-                 this._managerLoginId.Text = SnapSession.CurrentUser.ManagerLoginId;
-                 this._requestorLoginId.Text = SnapSession.CurrentUser.LoginId;
+				_managerLoginId.Text = SnapSession.CurrentUser.ManagerLoginId; // removed this keyword
+				_requestorLoginId.Text = SnapSession.CurrentUser.LoginId; // removed this keyword
 			}
-
         
             _requestFormData =loadRequestFormData();
 
-            if (!brandNewRequest() && !Page.IsPostBack)
+            if (!BrandNewRequest() && !Page.IsPostBack)
             {
-                this.UserName = _requestFormData[0].userDisplayName;
-                this.UserLoginId = _requestFormData[0].userId;
-                this._requestorLoginId.Text = _requestFormData[0].userId;
-                this.ManagerName = _requestFormData[0].managerDisplayName;
-                this.ManagerLoginId = _requestFormData[0].managerUserId;
-                this._managerLoginId.Text = _requestFormData[0].managerUserId;
-                loadChangeComments();
+				_requestorId.Text = _requestFormData[0].userDisplayName;
+				_requestorLoginId.Text = _requestFormData[0].userId;
+                //this._requestorLoginId.Text = _requestFormData[0].userId;
+				_managerName.Text = _requestFormData[0].managerDisplayName;
+				_managerLoginId.Text = _requestFormData[0].managerUserId;
+                //this._managerLoginId.Text = _requestFormData[0].managerUserId;
+                
+				LoadChangeComments();
             }
 
             RequestFormSection requestFormSection=null;
@@ -61,7 +88,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
                 requestFormSection.ParentID = access.pkId.ToString();
 
-                if (!brandNewRequest() && !Page.IsPostBack)
+                if (!BrandNewRequest() && !Page.IsPostBack)
                     requestFormSection.RequestData = _requestFormData;
 
                 Label outerDescription;
@@ -84,33 +111,6 @@ namespace Apollo.AIM.SNAP.Web.Controls
             }
         }
 
-        public string UserName
-        {
-            get { return this._requestorId.Text; }
-            set { _requestorId.Text = value;  }
-        }
-
-        public string UserLoginId
-        {
-            get { return this._requestorLoginId.Text; }
-            set { _requestorLoginId.Text = value; }
-        }
-
-        public string ManagerName
-        {
-            get
-            {
-                return this._managerName.Text;
-            }
-            set { _managerName.Text = value; }
-        }
-
-        public string ManagerLoginId
-        {
-            get { return this._managerLoginId.Text; }
-            set { _managerLoginId.Text = value; }
-        }
-
         protected void _submitForm_Click(object sender, EventArgs e)
         {
             int requestID;
@@ -119,15 +119,16 @@ namespace Apollo.AIM.SNAP.Web.Controls
             {
                 List<RequestData> newRequestDataList = RequestFormRequestData(_requestForm);
 
-                if (brandNewRequest())
+                if (BrandNewRequest())
                 {
                     var xmlInput = RequestData.ToXml(newRequestDataList);
 
-                    ADUserDetail detail = Apollo.AIM.SNAP.CA.DirectoryServices.GetUserByLoginName(UserLoginId);
+					ADUserDetail detail = Apollo.AIM.SNAP.CA.DirectoryServices.GetUserByLoginName(_requestorLoginId.Text);
 
                     using (var db = new SNAPDatabaseDataContext())
                     {
-                        requestID = db.usp_insert_request_xml(xmlInput, SnapSession.CurrentUser.LoginId, UserLoginId, UserName, detail.Title, ManagerLoginId, ManagerName);
+                        //requestID = db.usp_insert_request_xml(xmlInput, SnapSession.CurrentUser.LoginId, UserLoginId, UserName, detail.Title, ManagerLoginId, ManagerName);
+						requestID = db.usp_insert_request_xml(xmlInput, SnapSession.CurrentUser.LoginId, _requestorLoginId.Text, _requestorId.Text, detail.Title, _managerLoginId.Text, _managerName.Text);
                         if (requestID > 0)
                         {
                             SnapSession.SelectedRequestId = requestID.ToString();
@@ -142,8 +143,8 @@ namespace Apollo.AIM.SNAP.Web.Controls
                 else
                 {
                     requestID = System.Convert.ToInt32(SnapSession.SelectedRequestId);
-                    updateRequestUsrInfo(requestID, SnapSession.CurrentUser.LoginId, UserLoginId, UserName,
-                                         ManagerLoginId, ManagerName);
+					updateRequestUsrInfo(requestID, SnapSession.CurrentUser.LoginId, _requestorLoginId.Text, _requestorId.Text,
+										 _managerLoginId.Text, _managerName.Text);
                     RequestData.UpdateRequestData(newRequestDataList, _requestFormData);
 
                     var accessReq = new AccessRequest(requestID);
@@ -155,18 +156,17 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
                 if (sendEmail)
                 {
-                    //Email.UpdateRequesterStatus(SnapSession.CurrentUser.LoginId, UserName, requestID, WorkflowState.Pending_Acknowledgement, string.Empty);
-					Email.SendTaskEmail(EmailTaskType.AccessTeamAcknowledge, ConfigurationManager.AppSettings["AIM-DG"], null, requestID, UserName);
-					Email.SendTaskEmail(EmailTaskType.UpdateRequester, UserLoginId + "@apollogrp.edu", UserName, requestID, UserName, WorkflowState.Pending_Acknowledgement, null);
+					Email.SendTaskEmail(EmailTaskType.AccessTeamAcknowledge, ConfigurationManager.AppSettings["AIM-DG"], null, requestID, _requestorId.Text);
+					Email.SendTaskEmail(EmailTaskType.UpdateRequester, _requestorLoginId.Text + "@apollogrp.edu", _requestorId.Text, requestID, _requestorId.Text, WorkflowState.Pending_Acknowledgement, null);
 					// TODO: UserLoginId concatenates with @apollogrp, but that may not be the addy.
                 }
-                
             }
             catch (Exception ex)
             {
                 Logger.Fatal("SNAP: Request Form -  Submit failure", ex);
             }
-            WebUtilities.Redirect(PageNames.USER_VIEW);
+
+			WebUtilities.Redirect(PageNames.USER_VIEW);
         }
 
         private List<RequestData> RequestFormRequestData(Control controlRoot)
@@ -211,35 +211,26 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
 				return formData.ToList();
 			}
+			
 			return new List<usp_open_request_tabResult>();
-
         }
 
-        private void loadChangeComments()
+        private void LoadChangeComments()
         {
             DataTable changeComments = MyRequest.GetChangeComments(Convert.ToInt32(SnapSession.SelectedRequestId));
-            //Literal commentInnerHtml = new Literal();
 
             foreach (DataRow comment in changeComments.Rows)
             {
                 _changeComments.Text += string.Format("<span>{2} - {0} has requested a change:</span><p>{1}</p>", comment[0], comment[1], Convert.ToDateTime(comment[2]).ToString("MMM d, yyyy"));
             }
-            
-            //_changeComments.Controls.Add(commentInnerHtml);
-            // TODO: why does adding a control break the DOM?
         }
 
-        private bool brandNewRequest()
+        private bool BrandNewRequest()
         {
-            return _requestFormData == null ||_requestFormData.Count() == 0;
+            return _requestFormData == null || _requestFormData.Count() == 0;
         }
 
-        private void updateRequestUsrInfo(long requestId,
-                        string submitterId,
-                        string userId,
-                        string userName,
-                        string mgrId,
-                        string mgrName)
+        private void updateRequestUsrInfo(long requestId, string submitterId, string userId, string userName, string mgrId, string mgrName)
         {
             var change = false;
             ADUserDetail usrDetail = null;
@@ -248,13 +239,11 @@ namespace Apollo.AIM.SNAP.Web.Controls
             {
                 var req = db.SNAP_Requests.Single(x => x.pkId == requestId);
 
-
                 if (req.submittedBy != submitterId)
                 {
                     req.submittedBy = submitterId;
                     change = true;
                 }
-
 
                 if (req.userId != userId)
                 {
@@ -282,15 +271,12 @@ namespace Apollo.AIM.SNAP.Web.Controls
                     change = true;
                 }
 
-
                 if (change)
                 {
                     req.lastModifiedDate = DateTime.Now;
                     db.SubmitChanges();
                 }
             }
-
         }
-
     }
 }
