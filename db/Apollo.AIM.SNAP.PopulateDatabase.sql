@@ -30,14 +30,16 @@ VALUES(3,'Workflow Admin')
 
 --// Insert Actor Groups
 print 'Insert actor groups'
-INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actor_Group]([groupName],[description],[actorGroupType],[isActive])
-VALUES('Access & Identity Mangement',NULL,3,1)
-INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actor_Group]([groupName],[description],[actorGroupType],[isActive])
-VALUES('Software Group',NULL,0,1)
-INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actor_Group]([groupName],[description],[actorGroupType],[isActive])
-VALUES('Windows',NULL,1,1)
-INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actor_Group]([groupName],[description],[actorGroupType],[isActive])
-VALUES('Manager',NULL,2,1)
+INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actor_Group]([groupName],[description],[actorGroupType],[isLargeGroup],[isActive])
+VALUES('Access & Identity Mangement',NULL,3,0,1)
+INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actor_Group]([groupName],[description],[actorGroupType],[isLargeGroup],[isActive])
+VALUES('Software Group',NULL,0,0,1)
+INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actor_Group]([groupName],[description],[actorGroupType],[isLargeGroup],[isActive])
+VALUES('Windows',NULL,1,0,1)
+INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actor_Group]([groupName],[description],[actorGroupType],[isLargeGroup],[isActive])
+VALUES('Owners',NULL,1,0,1)
+INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actor_Group]([groupName],[description],[actorGroupType],[isLargeGroup],[isActive])
+VALUES('Manager',NULL,2,0,1)
 
 --// Insert Actors
 print 'Insert actors'
@@ -66,9 +68,15 @@ VALUES(3,'jdsteele','Jonathan Steele','jdsteele@apollogrp.com',0,1)
 INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actors]([actor_groupId],[userId],[displayName],[emailAddress],[isDefault],[isActive])
 VALUES(3,'clschwim','Chris Schwimmer','clschwim@apollogrp.edu',0,1)
 INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actors]([actor_groupId],[userId],[displayName],[emailAddress],[isDefault],[isActive])
-VALUES(4,'gjbelang','Greg Belanger','gjbelang@apollogrp.edu',1,1)
+VALUES(4,'pxlee','Pong Lee','pxlee@apollogrp.com',1,1)
 INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actors]([actor_groupId],[userId],[displayName],[emailAddress],[isDefault],[isActive])
-VALUES(4,'pxlee','Pong Lee','pxlee@apollogrp.edu',0,1)
+VALUES(4,'jdsteele','Jonathan Steele','jdsteele@apollogrp.com',0,1)
+INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actors]([actor_groupId],[userId],[displayName],[emailAddress],[isDefault],[isActive])
+VALUES(4,'clschwim','Chris Schwimmer','clschwim@apollogrp.edu',0,1)
+INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actors]([actor_groupId],[userId],[displayName],[emailAddress],[isDefault],[isActive])
+VALUES(5,'gjbelang','Greg Belanger','gjbelang@apollogrp.edu',1,1)
+INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actors]([actor_groupId],[userId],[displayName],[emailAddress],[isDefault],[isActive])
+VALUES(5,'pxlee','Pong Lee','pxlee@apollogrp.edu',0,1)
 
 --// Insert Request State Types
 print 'Insert request state types'
