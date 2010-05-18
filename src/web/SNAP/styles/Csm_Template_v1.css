@@ -893,7 +893,11 @@ span.group_description {
 	color: #595959;
 	padding-bottom: 5px;
 	}
-
+	
+.csm_template_1 .csm_workflow_builder_control_column {
+	padding: 5px;
+	}
+	
 div.modal_li
 {
     margin:15px;
@@ -980,4 +984,24 @@ div.modal_li
 	font-size: .90em;
 	line-height: 1.5em;
 	padding:10px 50px 5px 50px;
+}
+.listview_table
+{
+    width:70%;
+    border:1px solid #b7b7b7;
+}
+.listview_tr
+{
+    background-color:#fafafa;
+    border-bottom:1px solid #b7b7b7;
+}
+.listview_td
+{
+    padding:5px 0 5px 10px;
+    text-align:left;
+}
+.listview_button
+{
+    padding:5px 10px 5px 0;
+    text-align:right;
 }

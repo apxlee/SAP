@@ -13,6 +13,7 @@ namespace Apollo.AIM.SNAP.Model
         public int GroupId { get; set; }
         public string GroupName { get; set; }
         public string Description { get; set; }
+        public bool IsLargeGroup { get; set; }
         public bool IsSelected { get; set; }
         public bool IsDisabled { get; set; }
         public List<AccessApprover> AvailableApprovers { get; set; }

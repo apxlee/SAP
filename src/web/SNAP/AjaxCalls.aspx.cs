@@ -88,13 +88,20 @@ namespace Apollo.AIM.SNAP.Web
             return accessReq.CreateWorkflow(managerUserId, actorsList);
         }
 
-
         [WebMethod]
         public static bool EditWorkflow(int requestId, string managerUserId, string actorIds)
         {
             var accessReq = new AccessRequest(requestId);
             List<int> actorsList = GetActorsList(actorIds);
             return accessReq.EditWorkflow(managerUserId, actorsList);
+        }
+
+        [WebMethod]
+        public static int GetActorId(string userId, int groupId)
+        {
+            int actorId = 0;
+            actorId = ApprovalWorkflow.GetActorIdByUserIdAndGroupId(userId, groupId);
+            return actorId;
         }
 
         private static List<int> GetActorsList(string actorIds)

@@ -327,6 +327,15 @@ function editBuilder(obj, requestId) {
                   approverGroupChecked(this, requestId);
               }
           });
+        $(obj).parent().parent().find("input[type=text]").removeAttr("disabled");
+        $(obj).parent().parent().find("input[type=button]").each(function() {
+            $(this).removeAttr("disabled");
+            if ($(this).val() == "Remove") {
+                $("#_selectedActors_" + requestId).val($("#_selectedActors_" + requestId).val() + "[" + $(this).parent().prev().html() + "]");
+            }
+        });
+        $(obj).parent().parent().find("select").removeAttr("disabled");
+
         $("#closed_cancelled_" + requestId).removeAttr("disabled");
         $("#continue_workflow_" + requestId).removeAttr("disabled");
 
@@ -346,6 +355,9 @@ function disableBuilder(obj, requestId) {
                   $(this).attr("disabled", "disabled");
               }
           });
+        $(obj).parent().parent().find("input[type=text]").attr("disabled", "disabled");
+        $(obj).parent().parent().find("input[type=button]").attr("disabled", "disabled");
+        $(obj).parent().parent().find("select").attr("disabled", "disabled");
         $("#_selectedActors_" + requestId).val("");
         $("#closed_cancelled_" + requestId).attr("disabled", "disabled");
         $("#create_workflow_" + requestId).attr("disabled", "disabled");
@@ -545,7 +557,7 @@ function managerEdit(obj) {
 
         managerInputCheckButton.click(function() {
             if (managerInputUserId.val() == "") {
-                GetNames(obj,managerInputDisplayName);
+                GetNames(obj,managerInputDisplayName,"manager");
             }
             else {
                 managerInputSection.hide();
@@ -554,7 +566,7 @@ function managerEdit(obj) {
         });
     });
 }
-function GetNames(obj,name) {
+function GetNames(obj,name,section) {
     var indicator = $('.oospa_ajax_indicator');
     var selection = $('select[id$=_managerSelection]');
     var postData = "{'name':'" + name.val().replace("(", "").replace(")", "").replace(/\\/, "").replace("'", "\\'") + "'}";
@@ -571,19 +583,36 @@ function GetNames(obj,name) {
         success: function(msg) {
 
             var names = msg.d;
-            // no match                
-            if (names.length == 0) {
-                FillErrorFields(name);
-            }
+            // no match
+            if (section == "manager") {
+                if (names.length == 0) {
+                    FillManagerErrorFields(name);
+                }
 
-            // direct match
-            if (names.length == 1) {
-                FillAllFields(obj, name, names);
-            }
+                // direct match
+                if (names.length == 1) {
+                    FillManagerAllFields(obj, name, names);
+                }
 
-            // match list of names
-            if (names.length > 1) {
-                FillSelection(obj, name, names);
+                // match list of names
+                if (names.length > 1) {
+                    FillManagerSelection(obj, name, names);
+                }
+            }
+            else {
+                if (names.length == 0) {
+                    FillActorErrorFields(name);
+                }
+
+                // direct match
+                if (names.length == 1) {
+                    FillActorAllFields(obj, name, names);
+                }
+
+                // match list of names
+                if (names.length > 1) {
+                    FillActorSelection(obj, name, names);
+                }
             }
         },
 
@@ -595,7 +624,7 @@ function GetNames(obj,name) {
         }
     });
 }
-function FillAllFields(obj, name, names) {
+function FillManagerAllFields(obj, name, names) {
     var managerLabelSection = $(name).parent().prev();
     var managerLabelDispalyName = $(name).parent().prev().children("span");
     var managerInputUserId = managerLabelDispalyName.next();
@@ -608,7 +637,7 @@ function FillAllFields(obj, name, names) {
     managerLabelSection.show();
     updateManagerName(obj, names[0].Name);
 }
-function FillErrorFields(name) {
+function FillManagerErrorFields(name) {
     var managerInputDisplayName = $(name).parent().children("input[type=text]");
     var managerInputUserId = $(name).parent().prev().children("span").next();
     $("#_managerSelectionDiv").dialog("destroy");
@@ -616,7 +645,7 @@ function FillErrorFields(name) {
     managerInputUserId.val("");
     managerInputDisplayName.focus();
 }
-function FillSelection(obj, name, names) {
+function FillManagerSelection(obj, name, names) {
     var managerLabelSection = $(name).parent().prev();
     var managerLabelDispalyName = $(name).parent().prev().children("span");
     var managerInputUserId = managerLabelDispalyName.next();
@@ -651,6 +680,51 @@ function FillSelection(obj, name, names) {
     selection.show();
 
 }
+
+function FillActorAllFields(obj, name, names) {
+    var actorDisplayName = $(obj).parent().children("input[id$='_actorDisplayName']");
+    var actorUserId = $(obj).parent().children("input[id$='_actorUserId']");
+    $("#_managerSelectionDiv").dialog("destroy");
+    actorUserId.val(names[0].LoginId);
+    actorDisplayName.val(names[0].Name);
+}
+function FillActorErrorFields(name) {
+    var actorDisplayName = $(name).parent().children("input[id$='_actorDisplayName']");
+    var actorUserId = $(name).parent().children("input[id$='_actorUserId']");
+    $("#_managerSelectionDiv").dialog("destroy");
+    actorDisplayName.val("No such name! Try again");
+    actorUserId.val("");
+    actorDisplayName.focus();
+}
+function FillActorSelection(obj, name, names) {
+    var actorDisplayName = $(obj).parent().children("input[id$='_actorDisplayName']");
+    var actorUserId = $(obj).parent().children("input[id$='_actorUserId']");
+    var selection = $('select[id$=_managerSelection]');
+    var indicator = $('.oospa_ajax_indicator');
+
+    selection.change(function() {
+        actorDisplayName.val($('#' + selection.attr('id') + ' :selected').text());
+        actorUserId.val($('#' + selection.attr('id') + ' :selected').val());
+        $("#_managerSelectionDiv").dialog("destroy");
+    });
+
+    var listItems = [];
+    for (var key in names) {
+        listItems.push('<option value="' + names[key].LoginId + '">' + names[key].Name + '</option>');
+    }
+    selection.empty();
+    selection.append(listItems.join(''));
+
+    // don't over expand the dialog box
+    if (names.length >= 10)
+        selection.attr('size', 10);
+    else
+        selection.attr('size', names.length);
+
+    indicator.hide();
+    selection.show();
+}
+
 function OpenDialog(name) {
     $("#_managerSelectionDiv").dialog({
         title: 'Select User',
@@ -697,4 +771,135 @@ function ActionMessage(header, message) {
         $('#_actionMessageDiv').fadeIn().delay(2000).fadeOut();
     });
 }
+
+function ActorSelected(obj) {
+    var displayName = $(obj).parent().children("input[id$='_actorDisplayName']");
+    var userId = $(obj).parent().children("input[id$='_actorUserId']");
+    var actorId = $(obj).parent().children("input[id$='_actorActorId']");
+    var checkButton = $(obj).parent().children("button[id$='_checkActor']");
+    
+    if ($(obj).val() != "0") {
+        displayName.val($('#' + $(obj).attr('id') + ' option:selected').text());
+        actorId.val($(obj).val());
+        userId.val("");
+        checkButton.attr("disabled", "disabled");
+    }
+    else {
+        displayName.val("");
+        userId.val("");
+        actorId.val("");
+    }
+}
+
+function ActorChanged(obj) {
+    var actorDisplayName = $(obj).parent().children("input[id$='_actorDisplayName']");
+    var actorUserId = $(obj).parent().children("input[id$='_actorUserId']");
+    var actorActorId = $(obj).parent().children("input[id$='_actorActorId']");
+    var actorCheckButton = $(obj).parent().children("button[id$='_checkActor']");
+
+    actorUserId.val("");
+    actorActorId.val("");
+
+    if (actorDisplayName.val().length == 0) { actorCheckButton.attr("disabled", "disabled"); }
+    else {
+        actorCheckButton.removeAttr("disabled");
+    }
+}
+
+function ActorCheck(obj) {
+    var actorDisplayName = $(obj).parent().children("input[id$='_actorDisplayName']");
+    var actorUserId = $(obj).parent().children("input[id$='_actorUserId']");
+
+    if (actorUserId.val() == "") {
+        GetNames(obj, actorDisplayName, "actor");
+    }
+}
+
+function ActorAdd(obj,requestId) {
+    $(document).ready(function() {
+        var actorUserId = $(obj).parent().children("input[id$='_actorUserId']");
+        var actorGroupId = $(obj).parent().children("input[id$='_actorGroupId']");
+        var actorActorId = $(obj).parent().children("input[id$='_actorActorId']");
+        if (actorActorId.val() == "") {
+            var postData = "{'userId':'" + actorUserId.val() + "','groupId':'" + actorGroupId.val() + "'}";
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; character=utf-8",
+                url: "AjaxCalls.aspx/GetActorId",
+                data: postData,
+                dataType: "json",
+                success: function(msg) {
+                    if (msg.d > "0") {
+                        $("#_selectedActors_" + requestId).val($("#_selectedActors_" + requestId).val() + "[" + msg.d + "]");
+                        UpdateActorList(obj, msg.d);
+                    }
+                },
+
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert("GetNames Error: " + XMLHttpRequest);
+                    alert("GetNames Error: " + textStatus);
+                    alert("GetNames Error: " + errorThrown);
+                }
+            });
+        }
+        else {
+            $("#_selectedActors_" + requestId).val($("#_selectedActors_" + requestId).val() + "[" + actorActorId.val() + "]");
+            UpdateActorList(obj, actorActorId.val());
+        }
+    });
+}
+
+function UpdateActorList(obj, actorId) {
+    var actorDisplayName = $(obj).parent().children("input[id$='_actorDisplayName']");
+    var actorUserId = $(obj).parent().children("input[id$='_actorUserId']");
+    var actorActorId = $(obj).parent().children("input[id$='_actorActorId']");
+    var listItem;
+    var table = $('<table />').attr('class','listview_table');
+    var tbody = $('<tbody />')
+    var tableTr = $('<tr />').attr('class', 'listview_tr');
+    var tableButton = $('<td />').attr('class', 'listview_button');
+    var removeButton = $("<input type='button'>")
+    removeButton.bind('click', function() { RemoveActor(this); });
+    removeButton.val("Remove");
+    
+    if ($(obj).closest("tr").next().find("tr").html() == null) {
+        $('<td />').attr('class', 'listview_td').html(actorDisplayName.val()).appendTo(tableTr);
+        $('<td />').css('display', 'none').html(actorActorId.val()).appendTo(tableTr);
+        removeButton.appendTo(tableButton);
+        tableButton.appendTo(tableTr);
+        tableTr.appendTo(tbody)
+        tbody.appendTo(table);
+        table.appendTo($(obj).closest("tr").next().children());
+    }
+    else {
+        $('<td />').attr('class', 'listview_td').html(actorDisplayName.val()).appendTo(tableTr);
+        $('<td />').css('display', 'none').html(actorActorId.val()).appendTo(tableTr);
+        removeButton.appendTo(tableButton);
+        tableButton.appendTo(tableTr);
+        $(tableTr).insertAfter($(obj).closest("tr").next().find("tr").last());
+    }
+    
+    actorDisplayName.val('');
+    actorUserId.val('');
+    actorActorId.val('');
+    $(obj).parent().find("option").each(function() {
+        if ($(this).val() == actorId) { $(this).remove(); }
+    });
+
+}
+
+function RemoveActor(obj) {
+    var actorDisplayName = $(obj).closest("tr.listview_tr").children();
+    var actorActorId = $(obj).closest("tr.listview_tr").children().next();
+    var actorOption = $("<option value='" + actorActorId.html() + "'>");
+    actorOption.html(actorDisplayName.html());
+    actorOption.appendTo($(obj).closest("table.oospa_workflow_builder_row").find("select"));
+
+    var selectedActors = $(obj).closest("table.csm_input_form_container").next("div.csm_input_buttons_container").children().first();
+    selectedActors.val(selectedActors.val().replace("[" + actorActorId.html() + "]", ""));
+    
+    //finally remove row
+    $(obj).closest("tr.listview_tr").remove();
+}
+
 //]]>

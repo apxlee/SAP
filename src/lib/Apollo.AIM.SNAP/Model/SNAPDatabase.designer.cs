@@ -252,15 +252,6 @@ namespace Apollo.AIM.SNAP.Model
 			return ((ISingleResult<usp_open_request_tabResult>)(result.ReturnValue));
 		}
 		
-        /*
-		[Function(Name="dbo.usp_requests")]
-		public ISingleResult<usp_requestsResult> usp_requests([Parameter(DbType="NVarChar(10)")] string userId, [Parameter(DbType="NVarChar(10)")] string role)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId, role);
-			return ((ISingleResult<usp_requestsResult>)(result.ReturnValue));
-		}
-		*/
-
 		[Function(Name="dbo.udf_get_next_business_day", IsComposable=true)]
 		public System.Nullable<System.DateTime> udf_get_next_business_day([Parameter(DbType="SmallDateTime")] System.Nullable<System.DateTime> startDate, [Parameter(DbType="Int")] System.Nullable<int> numDays)
 		{
@@ -273,15 +264,6 @@ namespace Apollo.AIM.SNAP.Model
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), request_data, submittedBy, userId, userDisplayName, userTitle, managerUserId, managerDisplayName);
 			return ((int)(result.ReturnValue));
 		}
-		
-        /*
-		[Function(Name="dbo.usp_search_requests")]
-		public ISingleResult<usp_search_requestsResult> usp_search_requests([Parameter(DbType="NVarChar(100)")] string search)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), search);
-			return ((ISingleResult<usp_search_requestsResult>)(result.ReturnValue));
-		}
-         */
 		
 		[Function(Name="dbo.usp_request_details")]
 		public ISingleResult<usp_request_detailsResult> usp_request_details([Parameter(DbType="Int")] System.Nullable<int> requestId)
@@ -850,6 +832,8 @@ namespace Apollo.AIM.SNAP.Model
 		
 		private System.Nullable<bool> _isActive;
 		
+		private bool _isLargeGroup;
+		
 		private EntitySet<SNAP_Actor> _SNAP_Actors;
 		
     #region Extensibility Method Definitions
@@ -866,6 +850,8 @@ namespace Apollo.AIM.SNAP.Model
     partial void OnactorGroupTypeChanged();
     partial void OnisActiveChanging(System.Nullable<bool> value);
     partial void OnisActiveChanged();
+    partial void OnisLargeGroupChanging(bool value);
+    partial void OnisLargeGroupChanged();
     #endregion
 		
 		public SNAP_Actor_Group()
@@ -970,6 +956,26 @@ namespace Apollo.AIM.SNAP.Model
 					this._isActive = value;
 					this.SendPropertyChanged("isActive");
 					this.OnisActiveChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_isLargeGroup")]
+		public bool isLargeGroup
+		{
+			get
+			{
+				return this._isLargeGroup;
+			}
+			set
+			{
+				if ((this._isLargeGroup != value))
+				{
+					this.OnisLargeGroupChanging(value);
+					this.SendPropertyChanging();
+					this._isLargeGroup = value;
+					this.SendPropertyChanged("isLargeGroup");
+					this.OnisLargeGroupChanged();
 				}
 			}
 		}

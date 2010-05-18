@@ -18,7 +18,6 @@
 		    <asp:PlaceHolder ID="_approverGroupMemebers" runat="server" />
     		
 	    </table>
-	    <hr />
 	    <div class="csm_input_buttons_container" style="display:none;">
 		    <input type="button" value="Add New Approver Group" class="csm_html_button" onclick="alert('Create Group');"/>
 	    </div>											        

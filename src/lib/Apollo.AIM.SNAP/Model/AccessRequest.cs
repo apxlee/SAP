@@ -1078,6 +1078,7 @@ namespace Apollo.AIM.SNAP.Model
                                 UserId = sa.userId,
                                 DisplayName = sa.displayName,
                                 IsDefault = sa.isDefault,
+                                IsLargeGroup = sag.isLargeGroup,
                                 GroupId = sag.pkId,
                                 GroupName = sag.groupName,
                                 Description = sag.description,
@@ -1119,6 +1120,7 @@ namespace Apollo.AIM.SNAP.Model
                         newGroup.GroupName = approver.GroupName;
                         newGroup.Description = approver.Description;
                         newGroup.ActorGroupType = (ActorGroupType)approver.ActorGroupType;
+                        newGroup.IsLargeGroup = (bool)approver.IsLargeGroup;
                         newGroup.AvailableApprovers = approverList;
                         groupList.Add(newGroup);
                     }
@@ -1170,6 +1172,55 @@ namespace Apollo.AIM.SNAP.Model
                 catch (Exception ex)
                 {
                     Logger.Error("AccessRequest - GetAtorIdByUserId, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
+                }
+
+                return actorId;
+            }
+        }
+
+        public static int GetActorIdByUserIdAndGroupId(string userId, int groupId)
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                int actorId = 0;
+                try
+                {
+                    var query = from sa in db.SNAP_Actors
+                                join sag in db.SNAP_Actor_Groups on sa.actor_groupId equals sag.pkId
+                                where sa.userId == userId 
+                                && sag.pkId == groupId
+                                select sa.pkId;
+                    if (query.Count() > 0)
+                    {
+                        return (int)query.First();
+                    }
+                    else
+                    {
+                        ADUserDetail usrDetail = Apollo.AIM.SNAP.CA.DirectoryServices.GetUserByLoginName(userId);
+                        if (usrDetail != null)
+                        {
+                            var actorGroupId =
+                                db.SNAP_Actor_Groups.Single(g => g.pkId == groupId).pkId;
+                            db.SNAP_Actors.InsertOnSubmit(new SNAP_Actor()
+                            {
+                                displayName =
+                                    usrDetail.FirstName + " " + usrDetail.LastName,
+                                actor_groupId = actorGroupId,
+                                emailAddress = usrDetail.EmailAddress,
+                                isActive = true,
+                                isDefault = false,
+                                userId = userId
+
+                            });
+
+                            db.SubmitChanges();
+                            return GetActorIdByUserIdAndGroupId(userId,groupId);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error("AccessRequest - GetAtorIdByUserIdAndGroupId, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
                 }
 
                 return actorId;

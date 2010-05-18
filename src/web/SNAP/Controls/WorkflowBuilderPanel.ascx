@@ -34,6 +34,9 @@
 		
 		<!-- APPROVERS SECTION -->
 		<asp:PlaceHolder ID="_dynamicApproversContainer" runat="server"></asp:PlaceHolder>
+		
+		<!-- LARGER GROUP SECTION -->
+		<asp:PlaceHolder ID="_dynamicLargeGroupContainer" runat="server"></asp:PlaceHolder>
 																						
 	</table>
 	

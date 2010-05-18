@@ -258,6 +258,13 @@
     <Compile Include="Controls\ApprovingManagerView.ascx.designer.cs">
       <DependentUpon>ApprovingManagerView.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Controls\WorkflowLargeGroup.ascx.cs">
+      <DependentUpon>WorkflowLargeGroup.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\WorkflowLargeGroup.ascx.designer.cs">
+      <DependentUpon>WorkflowLargeGroup.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Controls\DefaultIncludes.ascx.cs">
       <DependentUpon>DefaultIncludes.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -453,6 +460,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AccessTeam.aspx" />
+    <Content Include="Controls\WorkflowLargeGroup.ascx" />
     <Content Include="Controls\HeaderStandalone.ascx" />
     <Content Include="database_scratch.htm" />
     <Content Include="Default.aspx" />

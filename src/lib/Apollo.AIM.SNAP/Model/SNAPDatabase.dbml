@@ -36,6 +36,7 @@
       <Column Name="description" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
       <Column Name="actorGroupType" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
       <Column Name="isActive" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Member="isLargeGroup" Type="System.Boolean" CanBeNull="false" />
       <Association Name="SNAP_Actor_Group_SNAP_Actor" Member="SNAP_Actors" ThisKey="pkId" OtherKey="actor_groupId" Type="SNAP_Actor" />
     </Type>
   </Table>
