@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ApprovingManagerPanel.ascx.cs" Inherits="Apollo.AIM.SNAP.Web.Controls.ApprovingManagerPanel" %>
-<div class="csm_text_container">
+<div class="csm_text_container csm_top5">
 	<div class="csm_icon_heading_container snap_my_approvals">
 		<h2>Approver Actions</h2>
 		<p class="">As an Approver, please review the access details above and select an appropriate action below.  Denials

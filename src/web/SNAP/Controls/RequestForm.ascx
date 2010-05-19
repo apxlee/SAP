@@ -2,7 +2,7 @@
 <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>RequestForm.js" type="text/javascript"></script>
 <script type="text/javascript"> $(document).ready(DocReady);</script>
 <style type="text/css" media="screen">
-	a.request_form_no_show {display:none;}
+	a.request_form_no_show {display:none; visibility:visible}
 </style>
 <div class="csm_container_center_700">
     
