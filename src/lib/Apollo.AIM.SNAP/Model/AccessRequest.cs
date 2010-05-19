@@ -198,7 +198,7 @@ namespace Apollo.AIM.SNAP.Model
                                                 WorkflowState.Change_Requested);
 
 					comment = comment.Replace("<br />", string.Empty); //Convert.ToDateTime(DateTime.Now).ToString("MMM d, yyyy") + "&nbsp;-&nbsp;");
-					comment += string.Format("<br /><a class='request_form_no_show' href='{0}.aspx?requestId={1}'>Edit Request Form</a>", PageNames.REQUEST_FORM, _id);
+					comment += string.Format("<span id='_{2}_request_link' class='request_form_no_show csm_hidden_span'><br /><a href='{0}.aspx?requestId={1}'>Edit Request Form</a></span>", PageNames.REQUEST_FORM, _id, req.userId);
 
                     if (result)
                     {
@@ -1459,7 +1459,7 @@ namespace Apollo.AIM.SNAP.Model
             }
 
 			comment = comment.Replace("<br />", string.Empty); //Convert.ToDateTime(DateTime.Now).ToString("MMM d, yyyy") + "&nbsp;-&nbsp;");
-			comment += string.Format("<br /><a class='request_form_no_show' href='{0}.aspx?requestId={1}'>Edit Request Form</a>", PageNames.REQUEST_FORM, req.pkId);
+			comment += string.Format("<br /><span id='_{2}_request_link' class='request_form_no_show csm_hidden_span'><br /><a href='{0}.aspx?requestId={1}'>Edit Request Form</a></span>", PageNames.REQUEST_FORM, req.pkId, req.userId);
 
 			//if (result)
 			//{
