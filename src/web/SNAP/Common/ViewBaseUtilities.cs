@@ -47,6 +47,7 @@ namespace Apollo.AIM.SNAP.Web.Common
                     if (approver.UserId == SnapSession.CurrentUser.LoginId)
                     {
                         ApproverState = (WorkflowState)ApprovalWorkflow.GetWorkflowState(ApprovalWorkflow.GetWorkflowId(approver.ActorId, requestId));
+                        if (ApproverState == WorkflowState.Pending_Approval) { break; }
                     }
                 }
 
