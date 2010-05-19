@@ -57,13 +57,10 @@ body {
 	background-color: #eaeaea !important;
 	}
 	
-.csm_template_1 .csm_hidden_block {
-	display: none;
-	}
-
-.csm_template_1 .csm_displayed_block {
-	display: block;
-	}
+.csm_template_1 .csm_hidden_block {display: none;}
+.csm_template_1 .csm_displayed_block {display: block;}
+.csm_template_1 .csm_hidden_span {display: none;}
+.csm_template_1 .csm_displayed_span {display: inline;}
 	
 .csm_template_1 .aim_dark_text {color: #696969;}
 
