@@ -50,7 +50,7 @@
             <div id="_indicatorDiv" style="display:none;text-align:center;padding-top:15px;">
                 <img alt="creating ticket..." src="images/ajax_indicator.gif" width="16" height="16" />
             </div>
-            <p>message</p>
+            <p style="margin-left:5px;margin-right:5px;">message</p>
             <div id="_closeMessageDiv" style="display:none;">
                 <input type="button" value="Close" onclick="$('#_actionMessageDiv').hide();$('#_closeMessageDiv').hide();" />
             </div>
