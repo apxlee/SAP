@@ -8,7 +8,7 @@
 			<tr>
 		        <td class="csm_workflow_builder_control_column">
 		            <asp:DropDownList ID="_dropdownActors" AutoPostBack="false" runat="server">
-		                <asp:ListItem Selected="True" Value="0">-----------------</asp:ListItem>
+		                <asp:ListItem Selected="True" Value="0">Please select...</asp:ListItem>
 		            </asp:DropDownList>
 		            <br />
 	                <input type="text" id="_actorDisplayName" runat="server" class="csm_text_input_short" />
