@@ -18,104 +18,148 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		
 		protected void Page_Load(object sender, EventArgs e)
 		{
-			DataTable workflowBladeTable = GetWorkflowBlade();
-			
 			// TODO: if there are no blades (which would be odd), then build 'no data' message
+			
+			DataTable unfilteredTrackingData = GetAllTrackingData();
 
-			DataTable filteredTable = new DataTable();
-			filteredTable.Columns.Add("workflow_actor_name", typeof(string));
-			filteredTable.Columns.Add("workflow_status", typeof(int));
-			filteredTable.Columns.Add("workflow_due_date", typeof(string));
-			filteredTable.Columns.Add("workflow_completed_date", typeof(DateTime));
-			filteredTable.Columns.Add("workflow_pkid", typeof(int));
-			filteredTable.Columns.Add("actor_group_type", typeof(int));
+			BuildAIMTracking(unfilteredTrackingData);
+			BuildManagerTracking(unfilteredTrackingData);
+			BuildTeamApprovers(unfilteredTrackingData);
+			BuildTechnicalApprovers(unfilteredTrackingData);
 
-			DataRow selectedRow;
+			DataTable filteredTrackingData = BuildEmptyTrackingBladeTable();
+
+			//DataRow selectedRow;
 
 			// Build Top AIM blades
 			//
-			try
-			{
-			selectedRow = (
-				from bladeRow in workflowBladeTable.AsEnumerable()
-				where (int)bladeRow["actor_group_type"] == (int)ActorGroupType.Workflow_Admin
-				select bladeRow).Last();
-				
-			if ((int)selectedRow["workflow_status"] == (int)WorkflowState.Workflow_Created)
-			{
-				selectedRow.SetField("workflow_status", WorkflowState.In_Workflow);
-				selectedRow.SetField("workflow_due_date", string.Empty);
-			}
 
-			if ((int)selectedRow["workflow_status"] == (int)WorkflowState.Approved)
-			{
-				selectedRow.SetField("workflow_status", WorkflowState.Pending_Provisioning);
-			}			
-
-			filteredTable.ImportRow(selectedRow);
-			}
-			catch {}
 			
 			// Build Manager blades
 			//
-			try
-			{
-			selectedRow = (
-				from bladeRow in workflowBladeTable.AsEnumerable()
-				where (int)bladeRow["actor_group_type"] == (int)ActorGroupType.Manager
-				select bladeRow).Last();
 
-			filteredTable.ImportRow(selectedRow);
-			}
-			catch {}
 			
 			// Build Team Approver blades
 			//
+
+			
+			// Build Technical Approver blades
+			//
+
+
+			//RenderWorkflowBlade(filteredTrackingData);
+		}
+
+		private void BuildAIMTracking(DataTable unfilteredTrackingData)
+		{
 			try
 			{
+				DataRow selectedRow;
+
+				selectedRow = (
+					from bladeRow in unfilteredTrackingData.AsEnumerable()
+					where (int)bladeRow["actor_group_type"] == (int)ActorGroupType.Workflow_Admin
+					select bladeRow).Last();
+
+				if ((int)selectedRow["workflow_status"] == (int)WorkflowState.Workflow_Created)
+				{
+					selectedRow.SetField("workflow_status", WorkflowState.In_Workflow);
+					selectedRow.SetField("workflow_due_date", string.Empty);
+				}
+
+				if ((int)selectedRow["workflow_status"] == (int)WorkflowState.Approved)
+				{
+					selectedRow.SetField("workflow_status", WorkflowState.Pending_Provisioning);
+				}
+
+				DataTable filteredTrackingData = BuildEmptyTrackingBladeTable();
+				filteredTrackingData.ImportRow(selectedRow);
+				RenderWorkflowBlade(filteredTrackingData);
+			}
+			catch { }
+		}
+
+		private void BuildManagerTracking(DataTable unfilteredTrackingData)
+		{
+			try
+			{
+				DataRow selectedRow;
+
+				selectedRow = (
+					from bladeRow in unfilteredTrackingData.AsEnumerable()
+					where (int)bladeRow["actor_group_type"] == (int)ActorGroupType.Manager
+					select bladeRow).Last();
+
+				//filteredTrackingData.ImportRow(selectedRow);
+
+				DataTable filteredTrackingData = BuildEmptyTrackingBladeTable();
+				filteredTrackingData.ImportRow(selectedRow);
+				RenderWorkflowBlade(filteredTrackingData);
+			}
+			catch { }
+		}
+
+		private void BuildTeamApprovers(DataTable unfilteredTrackingData)
+		{
+			try
+			{
+				DataRow selectedRow;
+
 				var distinctTeamApprovers = (
-					from bladeRow in workflowBladeTable.AsEnumerable()
+					from bladeRow in unfilteredTrackingData.AsEnumerable()
 					where (int)bladeRow["actor_group_type"] == (int)ActorGroupType.Team_Approver
 					select bladeRow["workflow_actor_name"]).Distinct();
-					
-				foreach(string teamApprover in distinctTeamApprovers)
+
+				foreach (string teamApprover in distinctTeamApprovers)
 				{
 					selectedRow = (
-						from bladeRow in workflowBladeTable.AsEnumerable()
+						from bladeRow in unfilteredTrackingData.AsEnumerable()
 						where (string)bladeRow["workflow_actor_name"] == teamApprover
 						where (int)bladeRow["actor_group_type"] == (int)ActorGroupType.Team_Approver
 						select bladeRow).Last();
 
-					filteredTable.ImportRow(selectedRow);
+					//filteredTrackingData.ImportRow(selectedRow);
+
+					DataTable filteredTrackingData = BuildEmptyTrackingBladeTable();
+					filteredTrackingData.ImportRow(selectedRow);
+					RenderWorkflowBlade(filteredTrackingData);
 				}
 			}
 			catch { }
-			
-			// Build Technical Approver blades
-			//
+		}
+
+		private void BuildTechnicalApprovers(DataTable unfilteredTrackingData)
+		{
 			try
 			{
+				DataRow selectedRow;
+
 				var distinctTechnicalApprovers = (
-					from bladeRow in workflowBladeTable.AsEnumerable()
+					from bladeRow in unfilteredTrackingData.AsEnumerable()
 					where (int)bladeRow["actor_group_type"] == (int)ActorGroupType.Technical_Approver
 					select bladeRow["workflow_actor_name"]).Distinct();
 
 				foreach (string technicalApprover in distinctTechnicalApprovers)
 				{
 					selectedRow = (
-						from bladeRow in workflowBladeTable.AsEnumerable()
+						from bladeRow in unfilteredTrackingData.AsEnumerable()
 						where (string)bladeRow["workflow_actor_name"] == technicalApprover
 						where (int)bladeRow["actor_group_type"] == (int)ActorGroupType.Technical_Approver
 						select bladeRow).Last();
 
-					filteredTable.ImportRow(selectedRow);
+					//filteredTrackingData.ImportRow(selectedRow);
+
+					DataTable filteredTrackingData = BuildEmptyTrackingBladeTable();
+					filteredTrackingData.ImportRow(selectedRow);
+					RenderWorkflowBlade(filteredTrackingData);
 				}
 			}
-			catch { }			
-			
-			
-			//foreach (DataRow workflowRow in workflowBladeTable.Rows)
-			foreach (DataRow workflowRow in filteredTable.Rows)
+			catch { }
+		}
+
+		private void RenderWorkflowBlade(DataTable filteredTrackingData)
+		{
+			foreach (DataRow workflowRow in filteredTrackingData.Rows)
 			{
 				WorkflowBlade workflowBlade;
 				workflowBlade = LoadControl("~/Controls/WorkflowBlade.ascx") as WorkflowBlade;
@@ -131,19 +175,19 @@ namespace Apollo.AIM.SNAP.Web.Controls
 				#region Blade Labels
 				Label workflowActorName = (Label)WebUtilities.FindControlRecursive(workflowBlade, "_workflowActorName");
 				workflowActorName.Text = workflowRow["workflow_actor_name"].ToString(); // + " [" + workflowRow["actor_group_type"].ToString() +"]";
-				
+
 				Label workflowStatus = (Label)WebUtilities.FindControlRecursive(workflowBlade, "_workflowStatus");
 				workflowStatus.Text = Convert.ToString((WorkflowState)Enum.Parse(typeof(WorkflowState), workflowRow["workflow_status"].ToString())).StripUnderscore();
 
 				Label workflowDueDate = (Label)WebUtilities.FindControlRecursive(workflowBlade, "_workflowDueDate");
 				workflowDueDate.Text = TestAndConvertDate(workflowRow["workflow_due_date"].ToString());
-				
+
 				Label workflowCompletedDate = (Label)WebUtilities.FindControlRecursive(workflowBlade, "_workflowCompletedDate");
 				workflowCompletedDate.Text = TestAndConvertDate(workflowRow["workflow_completed_date"].ToString());
 				#endregion
 
-                BuildBladeComments(workflowBlade, (int)workflowRow["workflow_pkid"], workflowRow["workflow_actor_name"].ToString());
-				
+				BuildBladeComments(workflowBlade, (int)workflowRow["workflow_pkid"], workflowRow["workflow_actor_name"].ToString());
+
 				this._workflowBladeContainer.Controls.Add(workflowBlade);
 			}
 		}
@@ -188,7 +232,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			}
 		}
 		
-		DataTable GetWorkflowComments(int WorkflowId, string actorName)
+		private DataTable GetWorkflowComments(int WorkflowId, string actorName)
 		{
 			// NOTE: dataset must be ordered from first to last
 			//
@@ -215,7 +259,32 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			return table;
 		}
 
-		DataTable GetWorkflowBlade()
+		private DataTable GetAllTrackingData()
+		{
+			//DataTable table = new DataTable();
+			//table.Columns.Add("workflow_actor_name", typeof(string));
+			//table.Columns.Add("workflow_status", typeof(int));
+			//table.Columns.Add("workflow_due_date", typeof(string));
+			//table.Columns.Add("workflow_completed_date", typeof(DateTime));
+			//table.Columns.Add("workflow_pkid", typeof(int));
+			//table.Columns.Add("actor_group_type", typeof(int));
+			DataTable unfilteredTrackingData = BuildEmptyTrackingBladeTable(); //new DataTable();
+			//unfilteredTrackingData = BuildEmptyTrackingBladeTable();
+
+            var wfDetails = Common.Request.WfDetails(RequestState);
+            var details = wfDetails.Where(x => x.requestId.ToString() == RequestId)
+                          .OrderByDescending(o => o.pkId).Reverse();
+
+            foreach (usp_open_my_request_workflow_detailsResult list in details)
+            {
+				unfilteredTrackingData.Rows.Add(list.displayName, Convert.ToInt32(list.workflowStatusEnum), list.dueDate, list.completedDate, list.workflowId, list.actorGroupType);
+                // why is workflowStatusEnum byte instead of int?
+            }
+
+			return unfilteredTrackingData;
+		}
+
+		private DataTable BuildEmptyTrackingBladeTable()
 		{
 			DataTable table = new DataTable();
 			table.Columns.Add("workflow_actor_name", typeof(string));
@@ -225,17 +294,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			table.Columns.Add("workflow_pkid", typeof(int));
 			table.Columns.Add("actor_group_type", typeof(int));
 
-            var wfDetails = Common.Request.WfDetails(RequestState);
-            var details = wfDetails.Where(x => x.requestId.ToString() == RequestId)
-                          .OrderByDescending(o => o.pkId).Reverse();
-
-            foreach (usp_open_my_request_workflow_detailsResult list in details)
-            {
-                table.Rows.Add(list.displayName, Convert.ToInt32(list.workflowStatusEnum), list.dueDate, list.completedDate, list.workflowId, list.actorGroupType);
-                // why is workflowStatusEnum byte instead of int?
-            }
-
 			return table;
-		}				
+		}
 	}
 }
