@@ -104,6 +104,6 @@
 	</div>
 </div>
 <script type="text/javascript">
-	try { pageTracker._trackPageview("/LoginView"); }
-	catch (err) { alert(err.toString()); }
+	try { pageTracker._trackPageview("LoginView"); }
+	catch (err) {}
 </script>

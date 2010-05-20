@@ -41,6 +41,6 @@
     </div>
 </div>
 <script type="text/javascript">
-	try { pageTracker._trackPageview("/ApprovingManagerView"); }
-	catch (err) { alert(err.toString()); }
+	try { pageTracker._trackPageview("ApprovingManagerView"); }
+	catch (err) {}
 </script>

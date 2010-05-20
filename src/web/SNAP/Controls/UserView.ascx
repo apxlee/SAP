@@ -24,6 +24,6 @@
 	//]]>
 </script>
 <script type="text/javascript">
-	try { pageTracker._trackPageview("/UserView"); }
-	catch (err) { alert(err.toString()); }
+	try { pageTracker._trackPageview("UserView"); }
+	catch (err) {}
 </script>

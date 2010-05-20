@@ -58,6 +58,6 @@
     </div>
 </div>
 <script type="text/javascript">
-	try { pageTracker._trackPageview("/AccessTeamView"); }
-	catch (err) { alert(err.toString()); }
+	try { pageTracker._trackPageview("AccessTeamView"); }
+	catch (err) {}
 </script>

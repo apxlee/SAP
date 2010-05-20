@@ -3,6 +3,6 @@
 	<img src="../images/placard_quknpainls.png" />
 </div>
 <script type="text/javascript">
-	try { pageTracker._trackPageview("/SupportView"); }
-	catch (err) { alert(err.toString()); }
+	try { pageTracker._trackPageview("SupportView"); }
+	catch (err) {}
 </script>
