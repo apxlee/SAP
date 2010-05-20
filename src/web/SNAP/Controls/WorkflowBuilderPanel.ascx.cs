@@ -101,7 +101,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
                     {
                         strGroupType = group.ActorGroupType.ToString();
                         Literal primaryLit = new Literal();
-                        primaryLit.Text = "<label>Team Approvers</label>";
+                        primaryLit.Text = "<label>Special Approvers</label>";
 
                         PlaceHolder primarySectionName;
                         primarySectionName = (PlaceHolder)WebUtilities.FindControlRecursive(primaryApprover, "_approverSectionName");
