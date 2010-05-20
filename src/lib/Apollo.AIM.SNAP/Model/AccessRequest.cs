@@ -1141,16 +1141,13 @@ namespace Apollo.AIM.SNAP.Model
                                 join sag in db.SNAP_Actor_Groups on sa.actor_groupId equals sag.pkId
                                 where sa.userId == userId && sag.actorGroupType == (byte) actorGroupType
                                 select sa.pkId;
-                    if (query.Count() > 0)
-                    {
-                        return (int) query.First();
-                    }
+                    if (query.Count() > 0) { return (int)query.First(); }
                     else
                     {
                         ADUserDetail usrDetail = Apollo.AIM.SNAP.CA.DirectoryServices.GetUserByLoginName(userId);
                         if (usrDetail != null)
                         {
-                            var actorGroupId = db.SNAP_Actor_Groups.Single(g => g.actorGroupType == (byte) actorGroupType).pkId;
+                            var actorGroupId = db.SNAP_Actor_Groups.Single(g => g.actorGroupType == (byte)actorGroupType).pkId;
                             InsertActor(userId, db, usrDetail, actorGroupId);
                             return GetActorIdByUserId(actorGroupType, userId);
                         }
@@ -1172,16 +1169,12 @@ namespace Apollo.AIM.SNAP.Model
                 int actorId = 0;
                 try
                 {
-                    var query = from sa in db.SNAP_Actors
+                    var results = from sa in db.SNAP_Actors
                                 join sag in db.SNAP_Actor_Groups on sa.actor_groupId equals sag.pkId
                                 where sa.userId == userId 
                                 && sag.pkId == groupId
                                 select sa.pkId;
-                    
-                    if (query.Count() > 0)
-                    {
-                        return (int)query.First();
-                    }
+                    if (results.Count() > 0) { return (int)results.First(); }
                     else
                     {
                         ADUserDetail usrDetail = Apollo.AIM.SNAP.CA.DirectoryServices.GetUserByLoginName(userId);
@@ -1189,7 +1182,7 @@ namespace Apollo.AIM.SNAP.Model
                         {
                             var actorGroupId = db.SNAP_Actor_Groups.Single(g => g.pkId == groupId).pkId;
                             InsertActor(userId, db, usrDetail, actorGroupId);
-                            return GetActorIdByUserIdAndGroupId(userId,groupId);
+                            return GetActorIdByUserIdAndGroupId(userId, groupId);
                         }
                     }
                 }
