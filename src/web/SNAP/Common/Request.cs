@@ -142,7 +142,7 @@ namespace Apollo.AIM.SNAP.Web.Common
             } 
         }
 
-        public static int ApprovalCount(string UserID)
+        public static int ApprovalCount(string[] userIds)
         {
             using (var db = new SNAPDatabaseDataContext())
             {
@@ -150,7 +150,7 @@ namespace Apollo.AIM.SNAP.Web.Common
                             join sw in db.SNAP_Workflows on sr.pkId equals sw.requestId
                             join sws in db.SNAP_Workflow_States on sw.pkId equals sws.workflowId
                             join sa in db.SNAP_Actors on sw.actorId equals sa.pkId
-                            where sa.userId == UserID 
+                            where userIds.Contains(sa.userId)
                             && sws.workflowStatusEnum == 7
                             && sws.completedDate == null
                             && sr.statusEnum == 2

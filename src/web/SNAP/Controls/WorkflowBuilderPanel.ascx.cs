@@ -41,7 +41,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
             
             foreach (AccessGroup group in UpdatedGroups)
             {
-                
+                isOneSelected = false;
                 foreach (AccessApprover approver in group.AvailableApprovers)
                 {
                     approverSelected = RequestApprovers.Exists(a => a.ActorId == approver.ActorId);

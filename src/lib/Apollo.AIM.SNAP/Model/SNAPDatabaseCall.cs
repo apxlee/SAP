@@ -108,7 +108,7 @@ namespace Apollo.AIM.SNAP.Model
         [ResultType(typeof(usp_open_my_request_workflow_detailsResult))]
         [ResultType(typeof(usp_open_my_request_workflow_commentsResult))]
 
-        public IMultipleResults usp_requests([Parameter(DbType = "NVarChar(10)")] string userId, [Parameter(DbType = "NVarChar(10)")] string role)
+        public IMultipleResults usp_requests([Parameter(DbType = "NVarChar(128)")] string userId, [Parameter(DbType = "NVarChar(10)")] string role)
         {
             IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId, role);
             return ((IMultipleResults)(result.ReturnValue));

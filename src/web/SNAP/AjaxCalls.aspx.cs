@@ -122,7 +122,7 @@ namespace Apollo.AIM.SNAP.Web
         [WebMethod]
         public static bool ApproverActions(int requestId, WorkflowAction action, string comments)
         {
-            var currentUsrId = SnapSession.CurrentUser.LoginId;
+            var currentUsrId = SnapSession.CurrentUser.DistributionGroup != null ? SnapSession.CurrentUser.DistributionGroup : SnapSession.CurrentUser.LoginId;
             int wfId = 0;
 
             using (var db = new SNAPDatabaseDataContext())

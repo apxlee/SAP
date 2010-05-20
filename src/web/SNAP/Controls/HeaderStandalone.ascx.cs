@@ -31,7 +31,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			//
 			List<string> linkButtons = new List<string> { };
 			string linksContainerWidth = "763";
-
+            string[] userIds;
 			if (Convert.ToBoolean(ConfigurationManager.AppSettings["SNAPMaintenanceOn"].ToString()))
 			{
 				linkButtons.AddRange(new List<string> { "Support" });
@@ -43,7 +43,11 @@ namespace Apollo.AIM.SNAP.Web.Controls
 					case Role.ApprovingManager:
 						linkButtons.AddRange(new List<string> { "RequestForm", "MyRequests", "MyApprovals", "Search", "Support" });
 						linksContainerWidth = "600";
-						PendingApprovals = MyRequest.ApprovalCount(SnapSession.CurrentUser.LoginId);
+                        ViewBaseUtilities.SetGroupMembership();
+                        userIds = SnapSession.CurrentUser.DistributionGroup !=
+                            null ? new string[] { SnapSession.CurrentUser.DistributionGroup, SnapSession.CurrentUser.LoginId }
+                            : new string[] { SnapSession.CurrentUser.LoginId };
+                        PendingApprovals = MyRequest.ApprovalCount(userIds);
 						_userNameHeader.Text = SnapSession.CurrentUser.FullName + "&nbsp;(Approving Manager)&nbsp;|&nbsp;";
 						break;
 
@@ -57,7 +61,11 @@ namespace Apollo.AIM.SNAP.Web.Controls
 					case Role.SuperUser:
 						linkButtons.AddRange(new List<string> { "RequestForm", "MyRequests", "MyApprovals", "AccessTeam", "Search", "Support" });
 						linksContainerWidth = "763";
-						PendingApprovals = MyRequest.ApprovalCount(SnapSession.CurrentUser.LoginId);
+                        ViewBaseUtilities.SetGroupMembership();
+                        userIds = SnapSession.CurrentUser.DistributionGroup !=
+                            null ? new string[] { SnapSession.CurrentUser.DistributionGroup, SnapSession.CurrentUser.LoginId }
+                            : new string[] { SnapSession.CurrentUser.LoginId };
+                        PendingApprovals = MyRequest.ApprovalCount(userIds);
 						PendingAccessTeam = MyRequest.AccessTeamCount();
 						_userNameHeader.Text = SnapSession.CurrentUser.FullName + "&nbsp;(Super User)&nbsp;|&nbsp;";
 						break;

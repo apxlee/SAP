@@ -22,6 +22,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		
 		private void BuildAccessTeamView()
 		{
+            SnapSession.CurrentUser.DistributionGroup = null;
             var requestLoader = new Common.AccessTeamRequestLoader();
             requestLoader.Load();
 

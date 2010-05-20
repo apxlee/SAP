@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Apollo.AIM.SNAP.Model;
 using Apollo.Ultimus.Web;
+using Apollo.AIM.SNAP.CA;
 using Apollo.AIM.SNAP.Web.Common;
 
 namespace Apollo.AIM.SNAP.Web
@@ -43,8 +44,8 @@ namespace Apollo.AIM.SNAP.Web
 			else
 			{
 				SnapSession.ClearCurrentUser();
-				SnapUser currentUser = new SnapUser(_networkId.Text.ToLower().Trim());  // TODO: make sure networkid is validated client-side so no nulls here
-				SnapSession.CurrentUser = currentUser;
+                SnapUser currentUser = new SnapUser(_networkId.Text.ToLower().Trim());  // TODO: make sure networkid is validated client-side so no nulls here
+                SnapSession.CurrentUser = currentUser;
 
 				string redirectConstant = SnapSession.CurrentUser.DefaultPage;
 

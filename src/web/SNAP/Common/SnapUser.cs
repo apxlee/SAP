@@ -15,6 +15,8 @@ namespace Apollo.AIM.SNAP.Web.Common
 		public string FullName { get; set; }
 		public string ManagerName { get; set; }
 		public string ManagerLoginId { get; set; }
+        public string DistributionGroup { get; set; }
+        public string[] MemberOf { get; set; }
 		public Role CurrentRole { get; set; }
 		public string DefaultPage { get; private set; }
 
@@ -28,7 +30,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 				CurrentRole = Role.SuperUser;
 			}
 			else
-			{			
+			{
 				SetRole();
 			}
 			
@@ -43,12 +45,14 @@ namespace Apollo.AIM.SNAP.Web.Common
 				FullName = userDetail.FirstName + " " + userDetail.LastName;
 				ManagerName = userDetail.ManagerName;
 				ManagerLoginId = userDetail.Manager.LoginName; // TODO: is this id? what is full name?
-			}
+                MemberOf = userDetail.MemberOf.Split(';');
+            }
 			catch (Exception ex)
 			{
 				FullName = "NOT FOUND";
 				ManagerName = "NOT FOUND";
 				ManagerLoginId = "NOT FOUND";
+                MemberOf = null;
 				// TODO: Logger.Error("SnapUser > SetADProperties", ex);
 			}
 		}
@@ -60,7 +64,6 @@ namespace Apollo.AIM.SNAP.Web.Common
 //    return;
 //#endif
 			CurrentRole = Role.Requestor;
-
 			using (var db = new SNAPDatabaseDataContext())
 			try
 			{
@@ -76,7 +79,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 					&& sag.actorGroupType == 3
 					select new { sa.pkId }).Count();
 				
-				if (approverCount > 0) { CurrentRole = Role.ApprovingManager; }
+				if (approverCount > 0 || (IsGroupMember())) { CurrentRole = Role.ApprovingManager; }
 				if (accessTeamCount > 0) { CurrentRole = Role.AccessTeam; }
 				if ((approverCount > 0) && (accessTeamCount > 0)) { CurrentRole = Role.SuperUser; }
 			}
@@ -109,5 +112,28 @@ namespace Apollo.AIM.SNAP.Web.Common
 					break;			
 			}
 		}
+
+        private bool IsGroupMember()
+        {
+            try
+            {
+                using (var db = new SNAPDatabaseDataContext())
+                {
+                    int result = db.SNAP_Actors
+                                    .Where(w => w.isGroup == true
+                                            && w.isActive == true
+                                            && MemberOf.Contains(w.userId))
+                                    .Select(s => s.pkId)
+                                    .Count();
+                    if (result > 0) { return true; }
+                    else { return false; }
+                }
+            }
+            catch (Exception ex)
+            {
+                //TODO Logger.Error("IsGroupMemeber", ex);
+            }
+            return false;
+        }
 	}
 }

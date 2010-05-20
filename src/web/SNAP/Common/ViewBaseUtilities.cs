@@ -14,7 +14,10 @@ namespace Apollo.AIM.SNAP.Web.Common
     {
         public static void BuildApproverRequests(Page page, RequestState requestState, PlaceHolder bladeContainer)
 		{
-			Page currentPage = HttpContext.Current.Handler as Page;
+            
+            string requestApprover = SnapSession.CurrentUser.DistributionGroup != null ? SnapSession.CurrentUser.DistributionGroup : SnapSession.CurrentUser.LoginId;              
+
+            Page currentPage = HttpContext.Current.Handler as Page;
             DataTable requestTable = ViewBaseUtilities.GetRequests(requestState, SnapSession.SelectedRequestId);
             WorkflowState ApproverState = WorkflowState.Not_Active;
 
@@ -30,8 +33,11 @@ namespace Apollo.AIM.SNAP.Web.Common
             Panel openNullData = new Panel();
             openNullData = (Panel)WebUtilities.FindControlRecursive(page, "_nullDataMessage_OpenRequests");
 
+            string[] userIds = SnapSession.CurrentUser.DistributionGroup !=
+                null ? new string[] { SnapSession.CurrentUser.DistributionGroup, SnapSession.CurrentUser.LoginId }
+                : new string[] { SnapSession.CurrentUser.LoginId };
+            int approvalCount = Request.ApprovalCount(userIds);
             int lastRow = 1;
-            int approvalCount = Request.ApprovalCount(SnapSession.CurrentUser.LoginId);
             bool IsLastRow = false;
 
             if (approvalCount == 0) { pendingNullData.Visible = true; }
@@ -44,7 +50,7 @@ namespace Apollo.AIM.SNAP.Web.Common
                 requestApprovers = ApprovalWorkflow.GetRequestApprovers(requestId);
                 foreach (AccessApprover approver in requestApprovers)
                 {
-                    if (approver.UserId == SnapSession.CurrentUser.LoginId)
+                    if (userIds.Contains(approver.UserId))
                     {
                         ApproverState = (WorkflowState)ApprovalWorkflow.GetWorkflowState(ApprovalWorkflow.GetWorkflowId(approver.ActorId, requestId));
                         if (ApproverState == WorkflowState.Pending_Approval) { break; }
@@ -129,6 +135,36 @@ namespace Apollo.AIM.SNAP.Web.Common
 
 			return requestTable;
 		}
+
+        public static void SetGroupMembership()
+        {
+            try
+            {
+                using (var db = new SNAPDatabaseDataContext())
+                {
+                    var result = (from sr in db.SNAP_Requests
+                                     join sw in db.SNAP_Workflows on sr.pkId equals sw.requestId
+                                     join sws in db.SNAP_Workflow_States on sw.pkId equals sws.workflowId
+                                     join sa in db.SNAP_Actors on sw.actorId equals sa.pkId
+                                     where sa.isActive == true
+                                     && sa.isGroup == true
+                                     && SnapSession.CurrentUser.MemberOf.Contains(sa.userId)
+                                     && sws.workflowStatusEnum == 7
+                                     && sws.completedDate == null
+                                     && sr.statusEnum == 2
+                                     select new { sa.userId });
+
+                    if (result.Count() > 0)
+                    {
+                        SnapSession.CurrentUser.DistributionGroup = result.First().userId;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // TODO: Logger.Error("LoginView > AuthenticateUser", ex);
+            }
+        }
 
         private static MasterRequestBlade BuildMasterBlade(DataRow request, Page page, RequestState RequestState, List<AccessGroup> AvailableGroups,bool IsPendingApproval, bool IsLastRequest)
         {

@@ -30,6 +30,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
         private void PopulateSections()
         {
+            SnapSession.CurrentUser.DistributionGroup = null;
             var searchLoader = new Common.SearchRequestLoader();
             searchLoader.searchText = _searchInput.Value;
             searchLoader.Load();

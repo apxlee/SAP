@@ -24,14 +24,28 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		
 		private void PopulateSections()
 		{
-			var requestLoader = new Common.MyApprovalLoader();
-			requestLoader.Load();
 
-            ViewBaseUtilities.BuildApproverRequests(this.Page, RequestState.Open, _pendingApprovalsContainer);
-            ViewBaseUtilities.BuildRequests(this.Page, RequestState.Closed, _closedRequestsContainer, _nullDataMessage_ClosedRequests);
+            ViewBaseUtilities.SetGroupMembership();
 
+
+            if (SnapSession.CurrentUser.DistributionGroup != null)
+            {
+                var groupRequestLoader = new Common.GroupApprovalLoader();
+                groupRequestLoader.Load();
+                ViewBaseUtilities.BuildApproverRequests(this.Page, RequestState.Open, _pendingApprovalsContainer);
+                ViewBaseUtilities.BuildRequests(this.Page, RequestState.Closed, _closedRequestsContainer, _nullDataMessage_ClosedRequests);
+            }
+            else
+            {
+                var requestLoader = new Common.MyApprovalLoader();
+                requestLoader.Load();
+                ViewBaseUtilities.BuildApproverRequests(this.Page, RequestState.Open, _pendingApprovalsContainer);
+                ViewBaseUtilities.BuildRequests(this.Page, RequestState.Closed, _closedRequestsContainer, _nullDataMessage_ClosedRequests);
+           
+            }
+           
             //only use it once then clear requestId
             SnapSession.SelectedRequestId = "";
-        }
+        } 
 	}
 }

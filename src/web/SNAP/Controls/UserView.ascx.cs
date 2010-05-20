@@ -21,6 +21,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		
 		private void BuildUserView()
 		{
+            SnapSession.CurrentUser.DistributionGroup = null;
             var requesterLoader = new Common.MyRequestLoader();
 		    requesterLoader.Load();
 

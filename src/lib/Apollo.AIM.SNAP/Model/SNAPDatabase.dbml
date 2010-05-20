@@ -36,7 +36,7 @@
       <Column Name="description" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
       <Column Name="actorGroupType" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
       <Column Name="isActive" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Member="isLargeGroup" Type="System.Boolean" CanBeNull="false" />
+      <Column Name="isLargeGroup" Type="System.Boolean" CanBeNull="false" />
       <Association Name="SNAP_Actor_Group_SNAP_Actor" Member="SNAP_Actors" ThisKey="pkId" OtherKey="actor_groupId" Type="SNAP_Actor" />
     </Type>
   </Table>
@@ -44,19 +44,6 @@
     <Type Name="SNAP_Actor_Group_Type">
       <Column Name="pkId" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="typeName" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.SNAP_Actors" Member="SNAP_Actors">
-    <Type Name="SNAP_Actor">
-      <Column Name="pkId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="actor_groupId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="userId" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
-      <Column Name="displayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="emailAddress" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="isDefault" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="isActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Association Name="SNAP_Actor_SNAP_Workflow" Member="SNAP_Workflows" ThisKey="pkId" OtherKey="actorId" Type="SNAP_Workflow" />
-      <Association Name="SNAP_Actor_Group_SNAP_Actor" Member="SNAP_Actor_Group" ThisKey="actor_groupId" OtherKey="pkId" Type="SNAP_Actor_Group" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.SNAP_Comments_Type" Member="SNAP_Comments_Types">
@@ -114,8 +101,8 @@
       <Column Name="actorId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="SNAP_Workflow_SNAP_Workflow_Comment" Member="SNAP_Workflow_Comments" ThisKey="pkId" OtherKey="workflowId" Type="SNAP_Workflow_Comment" />
       <Association Name="SNAP_Workflow_SNAP_Workflow_State" Member="SNAP_Workflow_States" ThisKey="pkId" OtherKey="workflowId" Type="SNAP_Workflow_State" />
-      <Association Name="SNAP_Actor_SNAP_Workflow" Member="SNAP_Actor" ThisKey="actorId" OtherKey="pkId" Type="SNAP_Actor" IsForeignKey="true" />
       <Association Name="SNAP_Request_SNAP_Workflow" Member="SNAP_Request" ThisKey="requestId" OtherKey="pkId" Type="SNAP_Request" IsForeignKey="true" />
+      <Association Name="SNAP_Actor_SNAP_Workflow" Member="SNAP_Actor" ThisKey="actorId" OtherKey="pkId" Type="SNAP_Actor" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.SNAP_Workflow_Comments" Member="SNAP_Workflow_Comments">
@@ -139,107 +126,23 @@
       <Association Name="SNAP_Workflow_SNAP_Workflow_State" Member="SNAP_Workflow" ThisKey="workflowId" OtherKey="pkId" Type="SNAP_Workflow" IsForeignKey="true" />
     </Type>
   </Table>
-  <Function Name="dbo.usp_open_my_request_comments" Method="usp_open_my_request_comments">
-    <Parameter Name="userId" Type="System.String" DbType="NVarChar(10)" />
-    <ElementType Name="usp_open_my_request_commentsResult">
-      <Column Name="pkId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="requestId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="commentTypeEnum" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
-      <Column Name="commentText" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="createdDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
-    </ElementType>
-  </Function>
-  <Function Name="dbo.usp_open_my_request_details" Method="usp_open_my_request_details">
-    <Parameter Name="userId" Type="System.String" DbType="NVarChar(10)" />
-    <ElementType Name="usp_open_my_request_detailsResult">
-      <Column Name="pkId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="submittedBy" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="userId" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="userDisplayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="userTitle" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="managerUserId" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="managerDisplayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="ticketNumber" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="isChanged" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="statusEnum" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
-      <Column Name="createdDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
-      <Column Name="lastModifiedDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
-    </ElementType>
-  </Function>
+  <Table Name="dbo.SNAP_Actors" Member="SNAP_Actors">
+    <Type Name="SNAP_Actor">
+      <Column Name="pkId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="actor_groupId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="userId" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="displayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="emailAddress" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="isGroup" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="isDefault" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="isActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="SNAP_Actor_SNAP_Workflow" Member="SNAP_Workflows" ThisKey="pkId" OtherKey="actorId" Type="SNAP_Workflow" />
+      <Association Name="SNAP_Actor_Group_SNAP_Actor" Member="SNAP_Actor_Group" ThisKey="actor_groupId" OtherKey="pkId" Type="SNAP_Actor_Group" IsForeignKey="true" />
+    </Type>
+  </Table>
   <Function Name="dbo.usp_open_my_request_text" Method="usp_open_my_request_text">
     <Parameter Name="userId" Type="System.String" DbType="NVarChar(10)" />
     <Return Type="System.Int32" />
-  </Function>
-  <Function Name="dbo.usp_open_my_request_workflow_comments" Method="usp_open_my_request_workflow_comments">
-    <Parameter Name="userId" Type="System.String" DbType="NVarChar(10)" />
-    <ElementType Name="usp_open_my_request_workflow_commentsResult">
-      <Column Name="requestId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="pkId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="workflowId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="commentTypeEnum" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
-      <Column Name="commentText" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="createdDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
-    </ElementType>
-  </Function>
-  <Function Name="dbo.usp_open_request_details" Method="usp_open_request_details">
-    <Parameter Name="userId" Type="System.String" DbType="NVarChar(10)" />
-    <Parameter Name="requestId" Type="System.Int32" DbType="Int" />
-    <ElementType Name="usp_open_request_detailsResult">
-      <Column Name="requestId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="submittedBy" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="userId" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="userDisplayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="userTitle" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="managerUserId" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="managerDisplayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="fieldId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="fieldLabel" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="fieldText" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="modifiedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="ticketNumber" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="isChanged" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="statusEnum" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
-      <Column Name="createdDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
-    </ElementType>
-  </Function>
-  <Function Name="dbo.usp_open_request_tab" Method="usp_open_request_tab">
-    <Parameter Name="userId" Type="System.String" DbType="NVarChar(10)" />
-    <Parameter Name="requestId" Type="System.Int32" DbType="Int" />
-    <ElementType Name="usp_open_request_tabResult">
-      <Column Name="requestId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="submittedBy" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="userId" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="userDisplayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="userTitle" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="managerUserId" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="managerDisplayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="fieldId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="fieldLabel" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="fieldText" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="modifiedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="ticketNumber" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="isChanged" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="statusEnum" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
-      <Column Name="createdDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
-    </ElementType>
-  </Function>
-  <Function Name="dbo.usp_requests" Method="usp_requests">
-    <Parameter Name="userId" Type="System.String" DbType="NVarChar(10)" />
-    <Parameter Name="role" Type="System.String" DbType="NVarChar(10)" />
-    <ElementType Name="usp_requestsResult">
-      <Column Name="pkId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="submittedBy" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="userId" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="userDisplayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="userTitle" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="managerUserId" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="managerDisplayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="ticketNumber" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="isChanged" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="statusEnum" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
-      <Column Name="createdDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
-      <Column Name="lastModifiedDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
-    </ElementType>
   </Function>
   <Function Name="dbo.udf_get_next_business_day" Method="udf_get_next_business_day" IsComposable="true">
     <Parameter Name="startDate" Type="System.DateTime" DbType="SmallDateTime" />
@@ -259,6 +162,24 @@
   <Function Name="dbo.usp_search_requests" Method="usp_search_requests">
     <Parameter Name="search" Type="System.String" DbType="NVarChar(100)" />
     <ElementType Name="usp_search_requestsResult">
+      <Column Name="pkId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="submittedBy" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="userId" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="userDisplayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="userTitle" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="managerUserId" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="managerDisplayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ticketNumber" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="isChanged" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="statusEnum" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="createdDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+      <Column Name="lastModifiedDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_requests" Method="usp_requests">
+    <Parameter Name="userId" Type="System.String" DbType="NVarChar(128)" />
+    <Parameter Name="role" Type="System.String" DbType="NVarChar(10)" />
+    <ElementType Name="usp_requestsResult">
       <Column Name="pkId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="submittedBy" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
       <Column Name="userId" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
@@ -293,8 +214,50 @@
       <Column Name="createdDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
+  <Function Name="dbo.usp_open_request_tab" Method="usp_open_request_tab">
+    <Parameter Name="userId" Type="System.String" DbType="NVarChar(128)" />
+    <Parameter Name="requestId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="usp_open_request_tabResult">
+      <Column Name="requestId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="submittedBy" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="userId" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="userDisplayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="userTitle" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="managerUserId" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="managerDisplayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="fieldId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="fieldLabel" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="fieldText" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="modifiedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ticketNumber" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="isChanged" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="statusEnum" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="createdDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_open_request_details" Method="usp_open_request_details">
+    <Parameter Name="userId" Type="System.String" DbType="NVarChar(128)" />
+    <Parameter Name="requestId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="usp_open_request_detailsResult">
+      <Column Name="requestId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="submittedBy" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="userId" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="userDisplayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="userTitle" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="managerUserId" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="managerDisplayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="fieldId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="fieldLabel" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="fieldText" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="modifiedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ticketNumber" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="isChanged" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="statusEnum" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="createdDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
   <Function Name="dbo.usp_open_my_request_workflow_details" Method="usp_open_my_request_workflow_details">
-    <Parameter Name="userId" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="userId" Type="System.String" DbType="NVarChar(128)" />
     <ElementType Name="usp_open_my_request_workflow_detailsResult">
       <Column Name="requestId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="pkId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
@@ -305,12 +268,51 @@
       <Column Name="completedDate" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
       <Column Name="pkId1" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="actor_groupId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="userId" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
-      <Column Name="displayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="emailAddress" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="userId" Type="System.String" DbType="NVarChar(128)" CanBeNull="true" />
+      <Column Name="displayName" Type="System.String" DbType="NVarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="emailAddress" Type="System.String" DbType="NVarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="isGroup" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="isDefault" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="isActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="actorGroupType" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_open_my_request_workflow_comments" Method="usp_open_my_request_workflow_comments">
+    <Parameter Name="userId" Type="System.String" DbType="NVarChar(128)" />
+    <ElementType Name="usp_open_my_request_workflow_commentsResult">
+      <Column Name="requestId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="pkId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="workflowId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="commentTypeEnum" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="commentText" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="createdDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_open_my_request_details" Method="usp_open_my_request_details">
+    <Parameter Name="userId" Type="System.String" DbType="NVarChar(128)" />
+    <ElementType Name="usp_open_my_request_detailsResult">
+      <Column Name="pkId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="submittedBy" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="userId" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="userDisplayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="userTitle" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="managerUserId" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="managerDisplayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ticketNumber" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="isChanged" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="statusEnum" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="createdDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+      <Column Name="lastModifiedDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_open_my_request_comments" Method="usp_open_my_request_comments">
+    <Parameter Name="userId" Type="System.String" DbType="NVarChar(128)" />
+    <ElementType Name="usp_open_my_request_commentsResult">
+      <Column Name="pkId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="requestId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="commentTypeEnum" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="commentText" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="createdDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
 </Database>

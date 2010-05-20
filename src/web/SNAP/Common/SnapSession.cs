@@ -28,7 +28,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 			currentPage.Session.Remove(SessionVariables.IS_USER_CREATED);
 			currentPage.Session.Remove(SessionVariables.IS_REQUEST_PREPOPULATED);
 		}
-		
+
 		public static bool IsUserCreated 
 		{
 			get

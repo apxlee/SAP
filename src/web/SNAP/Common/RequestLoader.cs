@@ -71,6 +71,17 @@ namespace Apollo.AIM.SNAP.Web.Common
         }
     }
 
+    public class GroupApprovalLoader : RequestLoader
+    {
+
+        protected override void loadData(SNAPDatabaseDataContext db, ref Dictionary<string, object> open, ref Dictionary<string, object> close, ref Dictionary<string, object> search)
+        {
+            db.GetAllRequests(SnapSession.CurrentUser.DistributionGroup, "approval");
+            open = db.OpenRquests;
+            close = db.CloseRquests;
+        }
+    }
+
     public class AccessTeamRequestLoader : RequestLoader
     {
 
