@@ -123,7 +123,7 @@ function animateActions(obj, newSection) {
                 var section = $(this);
                 if ($(this).html() == newSection) {
                     blade.fadeOut(1000, function() {
-                        //$(section).next().hide();
+                        if ($(section).next().attr("snap") == "_nullDataMessage") { $(section).next().remove(); }
                         $(this).insertAfter(section);
                         $(this).fadeIn(1000);
                     });

@@ -5,7 +5,7 @@
 	
 	<h1>Pending Approval</h1>
 	<asp:PlaceHolder ID="_pendingApprovalsContainer" runat="server"></asp:PlaceHolder>
-	<asp:Panel ID="_nullDataMessage_PendingApprovals" runat="server" CssClass="csm_content_container" Visible="false">
+	<asp:Panel ID="_nullDataMessage_PendingApprovals" snap="_nullDataMessage" runat="server" CssClass="csm_content_container" Visible="false">
 		<div class="csm_text_container">
 			<p>There are no requests Pending Approval at this time.</p>
 		</div>
@@ -13,7 +13,7 @@
 	
 	<h1>Open Requests</h1>
 	<asp:PlaceHolder ID="_openRequestsContainer" runat="server"></asp:PlaceHolder>
-	<asp:Panel ID="_nullDataMessage_OpenRequests" runat="server" CssClass="csm_content_container" Visible="false">
+	<asp:Panel ID="_nullDataMessage_OpenRequests" snap="_nullDataMessage" runat="server" CssClass="csm_content_container" Visible="false">
 		<div class="csm_text_container">
 			<p>There are no Open Requests at this time.</p>
 		</div>
@@ -21,7 +21,7 @@
 	
 	<h1>Closed Requests</h1>
 	<asp:PlaceHolder ID="_closedRequestsContainer" runat="server"></asp:PlaceHolder>
-	<asp:Panel ID="_nullDataMessage_ClosedRequests" runat="server" CssClass="csm_content_container" Visible="false">
+	<asp:Panel ID="_nullDataMessage_ClosedRequests" snap="_nullDataMessage" runat="server" CssClass="csm_content_container" Visible="false">
 		<div class="csm_text_container">
 			<p>There are no Closed Requests at this time.</p>
 		</div>
