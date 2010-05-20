@@ -1150,21 +1150,8 @@ namespace Apollo.AIM.SNAP.Model
                         ADUserDetail usrDetail = Apollo.AIM.SNAP.CA.DirectoryServices.GetUserByLoginName(userId);
                         if (usrDetail != null)
                         {
-                            var actorGroupId =
-                                db.SNAP_Actor_Groups.Single(g => g.actorGroupType == (byte) actorGroupType).pkId;
-                            db.SNAP_Actors.InsertOnSubmit(new SNAP_Actor()
-                                                              {
-                                                                  displayName =
-                                                                      usrDetail.FirstName + " " + usrDetail.LastName,
-                                                                  actor_groupId = actorGroupId,
-                                                                  emailAddress = usrDetail.EmailAddress,
-                                                                  isActive = true,
-                                                                  isDefault = false,
-                                                                  userId = userId
-
-                                                              });
-
-                            db.SubmitChanges();
+                            var actorGroupId = db.SNAP_Actor_Groups.Single(g => g.actorGroupType == (byte) actorGroupType).pkId;
+                            InsertActor(userId, db, usrDetail, actorGroupId);
                             return GetActorIdByUserId(actorGroupType, userId);
                         }
                     }
@@ -1199,21 +1186,8 @@ namespace Apollo.AIM.SNAP.Model
                         ADUserDetail usrDetail = Apollo.AIM.SNAP.CA.DirectoryServices.GetUserByLoginName(userId);
                         if (usrDetail != null)
                         {
-                            var actorGroupId =
-                                db.SNAP_Actor_Groups.Single(g => g.pkId == groupId).pkId;
-                            db.SNAP_Actors.InsertOnSubmit(new SNAP_Actor()
-                            {
-                                displayName =
-                                    usrDetail.FirstName + " " + usrDetail.LastName,
-                                actor_groupId = actorGroupId,
-                                emailAddress = usrDetail.EmailAddress,
-                                isActive = true,
-                                isDefault = false,
-                                userId = userId
-
-                            });
-
-                            db.SubmitChanges();
+                            var actorGroupId = db.SNAP_Actor_Groups.Single(g => g.pkId == groupId).pkId;
+                            InsertActor(userId, db, usrDetail, actorGroupId);
                             return GetActorIdByUserIdAndGroupId(userId,groupId);
                         }
                     }
@@ -1225,6 +1199,23 @@ namespace Apollo.AIM.SNAP.Model
 
                 return actorId;
             }
+        }
+
+        private static void InsertActor(string userId, SNAPDatabaseDataContext db, ADUserDetail usrDetail, int actorGroupId)
+        {
+            db.SNAP_Actors.InsertOnSubmit(new SNAP_Actor()
+            {
+                displayName =
+                    usrDetail.FirstName + " " + usrDetail.LastName,
+                actor_groupId = actorGroupId,
+                emailAddress = usrDetail.EmailAddress,
+                isActive = true,
+                isDefault = false,
+                userId = userId
+
+            });
+
+            db.SubmitChanges();
         }
 
         public static List<AccessApprover> GetRequestApprovers(int requestId)
