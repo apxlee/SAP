@@ -51,7 +51,8 @@ function changeDenyCancelClick(obj) {
      });
 }
 function AccessTeamActions(obj, requestId, action) {
-    var comments;
+    var comments = "";
+    var postComments = ""
     var textarea = $(obj).parent().prev().find("textarea");
     if (textarea.val() > "") { textarea.val(textarea.val().replace(/(<([^>]+)>)/ig, '')); }
     
@@ -62,19 +63,32 @@ function AccessTeamActions(obj, requestId, action) {
             break;
         case '2':
             if (textarea.val() == "") { ActionMessage("Required Input", "Please specify the change required."); return false; }
-            else { comments = "<br />" + textarea.val(); ProcessingMessage("Updating Request", ""); }
+            else 
+            {
+                postComments = textarea.val().replace("'", "\\'");
+                comments = "<br />" + textarea.val();
+                ProcessingMessage("Updating Request", ""); 
+            }
             break;
         case '3':
             if (textarea.val() == "") { ActionMessage("Required Input", "Please specify the reason for cancel."); return false; }
-            else { comments = "<br />" + textarea.val(); ProcessingMessage("Updating Request", ""); }
+            else {
+                postComments = textarea.val().replace("'", "\\'");
+                comments = "<br />" + textarea.val();
+                ProcessingMessage("Updating Request", "");
+            }
             break;
         case '1':
             if (textarea.val() == "") { ActionMessage("Required Input", "Please specify the reason for denial."); return false; }
-            else { comments = "<br />" + textarea.val(); ProcessingMessage("Updating Request", ""); }
+            else {
+                postComments = textarea.val().replace("'", "\\'");
+                comments = "<br />" + textarea.val();
+                ProcessingMessage("Updating Request", "");
+            }
             break;
     }
 
-    var postData = "{'requestId':'" + requestId.toString() + "','action':'" + action + "','comments':'" + comments + "'}";
+    var postData = "{'requestId':'" + requestId.toString() + "','action':'" + action + "','comments':'" + postComments + "'}";
     textarea.val("");
     $.ajax({
         type: "POST",
@@ -186,6 +200,7 @@ function audienceClick(obj) {
 
 function AccessComments(obj, requestId) {
     var comments = "";
+    var postComments = ""
     var newNotes = true;
     var action = $(obj).parent().prev().find("input[name=_audience]:checked").val();
     var notesFor = $(obj).parent().prev().find("input[name=_audience]:checked").next().html();
@@ -196,9 +211,10 @@ function AccessComments(obj, requestId) {
     
     if (textarea.val() != "") {
         comments = textarea.val();
+        postComments = comments.replace("'", "\\'");
         textarea.val("");
 
-        var postData = "{'requestId':'" + requestId.toString() + "','action':'" + action + "','comments':'" + comments + "'}";
+        var postData = "{'requestId':'" + requestId.toString() + "','action':'" + action + "','comments':'" + postComments + "'}";
         $.ajax({
             type: "POST",
             contentType: "application/json; character=utf-8",
