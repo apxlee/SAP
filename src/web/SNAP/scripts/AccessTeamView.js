@@ -773,21 +773,22 @@ function ActionMessage(header, message) {
 }
 
 function ActorSelected(obj) {
-    var displayName = $(obj).parent().children("input[id$='_actorDisplayName']");
-    var userId = $(obj).parent().children("input[id$='_actorUserId']");
-    var actorId = $(obj).parent().children("input[id$='_actorActorId']");
-    var checkButton = $(obj).parent().children("button[id$='_checkActor']");
+    var actorDisplayName = $(obj).parent().children("input[id$='_actorDisplayName']");
+    var actorUserId = $(obj).parent().children("input[id$='_actorUserId']");
+    var actorActorId = $(obj).parent().children("input[id$='_actorActorId']");
+    var actorCheckButton = $(obj).parent().children("input[id$='_checkActor']");
+
+    actorCheckButton.attr("disabled", "disabled");
     
     if ($(obj).val() != "0") {
-        displayName.val($('#' + $(obj).attr('id') + ' option:selected').text());
-        actorId.val($(obj).val());
-        userId.val("");
-        checkButton.attr("disabled", "disabled");
+        actorDisplayName.val($('#' + $(obj).attr('id') + ' option:selected').text());
+        actorActorId.val($(obj).val());
+        actorUserId.val("");
     }
     else {
-        displayName.val("");
-        userId.val("");
-        actorId.val("");
+        actorDisplayName.val("");
+        actorUserId.val("");
+        actorActorId.val("");
     }
 }
 
@@ -795,7 +796,7 @@ function ActorChanged(obj) {
     var actorDisplayName = $(obj).parent().children("input[id$='_actorDisplayName']");
     var actorUserId = $(obj).parent().children("input[id$='_actorUserId']");
     var actorActorId = $(obj).parent().children("input[id$='_actorActorId']");
-    var actorCheckButton = $(obj).parent().children("button[id$='_checkActor']");
+    var actorCheckButton = $(obj).parent().children("input[id$='_checkActor']");
 
     actorUserId.val("");
     actorActorId.val("");
