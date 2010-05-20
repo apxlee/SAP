@@ -120,8 +120,8 @@ namespace Apollo.AIM.SNAP.Web.Controls
 						, comment["comment"].ToString());
 				}
 
+				if (filteredRows.Count() > 0) { _accessNotesContainer.Visible = true; }
 				_accessNotes.Text = accessComments.ToString();
-				_accessNotesContainer.Visible = true;
 			}
 		}
 		
