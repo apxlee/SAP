@@ -1177,6 +1177,7 @@ namespace Apollo.AIM.SNAP.Model
                                 where sa.userId == userId 
                                 && sag.pkId == groupId
                                 select sa.pkId;
+                    
                     if (query.Count() > 0)
                     {
                         return (int)query.First();
