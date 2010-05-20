@@ -525,7 +525,7 @@ namespace Apollo.AIM.SNAP.Model
 
                     if (result)
                     {
-                        /*
+                        
                         var changeRequest = new ServiceDesk.ChangeRequest(Apollo.ServiceDesk.SDConfig.Instance.Login, Apollo.ServiceDesk.SDConfig.Instance.Password);
 
                         changeRequest.CategoryName = "Server.Systems.Privileged Access";
@@ -538,10 +538,10 @@ namespace Apollo.AIM.SNAP.Model
                         req.ticketNumber = changeRequest.Number;
                         var handler = changeRequest.Handle.Split(':')[1]; // chg:12345
                         var sdlink = ConfigurationManager.AppSettings["SDLink"] + handler;
-                        */
+                        /*
                         req.ticketNumber = "123456";
                         var sdlink = "";
-                        
+                        */
                         addAccessTeamComment(accessTeamWF,
                                              string.Format(
                                                  "Due Date: {0} | Service Desk Ticket: <a href=\"" + sdlink +
@@ -552,7 +552,7 @@ namespace Apollo.AIM.SNAP.Model
             }
             catch (Exception ex)
             {
-                Logger.Error("SNAP - AccessRequst: Create Service Desk Ticket", ex);
+                //Logger.Error("SNAP - AccessRequst: Create Service Desk Ticket", ex);
                 result = false;
             }
             return result;

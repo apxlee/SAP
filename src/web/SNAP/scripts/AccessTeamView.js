@@ -388,6 +388,7 @@ function disableBuilder(obj, requestId) {
 function builderActions(obj, requestId, state) {
 
     var postData = "{'requestId':'" + requestId.toString() + "','action':'" + state + "'}";
+
     $.ajax({
         type: "POST",
         contentType: "application/json; character=utf-8",
@@ -427,7 +428,7 @@ function builderActions(obj, requestId, state) {
                     $('#_indicatorDiv').hide();
                     $('#_closeMessageDiv').show();
                     $('div.messageBox').children("h2").html("Ticket Creation Failed");
-                    $('div.messageBox').children("p").html("Please try again or create the ticket manually.<br /> If manual, please add the ticket number within the comments section.");
+                    $('div.messageBox').children("p").html("Please try again or create the ticket manually.(add the ticket number within the comments section)");
                     $("#closed_completed_" + requestId).removeAttr("disabled");
                 }
                 else {
