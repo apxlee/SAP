@@ -682,10 +682,38 @@ namespace Apollo.AIM.SNAP.Model
                 {
                     var requestTexts = db.RetrieveRequestUserText(_id);
 
+                    //foreach (var text in requestTexts)
+                    //{
+                    //    sb.AppendLine(text.userText);
+                    //    sb.AppendLine("");
+                    //}
+                    int i = 0;
                     foreach (var text in requestTexts)
                     {
-                        sb.AppendLine(text.userText);
-                        sb.AppendLine("");
+                        if (text.userText != "")
+                        {
+                            if (i != 0) { sb.AppendLine("-------------------------------------------------------"); }
+                            sb.AppendLine("");
+                            sb.AppendLine(text.SNAP_Access_Details_Form.label);
+                            sb.AppendLine("");
+                            sb.AppendLine(text.userText);
+                            sb.AppendLine("");
+                            i++;
+                        }
+                        else
+                        {
+                            if (i != 0) { sb.AppendLine("-------------------------------------------------------"); }
+                            sb.AppendLine("");
+                            sb.AppendLine(text.SNAP_Access_Details_Form.label);
+                            sb.AppendLine("");
+                            sb.AppendLine("EMPTY");
+                            sb.AppendLine("");
+                            i++;
+                        }
+                        if (i == requestTexts.Count())
+                        {
+                            sb.AppendLine("-------------------------------------------------------");
+                        }
                     }
                 }
 
