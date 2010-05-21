@@ -241,7 +241,7 @@ function AccessComments(obj, requestId) {
                         if ($(this).children().children().html() == "Access Notes:") {
                             var accessNotes = "<p><u>" + curr_date + "&nbsp;for&nbsp;" +
 				            notesFor + "</u><br />" + comments + "</p>";
-                            $(accessNotes).insertAfter($(this).children().next().children());
+                            $(accessNotes).insertAfter($(this).children().next().children().last());
                             newNotes = false;
                         }
                     });
