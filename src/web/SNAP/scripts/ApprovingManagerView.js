@@ -72,7 +72,7 @@ function ApproverActions(obj, requestId, action) {
                         $('#_indicatorDiv').hide();
                         ActionMessage("Change Requested", "You have just requested a change.");
                         updateRequestTracking(obj, approverName, "Change Requested");
-                        addComments(obj, approverName, "Change Requested", comments);
+                        addComments(obj, approverName, "Change Requested", comments, false);
                         animateActions(obj, "Open Requests");
                         $(obj).closest("div.csm_content_container").find("tr.csm_stacked_heading_label").children().each(function() {
                             if ($(this).next().children().html() == "Pending") {
@@ -84,7 +84,7 @@ function ApproverActions(obj, requestId, action) {
                         $('#_indicatorDiv').hide();
                         ActionMessage("Closed Denied", "You have just denied this request.");
                         updateRequestTracking(obj, approverName, "Closed Denied");
-                        addComments(obj, approverName, "Closed Denied", comments);
+                        addComments(obj, approverName, "Closed Denied", comments, false);
                         animateActions(obj, "Closed Requests");
                         $(obj).closest("div.csm_content_container").find("tr.csm_stacked_heading_label").children().each(function() {
                             if ($(this).next().children().html() == "Pending") {
@@ -115,10 +115,8 @@ function updateRequestTracking(obj, approverName, newStatus) {
         function() {
             if ($(this).attr("id").indexOf("_workflowActorName") > -1) {
                 if ($(this).html() == approverName) {
-                    if ($(this).parent().next().next().next().children().html() == "-") {
-                        $(this).parent().next().children().html(newStatus);
-                        $(this).parent().next().next().next().children().html("<span>" + curr_date + "</span>")
-                    }
+                    $(this).parent().next().children().html(newStatus);
+                    $(this).parent().next().next().next().children().html("<span>" + curr_date + "</span>");
                 }
             }
         });
@@ -149,7 +147,7 @@ function openNext(obj) {
         });
     });
 }
-function addComments(obj, approverName, action, comments) {
+function addComments(obj, approverName, action, comments, includeDate) {
     var newcomment = "";
     $(obj).closest("div.csm_hidden_block").children().find("span").each(function() {
         if ($(this).attr("id").indexOf("_workflowActorName") > -1) {
@@ -157,14 +155,16 @@ function addComments(obj, approverName, action, comments) {
                 var commentsContainer = $(this).closest("div.csm_data_row").parent().find("div.csm_text_container_nodrop");
                 if (commentsContainer.html() == null) {
                     newcomment = "<div class='csm_text_container_nodrop'><p><u>"
-                    + action + " by AIM on " + curr_date + "</u>" + comments + "<br />" +
-                    "Due Date: " + $(this).parent().next().next().children().html() + "</p></div>";
+                    + action + " by AIM on " + curr_date + "</u>" + comments;
+                    if (includeDate) { newcomment += "<br />Due Date: " + $(this).parent().next().next().children().html(); }
+                    newcomment += "</p></div>";
                     $(newcomment).appendTo($(this).closest("div.csm_data_row").parent());
                 }
                 else {
                     newcomment = "<p><u>"
-                    + action + " by AIM on " + curr_date + "</u>" + comments + "<br />" +
-                    "Due Date: " + $(this).parent().next().next().children().html() + "</p>"
+                    + action + " by AIM on " + curr_date + "</u>" + comments;
+                    if (includeDate) { newcomment += "<br />Due Date: " + $(this).parent().next().next().children().html(); }
+                    newcomment += "</p>";
                     $(newcomment).appendTo(commentsContainer);
                 }
 

@@ -108,7 +108,7 @@ function AccessTeamActions(obj, requestId, action) {
                             $(this).removeAttr("disabled");
                         });
                         $("#create_workflow_" + requestId).removeAttr("disabled");
-                        addComments(obj, "Access &amp; Identity Management", "Acknowledged", "");
+                        addComments(obj, "Access &amp; Identity Management", "Acknowledged", "", true);
                         editBuilder($("#closed_cancelled_" + requestId), requestId);
                         $(obj).closest("div.csm_content_container").find("tr.csm_stacked_heading_label").children().each(function() {
                             if ($(this).next().children().html() == "Open") {
@@ -126,14 +126,14 @@ function AccessTeamActions(obj, requestId, action) {
                         ActionMessage("Change Requested", "You have just requested a change.");
                         updateRequestTracking(obj, "Access &amp; Identity Management", "Change Requested");
                         disableBladeActions(obj);
-                        addComments(obj, "Access &amp; Identity Management", "Change Requested", comments);
+                        addComments(obj, "Access &amp; Identity Management", "Change Requested", comments, false);
                         break;
                     case '3':
                         $('#_indicatorDiv').hide();
                         ActionMessage("Closed Cancelled", "You have just closed this request with this cancellation.");
                         updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Cancelled");
                         disableBladeActions(obj);
-                        addComments(obj, "Access &amp; Identity Management", "Closed Cancelled", comments);
+                        addComments(obj, "Access &amp; Identity Management", "Closed Cancelled", comments, false);
                         animateActions(obj, "Closed Requests");
                         hideSections(obj);
                         updateRequestStatus(obj);
@@ -143,7 +143,7 @@ function AccessTeamActions(obj, requestId, action) {
                         ActionMessage("Closed Denied", "You have just closed this request with this denial.");
                         updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Denied");
                         disableBladeActions(obj);
-                        addComments(obj, "Access &amp; Identity Management", "Closed Denied", comments);
+                        addComments(obj, "Access &amp; Identity Management", "Closed Denied", comments, false);
                         animateActions(obj, "Closed Requests");
                         hideSections(obj);
                         updateRequestStatus(obj);
@@ -170,7 +170,7 @@ function disableBladeActions(obj) {
         $(this).attr("disabled", "disabled");
     });
 }
-function addComments(obj, approverName, action, comments) {
+function addComments(obj, approverName, action, comments, includeDate) {
     var newcomment = "";
     $(obj).closest("div.csm_hidden_block").children().find("span").each(function() {
         if ($(this).attr("id").indexOf("_workflowActorName") > -1) {
@@ -178,14 +178,16 @@ function addComments(obj, approverName, action, comments) {
                 var commentsContainer = $(this).closest("div.csm_data_row").parent().find("div.csm_text_container_nodrop");
                 if (commentsContainer.html() == null) {
                     newcomment = "<div class='csm_text_container_nodrop'><p><u>"
-                    + action + " by AIM on " + curr_date + "</u>" + comments + "<br />" +
-                    "Due Date: " + $(this).parent().next().next().children().html() + "</p></div>";
+                    + action + " by AIM on " + curr_date + "</u>" + comments;
+                        if (includeDate) { newcomment += "<br />Due Date: " + $(this).parent().next().next().children().html(); }
+                    newcomment += "</p></div>";
                     $(newcomment).appendTo($(this).closest("div.csm_data_row").parent());
                 }
                 else {
                     newcomment = "<p><u>"
-                    + action + " by AIM on " + curr_date + "</u>" + comments + "<br />" +
-                    "Due Date: " + $(this).parent().next().next().children().html() + "</p>"
+                    + action + " by AIM on " + curr_date + "</u>" + comments;
+                    if (includeDate) { newcomment += "<br />Due Date: " + $(this).parent().next().next().children().html(); }
+                    newcomment += "</p>";
                     $(newcomment).appendTo(commentsContainer);
                 }
 
@@ -453,7 +455,7 @@ function updateRequestTracking(obj, approverName, newStatus) {
             if ($(this).attr("id").indexOf("_workflowActorName") > -1) {
                 if ($(this).html() == approverName) {
                     $(this).parent().next().children().html(newStatus);
-                    $(this).parent().next().next().next().children().html("<span>" + curr_date + "</span>")
+                    $(this).parent().next().next().next().children().html("<span>" + curr_date + "</span>");
                 }
             }
         });
