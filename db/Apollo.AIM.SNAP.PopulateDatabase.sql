@@ -67,7 +67,7 @@ print ''
 print 'Owners'
 --//Insert Owners Group
 INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actor_Group]([groupName],[description],[actorGroupType],[isLargeGroup],[isActive])
-VALUES('Owners',NULL,1,1,1)
+VALUES('Owners','This section allows you to add service and application owners as ''shotgun'' actors.',1,1,1)
 select @group_id = scope_identity();
 
 --//Insert Owners Members
