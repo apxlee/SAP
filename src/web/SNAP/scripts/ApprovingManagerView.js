@@ -123,7 +123,7 @@ function updateCount() {
 function updateRequestTracking(obj, approverName, newStatus) {
     $(obj).closest("div.csm_hidden_block").children().find("span").each(
         function() {
-            if ($(this).attr("id").indexOf("_workflowActorName") > -1) {
+            if ($(this).attr("snap") == "_actorDisplayName") {
                 if ($(this).html() == approverName) {
                     $(this).parent().next().children().html(newStatus);
                     $(this).parent().next().next().next().children().html("<span>" + curr_date + "</span>");
@@ -159,8 +159,9 @@ function openNext(obj) {
 }
 function addComments(obj, approverName, action, comments, includeDate) {
     var newcomment = "";
-    $(obj).closest("div.csm_hidden_block").children().find("span").each(function() {
-        if ($(this).attr("id").indexOf("_workflowActorName") > -1) {
+    $(obj).closest("div.csm_hidden_block").children().find("span").each(
+        function() {
+            if ($(this).attr("snap") == "_actorDisplayName") {
             if ($(this).html() == approverName) {
                 var commentsContainer = $(this).closest("div.csm_data_row").parent().find("div.csm_text_container_nodrop");
                 if (commentsContainer.html() == null) {

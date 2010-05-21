@@ -182,28 +182,29 @@ function disableBladeActions(obj) {
 }
 function addComments(obj, approverName, action, comments, includeDate) {
     var newcomment = "";
-    $(obj).closest("div.csm_hidden_block").children().find("span").each(function() {
-        if ($(this).attr("id").indexOf("_workflowActorName") > -1) {
-            if ($(this).html() == approverName) {
-                var commentsContainer = $(this).closest("div.csm_data_row").parent().find("div.csm_text_container_nodrop");
-                if (commentsContainer.html() == null) {
-                    newcomment = "<div class='csm_text_container_nodrop'><p><u>"
-                    + action + " by AIM on " + curr_date + "</u>" + comments;
+    $(obj).closest("div.csm_hidden_block").children().find("span").each(
+        function() {
+            if ($(this).attr("snap") == "_actorDisplayName") {
+                if ($(this).html() == approverName) {
+                    var commentsContainer = $(this).closest("div.csm_data_row").parent().find("div.csm_text_container_nodrop");
+                    if (commentsContainer.html() == null) {
+                        newcomment = "<div class='csm_text_container_nodrop'><p><u>"
+                        + action + " by AIM on " + curr_date + "</u>" + comments;
+                            if (includeDate) { newcomment += "<br />Due Date: " + $(this).parent().next().next().children().html(); }
+                        newcomment += "</p></div>";
+                        $(newcomment).appendTo($(this).closest("div.csm_data_row").parent());
+                    }
+                    else {
+                        newcomment = "<p><u>"
+                        + action + " by AIM on " + curr_date + "</u>" + comments;
                         if (includeDate) { newcomment += "<br />Due Date: " + $(this).parent().next().next().children().html(); }
-                    newcomment += "</p></div>";
-                    $(newcomment).appendTo($(this).closest("div.csm_data_row").parent());
-                }
-                else {
-                    newcomment = "<p><u>"
-                    + action + " by AIM on " + curr_date + "</u>" + comments;
-                    if (includeDate) { newcomment += "<br />Due Date: " + $(this).parent().next().next().children().html(); }
-                    newcomment += "</p>";
-                    $(newcomment).appendTo(commentsContainer);
-                }
+                        newcomment += "</p>";
+                        $(newcomment).appendTo(commentsContainer);
+                    }
 
+                }
             }
-        }
-    });
+        });
 
 }
 function audienceClick(obj) {
@@ -464,7 +465,7 @@ function builderActions(obj, requestId, state) {
 function updateRequestTracking(obj, approverName, newStatus) {
     $(obj).closest("div.csm_hidden_block").children().find("span").each(
         function() {
-            if ($(this).attr("id").indexOf("_workflowActorName") > -1) {
+            if ($(this).attr("snap") == "_actorDisplayName") {
                 if ($(this).html() == approverName) {
                     $(this).parent().next().children().html(newStatus);
                     $(this).parent().next().next().next().children().html("<span>" + curr_date + "</span>");
