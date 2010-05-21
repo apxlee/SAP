@@ -67,6 +67,7 @@ function ApproverActions(obj, requestId, action) {
                         updateRequestTracking(obj, approverName, "Approved");
                         animateActions(obj, "Open Requests");
                         if ($(obj).attr("id").indexOf("_approveAndMoveNext") > -1) { openNext(obj); }
+                        updateCount();
                         break;
                     case '2':
                         $('#_indicatorDiv').hide();
@@ -79,6 +80,7 @@ function ApproverActions(obj, requestId, action) {
                                 $(this).next().children().html("Change Requested");
                             }
                         });
+                        updateCount();
                         break;
                     case '1':
                         $('#_indicatorDiv').hide();
@@ -91,6 +93,7 @@ function ApproverActions(obj, requestId, action) {
                                 $(this).next().children().html("Closed");
                             }
                         });
+                        updateCount();
                         break;
                 }
             }
@@ -109,6 +112,13 @@ function ApproverActions(obj, requestId, action) {
         }
     });
 
+}
+function updateCount() {
+    $("span").each(function() {
+        if ($(this).attr("snap") == "_approvalCount") {
+            $(this).html((parseInt($(this).html()) - 1).toString());
+        }
+    });
 }
 function updateRequestTracking(obj, approverName, newStatus) {
     $(obj).closest("div.csm_hidden_block").children().find("span").each(

@@ -106,12 +106,12 @@ namespace Apollo.AIM.SNAP.Web.Controls
 				switch (link_name)
 				{
 					case "MyApprovals":
-						link.Text = "<span>" + PendingApprovals.ToString() + "</span>";
+						link.Text = "<span snap='_approvalCount'>" + PendingApprovals.ToString() + "</span>";
 						link.CssClass = (PendingApprovals < 10) ? "snap_approvals_text_one_digit" : "snap_approvals_text_two_digits";
 						break;
 
 					case "AccessTeam":
-						link.Text = "<span>" + PendingAccessTeam.ToString() + "</span>";
+                        link.Text = "<span snap='_accessTeamCount'>" + PendingAccessTeam.ToString() + "</span>";
 						link.CssClass = (PendingAccessTeam < 10) ? "snap_aim_text_one_digit" : "snap_aim_text_two_digits";
 						break;
 

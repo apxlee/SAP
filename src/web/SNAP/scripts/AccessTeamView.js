@@ -127,6 +127,7 @@ function AccessTeamActions(obj, requestId, action) {
                         updateRequestTracking(obj, "Access &amp; Identity Management", "Change Requested");
                         disableBladeActions(obj);
                         addComments(obj, "Access &amp; Identity Management", "Change Requested", comments, false);
+                        updateCount();
                         break;
                     case '3':
                         $('#_indicatorDiv').hide();
@@ -137,6 +138,7 @@ function AccessTeamActions(obj, requestId, action) {
                         animateActions(obj, "Closed Requests");
                         hideSections(obj);
                         updateRequestStatus(obj);
+                        updateCount();
                         break;
                     case '1':
                         $('#_indicatorDiv').hide();
@@ -147,6 +149,7 @@ function AccessTeamActions(obj, requestId, action) {
                         animateActions(obj, "Closed Requests");
                         hideSections(obj);
                         updateRequestStatus(obj);
+                        updateCount();
                         break;
                 }
             }
@@ -162,6 +165,13 @@ function AccessTeamActions(obj, requestId, action) {
             alert("AccessTeamAction Error: " + XMLHttpRequest);
             alert("AccessTeamAction Error: " + textStatus);
             alert("AccessTeamAction Error: " + errorThrown);
+        }
+    });
+}
+function updateCount() {
+    $("span").each(function() {
+        if ($(this).attr("snap") == "_accessTeamCount") {
+            $(this).html((parseInt($(this).html()) - 1).toString());
         }
     });
 }
@@ -407,6 +417,7 @@ function builderActions(obj, requestId, state) {
                         animateActions(obj, "Closed Requests");
                         hideSections(obj);
                         updateRequestStatus(obj);
+                        updateCount();
                         break;
                     case "6":
                         $('#_indicatorDiv').hide();
@@ -415,6 +426,7 @@ function builderActions(obj, requestId, state) {
                         animateActions(obj, "Closed Requests");
                         hideSections(obj);
                         updateRequestStatus(obj);
+                        updateCount();
                         break;
                     case "5":
                         $('#_indicatorDiv').hide();
