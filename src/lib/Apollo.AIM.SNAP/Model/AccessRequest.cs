@@ -1358,7 +1358,7 @@ namespace Apollo.AIM.SNAP.Model
             else
             {
                 // we may or may not have team approver in the wf, if we do make sure all team approvers are approved
-                var done = false;
+                var done = true;
 
                 foreach (var wf in wfs)
                 {
@@ -1376,14 +1376,14 @@ namespace Apollo.AIM.SNAP.Model
                 }
 
                 // now check technical approvers
-                wfs = accessReq.FindApprovalTypeWF(db, (byte) ActorApprovalType.Technical_Approver);
+                //wfs = accessReq.FindApprovalTypeWF(db, (byte) ActorApprovalType.Technical_Approver);
                 var totalApproved = 0;
                 var state =
                     accessTeamWF.SNAP_Workflow_States.Single(
                         s => s.workflowStatusEnum == (byte) WorkflowState.Workflow_Created
                              && s.completedDate == null); // get lastest 'worflow created' for the workflowadmin state
 
-                foreach (var w in wfs)
+                foreach (var w in wfs2)
                 {
                     var cnt = w.SNAP_Workflow_States.Count(
                         s => s.workflowStatusEnum == (byte) WorkflowState.Approved
@@ -1394,7 +1394,7 @@ namespace Apollo.AIM.SNAP.Model
                     totalApproved += cnt;
                 }
 
-                if (totalApproved == wfs.Count && done)
+                if (totalApproved == wfs2.Count && done)
                 {
                     AccessRequest.stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF,
                                                   WorkflowState.Workflow_Created, WorkflowState.Approved);
