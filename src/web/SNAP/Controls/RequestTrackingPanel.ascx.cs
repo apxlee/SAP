@@ -26,8 +26,6 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			BuildManagerTracking(unfilteredTrackingData);
 			BuildTeamApprovers(unfilteredTrackingData);
 			BuildTechnicalApprovers(unfilteredTrackingData);
-
-			//DataTable filteredTrackingData = BuildEmptyTrackingBladeTable();
 		}
 
 		private void BuildAIMTracking(DataTable unfilteredTrackingData)
@@ -131,6 +129,14 @@ namespace Apollo.AIM.SNAP.Web.Controls
 					where (int)bladeRow["actor_group_type"] == (int)ActorGroupType.Technical_Approver
 					select bladeRow["workflow_actor_name"]).Distinct();
 
+				if (distinctTechnicalApprovers.Count() > 0)
+				{
+					WorkflowBladeSectionHeading sectionHeading;
+					sectionHeading = LoadControl("~/Controls/WorkflowBladeSectionHeading.ascx") as WorkflowBladeSectionHeading;
+					sectionHeading.HeadingLabel = "Technical Approvers";
+					this._workflowBladeContainer.Controls.Add(sectionHeading);					
+				}
+
 				foreach (string technicalApprover in distinctTechnicalApprovers)
 				{
 					selectedRow = (
@@ -143,11 +149,6 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
 					DataTable filteredTrackingData = BuildEmptyTrackingBladeTable();
 					filteredTrackingData.ImportRow(selectedRow);
-
-					WorkflowBladeSectionHeading sectionHeading;
-					sectionHeading = LoadControl("~/Controls/WorkflowBladeSectionHeading.ascx") as WorkflowBladeSectionHeading;
-					sectionHeading.HeadingLabel = "Technical Approvers";
-					this._workflowBladeContainer.Controls.Add(sectionHeading);
 
 					RenderWorkflowBlade(filteredTrackingData);
 				}
