@@ -15,29 +15,36 @@ namespace Apollo.AIM.SNAP.Web.Controls
 	{
 		public string RequestId { get; set; }
         public RequestState RequestState { get; set; }
+        private DataTable _unfilteredTrackingData;
 		
 		protected void Page_Load(object sender, EventArgs e)
 		{
-			// TODO: if there are no blades (which would be odd), then build 'no data' message
+			_unfilteredTrackingData = GetAllTrackingData();
 			
-			DataTable unfilteredTrackingData = GetAllTrackingData();
-
-			BuildAIMTracking(unfilteredTrackingData);
-			BuildManagerTracking(unfilteredTrackingData);
-			BuildTeamApprovers(unfilteredTrackingData);
-			BuildTechnicalApprovers(unfilteredTrackingData);
+			if (_unfilteredTrackingData.Rows.Count > 0)
+			{
+				BuildAIMTracking();
+				BuildManagerTracking();
+				BuildTeamApprovers();
+				BuildTechnicalApprovers();
+			}
+			else
+			{
+				_nullDataMessage_NoWorkflows.Visible = true;
+			}
 		}
 		
-
-
-		private void BuildAIMTracking(DataTable unfilteredTrackingData)
+		#region Tracking Groups
+		
+		private void BuildAIMTracking()
 		{
 			try
 			{
+				DataTable filteredTrackingData = BuildEmptyTrackingBladeTable();
 				DataRow selectedRow;
 
 				selectedRow = (
-					from bladeRow in unfilteredTrackingData.AsEnumerable()
+					from bladeRow in _unfilteredTrackingData.AsEnumerable()
 					where (int)bladeRow["actor_group_type"] == (int)ActorGroupType.Workflow_Admin
 					select bladeRow).Last();
 
@@ -46,50 +53,46 @@ namespace Apollo.AIM.SNAP.Web.Controls
 					selectedRow.SetField("workflow_status", WorkflowState.In_Workflow);
 					selectedRow.SetField("workflow_due_date", string.Empty);
 				}
-
-				if ((int)selectedRow["workflow_status"] == (int)WorkflowState.Approved)
+				else if ((int)selectedRow["workflow_status"] == (int)WorkflowState.Approved)
 				{
 					selectedRow.SetField("workflow_status", WorkflowState.Pending_Provisioning);
 				}
-
-				RenderSectionHeading("Access & Identity Management");
-
-				DataTable filteredTrackingData = BuildEmptyTrackingBladeTable();
+				
 				filteredTrackingData.ImportRow(selectedRow);
+				
+				RenderSectionHeading("Access & Identity Management");
 				RenderWorkflowBlade(filteredTrackingData);
 			}
 			catch { }
 		}
 
-		private void BuildManagerTracking(DataTable unfilteredTrackingData)
+		private void BuildManagerTracking()
 		{
 			try
 			{
+				DataTable filteredTrackingData = BuildEmptyTrackingBladeTable();
 				DataRow selectedRow;
 
 				selectedRow = (
-					from bladeRow in unfilteredTrackingData.AsEnumerable()
+					from bladeRow in _unfilteredTrackingData.AsEnumerable()
 					where (int)bladeRow["actor_group_type"] == (int)ActorGroupType.Manager
 					select bladeRow).Last();
-
-				DataTable filteredTrackingData = BuildEmptyTrackingBladeTable();
 				filteredTrackingData.ImportRow(selectedRow);
 
 				RenderSectionHeading("Affected End User's Manager");
-
 				RenderWorkflowBlade(filteredTrackingData);
 			}
 			catch { }
 		}
 
-		private void BuildTeamApprovers(DataTable unfilteredTrackingData)
+		private void BuildTeamApprovers()
 		{
 			try
 			{
 				DataRow selectedRow;
 
 				var distinctTeamApprovers = (
-					from bladeRow in unfilteredTrackingData.AsEnumerable()
+					from bladeRow in _unfilteredTrackingData.AsEnumerable()
 					where (int)bladeRow["actor_group_type"] == (int)ActorGroupType.Team_Approver
 					select bladeRow["workflow_actor_name"]).Distinct();
 
@@ -101,7 +104,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 				foreach (string teamApprover in distinctTeamApprovers)
 				{
 					selectedRow = (
-						from bladeRow in unfilteredTrackingData.AsEnumerable()
+						from bladeRow in _unfilteredTrackingData.AsEnumerable()
 						where (string)bladeRow["workflow_actor_name"] == teamApprover
 						where (int)bladeRow["actor_group_type"] == (int)ActorGroupType.Team_Approver
 						select bladeRow).Last();
@@ -115,14 +118,14 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			catch { }
 		}
 
-		private void BuildTechnicalApprovers(DataTable unfilteredTrackingData)
+		private void BuildTechnicalApprovers()
 		{
 			try
 			{
 				DataRow selectedRow;
 
 				var distinctTechnicalApprovers = (
-					from bladeRow in unfilteredTrackingData.AsEnumerable()
+					from bladeRow in _unfilteredTrackingData.AsEnumerable()
 					where (int)bladeRow["actor_group_type"] == (int)ActorGroupType.Technical_Approver
 					select bladeRow["workflow_actor_name"]).Distinct();
 
@@ -134,7 +137,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 				foreach (string technicalApprover in distinctTechnicalApprovers)
 				{
 					selectedRow = (
-						from bladeRow in unfilteredTrackingData.AsEnumerable()
+						from bladeRow in _unfilteredTrackingData.AsEnumerable()
 						where (string)bladeRow["workflow_actor_name"] == technicalApprover
 						where (int)bladeRow["actor_group_type"] == (int)ActorGroupType.Technical_Approver
 						select bladeRow).Last();
@@ -147,6 +150,8 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			}
 			catch { }
 		}
+		
+		#endregion
 
 		private void RenderSectionHeading(string headingLabel)
 		{
@@ -163,30 +168,15 @@ namespace Apollo.AIM.SNAP.Web.Controls
 				WorkflowBlade workflowBlade;
 				workflowBlade = LoadControl("~/Controls/WorkflowBlade.ascx") as WorkflowBlade;
 
-				//Panel workflowBladeData;
-				//workflowBladeData = (Panel)WebUtilities.FindControlRecursive(workflowBlade, "_workflowBladeData");
-
 				if ((int)workflowRow["actor_group_type"] == (int)ActorGroupType.Workflow_Admin)
 				{
-					//workflowBladeData.CssClass = workflowBladeData.CssClass + " csm_alternating_bg";
 					workflowBlade.AlternatingCss = " csm_alternating_bg";
 				}
 
 				#region Blade Labels
-				//Label workflowActorName = (Label)WebUtilities.FindControlRecursive(workflowBlade, "_workflowActorName");
-				//workflowActorName.Text = workflowRow["workflow_actor_name"].ToString(); // + " [" + workflowRow["actor_group_type"].ToString() +"]";
 				workflowBlade.ActorName = workflowRow["workflow_actor_name"].ToString();
-
-				//Label workflowStatus = (Label)WebUtilities.FindControlRecursive(workflowBlade, "_workflowStatus");
-				//workflowStatus.Text = Convert.ToString((WorkflowState)Enum.Parse(typeof(WorkflowState), workflowRow["workflow_status"].ToString())).StripUnderscore();
 				workflowBlade.Status = Convert.ToString((WorkflowState)Enum.Parse(typeof(WorkflowState), workflowRow["workflow_status"].ToString())).StripUnderscore();
-
-				//Label workflowDueDate = (Label)WebUtilities.FindControlRecursive(workflowBlade, "_workflowDueDate");
-				//workflowDueDate.Text = TestAndConvertDate(workflowRow["workflow_due_date"].ToString());
 				workflowBlade.DueDate = TestAndConvertDate(workflowRow["workflow_due_date"].ToString());
-
-				//Label workflowCompletedDate = (Label)WebUtilities.FindControlRecursive(workflowBlade, "_workflowCompletedDate");
-				//workflowCompletedDate.Text = TestAndConvertDate(workflowRow["workflow_completed_date"].ToString());
 				workflowBlade.CompletedDate = TestAndConvertDate(workflowRow["workflow_completed_date"].ToString());
 				#endregion
 
@@ -226,14 +216,8 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		
 		private string TestAndConvertDate(string date)
 		{
-			if (!string.IsNullOrEmpty(date.ToString()))
-			{
-				return Convert.ToDateTime(date).ToString("MMM d, yyyy");
-			}
-			else
-			{
-				return "-";
-			}
+			if (!string.IsNullOrEmpty(date.ToString())) { return Convert.ToDateTime(date).ToString("MMM d, yyyy"); }
+			else { return "-"; }
 		}
 		
 		private DataTable GetWorkflowComments(int WorkflowId, string actorName)

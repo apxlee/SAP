@@ -17,7 +17,6 @@ namespace Apollo.AIM.SNAP.Web.Controls
 	{
 		public string HeadingLabel { get; set; }
 
-
 		protected void Page_Load(object sender, EventArgs e)
 		{
 
