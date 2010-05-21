@@ -544,7 +544,7 @@ namespace Apollo.AIM.SNAP.Model
                         */
                         addAccessTeamComment(accessTeamWF,
                                              string.Format(
-                                                 "Due Date: {0} | Service Desk Ticket: <a href=\"" + sdlink +
+                                                 "Due Date: {0} | Service Desk Ticket: <a target='_blank' href=\"" + sdlink +
                                                  "\">{1}</a>", Convert.ToDateTime(dueDate).ToString("MMM d, yyyy"), req.ticketNumber), CommentsType.Ticket_Created); 
                         db.SubmitChanges();
                     }
