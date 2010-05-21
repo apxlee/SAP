@@ -5,7 +5,7 @@ print 'scrubbing data tables and reseeding primary kees'
 delete from dbo.SNAP_Actors
 print 'scrub dbo.SNAP_Actors'
 
-DBCC CHECKIDENT ("dbo.SNAP_Actors", RESEED, 1);
+DBCC CHECKIDENT ("dbo.SNAP_Actors", RESEED, 0);
 print 'reseed dbo.SNAP_Actors'
 
 delete from dbo.SNAP_Actor_Group
