@@ -27,27 +27,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			BuildTeamApprovers(unfilteredTrackingData);
 			BuildTechnicalApprovers(unfilteredTrackingData);
 
-			DataTable filteredTrackingData = BuildEmptyTrackingBladeTable();
-
-			//DataRow selectedRow;
-
-			// Build Top AIM blades
-			//
-
-			
-			// Build Manager blades
-			//
-
-			
-			// Build Team Approver blades
-			//
-
-			
-			// Build Technical Approver blades
-			//
-
-
-			//RenderWorkflowBlade(filteredTrackingData);
+			//DataTable filteredTrackingData = BuildEmptyTrackingBladeTable();
 		}
 
 		private void BuildAIMTracking(DataTable unfilteredTrackingData)
@@ -94,6 +74,12 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
 				DataTable filteredTrackingData = BuildEmptyTrackingBladeTable();
 				filteredTrackingData.ImportRow(selectedRow);
+
+				WorkflowBladeSectionHeading sectionHeading;
+				sectionHeading = LoadControl("~/Controls/WorkflowBladeSectionHeading.ascx") as WorkflowBladeSectionHeading;
+				sectionHeading.HeadingLabel = "Affected End User's Manager";
+				this._workflowBladeContainer.Controls.Add(sectionHeading);
+
 				RenderWorkflowBlade(filteredTrackingData);
 			}
 			catch { }
@@ -122,6 +108,12 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
 					DataTable filteredTrackingData = BuildEmptyTrackingBladeTable();
 					filteredTrackingData.ImportRow(selectedRow);
+
+					WorkflowBladeSectionHeading sectionHeading;
+					sectionHeading = LoadControl("~/Controls/WorkflowBladeSectionHeading.ascx") as WorkflowBladeSectionHeading;
+					sectionHeading.HeadingLabel = "Team Approvers";
+					this._workflowBladeContainer.Controls.Add(sectionHeading);
+
 					RenderWorkflowBlade(filteredTrackingData);
 				}
 			}
@@ -151,6 +143,12 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
 					DataTable filteredTrackingData = BuildEmptyTrackingBladeTable();
 					filteredTrackingData.ImportRow(selectedRow);
+
+					WorkflowBladeSectionHeading sectionHeading;
+					sectionHeading = LoadControl("~/Controls/WorkflowBladeSectionHeading.ascx") as WorkflowBladeSectionHeading;
+					sectionHeading.HeadingLabel = "Technical Approvers";
+					this._workflowBladeContainer.Controls.Add(sectionHeading);
+
 					RenderWorkflowBlade(filteredTrackingData);
 				}
 			}
