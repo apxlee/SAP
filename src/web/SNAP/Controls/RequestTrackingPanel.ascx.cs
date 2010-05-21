@@ -27,6 +27,8 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			BuildTeamApprovers(unfilteredTrackingData);
 			BuildTechnicalApprovers(unfilteredTrackingData);
 		}
+		
+
 
 		private void BuildAIMTracking(DataTable unfilteredTrackingData)
 		{
@@ -50,6 +52,8 @@ namespace Apollo.AIM.SNAP.Web.Controls
 					selectedRow.SetField("workflow_status", WorkflowState.Pending_Provisioning);
 				}
 
+				RenderSectionHeading("Access & Identity Management");
+
 				DataTable filteredTrackingData = BuildEmptyTrackingBladeTable();
 				filteredTrackingData.ImportRow(selectedRow);
 				RenderWorkflowBlade(filteredTrackingData);
@@ -68,15 +72,10 @@ namespace Apollo.AIM.SNAP.Web.Controls
 					where (int)bladeRow["actor_group_type"] == (int)ActorGroupType.Manager
 					select bladeRow).Last();
 
-				//filteredTrackingData.ImportRow(selectedRow);
-
 				DataTable filteredTrackingData = BuildEmptyTrackingBladeTable();
 				filteredTrackingData.ImportRow(selectedRow);
 
-				WorkflowBladeSectionHeading sectionHeading;
-				sectionHeading = LoadControl("~/Controls/WorkflowBladeSectionHeading.ascx") as WorkflowBladeSectionHeading;
-				sectionHeading.HeadingLabel = "Affected End User's Manager";
-				this._workflowBladeContainer.Controls.Add(sectionHeading);
+				RenderSectionHeading("Affected End User's Manager");
 
 				RenderWorkflowBlade(filteredTrackingData);
 			}
@@ -94,6 +93,11 @@ namespace Apollo.AIM.SNAP.Web.Controls
 					where (int)bladeRow["actor_group_type"] == (int)ActorGroupType.Team_Approver
 					select bladeRow["workflow_actor_name"]).Distinct();
 
+				if (distinctTeamApprovers.Count() > 0)
+				{
+					RenderSectionHeading("Team Approvers");
+				}					
+
 				foreach (string teamApprover in distinctTeamApprovers)
 				{
 					selectedRow = (
@@ -102,15 +106,8 @@ namespace Apollo.AIM.SNAP.Web.Controls
 						where (int)bladeRow["actor_group_type"] == (int)ActorGroupType.Team_Approver
 						select bladeRow).Last();
 
-					//filteredTrackingData.ImportRow(selectedRow);
-
 					DataTable filteredTrackingData = BuildEmptyTrackingBladeTable();
 					filteredTrackingData.ImportRow(selectedRow);
-
-					WorkflowBladeSectionHeading sectionHeading;
-					sectionHeading = LoadControl("~/Controls/WorkflowBladeSectionHeading.ascx") as WorkflowBladeSectionHeading;
-					sectionHeading.HeadingLabel = "Team Approvers";
-					this._workflowBladeContainer.Controls.Add(sectionHeading);
 
 					RenderWorkflowBlade(filteredTrackingData);
 				}
@@ -131,10 +128,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
 				if (distinctTechnicalApprovers.Count() > 0)
 				{
-					WorkflowBladeSectionHeading sectionHeading;
-					sectionHeading = LoadControl("~/Controls/WorkflowBladeSectionHeading.ascx") as WorkflowBladeSectionHeading;
-					sectionHeading.HeadingLabel = "Technical Approvers";
-					this._workflowBladeContainer.Controls.Add(sectionHeading);					
+					RenderSectionHeading("Technical Approvers");
 				}
 
 				foreach (string technicalApprover in distinctTechnicalApprovers)
@@ -145,8 +139,6 @@ namespace Apollo.AIM.SNAP.Web.Controls
 						where (int)bladeRow["actor_group_type"] == (int)ActorGroupType.Technical_Approver
 						select bladeRow).Last();
 
-					//filteredTrackingData.ImportRow(selectedRow);
-
 					DataTable filteredTrackingData = BuildEmptyTrackingBladeTable();
 					filteredTrackingData.ImportRow(selectedRow);
 
@@ -156,6 +148,14 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			catch { }
 		}
 
+		private void RenderSectionHeading(string headingLabel)
+		{
+			WorkflowBladeSectionHeading sectionHeading;
+			sectionHeading = LoadControl("~/Controls/WorkflowBladeSectionHeading.ascx") as WorkflowBladeSectionHeading;
+			sectionHeading.HeadingLabel = headingLabel;
+			this._workflowBladeContainer.Controls.Add(sectionHeading);
+		}
+				
 		private void RenderWorkflowBlade(DataTable filteredTrackingData)
 		{
 			foreach (DataRow workflowRow in filteredTrackingData.Rows)
@@ -163,26 +163,31 @@ namespace Apollo.AIM.SNAP.Web.Controls
 				WorkflowBlade workflowBlade;
 				workflowBlade = LoadControl("~/Controls/WorkflowBlade.ascx") as WorkflowBlade;
 
-				Panel workflowBladeData;
-				workflowBladeData = (Panel)WebUtilities.FindControlRecursive(workflowBlade, "_workflowBladeData");
+				//Panel workflowBladeData;
+				//workflowBladeData = (Panel)WebUtilities.FindControlRecursive(workflowBlade, "_workflowBladeData");
 
 				if ((int)workflowRow["actor_group_type"] == (int)ActorGroupType.Workflow_Admin)
 				{
-					workflowBladeData.CssClass = workflowBladeData.CssClass + " csm_alternating_bg";
+					//workflowBladeData.CssClass = workflowBladeData.CssClass + " csm_alternating_bg";
+					workflowBlade.AlternatingCss = " csm_alternating_bg";
 				}
 
 				#region Blade Labels
-				Label workflowActorName = (Label)WebUtilities.FindControlRecursive(workflowBlade, "_workflowActorName");
-				workflowActorName.Text = workflowRow["workflow_actor_name"].ToString(); // + " [" + workflowRow["actor_group_type"].ToString() +"]";
+				//Label workflowActorName = (Label)WebUtilities.FindControlRecursive(workflowBlade, "_workflowActorName");
+				//workflowActorName.Text = workflowRow["workflow_actor_name"].ToString(); // + " [" + workflowRow["actor_group_type"].ToString() +"]";
+				workflowBlade.ActorName = workflowRow["workflow_actor_name"].ToString();
 
-				Label workflowStatus = (Label)WebUtilities.FindControlRecursive(workflowBlade, "_workflowStatus");
-				workflowStatus.Text = Convert.ToString((WorkflowState)Enum.Parse(typeof(WorkflowState), workflowRow["workflow_status"].ToString())).StripUnderscore();
+				//Label workflowStatus = (Label)WebUtilities.FindControlRecursive(workflowBlade, "_workflowStatus");
+				//workflowStatus.Text = Convert.ToString((WorkflowState)Enum.Parse(typeof(WorkflowState), workflowRow["workflow_status"].ToString())).StripUnderscore();
+				workflowBlade.Status = Convert.ToString((WorkflowState)Enum.Parse(typeof(WorkflowState), workflowRow["workflow_status"].ToString())).StripUnderscore();
 
-				Label workflowDueDate = (Label)WebUtilities.FindControlRecursive(workflowBlade, "_workflowDueDate");
-				workflowDueDate.Text = TestAndConvertDate(workflowRow["workflow_due_date"].ToString());
+				//Label workflowDueDate = (Label)WebUtilities.FindControlRecursive(workflowBlade, "_workflowDueDate");
+				//workflowDueDate.Text = TestAndConvertDate(workflowRow["workflow_due_date"].ToString());
+				workflowBlade.DueDate = TestAndConvertDate(workflowRow["workflow_due_date"].ToString());
 
-				Label workflowCompletedDate = (Label)WebUtilities.FindControlRecursive(workflowBlade, "_workflowCompletedDate");
-				workflowCompletedDate.Text = TestAndConvertDate(workflowRow["workflow_completed_date"].ToString());
+				//Label workflowCompletedDate = (Label)WebUtilities.FindControlRecursive(workflowBlade, "_workflowCompletedDate");
+				//workflowCompletedDate.Text = TestAndConvertDate(workflowRow["workflow_completed_date"].ToString());
+				workflowBlade.CompletedDate = TestAndConvertDate(workflowRow["workflow_completed_date"].ToString());
 				#endregion
 
 				BuildBladeComments(workflowBlade, (int)workflowRow["workflow_pkid"], workflowRow["workflow_actor_name"].ToString());
@@ -242,7 +247,6 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			table.Columns.Add("comment", typeof(string));
 			table.Columns.Add("is_new", typeof(bool));
 
-
 		    var wfComments = Common.Request.WfComments(RequestState);
             var details = wfComments.Where(x => x.workflowId == WorkflowId);
 
@@ -260,15 +264,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
 		private DataTable GetAllTrackingData()
 		{
-			//DataTable table = new DataTable();
-			//table.Columns.Add("workflow_actor_name", typeof(string));
-			//table.Columns.Add("workflow_status", typeof(int));
-			//table.Columns.Add("workflow_due_date", typeof(string));
-			//table.Columns.Add("workflow_completed_date", typeof(DateTime));
-			//table.Columns.Add("workflow_pkid", typeof(int));
-			//table.Columns.Add("actor_group_type", typeof(int));
-			DataTable unfilteredTrackingData = BuildEmptyTrackingBladeTable(); //new DataTable();
-			//unfilteredTrackingData = BuildEmptyTrackingBladeTable();
+			DataTable unfilteredTrackingData = BuildEmptyTrackingBladeTable();
 
             var wfDetails = Common.Request.WfDetails(RequestState);
             var details = wfDetails.Where(x => x.requestId.ToString() == RequestId)

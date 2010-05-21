@@ -23,42 +23,6 @@ namespace Apollo.AIM.SNAP.Web.Controls {
         protected global::System.Web.UI.WebControls.Panel _workflowBladeData;
         
         /// <summary>
-        /// _workflowActorName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label _workflowActorName;
-        
-        /// <summary>
-        /// _workflowStatus control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label _workflowStatus;
-        
-        /// <summary>
-        /// _workflowDueDate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label _workflowDueDate;
-        
-        /// <summary>
-        /// _workflowCompletedDate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label _workflowCompletedDate;
-        
-        /// <summary>
         /// _workflowBladeCommentsContainer control.
         /// </summary>
         /// <remarks>

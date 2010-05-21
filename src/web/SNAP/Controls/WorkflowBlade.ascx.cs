@@ -9,6 +9,12 @@ namespace Apollo.AIM.SNAP.Web.Controls
 {
 	public partial class WorkflowBlade : System.Web.UI.UserControl
 	{
+		public string ActorName { get; set; }
+		public string Status { get; set; }
+		public string DueDate { get; set; }
+		public string CompletedDate { get; set; }
+		public string AlternatingCss { get; set; }	
+		
 		protected void Page_Load(object sender, EventArgs e)
 		{
 

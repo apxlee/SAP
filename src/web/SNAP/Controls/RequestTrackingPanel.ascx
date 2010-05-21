@@ -7,13 +7,13 @@
 		have been made.  Due Dates do not include weekends or holidays.&nbsp;&nbsp;<a href="#">[Show Legend]</a></p>
     </div>
     
-    <table class="csm_top15" border="0" cellpadding="0" cellspacing="0" style="margin-left:12px;"><!-- width 654 -->
+<%--    <table class="csm_top15" border="0" cellpadding="0" cellspacing="0" style="margin-left:12px;"><!-- width 654 -->
         <tr class="csm_stacked_heading_title">
             <td style="width:228px;">TEAM / APPROVER</td>
             <td style="width:168px;">STATUS</td>
             <td style="width:120px;">DUE DATE</td>
             <td style="width:120px;">COMPLETED DATE</td>
         </tr>
-    </table>
+    </table>--%>
     <asp:PlaceHolder ID="_workflowBladeContainer" runat="server"></asp:PlaceHolder>
 </div>

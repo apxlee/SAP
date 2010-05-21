@@ -1,12 +1,12 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="WorkflowBlade.ascx.cs" Inherits="Apollo.AIM.SNAP.Web.Controls.WorkflowBlade" %>
 <div class="csm_padded_windowshade">
-	<asp:Panel ID="_workflowBladeData" runat="server" CssClass="csm_data_row">
+	<asp:Panel ID="_workflowBladeData" runat="server" CssClass="csm_data_row <%=AlternatingCss %>">
         <table border="0" cellpadding="0" cellspacing="0">
             <tr>
-                <td style="width:230px;"><asp:Label ID="_workflowActorName" runat="server"></asp:Label></td>
-                <td style="width:170px;"><asp:Label ID="_workflowStatus" runat="server"></asp:Label></td>
-                <td style="width:120px;"><asp:Label ID="_workflowDueDate" runat="server"></asp:Label> </td>
-                <td style="width:120px;"><asp:Label ID="_workflowCompletedDate" runat="server"></asp:Label></td>
+                <td style="width:230px;"><%=ActorName %></td>
+                <td style="width:170px;"><%=Status %></td>
+                <td style="width:120px;"><%=DueDate %></td>
+                <td style="width:120px;"><%=CompletedDate %></td>
             </tr>
         </table>
      </asp:Panel>
