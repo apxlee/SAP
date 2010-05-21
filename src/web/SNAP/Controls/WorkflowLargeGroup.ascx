@@ -12,11 +12,11 @@
 		            </asp:DropDownList>
 		            <br />
 	                <input type="text" id="_actorDisplayName" runat="server" class="csm_text_input_short" />
-	                <input type="hidden" id="_actorUserId" style="display:none;" runat="server"/>
-	                <input type="hidden" id="_actorActorId" style="display:none;" runat="server"/>
-	                <input type="hidden" id="_actorGroupId" style="display:none;" runat="server"/>
-	                <input type='button' id='_checkActor' class="csm_html_button" value="Check" runat="server">
-	                <input type='button' id='_addActor' class="csm_html_button" value="Add" runat="server">
+	                <input type="hidden" id="_actorUserId" style="display:none;" runat="server" />
+	                <input type="hidden" id="_actorActorId" style="display:none;" runat="server" />
+	                <input type="hidden" id="_actorGroupId" style="display:none;" runat="server" />
+	                <input type='button' id='_checkActor' class="csm_html_button" value="Check" runat="server" />
+	                <input type='button' id='_addActor' class="csm_html_button" value="Add" runat="server" />
 		        </td>
 			</tr>
 			<tr>

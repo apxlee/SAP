@@ -101,7 +101,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
                     {
                         strGroupType = group.ActorGroupType.ToString();
                         Literal primaryLit = new Literal();
-                        primaryLit.Text = "<label>Special Approvers</label>";
+                        primaryLit.Text = "<label>Special Approvers</label><p>These are 'sequential' actors who must approve the request before other downstream actors receive notification of pending action.</p>";
 
                         PlaceHolder primarySectionName;
                         primarySectionName = (PlaceHolder)WebUtilities.FindControlRecursive(primaryApprover, "_approverSectionName");
@@ -115,7 +115,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
                     {
                         strGroupType = group.ActorGroupType.ToString();
                         Literal secondaryLit = new Literal();
-                        secondaryLit.Text = "<label>Technical Approvers</label>";
+                        secondaryLit.Text = "<label>Technical Approvers</label><p>These are 'shotgun' approvers. All actors in this section receive the request at the same time.</p>";
 
                         PlaceHolder secondarySectionName;
                         secondarySectionName = (PlaceHolder)WebUtilities.FindControlRecursive(secondaryApprover, "_approverSectionName");
@@ -160,7 +160,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
                 largeGroup = LoadControl("~/Controls/WorkflowLargeGroup.ascx") as WorkflowLargeGroup;
 
                 Literal largeGroupNameLit = new Literal();
-                largeGroupNameLit.Text = "<label>" + group.GroupName + "</label>";
+                largeGroupNameLit.Text = string.Format("<label>{0}</label><p>{1}</p>", group.GroupName, group.Description);
 
                 PlaceHolder largeGroupSectionName;
                 largeGroupSectionName = (PlaceHolder)WebUtilities.FindControlRecursive(largeGroup, "_largeGroupSectionName");
