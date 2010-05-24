@@ -21,8 +21,8 @@ function filterClick(obj) {
             }
             else {
                 $(this).find("div.csm_hidden_block").children().find("span").each(
-                     function() {
-                         if ($(this).attr("id").indexOf("_workflowActorName") > -1) {
+                    function() {
+                        if ($(this).attr("snap") == "_actorDisplayName") {
                              if ($(this).html() == "Access &amp; Identity Management") {
                                  if ($(this).parent().next().next().next().children().html() == "-") {
                                      if ($(this).parent().next().children().html() != filter) {
