@@ -189,14 +189,14 @@ function addComments(obj, approverName, action, comments, includeDate) {
                 if ($(this).html() == approverName) {
                     var commentsContainer = $(this).closest("div.csm_data_row").parent().find("div.csm_text_container_nodrop");
                     if (commentsContainer.html() == null) {
-                        newcomment = "<div class='csm_text_container_nodrop'><p><u>"
+                        newcomment = "<div class='csm_text_container_nodrop'><p class='csm_error_text'><u>"
                         + action + " by AIM on " + curr_date + "</u>" + comments;
                             if (includeDate) { newcomment += "<br />Due Date: " + $(this).parent().next().next().children().html(); }
                         newcomment += "</p></div>";
                         $(newcomment).appendTo($(this).closest("div.csm_data_row").parent());
                     }
                     else {
-                        newcomment = "<p><u>"
+                        newcomment = "<p class='csm_error_text'><u>"
                         + action + " by AIM on " + curr_date + "</u>" + comments;
                         if (includeDate) { newcomment += "<br />Due Date: " + $(this).parent().next().next().children().html(); }
                         newcomment += "</p>";
