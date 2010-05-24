@@ -125,7 +125,6 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
                     using (var db = new SNAPDatabaseDataContext())
                     {
-                        //requestID = db.usp_insert_request_xml(xmlInput, SnapSession.CurrentUser.LoginId, UserLoginId, UserName, detail.Title, ManagerLoginId, ManagerName);
 						requestID = db.usp_insert_request_xml(xmlInput, SnapSession.CurrentUser.LoginId, _requestorLoginId.Text, _requestorId.Text, detail.Title, _managerLoginId.Text, _managerName.Text);
                         if (requestID > 0)
                         {
@@ -141,8 +140,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
                 else
                 {
                     requestID = System.Convert.ToInt32(SnapSession.SelectedRequestId);
-					updateRequestUsrInfo(requestID, SnapSession.CurrentUser.LoginId, _requestorLoginId.Text, _requestorId.Text,
-										 _managerLoginId.Text, _managerName.Text);
+					updateRequestUsrInfo(requestID, SnapSession.CurrentUser.LoginId, _requestorLoginId.Text, _requestorId.Text, _managerLoginId.Text, _managerName.Text);
                     RequestData.UpdateRequestData(newRequestDataList, _requestFormData);
 
                     var accessReq = new AccessRequest(requestID);
@@ -154,6 +152,10 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
                 if (sendEmail)
                 {
+					if (SnapSession.CurrentUser.LoginId != _requestorLoginId.Text)
+					{
+						Email.SendTaskEmail(EmailTaskType.ProxyForAffectedEndUser, SnapSession.CurrentUser.LoginId + "@apollogrp.edu", SnapSession.CurrentUser.FullName, requestID, _requestorId.Text);
+					}
 					Email.SendTaskEmail(EmailTaskType.AccessTeamAcknowledge, ConfigurationManager.AppSettings["AIM-DG"], null, requestID, _requestorId.Text);
 					Email.SendTaskEmail(EmailTaskType.UpdateRequester, _requestorLoginId.Text + "@apollogrp.edu", _requestorId.Text, requestID, _requestorId.Text, WorkflowState.Pending_Acknowledgement, null);
 					// TODO: UserLoginId concatenates with @apollogrp, but that may not be the addy.
