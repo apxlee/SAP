@@ -479,6 +479,7 @@
     <Content Include="EmailTemplate\denyToSubmitter.html" />
     <Content Include="EmailTemplate\nagApproval.html" />
     <Content Include="EmailTemplate\requestChangeToSubmitter.html" />
+    <Content Include="EmailTemplate\RequestorForAEU.html" />
     <Content Include="images\button_hide_details_hover.png" />
     <Content Include="images\button_hide_details_active.png" />
     <Content Include="images\button_show_details_hover.png" />
