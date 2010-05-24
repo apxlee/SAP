@@ -107,11 +107,16 @@ namespace Apollo.AIM.SNAP.Model
 		{
 			try
 			{
-				FormattedEmailTool.SendFormattedEmail("CSMDG@phoenix.edu", subject, templatePath, bodyParameters);
-				
-				// TODO: Hardcoded above for development, don't want emails/nags going to managers
-				//
-				//FormattedEmailTool.SendFormattedEmail(recipientEmailAddress, subject, templatePath, bodyParameters);
+				if (Convert.ToBoolean(ConfigurationManager.AppSettings["SendAllEmailToAIM"]))
+				{
+					FormattedEmailTool.SendFormattedEmail(ConfigurationManager.AppSettings["AIM-DG"], subject, templatePath, bodyParameters);
+				}
+				else
+				{
+					// TODO: Hardcoded above for development, don't want emails/nags going to managers
+					//
+					//FormattedEmailTool.SendFormattedEmail(recipientEmailAddress, subject, templatePath, bodyParameters);
+				}
 			}
 			catch (Exception ex)
 			{
