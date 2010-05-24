@@ -8,6 +8,7 @@ using Apollo.AIM.SNAP.Model;
 using Apollo.Ultimus.Web;
 using Apollo.AIM.SNAP.CA;
 using Apollo.AIM.SNAP.Web.Common;
+using Apollo.CA.Logging;
 
 namespace Apollo.AIM.SNAP.Web
 {
@@ -72,6 +73,7 @@ namespace Apollo.AIM.SNAP.Web
 
 		private bool IsAuthenticatedUser(string networkId, string password)
 		{
+// TODO: Remove for release
 #if DEBUG
 	return true;
 #endif
@@ -86,7 +88,7 @@ namespace Apollo.AIM.SNAP.Web
 			}
 			catch (Exception ex)
 			{
-				// TODO: Logger.Error("LoginView > AuthenticateUser", ex);
+				Logger.Error("LoginView > AuthenticateUser", ex);
 			}
 
 			return false;

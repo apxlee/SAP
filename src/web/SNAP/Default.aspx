@@ -24,7 +24,7 @@
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td><div id="login_description_logo"></div></td>
-					<td style="vertical-align:middle;padding-left:10px;"><!--<p style="font-size:.90em;"><strong>Access & Identity Management</strong></p>-->
+					<td style="vertical-align:middle;padding-left:10px;">
 						<p style="padding-right:15px;">The Supplemental Access Process application augments the rights being 
 						provisioned through the <a href="http://access.apollogrp.edu/cap/" style="color:Blue;">Computer Access Process (CAP)</a>, which 
 						handles Production systems.<br /><br />A Service Desk ticket will be created once the approvals are received from the
@@ -36,9 +36,7 @@
 		</div>
 		
 		<asp:Panel ID="_loginMessageContainer" runat="server" CssClass="csm_content_container" Visible="false">
-			<!--<div class="csm_text_container">-->
-				<asp:Label ID="_loginMessage" runat="server">This is the login error message</asp:Label>
-			<!--</div>-->
+			<asp:Label ID="_loginMessage" runat="server"></asp:Label>
 		</asp:Panel>		
 	
 		<fieldset class="csm_top5">
