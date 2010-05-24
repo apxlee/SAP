@@ -87,7 +87,7 @@ function AccessTeamActions(obj, requestId, action) {
             }
             break;
     }
-
+    comments = comments.replace(/(\r\n|[\r\n])/g, "<br />");
     var postData = "{'requestId':'" + requestId.toString() + "','action':'" + action + "','comments':'" + postComments + "'}";
     textarea.val("");
     $.ajax({
@@ -182,6 +182,7 @@ function disableBladeActions(obj) {
 }
 function addComments(obj, approverName, action, comments, includeDate) {
     var newcomment = "";
+    comments = comments.replace(/(\r\n|[\r\n])/g, "<br />");
     $(obj).closest("div.csm_hidden_block").children().find("span").each(
         function() {
             if ($(this).attr("snap") == "_actorDisplayName") {
@@ -223,7 +224,7 @@ function AccessComments(obj, requestId) {
     ProcessingMessage("Adding Comments", "");
     
     if (textarea.val() != "") {
-        comments = textarea.val();
+        comments = textarea.val().replace(/(\r\n|[\r\n])/g, "<br />");;
         postComments = comments.replace("'", "\\'");
         textarea.val("");
 

@@ -159,6 +159,7 @@ function openNext(obj) {
 }
 function addComments(obj, approverName, action, comments, includeDate) {
     var newcomment = "";
+    comments = comments.replace(/(\r\n|[\r\n])/g, "<br />");
     $(obj).closest("div.csm_hidden_block").children().find("span").each(
         function() {
             if ($(this).attr("snap") == "_actorDisplayName") {

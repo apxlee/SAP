@@ -111,13 +111,14 @@ namespace Apollo.AIM.SNAP.Web.Controls
 				}
 				
 				filteredRows = accessCommentsTable.Select("audience " + commentFilter);
+                
 				foreach (DataRow comment in filteredRows)
 				{
 					accessComments.AppendFormat("<p><u>{0}&nbsp;at&nbsp;{1}&nbsp;for&nbsp;{2}</u><br />{3}</p>"
 						, Convert.ToDateTime(comment["comment_date"].ToString()).ToString("MMM d, yyyy")
 						, Convert.ToDateTime(comment["comment_date"].ToString()).ToString("h:mm tt")
 						, MakeFriendlyCommentAudience(  (CommentsType)Convert.ToInt32(comment["audience"].ToString()) )
-						, comment["comment"].ToString());
+                        , comment["comment"].ToString());
 				}
 
 				if (filteredRows.Count() > 0) { _accessNotesContainer.Visible = true; }
@@ -161,7 +162,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
             
             foreach (usp_open_my_request_commentsResult result in comments)
             {
-				table.Rows.Add(result.commentTypeEnum, result.createdDate, result.commentText);
+                table.Rows.Add(result.commentTypeEnum, result.createdDate, result.commentText.Replace("\n", "<br />"));
 			}
 
 			return table;

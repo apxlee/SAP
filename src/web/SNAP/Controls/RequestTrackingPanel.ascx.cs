@@ -203,7 +203,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 						, Convert.ToString((CommentsType)Enum.Parse(typeof(CommentsType), comment["action"].ToString())).StripUnderscore()
 						, comment["workflow_actor"].ToString()
 						, Convert.ToDateTime(comment["comment_date"]).ToString("MMM d, yyyy")
-						, comment["comment"].ToString());
+                        , comment["comment"].ToString().Replace("\n", "<br />"));
 				}
 
 				Literal comments = new Literal();
