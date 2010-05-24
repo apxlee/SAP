@@ -30,3 +30,12 @@ function csmToggle(sender, tree) {
         });
     }
 }
+function toggleLegend(obj) {
+    $(obj).closest("div.csm_text_container").find("div").each(function() {
+        if ($(this).attr("snap") == "_legend") {
+            $(this).toggle(100);
+            if ($(obj).html() == "[Show Legend]") { $(obj).html("[Hide Legend]"); }
+            else { $(obj).html("[Show Legend]"); }
+        }
+    });
+}

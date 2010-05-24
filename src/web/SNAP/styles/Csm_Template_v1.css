@@ -332,7 +332,14 @@ TODO: REMOVE THIS SECTION
 	background: url('../images/icon_toggle_up.png') 50% 50% no-repeat;
 	}	
 
-
+.csm_legend_toggle {
+	font-size: 1em;
+	line-height: 1.4em;
+	color: Blue;
+	font-weight: normal;
+	text-decoration: underline;
+	cursor: pointer;
+}
 /* Floating Heading
 ----------------------------------------------------------------------------------------------------*/
 
