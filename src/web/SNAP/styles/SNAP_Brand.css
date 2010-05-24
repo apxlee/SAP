@@ -32,6 +32,14 @@ div#login_description_logo {
 	height: 110px;
 	}
 	
+/* Support Page */
+
+div#support_contact_logo {
+	background: url('../images/logo_support_small.png')  no-repeat;
+	width: 87px;
+	height: 88px;
+	}
+	
 /* RIBBON */
 
 span.aim_header_logout {
