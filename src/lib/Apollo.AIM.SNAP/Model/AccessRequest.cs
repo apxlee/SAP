@@ -543,13 +543,13 @@ namespace Apollo.AIM.SNAP.Model
                         var sdlink = ConfigurationManager.AppSettings["SDLink"] + handler;
                         /*
                         req.ticketNumber = "C123456";
-                        var sdlink = "";
+                        var sdlink = "";*/
 
 						addAccessTeamComment(accessTeamWF
-							, string.Format("Due Date: {0} | Service Desk Ticket: <a href=\"{2}\">{1}</a>"
+							, string.Format("Due Date: {0} | Service Desk Ticket: <a target=\"_blank\" href=\"{2}\">{1}</a>"
 								, Convert.ToDateTime(dueDate).ToString("MMM d, yyyy")
 								, req.ticketNumber
-								, "http://servicedesk.apollogrp.edu/")
+								, sdlink)
 							, CommentsType.Ticket_Created);
                         
 						db.SubmitChanges();
