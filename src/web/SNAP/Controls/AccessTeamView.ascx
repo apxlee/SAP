@@ -56,6 +56,9 @@
             </div>
         </div>
     </div>
+    <div style="display:none;">
+            <asp:Button ID="_submit_form" Text="submit form" CommandName="AccessTeam" CssClass="csm_html_button" runat="server" OnClick="_submitForm_Click" />
+        </div>
 </div>
 <script type="text/javascript">
 	try { pageTracker._trackPageview("AccessTeamView"); }

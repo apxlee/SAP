@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Web;
 using System.Web.UI;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
@@ -42,6 +43,11 @@ namespace Apollo.AIM.SNAP.Web.Controls
             _inWorkflowFilter.Text = "In Workflow";
             _pendingprovisioningFilter.Text = "Pending Provisioning"; //(" + filterList[2].ToString() + ")";
             _showallFilter.Text = "Show All"; //(" + total.ToString() + ")";
+        }
+
+        protected void _submitForm_Click(object sender, EventArgs e)
+        {
+            WebUtilities.Redirect("AccessTeam.aspx", true);
         }
 	}
 }

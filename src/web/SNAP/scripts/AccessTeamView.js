@@ -314,6 +314,7 @@ function actionClicked(obj, requestId, state) {
         case "Create Ticket":
             ProcessingMessage("Creating Ticket", "")
             builderActions(obj, requestId, state);
+            $("input[id$='_submit_form']").trigger('click');
             break;
         case "Edit Workflow":
             editBuilder(obj, requestId);
@@ -322,10 +323,12 @@ function actionClicked(obj, requestId, state) {
         case "Create Workflow":
             ProcessingMessage("Creating Workflow", "");
             createWorkflow(obj, requestId);
+            $("input[id$='_submit_form']").trigger('click');
             break;
         case "Continue Workflow":
             ProcessingMessage("Updating Workflow", "");
             editCreatedWorkflow(obj, requestId);
+            $("input[id$='_submit_form']").trigger('click');
             break;
     }
 }
