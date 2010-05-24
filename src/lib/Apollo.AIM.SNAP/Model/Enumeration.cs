@@ -89,6 +89,7 @@ namespace Apollo.AIM.SNAP.Model
 		Overdue,
 		UpdateRequester,
 		AssignToApprover,
-		AccessTeamAcknowledge
+		AccessTeamAcknowledge,
+		ProxyForAffectedEndUser
     }
 }

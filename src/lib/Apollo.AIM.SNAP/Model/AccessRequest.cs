@@ -558,7 +558,7 @@ namespace Apollo.AIM.SNAP.Model
             }
             catch (Exception ex)
             {
-                //Logger.Error("SNAP - AccessRequst: Create Service Desk Ticket", ex);
+                //Logger.Error("SNAP - AccessRequest: Create Service Desk Ticket", ex);
                 result = false;
             }
             return result;

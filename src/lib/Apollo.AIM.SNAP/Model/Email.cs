@@ -44,6 +44,13 @@ namespace Apollo.AIM.SNAP.Model
 					subjectAction += "Approval Needed";
 					templatePath += ConfigurationManager.AppSettings["Approval"];
 					break;
+
+				case EmailTaskType.ProxyForAffectedEndUser:
+					recipientName = toName;
+					followPageName = PageNames.USER_VIEW;
+					subjectAction += "Submitted";
+					templatePath += ConfigurationManager.AppSettings["RequestorForAEU"];
+					break;
 					
 				case EmailTaskType.UpdateRequester:
 					recipientName = toName;
