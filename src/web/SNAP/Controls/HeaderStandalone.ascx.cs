@@ -73,7 +73,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 					case Role.Requestor:
 						linkButtons.AddRange(new List<string> { "RequestForm", "MyRequests", "Search", "Support" });
 						linksContainerWidth = "430";
-						_userNameHeader.Text = SnapSession.CurrentUser.FullName + "&nbsp;(Requestor)&nbsp;|&nbsp;";
+						_userNameHeader.Text = SnapSession.CurrentUser.FullName + "&nbsp;|&nbsp;";
 						break;
 
 					case Role.NotAuthorized:
