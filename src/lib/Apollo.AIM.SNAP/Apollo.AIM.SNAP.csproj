@@ -123,6 +123,7 @@
     <Content Include="EmailTemplate\denyToSubmitter.html" />
     <Content Include="EmailTemplate\nagApproval.html" />
     <Content Include="EmailTemplate\requestChangeToSubmitter.html" />
+    <Content Include="EmailTemplate\RequestorForAEU.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
