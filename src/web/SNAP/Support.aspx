@@ -37,17 +37,47 @@
 			</div>
 			
 			<h1>Contact The Team</h1>
-			<div class="csm_content_container">
-				<span>[SMALL LOGO]</span>
-				<p>The Supplemental Access Process (SNAP) application is a product<br /> of Access & Identity Managment under the direction of Greg Belanger.</p>
-				<p>Please send comments or questions regarding SNAP to:<br /><strong><a href="mailto:DG C-APO-Corporate-IT-Access%20%26%20Identity%20Management%20SNAPFU?subject=SNAP%20Comments">SNAP Feedback and Usability</a></strong></p>
-				<p>You can also directly contact the &nbsp;<strong><a href="mailto:DG C-APO-Corporate-ITS Access Management?subject=SNAP%20Comments">Access & Identity Management Team</a></strong></p>
-			</div>
+			<p style="font-size:.85em;line-height:1.2em;">Supplemental Access Process Feedback and Usability:<br />
+			<strong><a href="mailto:DG C-APO-Corporate-ITS Access Management SNAPFU?subject=SNAP%20Comments">DG C-APO-Corporate-ITS Access Management SNAPFU</a></strong>
+			</p>
+			
+			<table border="0" cellpadding="0" cellspacing="0" style="margin-top:5px;">
+				<tr>
+					<td><div id="support_contact_logo"></div></td>
+					<td style="vertical-align:middle;padding-left:10px;">
+						<p style="font-size:.85em;line-height:1.2em;">The Supplemental Access Process application is a product of <strong>Access & Identity Managment</strong> under the direction of<br />
+						Greg Belanger.</p>
+						<p style="font-size:.85em;line-height:1.8em;"><strong><a href="mailto:DG C-APO-Corporate-ITS Access Management?subject=SNAP%20Comments">DG C-APO-Corporate-ITS Access Management</a></strong></p>
+					</td>
+				</tr>
+			</table>
+
 		</div>
 		
 		<div class="csm_grid_2 csm_prefix_1">
 			<h1>Tutorials</h1>
-			<p>TBD</p>
+			<table border="0" cellpadding="0" cellspacing="0" style="margin-top:5px;" width="100%">
+				<tr>
+					<td ><img src="images/icon_quicktime.png" /></td>
+					<td style="font-size:.85em;line-height:1.2em;vertical-align:top;"><a href="#">My Approvals</a><br />Quicktime 1MB</td>
+				</tr>
+				<tr>
+					<td><img src="images/icon_WMV.png" /></td>
+					<td style="font-size:.85em;line-height:1.2em;vertical-align:top;"><a href="#">My Approvals</a><br />WMV 880K</td>
+				</tr>
+			</table>
+			<hr />
+			<table border="0" cellpadding="0" cellspacing="0" style="margin-top:5px;">
+				<tr>
+					<td><img src="images/icon_quicktime.png" /></td>
+					<td style="font-size:.85em;line-height:1.2em;vertical-align:top;"><a href="#">Request Form</a><br />Quicktime 1.2MB</td>
+				</tr>
+				<tr>
+					<td><img src="images/icon_WMV.png" /></td>
+					<td style="font-size:.85em;line-height:1.2em;vertical-align:top;"><a href="#">Request Form</a><br />WMV 890K</td>
+				</tr>
+
+			</table>
 		</div>
 	</div>
 	<script type="text/javascript">
