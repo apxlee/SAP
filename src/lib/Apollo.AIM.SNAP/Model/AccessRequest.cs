@@ -77,6 +77,7 @@ namespace Apollo.AIM.SNAP.Model
 
         public bool AddComment(string comment, CommentsType type)
         {
+			comment = comment.Replace("<br />", string.Empty);
             var result = false;
             try
             {
@@ -133,6 +134,7 @@ namespace Apollo.AIM.SNAP.Model
 
                     if (result)
                     {
+						comment = comment.Replace("<br />", string.Empty);
                         addAccessTeamComment(accessTeamWF, comment, commentType);
                         //Email.UpdateRequesterStatus(req.submittedBy, req.userDisplayName, _id, wfState, comment);
                         
@@ -492,6 +494,7 @@ namespace Apollo.AIM.SNAP.Model
 
         public bool WorkflowAck(int wid, WorkflowAction action, string comment)
         {
+			comment = comment.Replace("<br />", string.Empty);
             ApprovalWorkflow wf = ApprovalWorkflow.CreateApprovalWorkflow(wid);
             if (wf == null)
                 return false;
@@ -539,14 +542,17 @@ namespace Apollo.AIM.SNAP.Model
                         var handler = changeRequest.Handle.Split(':')[1]; // chg:12345
                         var sdlink = ConfigurationManager.AppSettings["SDLink"] + handler;
                         /*
-                        req.ticketNumber = "123456";
+                        req.ticketNumber = "C123456";
                         var sdlink = "";
-                        */
-                        addAccessTeamComment(accessTeamWF,
-                                             string.Format(
-                                                 "Due Date: {0} | Service Desk Ticket: <a target='_blank' href=\"" + sdlink +
-                                                 "\">{1}</a>", Convert.ToDateTime(dueDate).ToString("MMM d, yyyy"), req.ticketNumber), CommentsType.Ticket_Created); 
-                        db.SubmitChanges();
+
+						addAccessTeamComment(accessTeamWF
+							, string.Format("Due Date: {0} | Service Desk Ticket: <a href=\"{2}\">{1}</a>"
+								, Convert.ToDateTime(dueDate).ToString("MMM d, yyyy")
+								, req.ticketNumber
+								, "http://servicedesk.apollogrp.edu/")
+							, CommentsType.Ticket_Created);
+                        
+						db.SubmitChanges();
                     }
                 }
             }
@@ -746,6 +752,7 @@ namespace Apollo.AIM.SNAP.Model
 
         private void addAccessTeamComment(SNAP_Workflow accessTeamWF, string comment, CommentsType type)
         {
+			//comment = comment.Replace("<br />", string.Empty);
             accessTeamWF.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
             {
                 commentText = comment,
@@ -1432,7 +1439,6 @@ namespace Apollo.AIM.SNAP.Model
 
         protected bool requestToChangeBy(ActorApprovalType approvalType, string comment)
         {
-
             if (req.statusEnum != (byte)RequestState.Pending)
                 return false;
 
@@ -1440,6 +1446,7 @@ namespace Apollo.AIM.SNAP.Model
             //{
                 if (wfStateChange(approvalType, WorkflowState.Change_Requested))
                 {
+					comment = comment.Replace("<br />", string.Empty);
                     approvalRequestToChange(comment);
                     db.SubmitChanges();
                     //ts.Complete();
@@ -1447,10 +1454,7 @@ namespace Apollo.AIM.SNAP.Model
                 }
             //}
             return false;
-
-
         }
-
 
         protected void approvalRequestToChange(string comment)
         {
@@ -1472,7 +1476,7 @@ namespace Apollo.AIM.SNAP.Model
             }
 
 			comment = comment.Replace("<br />", string.Empty); //Convert.ToDateTime(DateTime.Now).ToString("MMM d, yyyy") + "&nbsp;-&nbsp;");
-			comment += string.Format("<br /><span id='_{2}_request_link' class='request_form_no_show csm_hidden_span'><br /><a href='{0}.aspx?requestId={1}'>Edit Request Form</a></span>", PageNames.REQUEST_FORM, req.pkId, req.userId);
+			comment += string.Format("<span id='_{2}_request_link' class='request_form_no_show csm_hidden_span'><br /><a href='{0}.aspx?requestId={1}'>Edit Request Form</a></span>", PageNames.REQUEST_FORM, req.pkId, req.userId);
 
 			//if (result)
 			//{
@@ -1494,24 +1498,21 @@ namespace Apollo.AIM.SNAP.Model
 
         protected bool denyBy(ActorApprovalType approvalType, string comment)
         {
-
             if (req.statusEnum != (byte)RequestState.Pending)
                 return false;
 
             //using (TransactionScope ts = new TransactionScope())
             //{
-
                 if (wfStateChange(approvalType, WorkflowState.Closed_Denied))
                 {
+					comment = comment.Replace("<br />", string.Empty);
                     approvalDeny(approvalType, comment);
                     db.SubmitChanges();
                     //ts.Complete();
                     return true;
                 }
-
             //}
             return false;
-
         }
 
         protected void approvalDeny(ActorApprovalType type, string comment)
@@ -1531,15 +1532,15 @@ namespace Apollo.AIM.SNAP.Model
                     AccessRequest.stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, WorkflowState.Workflow_Created, WorkflowState.Closed_Denied);
                     req.statusEnum = (byte)RequestState.Closed;
                     //Email.UpdateRequesterStatus(req.submittedBy, req.userDisplayName, req.pkId, WorkflowState.Closed_Denied, comment);
+					
+					comment = comment.Replace("<br />", string.Empty);
 					Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy, req.userDisplayName, req.pkId, req.submittedBy, WorkflowState.Closed_Denied, comment);
                     break;
                 }
-
             }
         }
 
-
-        public abstract bool Approve();
+		public abstract bool Approve();
         public abstract bool Deny(string comment);
         public abstract bool RequestToChange(string comment);
     }
@@ -1555,13 +1556,14 @@ namespace Apollo.AIM.SNAP.Model
 
         public override bool Deny(string comment)
         {
+			comment = comment.Replace("<br />", string.Empty);
             return denyBy(ActorApprovalType.Manager, comment);
         }
 
         public override bool RequestToChange(string comment)
         {
+			comment = comment.Replace("<br />", string.Empty);
             return requestToChangeBy(ActorApprovalType.Manager, comment);
-
         }
     }
 
@@ -1576,15 +1578,15 @@ namespace Apollo.AIM.SNAP.Model
 
         public override bool Deny(string comment)
         {
+			comment = comment.Replace("<br />", string.Empty);
             return denyBy(ActorApprovalType.Team_Approver, comment);
-            
         }
 
         public override bool RequestToChange(string comment)
         {
+			comment = comment.Replace("<br />", string.Empty);
             return requestToChangeBy(ActorApprovalType.Team_Approver, comment);
         }
-
     }
 
     public class TechnicalApprovalWorkflow : ApprovalWorkflow
@@ -1612,11 +1614,13 @@ namespace Apollo.AIM.SNAP.Model
 
         public override bool Deny(string comment)
         {
+			comment = comment.Replace("<br />", string.Empty);
             return denyBy(ActorApprovalType.Technical_Approver, comment);
         }
 
         public override bool RequestToChange(string comment)
         {
+			comment = comment.Replace("<br />", string.Empty);
             return requestToChangeBy(ActorApprovalType.Technical_Approver, comment);
         }
     }
