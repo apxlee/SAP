@@ -1,10 +1,20 @@
 ﻿$(document).ready(function() {
     $(".csm_toggle_container").hover(
 			  function() {
-			      $(this).addClass("csm_toggle_hover");
+			      if ($(this).attr("class").indexOf("csm_toggle_show") > -1) {
+			          $(this).addClass("csm_toggle_show_hover");
+			      }
+			      else {
+			          $(this).addClass("csm_toggle_hide_hover");
+			      }
 			  },
 			  function() {
-			      $(this).removeClass("csm_toggle_hover");
+			      if ($(this).attr("class").indexOf("csm_toggle_show") > -1) {
+			          $(this).removeClass("csm_toggle_show_hover");
+			      }
+			      else {
+			          $(this).removeClass("csm_toggle_hide_hover");
+			      }
 			  }
 			);
 });
@@ -13,13 +23,31 @@ function csmToggle(sender, tree) {
         $(document).ready(function() {
             if ($(sender).parent().parent().next().next().is(":hidden")) {
                 $(sender).parent().parent().next().nextAll().slideDown("fast");
-                var $kid = $(sender).children(".csm_toggle_icon_down").removeClass("csm_toggle_icon_down");
-                $kid.addClass("csm_toggle_icon_up");
+                $(sender).addClass("csm_toggle_hide");
+                $(sender).removeClass("csm_toggle_show");
+                $(sender).removeClass("csm_toggle_show_hover");
+                $(sender).unbind('mouseenter mouseleave')
+                $(sender).hover(function() {
+                    $(this).addClass("csm_toggle_hide_hover");
+                },
+			      function() {
+			        $(this).removeClass("csm_toggle_hide_hover");
+			      }
+			    );
             }
             else {
                 $(sender).parent().parent().next().nextAll().slideUp("fast");
-                var $kid = $(sender).children(".csm_toggle_icon_up").removeClass("csm_toggle_icon_up");
-                $kid.addClass("csm_toggle_icon_down");
+                $(sender).addClass("csm_toggle_show");
+                $(sender).removeClass("csm_toggle_hide");
+                $(sender).removeClass("csm_toggle_hide_hover");
+                $(sender).unbind('mouseenter mouseleave')
+                $(sender).hover(function() {
+                    $(this).addClass("csm_toggle_show_hover");
+                },
+			      function() {
+                    $(this).removeClass("csm_toggle_show_hover");
+			      }
+			    );
             }
         });
     }

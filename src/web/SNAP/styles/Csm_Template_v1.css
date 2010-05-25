@@ -284,24 +284,40 @@ TODO: REMOVE THIS SECTION
 
 .csm_template_1 .csm_toggle_container {/* used by jquery to identify toggle elements */}
 
+/*
 .csm_template_1 .csm_toggle_hover {
 	background: url('../images/button_show_details_hover.png');
-	/*background-color: #fff !important;*/
 	cursor: pointer;
 	}
-	
+*/
+
 /* Floating Toggle */
 
 .csm_template_1 .csm_divided_heading .csm_toggle_container {	
 	margin: 0;
 	padding: 2px 8px;
 	float: left;
-	/*background-color: #e0e0e0;
-	border: 1px solid #b7b7b7;*/
-	background: url('../images/button_show_details_hover.png');
-	background-repeat: no-repeat;
 	}
-	
+.csm_toggle_show {
+    background: url('../images/button_show_details_active.png');
+    background-repeat: no-repeat;
+    cursor: pointer;
+	}
+.csm_toggle_hide {
+    background: url('../images/button_hide_details_active.png');
+    background-repeat: no-repeat;
+    cursor: pointer;
+	}
+.csm_toggle_show_hover {
+	background: url('../images/button_show_details_hover.png');
+    background-repeat: no-repeat;
+    cursor: pointer;
+	}
+.csm_toggle_hide_hover {
+	background: url('../images/button_hide_details_hover.png');
+	background-repeat: no-repeat;
+	cursor: pointer;
+	}
 .csm_template_1 .csm_divided_heading .csm_toggle_container span {
 	display: block;
 	float: left;
