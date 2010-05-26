@@ -28,7 +28,7 @@ select @group_id = scope_identity();
 
 --//Insert Access & Identity Management Members
 INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actors]([actor_groupId],[userId],[displayName],[emailAddress],[isGroup],[isDefault],[isActive])
-VALUES(@group_id,'','Access & Identity Management','snap@snap.com',0,1,1)
+VALUES(@group_id,'','Access & Identity Management','AccessManagementAccessAdmin@apollogrp.edu',0,1,1)
 INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actors]([actor_groupId],[userId],[displayName],[emailAddress],[isGroup],[isDefault],[isActive])
 VALUES(@group_id,'hjdeiter','Heather Deitermann','hjdeiter@apollogrp.edu',0,1,1)
 INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actors]([actor_groupId],[userId],[displayName],[emailAddress],[isGroup],[isDefault],[isActive])
@@ -52,10 +52,11 @@ print 'Software'
 INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actor_Group]([groupName],[description],[actorGroupType],[isLargeGroup],[isActive])
 VALUES('Software Group',NULL,0,0,1)
 select @group_id = scope_identity();
-
 --//Insert Software Group Members
 INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actors]([actor_groupId],[userId],[displayName],[emailAddress],[isGroup],[isDefault],[isActive])
 VALUES(@group_id,'cxambadi','Chandra Ambadipudi ','cxambadi@apollogrp.com',0,1,1)
+INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actors]([actor_groupId],[userId],[displayName],[emailAddress],[isGroup],[isDefault],[isActive])
+VALUES(@group_id,'jdnatoli','Joe Natoli','jdnatoli@apollogrp.com',0,0,1)
 
 print ''
 print 'Access Owner'
@@ -66,6 +67,8 @@ select @group_id = scope_identity();
 --//Insert Access Owner Members
 INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actors]([actor_groupId],[userId],[displayName],[emailAddress],[isGroup],[isDefault],[isActive])
 VALUES(@group_id,'gjbelang','Greg Belanger','gjbelang@apollogrp.com',0,1,1)
+INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actors]([actor_groupId],[userId],[displayName],[emailAddress],[isGroup],[isDefault],[isActive])
+VALUES(@group_id,'nnlorest','Nereo Loresto','nnlorest@apollogrp.com',0,0,1)
 
 print ''
 print 'Managers'  --// ATTENTION MUST BE 4th!!!
@@ -86,6 +89,8 @@ select @group_id = scope_identity();
 --//Insert Active Directory Members
 INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actors]([actor_groupId],[userId],[displayName],[emailAddress],[isGroup],[isDefault],[isActive])
 VALUES(@group_id,'jjwelsh','Josh Welsh','jjwelsh@apollogrp.com',0,1,1)
+INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actors]([actor_groupId],[userId],[displayName],[emailAddress],[isGroup],[isDefault],[isActive])
+VALUES(@group_id,'galdrich','Greg Aldrich','galdrich@apollogrp.com',0,0,1)
 
 print ''
 print 'Owners'
@@ -105,9 +110,9 @@ VALUES('IT Operations Center',NULL,1,0,1)
 select @group_id = scope_identity();
 --//Insert IT Operations Center Members
 INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actors]([actor_groupId],[userId],[displayName],[emailAddress],[isGroup],[isDefault],[isActive])
-VALUES(@group_id,'DG C-APO-Corporate-ITOC Managers','IT Managers','DGC-APO-Corporate-ITOCManagers@devapollogrp.edu',1,1,1)
+VALUES(@group_id,'DG C-APO-Corporate-ITOC Managers','IT Managers','DGC-APO-Corporate-ITOCManagers@apollogrp.edu',1,1,1)
 INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actors]([actor_groupId],[userId],[displayName],[emailAddress],[isGroup],[isDefault],[isActive])
-VALUES(@group_id,'mgsampso','Michael Sampson','mgsampso@devapollogrp.edu',0,0,1)
+VALUES(@group_id,'mgsampso','Michael Sampson','mgsampso@apollogrp.edu',0,0,1)
 
 print ''
 print 'MS SQL'
@@ -117,7 +122,9 @@ VALUES('MS SQL',NULL,1,0,1)
 select @group_id = scope_identity();
 --//Insert MS SQL Members
 INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actors]([actor_groupId],[userId],[displayName],[emailAddress],[isGroup],[isDefault],[isActive])
-VALUES(@group_id,'smstegma','Steve Stegman','smstegma@devapollogrp.edu',0,1,1)
+VALUES(@group_id,'smstegma','Steve Stegman','smstegma@apollogrp.edu',0,1,1)
+INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actors]([actor_groupId],[userId],[displayName],[emailAddress],[isGroup],[isDefault],[isActive])
+VALUES(@group_id,'vkommine','Venkat Kommineni','vkommine@apollogrp.edu',0,0,1)
 
 print ''
 print 'Oracle BSD/CSD'
@@ -127,7 +134,9 @@ VALUES('Oracle BSD/CSD',NULL,1,0,1)
 select @group_id = scope_identity();
 --//Insert Oracle BSD/CSD Members
 INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actors]([actor_groupId],[userId],[displayName],[emailAddress],[isGroup],[isDefault],[isActive])
-VALUES(@group_id,'clewis1','Christian Lewis','clewis1@devapollogrp.edu',0,1,1)
+VALUES(@group_id,'clewis1','Christian Lewis','clewis1@apollogrp.edu',0,1,1)
+INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actors]([actor_groupId],[userId],[displayName],[emailAddress],[isGroup],[isDefault],[isActive])
+VALUES(@group_id,'vkommine','Venkat Kommineni','vkommine@apollogrp.edu',0,0,1)
 
 print ''
 print 'Oracle FSG'
@@ -137,7 +146,9 @@ VALUES('Oracle FSG',NULL,1,0,1)
 select @group_id = scope_identity();
 --//Insert Oracle FSG Members
 INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actors]([actor_groupId],[userId],[displayName],[emailAddress],[isGroup],[isDefault],[isActive])
-VALUES(@group_id,'rwharkin','Ray Harkins','smstegma@devapollogrp.edu',0,1,1)
+VALUES(@group_id,'rwharkin','Ray Harkins','rwharkin@apollogrp.edu',0,1,1)
+INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actors]([actor_groupId],[userId],[displayName],[emailAddress],[isGroup],[isDefault],[isActive])
+VALUES(@group_id,'vkommine','Venkat Kommineni','vkommine@apollogrp.edu',0,0,1)
 
 print ''
 print 'IT Director'
@@ -147,7 +158,13 @@ VALUES('IT Director',NULL,1,0,1)
 select @group_id = scope_identity();
 --//Insert IT Director Members
 INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actors]([actor_groupId],[userId],[displayName],[emailAddress],[isGroup],[isDefault],[isActive])
-VALUES(@group_id,'vkommine','Venkat Kommineni','smstegma@devapollogrp.edu',0,1,1)
+VALUES(@group_id,'bxpatel','Bhavesh Patel','bxpatel@apollogrp.com',0,1,1)
+INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actors]([actor_groupId],[userId],[displayName],[emailAddress],[isGroup],[isDefault],[isActive])
+VALUES(@group_id,'jdnatoli','Joe Natoli','jdnatoli@apollogrp.com',0,0,1)
+INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actors]([actor_groupId],[userId],[displayName],[emailAddress],[isGroup],[isDefault],[isActive])
+VALUES(@group_id,'vkommine','Venkat Kommineni','vkommine@apollogrp.edu',0,0,1)
+INSERT INTO [Apollo.AIM.SNAP].[dbo].[SNAP_Actors]([actor_groupId],[userId],[displayName],[emailAddress],[isGroup],[isDefault],[isActive])
+VALUES(@group_id,'obharris','Niel Harris','obharris@apollogrp.com',0,0,1)
 
 --// Insert Actor Group Types
 print ''
