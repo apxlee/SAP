@@ -4,6 +4,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using Apollo.AIM.SNAP.Model;
+using Apollo.CA.Logging;
 
 namespace Apollo.AIM.SNAP.Web.Common
 {
@@ -48,7 +49,10 @@ namespace Apollo.AIM.SNAP.Web.Common
 					HtmlInputHidden hiddenUserId = (HtmlInputHidden)WebUtilities.FindControlRecursive(Page, "_hiddenCurrentUserId");
 					hiddenUserId.Value = SnapSession.CurrentUser.LoginId;
 				}
-				catch { }
+				catch (Exception ex) 
+                {
+                    Logger.Error("SnapPage - OnLoad, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
+                }
 			}
 
 			base.OnLoad(e);

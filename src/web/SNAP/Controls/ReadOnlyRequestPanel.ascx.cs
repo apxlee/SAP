@@ -9,6 +9,7 @@ using System.Web.UI.WebControls;
 using Apollo.AIM.SNAP.CA;
 using Apollo.AIM.SNAP.Web.Common;
 using Apollo.AIM.SNAP.Model;
+using Apollo.CA.Logging;
 
 namespace Apollo.AIM.SNAP.Web.Controls
 {
@@ -53,8 +54,8 @@ namespace Apollo.AIM.SNAP.Web.Controls
 				}
 				catch (Exception ex)
 				{
+                    Logger.Error("ReadOnlyRequestPanel - GetFullNameFromAD, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
 					return "<span class=\"csm_error_text\">Unknown (Active Directory Error)</strong></span>";
-					// TODO: Logger.Error("ReadOnlyRequestPanel > GetFullNameFromAD", ex);
 				}
 			}
 		}
@@ -71,7 +72,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			}
 			catch (Exception ex)
 			{
-				// TODO: Logger.Error("ReadOnlyRequestPanel > CompareManagerName", ex);
+                Logger.Error("ReadOnlyRequestPanel - CompareManagerName, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
 			}
 
 			return string.Empty;

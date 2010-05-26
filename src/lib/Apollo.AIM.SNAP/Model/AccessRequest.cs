@@ -68,7 +68,7 @@ namespace Apollo.AIM.SNAP.Model
             }
             catch (Exception ex)
             {
-                Logger.Error("SNAP - AccessRequst: Ack failed", ex);
+                Logger.Fatal("AccessRequest - Ack, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
                 result = false;
             }
 
@@ -96,7 +96,7 @@ namespace Apollo.AIM.SNAP.Model
             }
             catch (Exception ex)
             {
-                Logger.Error("SNAP - AccessRequst: AddComment failed", ex);
+                Logger.Fatal("AccessRequest - AddComment, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
                 result = false;
             }
             return result;
@@ -146,7 +146,7 @@ namespace Apollo.AIM.SNAP.Model
             }
             catch (Exception ex)
             {
-                Logger.Error("SNAP - AccessRequst: No access failed", ex);
+                Logger.Fatal("AccessRequest - NoAccess, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
                 result = false;
             }
             return result;
@@ -212,7 +212,7 @@ namespace Apollo.AIM.SNAP.Model
             }
             catch (Exception ex)
             {
-                Logger.Error("SNAP - AccessRequst: Request To Change", ex);
+                Logger.Fatal("AccessRequest - RequestToChange, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
                 result = false;
             }
 
@@ -242,8 +242,7 @@ namespace Apollo.AIM.SNAP.Model
             }
             catch (Exception ex)
             {
-
-                Logger.Error("SNAP - AccessRequst: Request Changed", ex);
+                Logger.Fatal("AccessRequest - RequestChanged, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
                 result = false;
             }
 
@@ -313,8 +312,9 @@ namespace Apollo.AIM.SNAP.Model
                 if (result) 
                     InformApproverForAction();
             }
-            catch (Exception ex) {
-                Logger.Error("SNAP - AccessRequst: Create Workflow", ex);
+            catch (Exception ex) 
+            {
+                Logger.Fatal("AccessRequest - CreateWorkflow, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
                 result = false;
             }
             return result;
@@ -558,7 +558,7 @@ namespace Apollo.AIM.SNAP.Model
             }
             catch (Exception ex)
             {
-                //Logger.Error("SNAP - AccessRequest: Create Service Desk Ticket", ex);
+                Logger.Fatal("AccessRequest - CreateServiceDeskTicket, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
                 result = false;
             }
             return result;
@@ -608,7 +608,7 @@ namespace Apollo.AIM.SNAP.Model
             }
             catch (Exception ex)
             {
-                Logger.Error("SNAP - AccessRequst: Finalize Request", ex);
+                Logger.Fatal("AccessRequest - FinalizeRequest, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
                 result = false;
             }
 
@@ -643,7 +643,7 @@ namespace Apollo.AIM.SNAP.Model
                 }
                 catch (Exception ex)
                 {
-
+                    Logger.Fatal("AccessRequest - GetPendingApprovalActorId, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
                 }
             }
             return pendingActorIds;
@@ -1190,7 +1190,7 @@ namespace Apollo.AIM.SNAP.Model
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error("AccessRequest - GetAtorIdByUserId, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
+                    Logger.Fatal("AccessRequest - GetAtorIdByUserId, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
                 }
 
                 return actorId;
@@ -1223,7 +1223,7 @@ namespace Apollo.AIM.SNAP.Model
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error("AccessRequest - GetAtorIdByUserIdAndGroupId, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
+                    Logger.Fatal("AccessRequest - GetAtorIdByUserIdAndGroupId, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
                 }
 
                 return actorId;

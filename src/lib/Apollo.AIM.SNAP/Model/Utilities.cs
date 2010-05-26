@@ -26,7 +26,7 @@ namespace Apollo.AIM.SNAP.Model
 				}
 				catch (Exception ex)
 				{
-					Logger.Error("Utilities > AbsolutePath", ex);
+                    Logger.Fatal("Utilities - AbsolutePath, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
 					return string.Empty;
 				}
 			}

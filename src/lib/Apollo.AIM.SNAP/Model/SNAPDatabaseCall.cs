@@ -5,6 +5,7 @@ using System.Data.Linq.Mapping;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Apollo.CA.Logging;
 
 namespace Apollo.AIM.SNAP.Model
 {
@@ -87,9 +88,10 @@ namespace Apollo.AIM.SNAP.Model
 
                     }
                 }
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
-                
+                Logger.Fatal("SNAPDatabaseCall - GetActiveWorkflowId, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace); 
             }
             return wfId;
         }

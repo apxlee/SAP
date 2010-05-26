@@ -7,6 +7,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Apollo.AIM.SNAP.Model;
 using Apollo.AIM.SNAP.Web.Controls;
+using Apollo.CA.Logging;
 
 namespace Apollo.AIM.SNAP.Web.Common
 {
@@ -162,7 +163,7 @@ namespace Apollo.AIM.SNAP.Web.Common
             }
             catch (Exception ex)
             {
-                // TODO: Logger.Error("LoginView > AuthenticateUser", ex);
+                Logger.Error("ViewBasedUtilities - SetGroupMembership, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
             }
         }
 

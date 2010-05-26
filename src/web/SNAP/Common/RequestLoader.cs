@@ -31,7 +31,7 @@ namespace Apollo.AIM.SNAP.Web.Common
             }
             catch (Exception ex)
             {
-                Logger.Error("SNAP - Index: loadMyRequests failed", ex);
+                Logger.Error("RequestLoader - Load, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
             }
 
         }

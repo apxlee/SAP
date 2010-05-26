@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Configuration;
-
 using Apollo.AIM.SNAP.Model;
 using Apollo.AIM.SNAP.CA;
 using Apollo.CA.Logging;
@@ -53,7 +52,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 				ManagerName = "NOT FOUND";
 				ManagerLoginId = "NOT FOUND";
                 MemberOf = null;
-				// TODO: Logger.Error("SnapUser > SetADProperties", ex);
+                Logger.Error("SnapUser - SetADProperties, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
 			}
 		}
 		
@@ -85,7 +84,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 			}
 			catch (Exception ex)
 			{
-				// TODO: Logger.Error("SnapUser > SetRole", ex);
+                Logger.Error("SnapUser - SetRole, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
 			}
 		}
 		
@@ -131,7 +130,7 @@ namespace Apollo.AIM.SNAP.Web.Common
             }
             catch (Exception ex)
             {
-                //TODO Logger.Error("IsGroupMemeber", ex);
+                Logger.Error("SnapUser - IsGroupMember, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
             }
             return false;
         }

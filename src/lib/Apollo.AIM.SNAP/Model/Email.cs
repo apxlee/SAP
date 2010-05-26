@@ -120,7 +120,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 			catch (Exception ex)
 			{
-				Logger.Error("Email > SendEmail", ex);
+                Logger.Error("Email - SendEmail, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
 				return false;
 			}
 			return true;

@@ -163,7 +163,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
             }
             catch (Exception ex)
             {
-                Logger.Fatal("SNAP: Request Form -  Submit failure", ex);
+                Logger.Fatal("RequestForm - _submitForm_Click, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
             }
 
 			WebUtilities.Redirect(PageNames.USER_VIEW);

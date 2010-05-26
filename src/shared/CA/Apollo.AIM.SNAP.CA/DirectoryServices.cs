@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
-
 using System.DirectoryServices;
 using System.Configuration;
-//using Apollo.AIM.SNAP.Model;
 using Apollo.CA;
+using Apollo.CA.Logging;
 
 namespace Apollo.AIM.SNAP.CA
 {
@@ -52,6 +51,7 @@ namespace Apollo.AIM.SNAP.CA
             }
             catch (Exception ex)
             {
+                Logger.Fatal("DirectoyServices - GetUserByLoginName, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
                 return null;
             }
         }
@@ -76,6 +76,7 @@ namespace Apollo.AIM.SNAP.CA
             }
             catch (Exception ex)
             {
+                Logger.Fatal("DirectoryServices - GetUserByFullName , Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
                 return null;
             }
         }
@@ -115,6 +116,7 @@ namespace Apollo.AIM.SNAP.CA
             }
             catch (Exception ex)
             {
+                Logger.Fatal("DirectoryServices - GetAllUserByFullName, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
                 return null;
             }
         }

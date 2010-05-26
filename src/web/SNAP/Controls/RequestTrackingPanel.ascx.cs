@@ -8,6 +8,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Apollo.AIM.SNAP.Model;
 using Apollo.AIM.SNAP.Web.Common;
+using Apollo.CA.Logging;
 
 namespace Apollo.AIM.SNAP.Web.Controls
 {
@@ -63,7 +64,10 @@ namespace Apollo.AIM.SNAP.Web.Controls
 				RenderSectionHeading("Access & Identity Management");
 				RenderWorkflowBlade(filteredTrackingData);
 			}
-			catch { }
+            catch (Exception ex)
+            {
+                Logger.Error("RequestTrackingPanel - BuildAIMTracking, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
+            }
 		}
 
 		private void BuildManagerTracking()
@@ -82,7 +86,10 @@ namespace Apollo.AIM.SNAP.Web.Controls
 				RenderSectionHeading("Affected End User's Manager");
 				RenderWorkflowBlade(filteredTrackingData);
 			}
-			catch { }
+            catch (Exception ex)
+            {
+                Logger.Error("RequestTrackingPanel - BuildManagerTracking, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
+            }
 		}
 
 		private void BuildTeamApprovers()
@@ -115,7 +122,10 @@ namespace Apollo.AIM.SNAP.Web.Controls
 					RenderWorkflowBlade(filteredTrackingData);
 				}
 			}
-			catch { }
+            catch (Exception ex)
+            {
+                Logger.Error("RequestTrackingPanel - BuildTeamApprovers, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
+            }
 		}
 
 		private void BuildTechnicalApprovers()
@@ -148,7 +158,10 @@ namespace Apollo.AIM.SNAP.Web.Controls
 					RenderWorkflowBlade(filteredTrackingData);
 				}
 			}
-			catch { }
+            catch (Exception ex)
+            {
+                Logger.Error("RequestTrackingPanel - BuildTechnicalApprovers, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
+            }
 		}
 		
 		#endregion

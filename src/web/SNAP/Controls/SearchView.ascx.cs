@@ -24,7 +24,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
             }
             catch (Exception ex)
             {
-                Logger.Error("SNAP - Index: loadSearchResults failed", ex);
+                Logger.Error("SearchView - Search_Click, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
             }
         }
 

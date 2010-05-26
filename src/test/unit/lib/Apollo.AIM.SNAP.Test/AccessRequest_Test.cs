@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using Apollo.AIM.SNAP.CA;
 using Apollo.AIM.SNAP.Model;
 using NUnit.Framework;
+using Apollo.CA.Logging;
 
 namespace Apollo.AIM.SNAP.Test
 {
@@ -235,6 +236,7 @@ namespace Apollo.AIM.SNAP.Test
                 }
                 catch (Exception ex)
                 {
+                    Logger.Error("AccessRequest_Test - removeManagerActorByUserId, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
                 }
             }
         }

@@ -8,6 +8,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using Apollo.AIM.SNAP.Model;
 using Apollo.AIM.SNAP.Web.Common;
+using Apollo.CA.Logging;
 
 namespace Apollo.AIM.SNAP.Web.Controls
 {
@@ -50,6 +51,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		    catch (Exception ex)
 		    {
 			    // TODO: if session not set, redirect to login?  throw message to user?  set role to user?
+                Logger.Error("MasterRequestBlade - Page_Load, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
 		    }
 		}
 		
@@ -62,7 +64,6 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			
 			if (IsSelectedRequest)
 			{
-				//_toggleIconContainer.CssClass = "csm_toggle_icon_up";
 				_toggledContentContainer.CssClass = "csm_displayed_block";
 			}
 		}
