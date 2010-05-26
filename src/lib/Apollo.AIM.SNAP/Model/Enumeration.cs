@@ -90,6 +90,7 @@ namespace Apollo.AIM.SNAP.Model
 		UpdateRequester,
 		AssignToApprover,
 		AccessTeamAcknowledge,
-		ProxyForAffectedEndUser
+		ProxyForAffectedEndUser,
+		TransitionToPendingProvisioning
     }
 }

@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="RequestTrackingPanel.ascx.cs" Inherits="Apollo.AIM.SNAP.Web.Controls.RequestTrackingPanel" %>
 <div class="csm_text_container csm_top5">
-    <div class="csm_icon_heading_container border oospa_request_status">
+    <div class="csm_icon_heading_container border oospa_request_status csm_bottom5">
         <h2>Request Tracking</h2>
         <p class="">This section tracks the status of your request and includes all the people and groups 
 		that are involved in the approval process.  Status "Not Active" indicates the person or team will be notified after prerequisite approvals

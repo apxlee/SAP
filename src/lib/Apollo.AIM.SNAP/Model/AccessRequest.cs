@@ -522,28 +522,24 @@ namespace Apollo.AIM.SNAP.Model
                         
                     initializeData(db, WorkflowState.Approved, out req, out accessTeamWF, out dueDate);
 
-                    result = reqStateTransition(req, RequestState.Pending, RequestState.Pending,
-                                                accessTeamWF, WorkflowState.Approved,
-                                                WorkflowState.Pending_Provisioning);
+                    result = reqStateTransition(req, RequestState.Pending, RequestState.Pending, accessTeamWF
+						, WorkflowState.Approved, WorkflowState.Pending_Provisioning);
 
                     if (result)
                     {
-                        
                         var changeRequest = new ServiceDesk.ChangeRequest(Apollo.ServiceDesk.SDConfig.Instance.Login, Apollo.ServiceDesk.SDConfig.Instance.Password);
+						string updatedDescription = string.Format("Supplemental Access Process Request Id: {0}\r\nAffected End User Id: {1}\r\nRequested By: {2}\r\n-------------------------------------------------------\r\n{3}"
+							, req.pkId, req.userId, req.submittedBy, requestDescription);
 
                         changeRequest.CategoryName = "Server.Systems.Privileged Access";
                         changeRequest.Submitter.Get("svc_Cap");
                         changeRequest.AffectedUser.Get(req.userId);  // req.userId???
-                        changeRequest.Attributes["description"] = requestDescription;
-
+						changeRequest.Attributes["description"] = updatedDescription;
                         changeRequest.Create();
 
                         req.ticketNumber = changeRequest.Number;
                         var handler = changeRequest.Handle.Split(':')[1]; // chg:12345
                         var sdlink = ConfigurationManager.AppSettings["SDLink"] + handler;
-                        /*
-                        req.ticketNumber = "C123456";
-                        var sdlink = "";*/
 
 						addAccessTeamComment(accessTeamWF
 							, string.Format("Due Date: {0} | Service Desk Ticket: <a target=\"_blank\" href=\"{2}\">{1}</a>"
@@ -558,7 +554,7 @@ namespace Apollo.AIM.SNAP.Model
             }
             catch (Exception ex)
             {
-                Logger.Fatal("AccessRequest - CreateServiceDeskTicket, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
+                Logger.Error("[SNAP] AccessRequest > CreateServiceDeskTicket", ex);
                 result = false;
             }
             return result;
@@ -678,54 +674,53 @@ namespace Apollo.AIM.SNAP.Model
 
         #region private methods
 
-        private string requestDescription
-        {
-            get
-            {
-                StringBuilder sb = new StringBuilder();
+		private string requestDescription
+		{
+			get
+			{
+				StringBuilder sb = new StringBuilder();
 
-                using (var db = new SNAPDatabaseDataContext())
-                {
-                    var requestTexts = db.RetrieveRequestUserText(_id);
+				using (var db = new SNAPDatabaseDataContext())
+				{
+					var requestTexts = db.RetrieveRequestUserText(_id);
 
-                    //foreach (var text in requestTexts)
-                    //{
-                    //    sb.AppendLine(text.userText);
-                    //    sb.AppendLine("");
-                    //}
-                    int i = 0;
-                    foreach (var text in requestTexts)
-                    {
-                        if (text.userText != "")
-                        {
-                            if (i != 0) { sb.AppendLine("-------------------------------------------------------"); }
-                            sb.AppendLine("");
-                            sb.AppendLine(text.SNAP_Access_Details_Form.label);
-                            sb.AppendLine("");
-                            sb.AppendLine(text.userText);
-                            sb.AppendLine("");
-                            i++;
-                        }
-                        else
-                        {
-                            if (i != 0) { sb.AppendLine("-------------------------------------------------------"); }
-                            sb.AppendLine("");
-                            sb.AppendLine(text.SNAP_Access_Details_Form.label);
-                            sb.AppendLine("");
-                            sb.AppendLine("EMPTY");
-                            sb.AppendLine("");
-                            i++;
-                        }
-                        if (i == requestTexts.Count())
-                        {
-                            sb.AppendLine("-------------------------------------------------------");
-                        }
-                    }
-                }
+					//sb.AppendLine(string.Format("-------------------------------------------------------\r\n{0}\r\n----\r\n{1}"
+					//    , text.SNAP_Access_Details_Form.label
+					//    , text.userText));
 
-                return sb.ToString();
-            }
-        }
+					int i = 0;
+					foreach (var text in requestTexts)
+					{
+						if (text.userText != "")
+						{
+							if (i != 0) { sb.AppendLine("-------------------------------------------------------"); }
+							sb.AppendLine("");
+							sb.AppendLine(text.SNAP_Access_Details_Form.label);
+							sb.AppendLine("");
+							sb.AppendLine(text.userText);
+							sb.AppendLine("");
+							i++;
+						}
+						else
+						{
+							if (i != 0) { sb.AppendLine("-------------------------------------------------------"); }
+							sb.AppendLine("");
+							sb.AppendLine(text.SNAP_Access_Details_Form.label);
+							sb.AppendLine("");
+							sb.AppendLine("EMPTY");
+							sb.AppendLine("");
+							i++;
+						}
+						if (i == requestTexts.Count())
+						{
+							sb.AppendLine("-------------------------------------------------------");
+						}
+					}
+				}
+
+				return sb.ToString();
+			}
+		}
 
         private bool reqStateTransition(SNAP_Request req, RequestState reqFr, RequestState reqTo, SNAP_Workflow accessTeamWF,  WorkflowState wfFr, WorkflowState wfTo)
         {
@@ -955,7 +950,7 @@ namespace Apollo.AIM.SNAP.Model
             // such as when creating a new manager, team and techical approval workflow.
             // Rememeber that: the accessTeamWF has prev state because it being inserted by the 
             // store procedure when inserting the request the first time
-            var prevDueDate = DateTime.Now;
+			var prevDueDate = DateTime.Now;
             SNAP_Workflow_State prevWFState=null;
             if (from != WorkflowState.Not_Active)
             {
@@ -969,9 +964,7 @@ namespace Apollo.AIM.SNAP.Model
                 {
                     prevWFState.completedDate = DateTime.Now;
                     prevDueDate = prevWFState.dueDate ?? DateTime.Now;
-
                 }
-
             }
 
             // create new state
@@ -984,13 +977,15 @@ namespace Apollo.AIM.SNAP.Model
             };
 
             // we don't need to notify workflow admin/access team. they have to monitor the open request constantly
-            if (approvalType == ActorApprovalType.Workflow_Admin)
-                newState.notifyDate = DateTime.Now;
-            else if (from == WorkflowState.Not_Active && to == WorkflowState.Pending_Approval)
-            {
-                // approval wf from not-active -> pending approval, we alread send the email out
-                newState.notifyDate = DateTime.Now;
-            }
+			if (approvalType == ActorApprovalType.Workflow_Admin)
+			{
+				newState.notifyDate = DateTime.Now;
+			}
+			else if (from == WorkflowState.Not_Active && to == WorkflowState.Pending_Approval)
+			{
+				// approval wf from not-active -> pending approval, we alread send the email out
+				newState.notifyDate = DateTime.Now;
+			}
             
             if (prevWFState != null)
             {
@@ -1384,11 +1379,11 @@ namespace Apollo.AIM.SNAP.Model
             var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Team_Approver);
             var wfs2 = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
 
-
             // only manager in the approal wf
             if (wfs.Count == 0 && wfs2.Count == 0)
             {
                 AccessRequest.stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, WorkflowState.Workflow_Created, WorkflowState.Approved);
+				Email.SendTaskEmail(EmailTaskType.TransitionToPendingProvisioning, ConfigurationManager.AppSettings["AIM-DG"], null, req.pkId, req.userDisplayName);
             }
             else
             {
@@ -1433,6 +1428,8 @@ namespace Apollo.AIM.SNAP.Model
                 {
                     AccessRequest.stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF,
                                                   WorkflowState.Workflow_Created, WorkflowState.Approved);
+					
+					Email.SendTaskEmail(EmailTaskType.TransitionToPendingProvisioning, ConfigurationManager.AppSettings["AIM-DG"], null, req.pkId, req.userDisplayName);
                 }
             }
         }

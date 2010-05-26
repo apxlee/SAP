@@ -51,6 +51,13 @@ namespace Apollo.AIM.SNAP.Model
 					subjectAction += "Submitted";
 					templatePath += ConfigurationManager.AppSettings["RequestorForAEU"];
 					break;
+
+				case EmailTaskType.TransitionToPendingProvisioning:
+					recipientName = "Access Team";
+					followPageName = PageNames.ACCESS_TEAM;
+					subjectAction += "Pending Provisioning";
+					templatePath += ConfigurationManager.AppSettings["TransitionToPendingProvisioning"];
+					break;
 					
 				case EmailTaskType.UpdateRequester:
 					recipientName = toName;
