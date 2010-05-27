@@ -20,10 +20,10 @@
 				will receive email updates including Request for Change or details if the request is Denied.</p>
 				<hr />
 				
-				<p><strong>Question:</strong><br />I am an approver. How I do I review a request?</p>
+				<p><strong>Question:</strong><br />I am an approver. How do I review a request?</p>
 				<p><strong>Answer:</strong><br />You can review a request directly from the link in the email you received. You may approve directly 
 				from the application by selecting "My Approvals" in the user interface (UI) within the top navigation. <i>Note: Only individuals 
-				identified as Approvers will see the "My Approvals" section</i></p>
+				identified as Approvers will see the "My Approvals" section.</i></p>
 				<hr />
 				
 				<p><strong>Question:</strong><br />Are there tickets generated for my request?</p>
@@ -32,7 +32,7 @@
 				<hr />
 
 				<p><strong>Question:</strong><br />How do I know when I have my access?</p>
-				<p><strong>Answer:</strong><br />You will receive an email and you will see a status of Closed Complete in your access 
+				<p><strong>Answer:</strong><br />You will receive an email and you will see a status of Closed Completed in your access 
 				request tracking, viewable in "My Requests".</p>
 			</div>
 			
