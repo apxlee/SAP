@@ -2327,9 +2327,9 @@ namespace Apollo.AIM.SNAP.Test
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                
+                Logger.Error("AccessRequest_Test - ShouldReturnActorId, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
             }
             removeManagerActorByUserId(usrid);
             Assert.IsTrue(ApprovalWorkflow.GetActorIdByUserId(ActorGroupType.Manager, usrid) != 0);
