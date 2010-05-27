@@ -32,6 +32,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			else
 			{
 				_nullDataMessage_NoWorkflows.Visible = true;
+				Logger.Error("RequestTrackingPanel > Page_Load: No Tracking Data Exists.");
 			}
 		}
 		
@@ -64,9 +65,9 @@ namespace Apollo.AIM.SNAP.Web.Controls
 				RenderSectionHeading("Access & Identity Management");
 				RenderWorkflowBlade(filteredTrackingData);
 			}
-            catch (Exception ex)
+            catch
             {
-                Logger.Error("RequestTrackingPanel - BuildAIMTracking, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
+				// TODO: Linq returns exception if query is null.  Need to refactor?
             }
 		}
 
@@ -86,9 +87,9 @@ namespace Apollo.AIM.SNAP.Web.Controls
 				RenderSectionHeading("Affected End User's Manager");
 				RenderWorkflowBlade(filteredTrackingData);
 			}
-            catch (Exception ex)
+            catch
             {
-                Logger.Error("RequestTrackingPanel - BuildManagerTracking, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
+                // TODO: Linq returns exception if query is null.  Need to refactor?
             }
 		}
 
@@ -122,9 +123,9 @@ namespace Apollo.AIM.SNAP.Web.Controls
 					RenderWorkflowBlade(filteredTrackingData);
 				}
 			}
-            catch (Exception ex)
+            catch
             {
-                Logger.Error("RequestTrackingPanel - BuildTeamApprovers, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
+				// TODO: Linq returns exception if query is null.  Need to refactor?
             }
 		}
 
@@ -158,9 +159,9 @@ namespace Apollo.AIM.SNAP.Web.Controls
 					RenderWorkflowBlade(filteredTrackingData);
 				}
 			}
-            catch (Exception ex)
+            catch
             {
-                Logger.Error("RequestTrackingPanel - BuildTechnicalApprovers, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
+				// TODO: Linq returns exception if query is null.  Need to refactor?
             }
 		}
 		
