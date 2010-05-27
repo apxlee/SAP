@@ -120,9 +120,7 @@ namespace Apollo.AIM.SNAP.Model
 				}
 				else
 				{
-					// TODO: Hardcoded above for development, don't want emails/nags going to managers
-					//
-					//FormattedEmailTool.SendFormattedEmail(recipientEmailAddress, subject, templatePath, bodyParameters);
+					FormattedEmailTool.SendFormattedEmail(recipientEmailAddress, subject, templatePath, bodyParameters);
 				}
 			}
 			catch (Exception ex)
