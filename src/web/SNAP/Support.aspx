@@ -7,7 +7,7 @@
 		<div class="csm_grid_8">
 			<h1>Access News</h1>
 			<div class="csm_content_container">
-				<p><strong>May 27, 2010</strong><br />
+				<p><strong>Summer 2010</strong><br />
 				Sharepoint Paperless Privileged Access will no longer support new access requests.  Please enter new requests by accessing 
 				the "Request Form" link from the top navigation bar when it appears after login.
 				</p>
@@ -45,8 +45,7 @@
 				<tr>
 					<td><div id="support_contact_logo"></div></td>
 					<td style="vertical-align:middle;padding-left:10px;">
-						<p style="font-size:.85em;line-height:1.2em;">The Supplemental Access Process application is a product of <strong>Access & Identity Managment</strong> under the direction of<br />
-						Greg Belanger.</p>
+						<p style="font-size:.85em;line-height:1.2em;">The Supplemental Access Process application is a product of <strong>Access & Identity Managment</strong> under the direction of<br />Greg Belanger.</p>
 						<p style="font-size:.85em;line-height:1.8em;"><strong><a href="mailto:DG C-APO-Corporate-ITS Access Management?subject=SNAP%20Comments">DG C-APO-Corporate-ITS Access Management</a></strong></p>
 					</td>
 				</tr>
