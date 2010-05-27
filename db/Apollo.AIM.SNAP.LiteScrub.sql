@@ -27,3 +27,9 @@ print 'scrub dbo.SNAP_Workflow_Comments'
 
 DBCC CHECKIDENT ("dbo.SNAP_Workflow_Comments", RESEED, 0);
 print 'reseed dbo.SNAP_Workflow_Comments'
+
+delete from dbo.SNAP_Workflow_State
+print 'scrub dbo.SNAP_Workflow_State'
+
+DBCC CHECKIDENT ("dbo.SNAP_Workflow_State", RESEED, 0);
+print 'reseed dbo.SNAP_Workflow_State'
