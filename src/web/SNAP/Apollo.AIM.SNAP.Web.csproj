@@ -502,10 +502,10 @@
     <Content Include="Search.aspx" />
     <Content Include="SNAP.Master" />
     <Content Include="Support.aspx" />
-    <Content Include="SupportFiles\MyApprovals.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+    <Folder Include="SupportFiles\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" />
