@@ -1,8 +1,5 @@
 USE [Apollo.AIM.SNAP]
 GO
-
-GRANT EXECUTE ON [usp_test] TO [svc_snap]
-GO
 GRANT EXECUTE ON [usp_insert_access_user_text] TO [svc_snap]
 GO
 GRANT EXECUTE ON [usp_create_weekends_and_holidays_table] TO [svc_snap]
