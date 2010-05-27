@@ -116,7 +116,7 @@ namespace Apollo.AIM.SNAP.Model
 			{
 				if (Convert.ToBoolean(ConfigurationManager.AppSettings["SendAllEmailToAIM"]))
 				{
-					FormattedEmailTool.SendFormattedEmail(ConfigurationManager.AppSettings["AIM-DG"], subject, templatePath, bodyParameters);
+					FormattedEmailTool.SendFormattedEmail(ConfigurationManager.AppSettings["AccessEmailAddress"], subject, templatePath, bodyParameters);
 				}
 				else
 				{
@@ -127,7 +127,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 			catch (Exception ex)
 			{
-                Logger.Error("Email - SendEmail, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
+                Logger.Error("Email > SendEmail:\r\n" + ex.Message + "\r\nStackTrace: " + ex.StackTrace);
 				return false;
 			}
 			return true;
