@@ -54,27 +54,27 @@
 
 		</div>
 		
-		<div class="csm_grid_2 csm_prefix_1">
+		<div class="csm_grid_3" style="padding-left:10px;">
 			<h1>Tutorials</h1>
-			<table border="0" cellpadding="0" cellspacing="0" style="margin-top:5px;" width="100%">
+			<table border="0" cellpadding="0" cellspacing="5" style="margin-top:5px;" width="100%">
 				<tr>
 					<td ><img src="images/icon_quicktime.png" /></td>
-					<td style="font-size:.85em;line-height:1.2em;vertical-align:top;"><a href="#">My Approvals</a><br />Quicktime 1MB</td>
+					<td style="font-size:.85em;line-height:1.2em;vertical-align:top;padding-bottom:5px;"><a href="../SupportFiles/MyApprovals.mov">My Approvals</a><br />Quicktime 1MB</td>
 				</tr>
 				<tr>
 					<td><img src="images/icon_WMV.png" /></td>
-					<td style="font-size:.85em;line-height:1.2em;vertical-align:top;"><a href="#">My Approvals</a><br />WMV 880K</td>
+					<td style="font-size:.85em;line-height:1.2em;vertical-align:top;"><a href="../SupportFiles/MyApprovals.wmv">My Approvals</a><br />WMV 880K</td>
 				</tr>
 			</table>
 			<hr />
-			<table border="0" cellpadding="0" cellspacing="0" style="margin-top:5px;">
+			<table border="0" cellpadding="0" cellspacing="0" style="margin-top:5px;" width="100%">
 				<tr>
 					<td><img src="images/icon_quicktime.png" /></td>
-					<td style="font-size:.85em;line-height:1.2em;vertical-align:top;"><a href="#">Request Form</a><br />Quicktime 1.2MB</td>
+					<td style="font-size:.85em;line-height:1.2em;vertical-align:top;padding-bottom:5px;"><a href="../SupportFiles/RequestForm.mov">Request Form</a><br />Quicktime 1.2MB</td>
 				</tr>
 				<tr>
 					<td><img src="images/icon_WMV.png" /></td>
-					<td style="font-size:.85em;line-height:1.2em;vertical-align:top;"><a href="#">Request Form</a><br />WMV 890K</td>
+					<td style="font-size:.85em;line-height:1.2em;vertical-align:top;"><a href="../SupportFiles/RequestForm.wmv">Request Form</a><br />WMV 890K</td>
 				</tr>
 
 			</table>
