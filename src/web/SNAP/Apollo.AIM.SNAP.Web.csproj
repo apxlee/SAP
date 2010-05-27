@@ -487,6 +487,7 @@
     <Content Include="images\button_show_details_active.png" />
     <Content Include="images\example_oracle.png" />
     <Content Include="images\example_SQL.png" />
+    <Content Include="images\favicon.ico" />
     <Content Include="images\icon_quicktime.png" />
     <Content Include="images\icon_WMV.png" />
     <Content Include="images\logo_aim_small.png" />
