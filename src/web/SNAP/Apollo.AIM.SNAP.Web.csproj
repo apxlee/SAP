@@ -502,6 +502,7 @@
     <Content Include="Search.aspx" />
     <Content Include="SNAP.Master" />
     <Content Include="Support.aspx" />
+    <Content Include="SupportFiles\MyApprovals.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

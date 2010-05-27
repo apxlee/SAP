@@ -38,8 +38,6 @@ namespace Apollo.AIM.SNAP.Web
 
 		protected void _submitLogin_Click(object sender, EventArgs e)
 		{
-			//Logger.Info("Login Click");  // TODO: REMOVE AFTER DEV COMPLETE!!!
-
 			if (!IsAuthenticatedUser(_networkId.Text, _password.Text))
 			{
 				DisplayMessage(@"Unable to Login.  Please re-enter your Network Login and Password. [Authentication Failure]", true);
@@ -75,6 +73,9 @@ namespace Apollo.AIM.SNAP.Web
 
 		private bool IsAuthenticatedUser(string networkId, string password)
 		{
+//#if DEBUG
+//    return true;
+//#endif
 			try
 			{
 				LdapAuthentication authentication = new LdapAuthentication();
