@@ -15,7 +15,8 @@
 			<p><strong>Pending:</strong>&nbsp;The request workflow is active.</p>
 			<p class="legendPadding"><strong>Pending Acknowledgement:</strong>&nbsp;The Access Team has yet to review it for custom workflow creation.</p>
 			<p class="legendPadding"><strong>Pending Workflow:</strong>&nbsp;The Access Team has acknowledged the request, and it is currently being reviewed<br />before workflow creation.</p>
-			<p class="legendPadding"><strong>Pending Approval:</strong>&nbsp;The request is now in workflow and is waiting for all associated approvals.</p>					
+			<p class="legendPadding"><strong>Pending Approval:</strong>&nbsp;The request is now in workflow and is waiting for all associated approvals.</p>
+			<p class="legendPadding"><strong>Pending Provisioning:</strong>&nbsp;The request has been approved and the Access Team is preparing it for provisioning.</p>
 		</div>
 		<div class="csm_text_container_single_row" style="font-size:12px;padding:5px 5px 5px 10px;">
 			<p><strong>Approved:</strong>&nbsp;An individual or group has approved this request for their speciality as part of the request workflow.</p>
