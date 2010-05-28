@@ -16,8 +16,6 @@ namespace Apollo.AIM.SNAP.Web
 	{
 		protected void Page_Load(object sender, EventArgs e)
 		{
-			_password.Text = "Password1"; // TODO: REMOVE THIS AFTER DEV COMPLETE!!!
-			
 			if (!string.IsNullOrEmpty(SnapSession.RequestedPage))
 			{
 				_loginCheck1.Attributes["class"] = "aim_checkbox_unchecked";
@@ -73,9 +71,6 @@ namespace Apollo.AIM.SNAP.Web
 
 		private bool IsAuthenticatedUser(string networkId, string password)
 		{
-//#if DEBUG
-//    return true;
-//#endif
 			try
 			{
 				LdapAuthentication authentication = new LdapAuthentication();
