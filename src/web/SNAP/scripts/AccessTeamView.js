@@ -11,8 +11,9 @@ var curr_date = m_names[curr_month] + " " + curr_day + ", " + curr_year;
 
 function filterClick(obj) {
     var blade = "";
-    var filter = $(obj).val();
-    $(obj).closest("table").next().html("Open Requests" + " - " + filter);
+    var filter = $(obj).attr("snap");
+    //$(obj).closest("table").next().html("Open Requests" + " - " + filter);
+    $("div[id='access_filter_container']").attr("class", $(obj).attr('id'));
     $(obj).closest("div.csm_container_center_700").find("div.csm_content_container").each(
         function() {
             blade = this;
