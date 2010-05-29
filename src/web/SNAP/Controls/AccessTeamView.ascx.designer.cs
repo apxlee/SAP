@@ -14,51 +14,6 @@ namespace Apollo.AIM.SNAP.Web.Controls {
     public partial class AccessTeamView {
         
         /// <summary>
-        /// _pendingacknowledgementFilter control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label _pendingacknowledgementFilter;
-        
-        /// <summary>
-        /// _pendingworkflowFilter control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label _pendingworkflowFilter;
-        
-        /// <summary>
-        /// _inWorkflowFilter control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label _inWorkflowFilter;
-        
-        /// <summary>
-        /// _pendingprovisioningFilter control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label _pendingprovisioningFilter;
-        
-        /// <summary>
-        /// _showallFilter control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label _showallFilter;
-        
-        /// <summary>
         /// _openRequestsContainer control.
         /// </summary>
         /// <remarks>

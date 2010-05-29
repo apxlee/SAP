@@ -1,26 +1,28 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="AccessTeamView.ascx.cs" Inherits="Apollo.AIM.SNAP.Web.Controls.AccessTeamView" %>
 <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>MasterRequestBlade.js" type="text/javascript"></script>
 <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>AccessTeamView.js" type="text/javascript"></script>
+	<style type="text/css">
+
+	</style>
 <div class="csm_container_center_700">
+
+	<h1 style="margin-bottom:2px;">Open Requests</h1>
 	
-	<h1>Access Team Request Filter</h1>
-	<table border="0" cellpadding="0" cellspacing="0" class="csm_input_form_container">
-		<tr>
-			<td class="csm_input_form_control_column">
-				<input type="radio" name="_changeFilter" onclick="filterClick(this);" class="csm_input_checkradio" value="Pending Acknowledgement" />
-				<asp:Label CssClass="csm_input_checkradio_span" ID="_pendingacknowledgementFilter" runat="server" />
-				<input type="radio" name="_changeFilter" onclick="filterClick(this);" class="csm_input_checkradio" value="Pending Workflow" />
-				<asp:Label CssClass="csm_input_checkradio_span" ID="_pendingworkflowFilter" runat="server" />	
-				<input type="radio" name="_changeFilter" onclick="filterClick(this);" checked="checked" class="csm_input_checkradio" value="In Workflow" />
-				<asp:Label CssClass="csm_input_checkradio_span" ID="_inWorkflowFilter" runat="server" />
-				<input type="radio" name="_changeFilter" onclick="filterClick(this);" class="csm_input_checkradio" value="Pending Provisioning" />
-				<asp:Label CssClass="csm_input_checkradio_span" ID="_pendingprovisioningFilter" runat="server" />
-				<input type="radio" name="_changeFilter" onclick="filterClick(this);" checked="checked" class="csm_input_checkradio" value="All" />
-				<asp:Label CssClass="csm_input_checkradio_span" ID="_showallFilter" runat="server" />
-			</td>
-		</tr>					
-	</table>
-	<h1>Open Requests - All</h1>
+	<div id="access_filter_container" class="filter_view_all">
+		<div id="access_filter_outer">
+			<ul id="access_filter_inner">
+				<li><span>Pending:</span></li>
+				<li id="filter_pending_acknowledgement" onclick="filterClick(this);" snap="Pending Acknowledgement"><span>Acknowledgement</span></li>
+				<li id="filter_pending_workflow" onclick="filterClick(this);" snap="Pending Workflow"><span>Workflow</span></li>
+				<li id="filter_pending_provisioning" onclick="filterClick(this);" snap="Pending Provisioning"><span>Provisioning</span></li>
+				<li><span>|</span></li>
+				<li id="filter_in_workflow" onclick="filterClick(this);" snap="In Workflow"><span>In Workflow</span></li>
+				<li><span>|</span></li>
+				<li id="filter_view_all" onclick="filterClick(this);" snap="All"><span>View All</span></li>
+			</ul>
+		</div>
+	</div>	
+	
 	<asp:PlaceHolder ID="_openRequestsContainer" runat="server"></asp:PlaceHolder>
 	<asp:Panel ID="_nullDataMessage_OpenRequests" snap="_nullDataMessage" runat="server" CssClass="csm_content_container" Visible="false">
 		<div class="csm_text_container">
