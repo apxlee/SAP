@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Database Name="Apollo.AIM.SNAP" Class="SNAPDatabaseDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=DWAXCAPB006;Initial Catalog=Apollo.AIM.SNAP;Integrated Security=True" SettingsObjectName="Apollo.AIM.SNAP.Properties.Settings" SettingsPropertyName="Apollo_AIM_SNAPConnectionString" Provider="System.Data.SqlClient" />
+<Database Name="its_snap" Class="SNAPDatabaseDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=DWADULDB001.devapollogrp.edu;Initial Catalog=its_snap;Integrated Security=True" SettingsObjectName="Apollo.AIM.SNAP.Properties.Settings" SettingsPropertyName="its_snapConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.SNAP_Access_Details_Form" Member="SNAP_Access_Details_Forms">
     <Type Name="SNAP_Access_Details_Form">
       <Column Name="pkId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -9,13 +9,7 @@
       <Column Name="description" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
       <Column Name="isActive" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Column Name="isRequired" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Association Name="SNAP_Access_Details_Form_SNAP_Access_User_Text" Member="SNAP_Access_User_Texts" ThisKey="pkId" OtherKey="access_details_formId" Type="SNAP_Access_User_Text" />
-    </Type>
-  </Table>
-  <Table Name="dbo.SNAP_Workflow_State_Type" Member="SNAP_Workflow_State_Types">
-    <Type Name="SNAP_Workflow_State_Type">
-      <Column Name="pkId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="typeName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="SNAP_Access_Details_Form_SNAP_Access_User_Text" Member="SNAP_Access_User_Texts" OtherKey="access_details_formId" Type="SNAP_Access_User_Text" />
     </Type>
   </Table>
   <Table Name="dbo.SNAP_Access_User_Text" Member="SNAP_Access_User_Texts">
@@ -25,8 +19,8 @@
       <Column Name="access_details_formId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="userText" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
       <Column Name="modifiedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="SNAP_Access_Details_Form_SNAP_Access_User_Text" Member="SNAP_Access_Details_Form" ThisKey="access_details_formId" OtherKey="pkId" Type="SNAP_Access_Details_Form" IsForeignKey="true" />
-      <Association Name="SNAP_Request_SNAP_Access_User_Text" Member="SNAP_Request" ThisKey="requestId" OtherKey="pkId" Type="SNAP_Request" IsForeignKey="true" />
+      <Association Name="SNAP_Access_Details_Form_SNAP_Access_User_Text" Member="SNAP_Access_Details_Form" ThisKey="access_details_formId" Type="SNAP_Access_Details_Form" IsForeignKey="true" />
+      <Association Name="SNAP_Request_SNAP_Access_User_Text" Member="SNAP_Request" ThisKey="requestId" Type="SNAP_Request" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.SNAP_Actor_Group" Member="SNAP_Actor_Groups">
@@ -37,7 +31,7 @@
       <Column Name="actorGroupType" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
       <Column Name="isActive" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Column Name="isLargeGroup" Type="System.Boolean" CanBeNull="false" />
-      <Association Name="SNAP_Actor_Group_SNAP_Actor" Member="SNAP_Actors" ThisKey="pkId" OtherKey="actor_groupId" Type="SNAP_Actor" />
+      <Association Name="SNAP_Actor_Group_SNAP_Actor" Member="SNAP_Actors" OtherKey="actor_groupId" Type="SNAP_Actor" />
     </Type>
   </Table>
   <Table Name="dbo.SNAP_Actor_Group_Type" Member="SNAP_Actor_Group_Types">
@@ -60,7 +54,7 @@
       <Column Name="commentTypeEnum" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
       <Column Name="commentText" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
       <Column Name="createdDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
-      <Association Name="SNAP_Request_SNAP_Request_Comment" Member="SNAP_Request" ThisKey="requestId" OtherKey="pkId" Type="SNAP_Request" IsForeignKey="true" />
+      <Association Name="SNAP_Request_SNAP_Request_Comment" Member="SNAP_Request" ThisKey="requestId" Type="SNAP_Request" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.SNAP_Request_State_Type" Member="SNAP_Request_State_Types">
@@ -83,9 +77,9 @@
       <Column Name="statusEnum" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
       <Column Name="createdDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
       <Column Name="lastModifiedDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
-      <Association Name="SNAP_Request_SNAP_Access_User_Text" Member="SNAP_Access_User_Texts" ThisKey="pkId" OtherKey="requestId" Type="SNAP_Access_User_Text" />
-      <Association Name="SNAP_Request_SNAP_Request_Comment" Member="SNAP_Request_Comments" ThisKey="pkId" OtherKey="requestId" Type="SNAP_Request_Comment" />
-      <Association Name="SNAP_Request_SNAP_Workflow" Member="SNAP_Workflows" ThisKey="pkId" OtherKey="requestId" Type="SNAP_Workflow" />
+      <Association Name="SNAP_Request_SNAP_Access_User_Text" Member="SNAP_Access_User_Texts" OtherKey="requestId" Type="SNAP_Access_User_Text" />
+      <Association Name="SNAP_Request_SNAP_Request_Comment" Member="SNAP_Request_Comments" OtherKey="requestId" Type="SNAP_Request_Comment" />
+      <Association Name="SNAP_Request_SNAP_Workflow" Member="SNAP_Workflows" OtherKey="requestId" Type="SNAP_Workflow" />
     </Type>
   </Table>
   <Table Name="dbo.SNAP_Weekends_and_Holidays" Member="SNAP_Weekends_and_Holidays">
@@ -99,10 +93,10 @@
       <Column Name="pkId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="requestId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="actorId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="SNAP_Workflow_SNAP_Workflow_Comment" Member="SNAP_Workflow_Comments" ThisKey="pkId" OtherKey="workflowId" Type="SNAP_Workflow_Comment" />
-      <Association Name="SNAP_Workflow_SNAP_Workflow_State" Member="SNAP_Workflow_States" ThisKey="pkId" OtherKey="workflowId" Type="SNAP_Workflow_State" />
-      <Association Name="SNAP_Request_SNAP_Workflow" Member="SNAP_Request" ThisKey="requestId" OtherKey="pkId" Type="SNAP_Request" IsForeignKey="true" />
-      <Association Name="SNAP_Actor_SNAP_Workflow" Member="SNAP_Actor" ThisKey="actorId" OtherKey="pkId" Type="SNAP_Actor" IsForeignKey="true" />
+      <Association Name="SNAP_Workflow_SNAP_Workflow_Comment" Member="SNAP_Workflow_Comments" OtherKey="workflowId" Type="SNAP_Workflow_Comment" />
+      <Association Name="SNAP_Workflow_SNAP_Workflow_State" Member="SNAP_Workflow_States" OtherKey="workflowId" Type="SNAP_Workflow_State" />
+      <Association Name="SNAP_Request_SNAP_Workflow" Member="SNAP_Request" ThisKey="requestId" Type="SNAP_Request" IsForeignKey="true" />
+      <Association Name="SNAP_Actor_SNAP_Workflow" Member="SNAP_Actor" ThisKey="actorId" Type="SNAP_Actor" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.SNAP_Workflow_Comments" Member="SNAP_Workflow_Comments">
@@ -112,7 +106,7 @@
       <Column Name="commentTypeEnum" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
       <Column Name="commentText" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
       <Column Name="createdDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
-      <Association Name="SNAP_Workflow_SNAP_Workflow_Comment" Member="SNAP_Workflow" ThisKey="workflowId" OtherKey="pkId" Type="SNAP_Workflow" IsForeignKey="true" />
+      <Association Name="SNAP_Workflow_SNAP_Workflow_Comment" Member="SNAP_Workflow" ThisKey="workflowId" Type="SNAP_Workflow" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.SNAP_Workflow_State" Member="SNAP_Workflow_States">
@@ -123,7 +117,7 @@
       <Column Name="notifyDate" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
       <Column Name="dueDate" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
       <Column Name="completedDate" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
-      <Association Name="SNAP_Workflow_SNAP_Workflow_State" Member="SNAP_Workflow" ThisKey="workflowId" OtherKey="pkId" Type="SNAP_Workflow" IsForeignKey="true" />
+      <Association Name="SNAP_Workflow_SNAP_Workflow_State" Member="SNAP_Workflow" ThisKey="workflowId" Type="SNAP_Workflow" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.SNAP_Actors" Member="SNAP_Actors">
@@ -136,8 +130,14 @@
       <Column Name="isGroup" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="isDefault" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="isActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Association Name="SNAP_Actor_SNAP_Workflow" Member="SNAP_Workflows" ThisKey="pkId" OtherKey="actorId" Type="SNAP_Workflow" />
-      <Association Name="SNAP_Actor_Group_SNAP_Actor" Member="SNAP_Actor_Group" ThisKey="actor_groupId" OtherKey="pkId" Type="SNAP_Actor_Group" IsForeignKey="true" />
+      <Association Name="SNAP_Actor_SNAP_Workflow" Member="SNAP_Workflows" OtherKey="actorId" Type="SNAP_Workflow" />
+      <Association Name="SNAP_Actor_Group_SNAP_Actor" Member="SNAP_Actor_Group" ThisKey="actor_groupId" Type="SNAP_Actor_Group" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SNAP_Workflow_State_Type" Member="SNAP_Workflow_State_Types">
+    <Type Name="SNAP_Workflow_State_Type">
+      <Column Name="pkId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="typeName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
   <Function Name="dbo.usp_open_my_request_text" Method="usp_open_my_request_text">

@@ -22,7 +22,7 @@ namespace Apollo.AIM.SNAP.Model
 	using System;
 	
 	
-	[System.Data.Linq.Mapping.DatabaseAttribute(Name="Apollo.AIM.SNAP")]
+	[System.Data.Linq.Mapping.DatabaseAttribute(Name="its_snap")]
 	public partial class SNAPDatabaseDataContext : System.Data.Linq.DataContext
 	{
 		
@@ -33,9 +33,6 @@ namespace Apollo.AIM.SNAP.Model
     partial void InsertSNAP_Access_Details_Form(SNAP_Access_Details_Form instance);
     partial void UpdateSNAP_Access_Details_Form(SNAP_Access_Details_Form instance);
     partial void DeleteSNAP_Access_Details_Form(SNAP_Access_Details_Form instance);
-    partial void InsertSNAP_Workflow_State_Type(SNAP_Workflow_State_Type instance);
-    partial void UpdateSNAP_Workflow_State_Type(SNAP_Workflow_State_Type instance);
-    partial void DeleteSNAP_Workflow_State_Type(SNAP_Workflow_State_Type instance);
     partial void InsertSNAP_Access_User_Text(SNAP_Access_User_Text instance);
     partial void UpdateSNAP_Access_User_Text(SNAP_Access_User_Text instance);
     partial void DeleteSNAP_Access_User_Text(SNAP_Access_User_Text instance);
@@ -66,10 +63,13 @@ namespace Apollo.AIM.SNAP.Model
     partial void InsertSNAP_Actor(SNAP_Actor instance);
     partial void UpdateSNAP_Actor(SNAP_Actor instance);
     partial void DeleteSNAP_Actor(SNAP_Actor instance);
+    partial void InsertSNAP_Workflow_State_Type(SNAP_Workflow_State_Type instance);
+    partial void UpdateSNAP_Workflow_State_Type(SNAP_Workflow_State_Type instance);
+    partial void DeleteSNAP_Workflow_State_Type(SNAP_Workflow_State_Type instance);
     #endregion
 		
 		public SNAPDatabaseDataContext() : 
-				base(global::Apollo.AIM.SNAP.Properties.Settings.Default.Apollo_AIM_SNAPConnectionString, mappingSource)
+				base(global::Apollo.AIM.SNAP.Properties.Settings.Default.its_snapConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
@@ -103,14 +103,6 @@ namespace Apollo.AIM.SNAP.Model
 			get
 			{
 				return this.GetTable<SNAP_Access_Details_Form>();
-			}
-		}
-		
-		public System.Data.Linq.Table<SNAP_Workflow_State_Type> SNAP_Workflow_State_Types
-		{
-			get
-			{
-				return this.GetTable<SNAP_Workflow_State_Type>();
 			}
 		}
 		
@@ -210,6 +202,14 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
+		public System.Data.Linq.Table<SNAP_Workflow_State_Type> SNAP_Workflow_State_Types
+		{
+			get
+			{
+				return this.GetTable<SNAP_Workflow_State_Type>();
+			}
+		}
+		
 		[Function(Name="dbo.usp_open_my_request_text")]
 		public int usp_open_my_request_text([Parameter(DbType="NVarChar(10)")] string userId)
 		{
@@ -230,19 +230,19 @@ namespace Apollo.AIM.SNAP.Model
 			return ((int)(result.ReturnValue));
 		}
 		
-        //[Function(Name="dbo.usp_search_requests")]
-        //public ISingleResult<usp_search_requestsResult> usp_search_requests([Parameter(DbType="NVarChar(100)")] string search)
-        //{
-        //    IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), search);
-        //    return ((ISingleResult<usp_search_requestsResult>)(result.ReturnValue));
-        //}
+		//[Function(Name="dbo.usp_search_requests")]
+		//public ISingleResult<usp_search_requestsResult> usp_search_requests([Parameter(DbType="NVarChar(100)")] string search)
+		//{
+		//    IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), search);
+		//    return ((ISingleResult<usp_search_requestsResult>)(result.ReturnValue));
+		//}
 		
-        //[Function(Name="dbo.usp_requests")]
-        //public ISingleResult<usp_requestsResult> usp_requests([Parameter(DbType="NVarChar(128)")] string userId, [Parameter(DbType="NVarChar(10)")] string role)
-        //{
-        //    IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId, role);
-        //    return ((ISingleResult<usp_requestsResult>)(result.ReturnValue));
-        //}
+		//[Function(Name="dbo.usp_requests")]
+		//public ISingleResult<usp_requestsResult> usp_requests([Parameter(DbType="NVarChar(128)")] string userId, [Parameter(DbType="NVarChar(10)")] string role)
+		//{
+		//    IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId, role);
+		//    return ((ISingleResult<usp_requestsResult>)(result.ReturnValue));
+		//}
 		
 		[Function(Name="dbo.usp_request_details")]
 		public ISingleResult<usp_request_detailsResult> usp_request_details([Parameter(DbType="Int")] System.Nullable<int> requestId)
@@ -458,7 +458,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Association(Name="SNAP_Access_Details_Form_SNAP_Access_User_Text", Storage="_SNAP_Access_User_Texts", ThisKey="pkId", OtherKey="access_details_formId")]
+		[Association(Name="SNAP_Access_Details_Form_SNAP_Access_User_Text", Storage="_SNAP_Access_User_Texts", OtherKey="access_details_formId")]
 		public EntitySet<SNAP_Access_User_Text> SNAP_Access_User_Texts
 		{
 			get
@@ -501,92 +501,6 @@ namespace Apollo.AIM.SNAP.Model
 		{
 			this.SendPropertyChanging();
 			entity.SNAP_Access_Details_Form = null;
-		}
-	}
-	
-	[Table(Name="dbo.SNAP_Workflow_State_Type")]
-	public partial class SNAP_Workflow_State_Type : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _pkId;
-		
-		private string _typeName;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnpkIdChanging(int value);
-    partial void OnpkIdChanged();
-    partial void OntypeNameChanging(string value);
-    partial void OntypeNameChanged();
-    #endregion
-		
-		public SNAP_Workflow_State_Type()
-		{
-			OnCreated();
-		}
-		
-		[Column(Storage="_pkId", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int pkId
-		{
-			get
-			{
-				return this._pkId;
-			}
-			set
-			{
-				if ((this._pkId != value))
-				{
-					this.OnpkIdChanging(value);
-					this.SendPropertyChanging();
-					this._pkId = value;
-					this.SendPropertyChanged("pkId");
-					this.OnpkIdChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_typeName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string typeName
-		{
-			get
-			{
-				return this._typeName;
-			}
-			set
-			{
-				if ((this._typeName != value))
-				{
-					this.OntypeNameChanging(value);
-					this.SendPropertyChanging();
-					this._typeName = value;
-					this.SendPropertyChanged("typeName");
-					this.OntypeNameChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
 		}
 	}
 	
@@ -741,7 +655,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Association(Name="SNAP_Access_Details_Form_SNAP_Access_User_Text", Storage="_SNAP_Access_Details_Form", ThisKey="access_details_formId", OtherKey="pkId", IsForeignKey=true)]
+		[Association(Name="SNAP_Access_Details_Form_SNAP_Access_User_Text", Storage="_SNAP_Access_Details_Form", ThisKey="access_details_formId", IsForeignKey=true)]
 		public SNAP_Access_Details_Form SNAP_Access_Details_Form
 		{
 			get
@@ -775,7 +689,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Association(Name="SNAP_Request_SNAP_Access_User_Text", Storage="_SNAP_Request", ThisKey="requestId", OtherKey="pkId", IsForeignKey=true)]
+		[Association(Name="SNAP_Request_SNAP_Access_User_Text", Storage="_SNAP_Request", ThisKey="requestId", IsForeignKey=true)]
 		public SNAP_Request SNAP_Request
 		{
 			get
@@ -994,7 +908,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Association(Name="SNAP_Actor_Group_SNAP_Actor", Storage="_SNAP_Actors", ThisKey="pkId", OtherKey="actor_groupId")]
+		[Association(Name="SNAP_Actor_Group_SNAP_Actor", Storage="_SNAP_Actors", OtherKey="actor_groupId")]
 		public EntitySet<SNAP_Actor> SNAP_Actors
 		{
 			get
@@ -1339,7 +1253,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Association(Name="SNAP_Request_SNAP_Request_Comment", Storage="_SNAP_Request", ThisKey="requestId", OtherKey="pkId", IsForeignKey=true)]
+		[Association(Name="SNAP_Request_SNAP_Request_Comment", Storage="_SNAP_Request", ThisKey="requestId", IsForeignKey=true)]
 		public SNAP_Request SNAP_Request
 		{
 			get
@@ -1794,7 +1708,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Association(Name="SNAP_Request_SNAP_Access_User_Text", Storage="_SNAP_Access_User_Texts", ThisKey="pkId", OtherKey="requestId")]
+		[Association(Name="SNAP_Request_SNAP_Access_User_Text", Storage="_SNAP_Access_User_Texts", OtherKey="requestId")]
 		public EntitySet<SNAP_Access_User_Text> SNAP_Access_User_Texts
 		{
 			get
@@ -1807,7 +1721,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Association(Name="SNAP_Request_SNAP_Request_Comment", Storage="_SNAP_Request_Comments", ThisKey="pkId", OtherKey="requestId")]
+		[Association(Name="SNAP_Request_SNAP_Request_Comment", Storage="_SNAP_Request_Comments", OtherKey="requestId")]
 		public EntitySet<SNAP_Request_Comment> SNAP_Request_Comments
 		{
 			get
@@ -1820,7 +1734,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Association(Name="SNAP_Request_SNAP_Workflow", Storage="_SNAP_Workflows", ThisKey="pkId", OtherKey="requestId")]
+		[Association(Name="SNAP_Request_SNAP_Workflow", Storage="_SNAP_Workflows", OtherKey="requestId")]
 		public EntitySet<SNAP_Workflow> SNAP_Workflows
 		{
 			get
@@ -2044,7 +1958,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Association(Name="SNAP_Workflow_SNAP_Workflow_Comment", Storage="_SNAP_Workflow_Comments", ThisKey="pkId", OtherKey="workflowId")]
+		[Association(Name="SNAP_Workflow_SNAP_Workflow_Comment", Storage="_SNAP_Workflow_Comments", OtherKey="workflowId")]
 		public EntitySet<SNAP_Workflow_Comment> SNAP_Workflow_Comments
 		{
 			get
@@ -2057,7 +1971,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Association(Name="SNAP_Workflow_SNAP_Workflow_State", Storage="_SNAP_Workflow_States", ThisKey="pkId", OtherKey="workflowId")]
+		[Association(Name="SNAP_Workflow_SNAP_Workflow_State", Storage="_SNAP_Workflow_States", OtherKey="workflowId")]
 		public EntitySet<SNAP_Workflow_State> SNAP_Workflow_States
 		{
 			get
@@ -2070,7 +1984,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Association(Name="SNAP_Request_SNAP_Workflow", Storage="_SNAP_Request", ThisKey="requestId", OtherKey="pkId", IsForeignKey=true)]
+		[Association(Name="SNAP_Request_SNAP_Workflow", Storage="_SNAP_Request", ThisKey="requestId", IsForeignKey=true)]
 		public SNAP_Request SNAP_Request
 		{
 			get
@@ -2104,7 +2018,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Association(Name="SNAP_Actor_SNAP_Workflow", Storage="_SNAP_Actor", ThisKey="actorId", OtherKey="pkId", IsForeignKey=true)]
+		[Association(Name="SNAP_Actor_SNAP_Workflow", Storage="_SNAP_Actor", ThisKey="actorId", IsForeignKey=true)]
 		public SNAP_Actor SNAP_Actor
 		{
 			get
@@ -2327,7 +2241,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Association(Name="SNAP_Workflow_SNAP_Workflow_Comment", Storage="_SNAP_Workflow", ThisKey="workflowId", OtherKey="pkId", IsForeignKey=true)]
+		[Association(Name="SNAP_Workflow_SNAP_Workflow_Comment", Storage="_SNAP_Workflow", ThisKey="workflowId", IsForeignKey=true)]
 		public SNAP_Workflow SNAP_Workflow
 		{
 			get
@@ -2550,7 +2464,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Association(Name="SNAP_Workflow_SNAP_Workflow_State", Storage="_SNAP_Workflow", ThisKey="workflowId", OtherKey="pkId", IsForeignKey=true)]
+		[Association(Name="SNAP_Workflow_SNAP_Workflow_State", Storage="_SNAP_Workflow", ThisKey="workflowId", IsForeignKey=true)]
 		public SNAP_Workflow SNAP_Workflow
 		{
 			get
@@ -2824,7 +2738,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Association(Name="SNAP_Actor_SNAP_Workflow", Storage="_SNAP_Workflows", ThisKey="pkId", OtherKey="actorId")]
+		[Association(Name="SNAP_Actor_SNAP_Workflow", Storage="_SNAP_Workflows", OtherKey="actorId")]
 		public EntitySet<SNAP_Workflow> SNAP_Workflows
 		{
 			get
@@ -2837,7 +2751,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Association(Name="SNAP_Actor_Group_SNAP_Actor", Storage="_SNAP_Actor_Group", ThisKey="actor_groupId", OtherKey="pkId", IsForeignKey=true)]
+		[Association(Name="SNAP_Actor_Group_SNAP_Actor", Storage="_SNAP_Actor_Group", ThisKey="actor_groupId", IsForeignKey=true)]
 		public SNAP_Actor_Group SNAP_Actor_Group
 		{
 			get
@@ -2901,6 +2815,92 @@ namespace Apollo.AIM.SNAP.Model
 		{
 			this.SendPropertyChanging();
 			entity.SNAP_Actor = null;
+		}
+	}
+	
+	[Table(Name="dbo.SNAP_Workflow_State_Type")]
+	public partial class SNAP_Workflow_State_Type : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _pkId;
+		
+		private string _typeName;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnpkIdChanging(int value);
+    partial void OnpkIdChanged();
+    partial void OntypeNameChanging(string value);
+    partial void OntypeNameChanged();
+    #endregion
+		
+		public SNAP_Workflow_State_Type()
+		{
+			OnCreated();
+		}
+		
+		[Column(Storage="_pkId", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int pkId
+		{
+			get
+			{
+				return this._pkId;
+			}
+			set
+			{
+				if ((this._pkId != value))
+				{
+					this.OnpkIdChanging(value);
+					this.SendPropertyChanging();
+					this._pkId = value;
+					this.SendPropertyChanged("pkId");
+					this.OnpkIdChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_typeName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string typeName
+		{
+			get
+			{
+				return this._typeName;
+			}
+			set
+			{
+				if ((this._typeName != value))
+				{
+					this.OntypeNameChanging(value);
+					this.SendPropertyChanging();
+					this._typeName = value;
+					this.SendPropertyChanged("typeName");
+					this.OntypeNameChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 	

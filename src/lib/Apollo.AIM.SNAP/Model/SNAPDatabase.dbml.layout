@@ -8,12 +8,6 @@
         <elementListCompartment Id="c18f5f46-6a38-459d-9e82-54f9319b992b" absoluteBounds="0.765, 2.21, 1.9700000000000002, 1.19354248046875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="7a45aa27-3e7b-4dd2-9cc6-79242a3e554f" absoluteBounds="6.75, 0.75, 2, 1.0961531575520835">
-      <DataClassMoniker Name="/SNAPDatabaseDataContext/SNAP_Workflow_State_Type" />
-      <nestedChildShapes>
-        <elementListCompartment Id="19d4c954-a90e-4d48-aa9b-edd81633cfef" absoluteBounds="6.765, 1.21, 1.9700000000000002, 0.53615315755208326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
     <classShape Id="762255bc-e48f-4e46-acf9-64ca683b8c62" absoluteBounds="3.5, 1.875, 2, 1.5891951497395829">
       <DataClassMoniker Name="/SNAPDatabaseDataContext/SNAP_Access_User_Text" />
       <nestedChildShapes>
@@ -128,7 +122,7 @@
         <elementListCompartment Id="a1449aa3-91d0-4c9a-95c9-b39236d5fd6e" absoluteBounds="0.515, 9.835, 1.9700000000000002, 1.5222371419270833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(2.5 : 10.7651188151042); (2.57291666666667 : 10.7651188151042 : JumpStart); (2.73958333333333 : 10.7651188151042 : JumpEnd); (3.59375 : 10.7651188151042); (3.59375 : 6.26050048828125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.5 : 10.7651188151042); (3.59375 : 10.7651188151042); (3.59375 : 6.26050048828125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/SNAPDatabaseDataContext/SNAP_Actor/SNAP_Actor_SNAP_Workflow" />
       <nodes>
         <classShapeMoniker Id="8191d64a-e2b1-4bf4-8f8c-df61447db8e1" />
@@ -142,5 +136,11 @@
         <classShapeMoniker Id="8191d64a-e2b1-4bf4-8f8c-df61447db8e1" />
       </nodes>
     </associationConnector>
+    <classShape Id="eebda4da-bf2f-4b00-ad28-c2e5b8486920" absoluteBounds="6, 0.875, 2, 1.0961531575520833">
+      <DataClassMoniker Name="/SNAPDatabaseDataContext/SNAP_Workflow_State_Type" />
+      <nestedChildShapes>
+        <elementListCompartment Id="a7599648-9618-4ff1-bbed-1b53620bb078" absoluteBounds="6.015, 1.335, 1.9700000000000002, 0.53615315755208326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
   </nestedChildShapes>
 </ordesignerObjectsDiagram>
