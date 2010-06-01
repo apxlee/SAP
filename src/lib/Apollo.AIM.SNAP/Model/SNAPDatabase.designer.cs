@@ -68,8 +68,8 @@ namespace Apollo.AIM.SNAP.Model
     partial void DeleteSNAP_Workflow_State_Type(SNAP_Workflow_State_Type instance);
     #endregion
 		
-		public SNAPDatabaseDataContext() : 
-				base(global::Apollo.AIM.SNAP.Properties.Settings.Default.its_snapConnectionString, mappingSource)
+		public SNAPDatabaseDataContext() :
+		base(global::Apollo.AIM.SNAP.Properties.Settings.Default.Apollo_AIM_SNAPConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
