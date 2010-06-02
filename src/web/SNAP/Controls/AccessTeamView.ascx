@@ -12,11 +12,11 @@
 		<div id="access_filter_outer">
 			<ul id="access_filter_inner">
 				<li><span>Pending:</span></li>
-				<li id="filter_pending_acknowledgement" onclick="filterClick(this);" snap="Pending Acknowledgement"><span>Acknowledgement</span></li>
-				<li id="filter_pending_workflow" onclick="filterClick(this);" snap="Pending Workflow"><span>Workflow</span></li>
-				<li id="filter_pending_provisioning" onclick="filterClick(this);" snap="Pending Provisioning"><span>Provisioning</span></li>
+				<li id="filter_pending_acknowledgement" onclick="filterClick(this);" snap="Pending Acknowledgement"><span>Acknowledgement (<span id="filter_pending_acknowledgement_count">0</span>)</span></li>
+				<li id="filter_pending_workflow" onclick="filterClick(this);" snap="Pending Workflow"><span>Workflow (<span id="filter_pending_workflow_count">0</span>)</span></li>
+				<li id="filter_pending_provisioning" onclick="filterClick(this);" snap="Pending Provisioning"><span>Provisioning (<span id="filter_pending_provisioning_count">0</span>)</span></li>
 				<li><span>|</span></li>
-				<li id="filter_in_workflow" onclick="filterClick(this);" snap="In Workflow"><span>In Workflow</span></li>
+				<li id="filter_in_workflow" onclick="filterClick(this);" snap="In Workflow"><span>In Workflow (<span id="filter_in_workflow_count">0</span>)</span></li>
 				<li><span>|</span></li>
 				<li id="filter_view_all" onclick="filterClick(this);" snap="All"><span>View All</span></li>
 			</ul>

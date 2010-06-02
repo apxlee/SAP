@@ -8,6 +8,47 @@ var curr_day = d.getDate();
 var curr_month = d.getMonth();
 var curr_year = d.getFullYear();
 var curr_date = m_names[curr_month] + " " + curr_day + ", " + curr_year;
+$(document).ready(function() {
+    updateFilterCounts();
+});
+
+function updateFilterCounts() {
+    var ackCount = 0;
+    var wrkCount = 0;
+    var prvCount = 0;
+    var inCount = 0;
+    $("div.csm_container_center_700").find("div.csm_content_container").each(
+        function() {
+            $(this).find("div.csm_hidden_block").children().find("span").each(
+                function() {
+                    if ($(this).attr("snap") == "_actorDisplayName") {
+                        if ($(this).html() == "Access &amp; Identity Management") {
+                            if ($(this).parent().next().next().next().children().html() == "-") {
+                                var status = $(this).parent().next().children().html();
+                                switch (status) {
+                                    case "Pending Acknowledgement":
+                                        ackCount++;
+                                        break;
+                                    case "Pending Workflow":
+                                        wrkCount++;
+                                        break;
+                                    case "Pending Provisioning":
+                                        prvCount++;
+                                        break;
+                                    case "In Workflow":
+                                        inCount++;
+                                        break;
+                                }
+                            }
+                        }
+                    }
+                });
+        });
+    $("#filter_pending_acknowledgement_count").html(ackCount);
+    $("#filter_pending_workflow_count").html(wrkCount);
+    $("#filter_pending_provisioning_count").html(prvCount);
+    $("#filter_in_workflow_count").html(inCount);
+}
 
 function filterClick(obj) {
     var blade = "";
@@ -116,6 +157,7 @@ function AccessTeamActions(obj, requestId, action) {
                                 $(this).next().children().html("Pending");
                             }
                         });
+                        updateFilterCounts();
                         break;
                     case '2':
                         $('#_indicatorDiv').hide();
@@ -128,6 +170,7 @@ function AccessTeamActions(obj, requestId, action) {
                         updateRequestTracking(obj, "Access &amp; Identity Management", "Change Requested");
                         disableBladeActions(obj);
                         addComments(obj, "Access &amp; Identity Management", "Change Requested", comments, false);
+                        updateFilterCounts();
                         updateCount();
                         break;
                     case '3':
@@ -139,6 +182,7 @@ function AccessTeamActions(obj, requestId, action) {
                         animateActions(obj, "Closed Requests");
                         hideSections(obj);
                         updateRequestStatus(obj);
+                        updateFilterCounts();
                         updateCount();
                         break;
                     case '1':
@@ -150,6 +194,7 @@ function AccessTeamActions(obj, requestId, action) {
                         animateActions(obj, "Closed Requests");
                         hideSections(obj);
                         updateRequestStatus(obj);
+                        updateFilterCounts();
                         updateCount();
                         break;
                 }
@@ -423,6 +468,7 @@ function builderActions(obj, requestId, state) {
                         animateActions(obj, "Closed Requests");
                         hideSections(obj);
                         updateRequestStatus(obj);
+                        updateFilterCounts();
                         updateCount();
                         break;
                     case "6":
@@ -432,6 +478,7 @@ function builderActions(obj, requestId, state) {
                         animateActions(obj, "Closed Requests");
                         hideSections(obj);
                         updateRequestStatus(obj);
+                        updateFilterCounts();
                         updateCount();
                         break;
                     case "5":
