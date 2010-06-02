@@ -47,7 +47,7 @@ ul#access_filter_inner li
 , #filter_pending_provisioning
 , #filter_in_workflow
 , #filter_view_all {
-	background: url('../images/icon_toggle_down.png') no-repeat;
+	background: url('../images/icon_access_filter_active.png') no-repeat;
 	cursor: pointer;
 	}
 	
