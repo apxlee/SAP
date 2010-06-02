@@ -538,6 +538,20 @@ function animateActions(obj, newSection) {
                         if ($(section).next().attr("snap") == "_nullDataMessage") { $(section).next().remove(); }
                         $(emptyDiv).insertAfter(section);
                         $(this).insertAfter(section);
+
+                        var toggle = $(obj).closest("div.csm_content_container").children().find("div.csm_toggle_container");
+                        toggle.addClass("csm_toggle_show");
+                        toggle.removeClass("csm_toggle_hide");
+                        toggle.removeClass("csm_toggle_hide_hover");
+                        toggle.unbind('mouseenter mouseleave')
+                        toggle.hover(function() {
+                            $(this).addClass("csm_toggle_show_hover");
+                        },
+	                    function() {
+	                        $(this).removeClass("csm_toggle_show_hover");
+	                        }
+	                    );
+	                    
                         $(this).fadeIn(1000);
                     });
                 }

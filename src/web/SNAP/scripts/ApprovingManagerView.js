@@ -142,6 +142,20 @@ function animateActions(obj, newSection) {
                     blade.fadeOut(1000, function() {
                         if ($(section).next().attr("snap") == "_nullDataMessage") { $(section).next().remove(); }
                         $(this).insertAfter(section);
+
+                        var toggle = $(obj).closest("div.csm_content_container").children().find("div.csm_toggle_container");
+                        toggle.addClass("csm_toggle_show");
+                        toggle.removeClass("csm_toggle_hide");
+                        toggle.removeClass("csm_toggle_hide_hover");
+                        toggle.unbind('mouseenter mouseleave')
+                        toggle.hover(function() {
+                            $(this).addClass("csm_toggle_show_hover");
+                        },
+	                    function() {
+	                        $(this).removeClass("csm_toggle_show_hover");
+	                    }
+	                    );
+                        
                         $(this).fadeIn(1000);
                     });
                 }
@@ -152,7 +166,19 @@ function animateActions(obj, newSection) {
 function openNext(obj) {
     var blade = $(obj).closest("div.csm_content_container");
     $(obj).closest("div.csm_text_container").fadeOut("slow", function() {
-        $(obj).closest("div.csm_content_container").children().next().slideUp("fast", function() {
+    $(obj).closest("div.csm_content_container").children().next().slideUp("fast", function() {
+            var toggle = $(obj).closest("div.csm_content_container").children().find("div.csm_toggle_container");
+            toggle.addClass("csm_toggle_hide");
+            toggle.removeClass("csm_toggle_show");
+            toggle.removeClass("csm_toggle_show_hover");
+            toggle.unbind('mouseenter mouseleave')
+            toggle.hover(function() {
+            $(this).addClass("csm_toggle_hide_hover");
+            },
+            function() {
+            $(this).removeClass("csm_toggle_hide_hover");
+            }
+            );
             $(obj).closest("div.csm_content_container").next().next().children().next().slideDown("fast");
         });
     });
