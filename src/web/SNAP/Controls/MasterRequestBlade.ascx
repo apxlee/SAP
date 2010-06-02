@@ -20,10 +20,9 @@
 			    </table>
 			</div>
 			<div class="csm_float_right">
-				<div class="csm_toggle_container csm_toggle_show" onclick="csmToggle(this, 'ppnn');">
+				<asp:Panel ID="_toggleIconContainer" runat="server" class="csm_toggle_container csm_toggle_show" onclick="csmToggle(this, 'ppnn');">
 					<span>&nbsp;</span>
-					<!--<asp:Panel ID="_toggleIconContainer" runat="server"></asp:Panel>-->
-				</div>
+				</asp:Panel>
 			</div>
 		</div>
 		<div class="csm_clear">&nbsp;</div>
