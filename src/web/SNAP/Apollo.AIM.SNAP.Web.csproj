@@ -487,6 +487,8 @@
     <Content Include="Support.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="images\icon_access_filter_active.png" />
+    <Content Include="images\icon_access_filter_hover.png" />
     <Content Include="log4net.snap.config" />
   </ItemGroup>
   <ItemGroup>
