@@ -81,8 +81,8 @@ ul#access_filter_inner span.inline_counter {
 #filter_in_workflow {width:104px;background-position: 40px 60px;}
 #filter_view_all {width:50px;background-position: 29px 60px;}
 
-div.filter_pending_acknowledgement #filter_pending_acknowledgement {background-position: 60px 29px;}
-div.filter_pending_workflow #filter_pending_workflow {background-position: 37px 29px;}
-div.filter_pending_provisioning #filter_pending_provisioning {background-position: 44px 29px;}
-div.filter_in_workflow #filter_in_workflow {background-position: 41px 29px;}
-div.filter_view_all #filter_view_all {background-position: 19px 29px;}
+div.filter_pending_acknowledgement #filter_pending_acknowledgement {background-position: 60px 30px;}
+div.filter_pending_workflow #filter_pending_workflow {background-position: 37px 30px;}
+div.filter_pending_provisioning #filter_pending_provisioning {background-position: 44px 30px;}
+div.filter_in_workflow #filter_in_workflow {background-position: 41px 30px;}
+div.filter_view_all #filter_view_all {background-position: 19px 30px;}
