@@ -32,16 +32,5 @@ namespace Apollo.AIM.SNAP.Properties {
                 return ((string)(this["Apollo_AIM_SNAPConnectionString"]));
             }
         }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=DWADULDB001.devapollogrp.edu;Initial Catalog=its_snap;Integrated Secu" +
-            "rity=True")]
-        public string its_snapConnectionString {
-            get {
-                return ((string)(this["its_snapConnectionString"]));
-            }
-        }
     }
 }

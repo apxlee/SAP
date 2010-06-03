@@ -122,7 +122,7 @@
         <elementListCompartment Id="a1449aa3-91d0-4c9a-95c9-b39236d5fd6e" absoluteBounds="0.515, 9.835, 1.9700000000000002, 1.5222371419270833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(2.5 : 10.7651188151042); (3.59375 : 10.7651188151042); (3.59375 : 6.26050048828125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.5 : 10.7651188151042); (2.57291666666667 : 10.7651188151042 : JumpStart); (2.73958333333333 : 10.7651188151042 : JumpEnd); (3.59375 : 10.7651188151042); (3.59375 : 6.26050048828125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/SNAPDatabaseDataContext/SNAP_Actor/SNAP_Actor_SNAP_Workflow" />
       <nodes>
         <classShapeMoniker Id="8191d64a-e2b1-4bf4-8f8c-df61447db8e1" />

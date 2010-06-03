@@ -68,8 +68,8 @@ namespace Apollo.AIM.SNAP.Model
     partial void DeleteSNAP_Workflow_State_Type(SNAP_Workflow_State_Type instance);
     #endregion
 		
-		public SNAPDatabaseDataContext() :
-		base(global::Apollo.AIM.SNAP.Properties.Settings.Default.Apollo_AIM_SNAPConnectionString, mappingSource)
+		public SNAPDatabaseDataContext() : 
+				base(global::Apollo.AIM.SNAP.Properties.Settings.Default.Apollo_AIM_SNAPConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
@@ -230,19 +230,19 @@ namespace Apollo.AIM.SNAP.Model
 			return ((int)(result.ReturnValue));
 		}
 		
-		//[Function(Name="dbo.usp_search_requests")]
-		//public ISingleResult<usp_search_requestsResult> usp_search_requests([Parameter(DbType="NVarChar(100)")] string search)
-		//{
-		//    IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), search);
-		//    return ((ISingleResult<usp_search_requestsResult>)(result.ReturnValue));
-		//}
+        //[Function(Name="dbo.usp_search_requests")]
+        //public ISingleResult<usp_search_requestsResult> usp_search_requests([Parameter(DbType="NVarChar(100)")] string search)
+        //{
+        //    IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), search);
+        //    return ((ISingleResult<usp_search_requestsResult>)(result.ReturnValue));
+        //}
 		
-		//[Function(Name="dbo.usp_requests")]
-		//public ISingleResult<usp_requestsResult> usp_requests([Parameter(DbType="NVarChar(128)")] string userId, [Parameter(DbType="NVarChar(10)")] string role)
-		//{
-		//    IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId, role);
-		//    return ((ISingleResult<usp_requestsResult>)(result.ReturnValue));
-		//}
+        //[Function(Name="dbo.usp_requests")]
+        //public ISingleResult<usp_requestsResult> usp_requests([Parameter(DbType="NVarChar(128)")] string userId, [Parameter(DbType="NVarChar(10)")] string role)
+        //{
+        //    IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId, role);
+        //    return ((ISingleResult<usp_requestsResult>)(result.ReturnValue));
+        //}
 		
 		[Function(Name="dbo.usp_request_details")]
 		public ISingleResult<usp_request_detailsResult> usp_request_details([Parameter(DbType="Int")] System.Nullable<int> requestId)
@@ -265,13 +265,6 @@ namespace Apollo.AIM.SNAP.Model
 			return ((ISingleResult<usp_open_request_detailsResult>)(result.ReturnValue));
 		}
 		
-		[Function(Name="dbo.usp_open_my_request_workflow_details")]
-		public ISingleResult<usp_open_my_request_workflow_detailsResult> usp_open_my_request_workflow_details([Parameter(DbType="NVarChar(128)")] string userId)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId);
-			return ((ISingleResult<usp_open_my_request_workflow_detailsResult>)(result.ReturnValue));
-		}
-		
 		[Function(Name="dbo.usp_open_my_request_workflow_comments")]
 		public ISingleResult<usp_open_my_request_workflow_commentsResult> usp_open_my_request_workflow_comments([Parameter(DbType="NVarChar(128)")] string userId)
 		{
@@ -291,6 +284,13 @@ namespace Apollo.AIM.SNAP.Model
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId);
 			return ((ISingleResult<usp_open_my_request_commentsResult>)(result.ReturnValue));
+		}
+		
+		[Function(Name="dbo.usp_open_my_request_workflow_details")]
+		public ISingleResult<usp_open_my_request_workflow_detailsResult> usp_open_my_request_workflow_details([Parameter(DbType="NVarChar(128)")] string userId)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId);
+			return ((ISingleResult<usp_open_my_request_workflow_detailsResult>)(result.ReturnValue));
 		}
 	}
 	
@@ -458,7 +458,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Association(Name="SNAP_Access_Details_Form_SNAP_Access_User_Text", Storage="_SNAP_Access_User_Texts", OtherKey="access_details_formId")]
+		[Association(Name="SNAP_Access_Details_Form_SNAP_Access_User_Text", Storage="_SNAP_Access_User_Texts", ThisKey="pkId", OtherKey="access_details_formId")]
 		public EntitySet<SNAP_Access_User_Text> SNAP_Access_User_Texts
 		{
 			get
@@ -655,7 +655,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Association(Name="SNAP_Access_Details_Form_SNAP_Access_User_Text", Storage="_SNAP_Access_Details_Form", ThisKey="access_details_formId", IsForeignKey=true)]
+		[Association(Name="SNAP_Access_Details_Form_SNAP_Access_User_Text", Storage="_SNAP_Access_Details_Form", ThisKey="access_details_formId", OtherKey="pkId", IsForeignKey=true)]
 		public SNAP_Access_Details_Form SNAP_Access_Details_Form
 		{
 			get
@@ -689,7 +689,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Association(Name="SNAP_Request_SNAP_Access_User_Text", Storage="_SNAP_Request", ThisKey="requestId", IsForeignKey=true)]
+		[Association(Name="SNAP_Request_SNAP_Access_User_Text", Storage="_SNAP_Request", ThisKey="requestId", OtherKey="pkId", IsForeignKey=true)]
 		public SNAP_Request SNAP_Request
 		{
 			get
@@ -908,7 +908,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Association(Name="SNAP_Actor_Group_SNAP_Actor", Storage="_SNAP_Actors", OtherKey="actor_groupId")]
+		[Association(Name="SNAP_Actor_Group_SNAP_Actor", Storage="_SNAP_Actors", ThisKey="pkId", OtherKey="actor_groupId")]
 		public EntitySet<SNAP_Actor> SNAP_Actors
 		{
 			get
@@ -1253,7 +1253,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Association(Name="SNAP_Request_SNAP_Request_Comment", Storage="_SNAP_Request", ThisKey="requestId", IsForeignKey=true)]
+		[Association(Name="SNAP_Request_SNAP_Request_Comment", Storage="_SNAP_Request", ThisKey="requestId", OtherKey="pkId", IsForeignKey=true)]
 		public SNAP_Request SNAP_Request
 		{
 			get
@@ -1708,7 +1708,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Association(Name="SNAP_Request_SNAP_Access_User_Text", Storage="_SNAP_Access_User_Texts", OtherKey="requestId")]
+		[Association(Name="SNAP_Request_SNAP_Access_User_Text", Storage="_SNAP_Access_User_Texts", ThisKey="pkId", OtherKey="requestId")]
 		public EntitySet<SNAP_Access_User_Text> SNAP_Access_User_Texts
 		{
 			get
@@ -1721,7 +1721,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Association(Name="SNAP_Request_SNAP_Request_Comment", Storage="_SNAP_Request_Comments", OtherKey="requestId")]
+		[Association(Name="SNAP_Request_SNAP_Request_Comment", Storage="_SNAP_Request_Comments", ThisKey="pkId", OtherKey="requestId")]
 		public EntitySet<SNAP_Request_Comment> SNAP_Request_Comments
 		{
 			get
@@ -1734,7 +1734,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Association(Name="SNAP_Request_SNAP_Workflow", Storage="_SNAP_Workflows", OtherKey="requestId")]
+		[Association(Name="SNAP_Request_SNAP_Workflow", Storage="_SNAP_Workflows", ThisKey="pkId", OtherKey="requestId")]
 		public EntitySet<SNAP_Workflow> SNAP_Workflows
 		{
 			get
@@ -1958,7 +1958,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Association(Name="SNAP_Workflow_SNAP_Workflow_Comment", Storage="_SNAP_Workflow_Comments", OtherKey="workflowId")]
+		[Association(Name="SNAP_Workflow_SNAP_Workflow_Comment", Storage="_SNAP_Workflow_Comments", ThisKey="pkId", OtherKey="workflowId")]
 		public EntitySet<SNAP_Workflow_Comment> SNAP_Workflow_Comments
 		{
 			get
@@ -1971,7 +1971,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Association(Name="SNAP_Workflow_SNAP_Workflow_State", Storage="_SNAP_Workflow_States", OtherKey="workflowId")]
+		[Association(Name="SNAP_Workflow_SNAP_Workflow_State", Storage="_SNAP_Workflow_States", ThisKey="pkId", OtherKey="workflowId")]
 		public EntitySet<SNAP_Workflow_State> SNAP_Workflow_States
 		{
 			get
@@ -1984,7 +1984,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Association(Name="SNAP_Request_SNAP_Workflow", Storage="_SNAP_Request", ThisKey="requestId", IsForeignKey=true)]
+		[Association(Name="SNAP_Request_SNAP_Workflow", Storage="_SNAP_Request", ThisKey="requestId", OtherKey="pkId", IsForeignKey=true)]
 		public SNAP_Request SNAP_Request
 		{
 			get
@@ -2018,7 +2018,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Association(Name="SNAP_Actor_SNAP_Workflow", Storage="_SNAP_Actor", ThisKey="actorId", IsForeignKey=true)]
+		[Association(Name="SNAP_Actor_SNAP_Workflow", Storage="_SNAP_Actor", ThisKey="actorId", OtherKey="pkId", IsForeignKey=true)]
 		public SNAP_Actor SNAP_Actor
 		{
 			get
@@ -2241,7 +2241,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Association(Name="SNAP_Workflow_SNAP_Workflow_Comment", Storage="_SNAP_Workflow", ThisKey="workflowId", IsForeignKey=true)]
+		[Association(Name="SNAP_Workflow_SNAP_Workflow_Comment", Storage="_SNAP_Workflow", ThisKey="workflowId", OtherKey="pkId", IsForeignKey=true)]
 		public SNAP_Workflow SNAP_Workflow
 		{
 			get
@@ -2464,7 +2464,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Association(Name="SNAP_Workflow_SNAP_Workflow_State", Storage="_SNAP_Workflow", ThisKey="workflowId", IsForeignKey=true)]
+		[Association(Name="SNAP_Workflow_SNAP_Workflow_State", Storage="_SNAP_Workflow", ThisKey="workflowId", OtherKey="pkId", IsForeignKey=true)]
 		public SNAP_Workflow SNAP_Workflow
 		{
 			get
@@ -2738,7 +2738,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Association(Name="SNAP_Actor_SNAP_Workflow", Storage="_SNAP_Workflows", OtherKey="actorId")]
+		[Association(Name="SNAP_Actor_SNAP_Workflow", Storage="_SNAP_Workflows", ThisKey="pkId", OtherKey="actorId")]
 		public EntitySet<SNAP_Workflow> SNAP_Workflows
 		{
 			get
@@ -2751,7 +2751,7 @@ namespace Apollo.AIM.SNAP.Model
 			}
 		}
 		
-		[Association(Name="SNAP_Actor_Group_SNAP_Actor", Storage="_SNAP_Actor_Group", ThisKey="actor_groupId", IsForeignKey=true)]
+		[Association(Name="SNAP_Actor_Group_SNAP_Actor", Storage="_SNAP_Actor_Group", ThisKey="actor_groupId", OtherKey="pkId", IsForeignKey=true)]
 		public SNAP_Actor_Group SNAP_Actor_Group
 		{
 			get
@@ -4186,302 +4186,6 @@ namespace Apollo.AIM.SNAP.Model
 		}
 	}
 	
-	public partial class usp_open_my_request_workflow_detailsResult
-	{
-		
-		private int _requestId;
-		
-		private int _pkId;
-		
-		private int _workflowId;
-		
-		private byte _workflowStatusEnum;
-		
-		private System.Nullable<System.DateTime> _notifyDate;
-		
-		private System.Nullable<System.DateTime> _dueDate;
-		
-		private System.Nullable<System.DateTime> _completedDate;
-		
-		private int _pkId1;
-		
-		private int _actor_groupId;
-		
-		private string _userId;
-		
-		private string _displayName;
-		
-		private string _emailAddress;
-		
-		private bool _isGroup;
-		
-		private bool _isDefault;
-		
-		private bool _isActive;
-		
-		private System.Nullable<byte> _actorGroupType;
-		
-		public usp_open_my_request_workflow_detailsResult()
-		{
-		}
-		
-		[Column(Storage="_requestId", DbType="Int NOT NULL")]
-		public int requestId
-		{
-			get
-			{
-				return this._requestId;
-			}
-			set
-			{
-				if ((this._requestId != value))
-				{
-					this._requestId = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_pkId", DbType="Int NOT NULL")]
-		public int pkId
-		{
-			get
-			{
-				return this._pkId;
-			}
-			set
-			{
-				if ((this._pkId != value))
-				{
-					this._pkId = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_workflowId", DbType="Int NOT NULL")]
-		public int workflowId
-		{
-			get
-			{
-				return this._workflowId;
-			}
-			set
-			{
-				if ((this._workflowId != value))
-				{
-					this._workflowId = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_workflowStatusEnum", DbType="TinyInt NOT NULL")]
-		public byte workflowStatusEnum
-		{
-			get
-			{
-				return this._workflowStatusEnum;
-			}
-			set
-			{
-				if ((this._workflowStatusEnum != value))
-				{
-					this._workflowStatusEnum = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_notifyDate", DbType="SmallDateTime")]
-		public System.Nullable<System.DateTime> notifyDate
-		{
-			get
-			{
-				return this._notifyDate;
-			}
-			set
-			{
-				if ((this._notifyDate != value))
-				{
-					this._notifyDate = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_dueDate", DbType="SmallDateTime")]
-		public System.Nullable<System.DateTime> dueDate
-		{
-			get
-			{
-				return this._dueDate;
-			}
-			set
-			{
-				if ((this._dueDate != value))
-				{
-					this._dueDate = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_completedDate", DbType="SmallDateTime")]
-		public System.Nullable<System.DateTime> completedDate
-		{
-			get
-			{
-				return this._completedDate;
-			}
-			set
-			{
-				if ((this._completedDate != value))
-				{
-					this._completedDate = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_pkId1", DbType="Int NOT NULL")]
-		public int pkId1
-		{
-			get
-			{
-				return this._pkId1;
-			}
-			set
-			{
-				if ((this._pkId1 != value))
-				{
-					this._pkId1 = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_actor_groupId", DbType="Int NOT NULL")]
-		public int actor_groupId
-		{
-			get
-			{
-				return this._actor_groupId;
-			}
-			set
-			{
-				if ((this._actor_groupId != value))
-				{
-					this._actor_groupId = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_userId", DbType="NVarChar(128)")]
-		public string userId
-		{
-			get
-			{
-				return this._userId;
-			}
-			set
-			{
-				if ((this._userId != value))
-				{
-					this._userId = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_displayName", DbType="NVarChar(128) NOT NULL", CanBeNull=false)]
-		public string displayName
-		{
-			get
-			{
-				return this._displayName;
-			}
-			set
-			{
-				if ((this._displayName != value))
-				{
-					this._displayName = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_emailAddress", DbType="NVarChar(128) NOT NULL", CanBeNull=false)]
-		public string emailAddress
-		{
-			get
-			{
-				return this._emailAddress;
-			}
-			set
-			{
-				if ((this._emailAddress != value))
-				{
-					this._emailAddress = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_isGroup", DbType="Bit NOT NULL")]
-		public bool isGroup
-		{
-			get
-			{
-				return this._isGroup;
-			}
-			set
-			{
-				if ((this._isGroup != value))
-				{
-					this._isGroup = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_isDefault", DbType="Bit NOT NULL")]
-		public bool isDefault
-		{
-			get
-			{
-				return this._isDefault;
-			}
-			set
-			{
-				if ((this._isDefault != value))
-				{
-					this._isDefault = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_isActive", DbType="Bit NOT NULL")]
-		public bool isActive
-		{
-			get
-			{
-				return this._isActive;
-			}
-			set
-			{
-				if ((this._isActive != value))
-				{
-					this._isActive = value;
-				}
-			}
-		}
-		
-		[Column(Storage="_actorGroupType", DbType="TinyInt")]
-		public System.Nullable<byte> actorGroupType
-		{
-			get
-			{
-				return this._actorGroupType;
-			}
-			set
-			{
-				if ((this._actorGroupType != value))
-				{
-					this._actorGroupType = value;
-				}
-			}
-		}
-	}
-	
 	public partial class usp_open_my_request_workflow_commentsResult
 	{
 		
@@ -4915,6 +4619,302 @@ namespace Apollo.AIM.SNAP.Model
 				if ((this._createdDate != value))
 				{
 					this._createdDate = value;
+				}
+			}
+		}
+	}
+	
+	public partial class usp_open_my_request_workflow_detailsResult
+	{
+		
+		private int _requestId;
+		
+		private int _workflowStateId;
+		
+		private int _workflowId;
+		
+		private byte _workflowStatusEnum;
+		
+		private System.Nullable<System.DateTime> _notifyDate;
+		
+		private System.Nullable<System.DateTime> _dueDate;
+		
+		private System.Nullable<System.DateTime> _completedDate;
+		
+		private int _actorId;
+		
+		private int _actor_groupId;
+		
+		private string _userId;
+		
+		private string _displayName;
+		
+		private string _emailAddress;
+		
+		private bool _isGroup;
+		
+		private bool _isDefault;
+		
+		private bool _isActive;
+		
+		private System.Nullable<byte> _actorGroupType;
+		
+		public usp_open_my_request_workflow_detailsResult()
+		{
+		}
+		
+		[Column(Storage="_requestId", DbType="Int NOT NULL")]
+		public int requestId
+		{
+			get
+			{
+				return this._requestId;
+			}
+			set
+			{
+				if ((this._requestId != value))
+				{
+					this._requestId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_workflowStateId", DbType="Int NOT NULL")]
+		public int workflowStateId
+		{
+			get
+			{
+				return this._workflowStateId;
+			}
+			set
+			{
+				if ((this._workflowStateId != value))
+				{
+					this._workflowStateId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_workflowId", DbType="Int NOT NULL")]
+		public int workflowId
+		{
+			get
+			{
+				return this._workflowId;
+			}
+			set
+			{
+				if ((this._workflowId != value))
+				{
+					this._workflowId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_workflowStatusEnum", DbType="TinyInt NOT NULL")]
+		public byte workflowStatusEnum
+		{
+			get
+			{
+				return this._workflowStatusEnum;
+			}
+			set
+			{
+				if ((this._workflowStatusEnum != value))
+				{
+					this._workflowStatusEnum = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_notifyDate", DbType="SmallDateTime")]
+		public System.Nullable<System.DateTime> notifyDate
+		{
+			get
+			{
+				return this._notifyDate;
+			}
+			set
+			{
+				if ((this._notifyDate != value))
+				{
+					this._notifyDate = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_dueDate", DbType="SmallDateTime")]
+		public System.Nullable<System.DateTime> dueDate
+		{
+			get
+			{
+				return this._dueDate;
+			}
+			set
+			{
+				if ((this._dueDate != value))
+				{
+					this._dueDate = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_completedDate", DbType="SmallDateTime")]
+		public System.Nullable<System.DateTime> completedDate
+		{
+			get
+			{
+				return this._completedDate;
+			}
+			set
+			{
+				if ((this._completedDate != value))
+				{
+					this._completedDate = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_actorId", DbType="Int NOT NULL")]
+		public int actorId
+		{
+			get
+			{
+				return this._actorId;
+			}
+			set
+			{
+				if ((this._actorId != value))
+				{
+					this._actorId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_actor_groupId", DbType="Int NOT NULL")]
+		public int actor_groupId
+		{
+			get
+			{
+				return this._actor_groupId;
+			}
+			set
+			{
+				if ((this._actor_groupId != value))
+				{
+					this._actor_groupId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_userId", DbType="NVarChar(128)")]
+		public string userId
+		{
+			get
+			{
+				return this._userId;
+			}
+			set
+			{
+				if ((this._userId != value))
+				{
+					this._userId = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_displayName", DbType="NVarChar(128) NOT NULL", CanBeNull=false)]
+		public string displayName
+		{
+			get
+			{
+				return this._displayName;
+			}
+			set
+			{
+				if ((this._displayName != value))
+				{
+					this._displayName = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_emailAddress", DbType="NVarChar(128) NOT NULL", CanBeNull=false)]
+		public string emailAddress
+		{
+			get
+			{
+				return this._emailAddress;
+			}
+			set
+			{
+				if ((this._emailAddress != value))
+				{
+					this._emailAddress = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_isGroup", DbType="Bit NOT NULL")]
+		public bool isGroup
+		{
+			get
+			{
+				return this._isGroup;
+			}
+			set
+			{
+				if ((this._isGroup != value))
+				{
+					this._isGroup = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_isDefault", DbType="Bit NOT NULL")]
+		public bool isDefault
+		{
+			get
+			{
+				return this._isDefault;
+			}
+			set
+			{
+				if ((this._isDefault != value))
+				{
+					this._isDefault = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_isActive", DbType="Bit NOT NULL")]
+		public bool isActive
+		{
+			get
+			{
+				return this._isActive;
+			}
+			set
+			{
+				if ((this._isActive != value))
+				{
+					this._isActive = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_actorGroupType", DbType="TinyInt")]
+		public System.Nullable<byte> actorGroupType
+		{
+			get
+			{
+				return this._actorGroupType;
+			}
+			set
+			{
+				if ((this._actorGroupType != value))
+				{
+					this._actorGroupType = value;
 				}
 			}
 		}
