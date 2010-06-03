@@ -266,7 +266,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
             var wfDetails = Common.Request.WfDetails(RequestState);
             var details = wfDetails.Where(x => x.requestId.ToString() == RequestId)
-                          .OrderByDescending(o => o.pkId).Reverse();
+                          .OrderByDescending(o => o.workflowStateId).Reverse();
 
             foreach (usp_open_my_request_workflow_detailsResult list in details)
             {
