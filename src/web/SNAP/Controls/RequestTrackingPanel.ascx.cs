@@ -48,7 +48,8 @@ namespace Apollo.AIM.SNAP.Web.Controls
 				selectedRow = (
 					from bladeRow in _unfilteredTrackingData.AsEnumerable()
 					where (int)bladeRow["actor_group_type"] == (int)ActorGroupType.Workflow_Admin
-					select bladeRow).Last();
+                    && bladeRow["workflow_completed_date"] == DBNull.Value
+                    select bladeRow).First();
 
 				if ((int)selectedRow["workflow_status"] == (int)WorkflowState.Workflow_Created)
 				{

@@ -45,16 +45,38 @@ function updateFilterCounts() {
                         }
                     }
                 });
-        });
+            });
     $("#filter_pending_acknowledgement_count").html(ackCount);
-    $("#filter_pending_workflow_count").html(wrkCount);
-    $("#filter_pending_provisioning_count").html(prvCount);
-    $("#filter_in_workflow_count").html(inCount);
-}
+    if (ackCount > 0) { bindFilter($("#filter_pending_acknowledgement")); }
+    else {unbindFilter($("#filter_pending_acknowledgement")); }
 
+    $("#filter_pending_workflow_count").html(wrkCount);
+    if (wrkCount > 0) { bindFilter($("#filter_pending_workflow")); }
+    else {unbindFilter($("#filter_pending_workflow")); }
+
+    $("#filter_pending_provisioning_count").html(prvCount);
+    if (prvCount > 0) { bindFilter($("#filter_pending_provisioning")); }
+    else { unbindFilter($("#filter_pending_provisioning")); }
+
+    $("#filter_in_workflow_count").html(inCount);
+    if (inCount > 0) { bindFilter($("#filter_in_workflow")); }
+    else { unbindFilter($("#filter_in_workflow")); }
+}
+function bindFilter(obj) {
+    obj.removeClass("disabled_text");
+    obj.bind('click', function() { filterClick(this); });
+    obj.bind('mouseenter', function() { filterHover(this); });
+    obj.bind('mouseleave', function() { filterHover(this); });
+}
+function unbindFilter(obj) {
+    obj.addClass("disabled_text");
+    obj.unbind("click");
+    obj.unbind("mouseenter");
+    obj.unbind("mouseleave");
+}
 function filterHover(obj) {
     if ($(obj).attr('id') != currentFilterClass) {
-        if ($(obj).attr("class") == "active_carrot") {
+        if ($(obj).hasClass("active_carrot")) {
             $(obj).removeClass("active_carrot");
             $(obj).addClass("hover_carrot");
             $("#access_filter_container").addClass($(obj).attr("id"));
@@ -71,9 +93,10 @@ function filterClick(obj) {
     var filter = $(obj).attr("snap");
     currentFilterClass = $(obj).attr('id');
     $(obj).addClass("active_carrot");
-    $(obj).removeClass("hover_carrot");
+    $(obj).removeClass("hover_carrot");  
     $("div[id='access_filter_container']").attr("class", $(obj).attr('id'));
-    $(obj).closest("div.csm_container_center_700").find("div.csm_content_container").each(
+
+    $("div.csm_container_center_700").find("div.csm_content_container").each(
         function() {
             blade = this;
             if (filter == "All") {
@@ -83,18 +106,15 @@ function filterClick(obj) {
                 $(this).find("div.csm_hidden_block").children().find("span").each(
                     function() {
                         if ($(this).attr("snap") == "_actorDisplayName") {
-                             if ($(this).html() == "Access &amp; Identity Management") {
-                                 if ($(this).parent().next().next().next().children().html() == "-") {
-                                     if ($(this).parent().next().children().html() != filter) {
-                                         $(blade).hide();
-                                     }
-                                     else {
-                                         $(blade).show();
-                                     }
-                                 }
-                             }
-                         }
-                     });
+                            if ($(this).html() == "Access &amp; Identity Management") {
+                                if ($(this).parent().next().next().next().children().html() == "-") {
+                                    var status = $(this).parent().next().children().html();
+                                    if (status == filter) { $(blade).show(); }
+                                    else { $(blade).hide(); }
+                                }
+                            }
+                        }
+                    });
             }
         });
 }
@@ -175,7 +195,7 @@ function AccessTeamActions(obj, requestId, action) {
                                 $(this).next().children().html("Pending");
                             }
                         });
-                        updateFilterCounts();
+                        updateFilterCounts()
                         break;
                     case '2':
                         $('#_indicatorDiv').hide();
