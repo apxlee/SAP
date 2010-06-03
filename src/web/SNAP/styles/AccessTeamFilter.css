@@ -42,6 +42,8 @@ ul#access_filter_inner li
 	margin-right: 0px;
 	}
 	
+ul#access_filter_inner li.disabled_text span {color:#D45766;}
+	
 ul#access_filter_inner span.inline_counter {
 	display: inline;
 	padding: 0;
