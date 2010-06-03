@@ -47,18 +47,31 @@ ul#access_filter_inner span.inline_counter {
 	padding: 0;
 	margin: 0;
 	}
-	
 
 #filter_pending_acknowledgement
 , #filter_pending_workflow
 , #filter_pending_provisioning
 , #filter_in_workflow
 , #filter_view_all {
-	background: url('../images/icon_access_filter_active.png') no-repeat;
 	cursor: pointer;
 	margin-left: 7px !important;
 	margin-right: 7px !important;
 	}
+	
+#filter_pending_acknowledgement.active_carrot
+, #filter_pending_workflow.active_carrot
+, #filter_pending_provisioning.active_carrot
+, #filter_in_workflow.active_carrot
+, #filter_view_all.active_carrot {
+	background: url('../images/icon_access_filter_active.png') no-repeat;}
+
+#filter_pending_acknowledgement.hover_carrot
+, #filter_pending_workflow.hover_carrot
+, #filter_pending_provisioning.hover_carrot
+, #filter_in_workflow.hover_carrot
+, #filter_view_all.hover_carrot {
+	background: url('../images/icon_access_filter_hover.png') no-repeat;}
+
 	
 /* YOU ARE HERE */
 
