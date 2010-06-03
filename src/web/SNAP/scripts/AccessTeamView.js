@@ -53,25 +53,25 @@ function updateFilterCounts() {
 }
 
 function filterHover(obj) {
-    if ($(obj).attr("class") == "active_carrot") {
-        currentFilterClass = $("#access_filter_container").attr("class");
-        $(obj).removeClass("active_carrot");
-        $(obj).addClass("hover_carrot");
-        $("#access_filter_container").removeClass(currentFilterClass);
-        $("#access_filter_container").addClass($(obj).attr("id"));
-    }
-    else {
-        $(obj).addClass("active_carrot");
-        $(obj).removeClass("hover_carrot");
-        $("#access_filter_container").removeClass($(obj).attr("id"));
-        $("#access_filter_container").addClass(currentFilterClass); 
-    }
-       
+    if ($(obj).attr('id') != currentFilterClass) {
+        if ($(obj).attr("class") == "active_carrot") {
+            $(obj).removeClass("active_carrot");
+            $(obj).addClass("hover_carrot");
+            $("#access_filter_container").addClass($(obj).attr("id"));
+        }
+        else {
+            $(obj).addClass("active_carrot");
+            $(obj).removeClass("hover_carrot");
+            $("#access_filter_container").removeClass($(obj).attr("id"));
+        }
+    }       
 }
 function filterClick(obj) {
     var blade = "";
     var filter = $(obj).attr("snap");
     currentFilterClass = $(obj).attr('id');
+    $(obj).addClass("active_carrot");
+    $(obj).removeClass("hover_carrot");
     $("div[id='access_filter_container']").attr("class", $(obj).attr('id'));
     $(obj).closest("div.csm_container_center_700").find("div.csm_content_container").each(
         function() {
