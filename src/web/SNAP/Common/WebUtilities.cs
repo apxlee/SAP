@@ -82,23 +82,17 @@ namespace Apollo.AIM.SNAP.Web.Common
 		public static void RoleCheck(string pageName)
 		{
 			Role currentRole = SnapSession.CurrentUser.CurrentRole;
-			bool isRedirect = false;
+			bool isRedirect = true;
 			
 			if (currentRole != Role.SuperUser)
 			{
-				switch (pageName.ToLower())
+				if (pageName.ToLower() == PageNames.ACCESS_TEAM.ToLower())
 				{
-					case PageNames.ACCESS_TEAM:
-						isRedirect = (currentRole == Role.AccessTeam) ? false : true;
-						break;
-						
-					case PageNames.APPROVING_MANAGER:
-						isRedirect = (currentRole == Role.ApprovingManager) ? false : true;
-						break;
-						
-					default:
-						isRedirect = true;
-						break;
+					isRedirect = (currentRole == Role.AccessTeam) ? false : true;
+				}
+				else if (pageName.ToLower() == PageNames.APPROVING_MANAGER.ToLower())
+				{
+					isRedirect = (currentRole == Role.ApprovingManager) ? false : true;
 				}
 			}
 
