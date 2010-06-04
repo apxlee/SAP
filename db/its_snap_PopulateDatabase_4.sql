@@ -1,6 +1,10 @@
 USE [its_snap]
 declare @group_id int
 
+print 'Reseed SNAP_Requests'
+DBCC CHECKIDENT ("dbo.SNAP_Requests", RESEED, 1000);
+GO
+
 --// Insert Form Labels and Descriptions
 print 'Insert labels and descriptions'
 INSERT INTO [its_snap].[dbo].[SNAP_Access_Details_Form]([parentId],[label],[description],[isActive],[isRequired])
