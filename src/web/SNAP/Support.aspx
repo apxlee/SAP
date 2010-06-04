@@ -62,7 +62,7 @@
 				</tr>
 				<tr>
 					<td><img src="images/icon_WMV.png" /></td>
-					<td style="font-size:.85em;line-height:1.2em;vertical-align:top;"><a href="../snap/SupportFiles/MyApprovals.wmv">My Approvals</a><br />WMV 11.7MB</td>
+					<td style="font-size:.85em;line-height:1.2em;vertical-align:top;"><a href="../snap/SupportFiles/MyApprovals.wmv" onclick="return pageTracker._trackEvent('video','play','MyApprovals WMV');">My Approvals</a><br />WMV 11.7MB</td>
 				</tr>
 			</table>
 			<hr />
