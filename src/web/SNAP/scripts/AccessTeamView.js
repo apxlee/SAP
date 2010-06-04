@@ -182,7 +182,7 @@ function AccessTeamActions(obj, requestId, action) {
                     case '4':
                         $('#_indicatorDiv').hide();
                         ActionMessage("Acknowledged", "You have just acknowledged this request, you may now create its workflow.");
-                        updateRequestTracking(obj, "Access &amp; Identity Management", "Pending Workflow");
+                        updateRequestTracking(obj, "Access &amp; Identity Management", "Pending Workflow", false);
                         $(obj).attr("disabled", "disabled");
                         $(obj).closest("tr").next().children("td.csm_input_form_control_column").find("input").each(function() {
                             $(this).removeAttr("disabled");
@@ -205,7 +205,7 @@ function AccessTeamActions(obj, requestId, action) {
                             }
                         });
                         ActionMessage("Change Requested", "You have just requested a change.");
-                        updateRequestTracking(obj, "Access &amp; Identity Management", "Change Requested");
+                        updateRequestTracking(obj, "Access &amp; Identity Management", "Change Requested", true);
                         disableBladeActions(obj);
                         addComments(obj, "Access &amp; Identity Management", "Change Requested", comments, false);
                         updateFilterCounts();
@@ -214,7 +214,7 @@ function AccessTeamActions(obj, requestId, action) {
                     case '3':
                         $('#_indicatorDiv').hide();
                         ActionMessage("Closed Cancelled", "You have just closed this request with this cancellation.");
-                        updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Cancelled");
+                        updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Cancelled", true);
                         disableBladeActions(obj);
                         addComments(obj, "Access &amp; Identity Management", "Closed Cancelled", comments, false);
                         animateActions(obj, "Closed Requests");
@@ -226,7 +226,7 @@ function AccessTeamActions(obj, requestId, action) {
                     case '1':
                         $('#_indicatorDiv').hide();
                         ActionMessage("Closed Denied", "You have just closed this request with this denial.");
-                        updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Denied");
+                        updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Denied", true);
                         disableBladeActions(obj);
                         addComments(obj, "Access &amp; Identity Management", "Closed Denied", comments, false);
                         animateActions(obj, "Closed Requests");
@@ -499,7 +499,7 @@ function builderActions(obj, requestId, state) {
                     case "3":
                         $('#_indicatorDiv').hide();
                         ActionMessage("Closed Cancelled", "You have just cancelled this request.");
-                        updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Cancelled");
+                        updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Cancelled", true);
                         animateActions(obj, "Closed Requests");
                         hideSections(obj);
                         updateRequestStatus(obj);
@@ -509,7 +509,7 @@ function builderActions(obj, requestId, state) {
                     case "6":
                         $('#_indicatorDiv').hide();
                         ActionMessage("Closed Completed", "You have just completed this request.");
-                        updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Completed");
+                        updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Completed", true);
                         animateActions(obj, "Closed Requests");
                         hideSections(obj);
                         updateRequestStatus(obj);
@@ -519,7 +519,7 @@ function builderActions(obj, requestId, state) {
                     case "5":
                         $('#_indicatorDiv').hide();
                         ActionMessage("Pending Provisioning", "A ticket has been created to provision the access for this request.");
-                        updateRequestTracking(obj, "Access &amp; Identity Management", "Pending Provisioning");
+                        updateRequestTracking(obj, "Access &amp; Identity Management", "Pending Provisioning", false);
                         $("#closed_completed_" + requestId).removeAttr("disabled");
                         $("#create_ticket_" + requestId).attr("disabled", "disabled");
                         $("input[id$='_submit_form']").trigger('click');
@@ -550,13 +550,13 @@ function builderActions(obj, requestId, state) {
         }
     });
 }
-function updateRequestTracking(obj, approverName, newStatus) {
+function updateRequestTracking(obj, approverName, newStatus, includeDate) {
     $(obj).closest("div.csm_hidden_block").children().find("span").each(
         function() {
             if ($(this).attr("snap") == "_actorDisplayName") {
                 if ($(this).html() == approverName) {
                     $(this).parent().next().children().html(newStatus);
-                    $(this).parent().next().next().next().children().html("<span>" + curr_date + "</span>");
+                    if (includeDate) { $(this).parent().next().next().next().children().html("<span>" + curr_date + "</span>"); }
                 }
             }
         });
@@ -611,7 +611,7 @@ function createWorkflow(obj, requestId) {
                     if (msg.d) {
                         $('#_indicatorDiv').hide();
                         ActionMessage("Workflow Created", "The workflow has been created for this request.");
-                        updateRequestTracking(obj, "Access &amp; Identity Management", "Workflow Created");
+                        updateRequestTracking(obj, "Access &amp; Identity Management", "In Workflow", false);
                         disableBuilder(obj, requestId);
                         $("input[id$='_submit_form']").trigger('click');
                     }
