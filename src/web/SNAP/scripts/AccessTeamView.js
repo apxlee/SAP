@@ -399,7 +399,6 @@ function actionClicked(obj, requestId, state) {
         case "Create Ticket":
             ProcessingMessage("Creating Ticket", "")
             builderActions(obj, requestId, state);
-            $("input[id$='_submit_form']").trigger('click');
             break;
         case "Edit Workflow":
             editBuilder(obj, requestId);
@@ -408,12 +407,10 @@ function actionClicked(obj, requestId, state) {
         case "Create Workflow":
             ProcessingMessage("Creating Workflow", "");
             createWorkflow(obj, requestId);
-            $("input[id$='_submit_form']").trigger('click');
             break;
         case "Continue Workflow":
             ProcessingMessage("Updating Workflow", "");
             editCreatedWorkflow(obj, requestId);
-            $("input[id$='_submit_form']").trigger('click');
             break;
     }
 }
@@ -525,6 +522,7 @@ function builderActions(obj, requestId, state) {
                         updateRequestTracking(obj, "Access &amp; Identity Management", "Pending Provisioning");
                         $("#closed_completed_" + requestId).removeAttr("disabled");
                         $("#create_ticket_" + requestId).attr("disabled", "disabled");
+                        $("input[id$='_submit_form']").trigger('click');
                         break;
                 }
             }
@@ -602,7 +600,7 @@ function createWorkflow(obj, requestId) {
 
         if ($("#_managerUserId_" + requestId).val() > "") {
             var postData = "{'requestId':'" + requestId.toString() + "','managerUserId':'" + $("#_managerUserId_" + requestId).val() + "','actorIds':'" + $("#_selectedActors_" + requestId).val() + "'}";
-            //TODO: (added parameter managerUserId)format postdata to match AjaxCalls.aspx\CreateWorkflow parameter"
+           
             $.ajax({
                 type: "POST",
                 contentType: "application/json; character=utf-8",
@@ -615,6 +613,7 @@ function createWorkflow(obj, requestId) {
                         ActionMessage("Workflow Created", "The workflow has been created for this request.");
                         updateRequestTracking(obj, "Access &amp; Identity Management", "Workflow Created");
                         disableBuilder(obj, requestId);
+                        $("input[id$='_submit_form']").trigger('click');
                     }
                     else {
                         $('#_indicatorDiv').hide();
@@ -640,7 +639,6 @@ function editCreatedWorkflow(obj, requestId) {
     $(document).ready(function() {
         if ($("#_managerUserId_" + requestId).val() > "") {
             var postData = "{'requestId':'" + requestId.toString() + "','managerUserId':'" + $("#_managerUserId_" + requestId).val() + "','actorIds':'" + $("#_selectedActors_" + requestId).val() + "'}";
-            //TODO: (added parameter managerUserId)format postdata to match AjaxCalls.aspx\CreateWorkflow parameter"
 
             $.ajax({
                 type: "POST",
@@ -653,6 +651,7 @@ function editCreatedWorkflow(obj, requestId) {
                         $('#_indicatorDiv').hide();
                         ActionMessage("Workflow Updated", "The workflow has been updated for this request.");
                         disableBuilder(obj, requestId);
+                        $("input[id$='_submit_form']").trigger('click');
                     }
                     else {
                         $('#_indicatorDiv').hide();
