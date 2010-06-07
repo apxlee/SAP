@@ -2421,6 +2421,42 @@ namespace Apollo.AIM.SNAP.Test
                 //Assert.IsTrue(db.GetActiveWorkflowId(req.pkId, teamApprovalUserId) == 0);
             }
         }
+        [Test] public void ShouldHandleRemoveLastAproverAfterAllApproved()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+
+                var accessReq = new AccessRequest(req.pkId);
+                accessReq.Ack();
+                accessReq.CreateWorkflow(new List<int>()
+                                             {
+                                                 managerActorId,
+                                                 windowsServerActorId,
+                                                 databaseActorId,
+                                             });
+
+                // get manager approval
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
+                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate == null);
+
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+
+                accessReq.EditWorkflow(managerUserId, new List<int>() { databaseActorId });
+                
+            }
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+                var accessReq = new AccessRequest(req.pkId);
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
+                verifyWorkflowTransition(wfs[0], WorkflowState.Workflow_Created, WorkflowState.Approved);
+            }
+        }
 
 
         [Test] public void TestDateDiff()

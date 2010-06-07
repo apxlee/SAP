@@ -372,6 +372,10 @@ namespace Apollo.AIM.SNAP.Model
 
                                 //addAccessTeamComment(accessTeamWF, "Workflow editted @" + DateTime.Now, CommentsType.Access_Notes_AccessTeam);
                                 db.SubmitChanges();
+
+                                // in case we are removing the last approver who has not approved yet
+                                ApprovalWorkflow.CompleteRequestApprovalCheck(_id);
+                                
                             }
                             else
                             {
@@ -1341,7 +1345,7 @@ namespace Apollo.AIM.SNAP.Model
                     informApproverForAction();
                     //db.SubmitChanges();
                     //ts.Complete();
-                    completeRequestApprovalCheck();
+                    CompleteRequestApprovalCheck(req.pkId);
                     db.SubmitChanges();
                     return true;
                 }
@@ -1374,10 +1378,18 @@ namespace Apollo.AIM.SNAP.Model
             accessReq.InformApproverForAction();
         }
 
-        protected void completeRequestApprovalCheck()
+        public static void CompleteRequestApprovalCheck(int id)
         {
+
+            var db = new SNAPDatabaseDataContext();
+
+            //var twf = db.SNAP_Workflows.Single(w => w.pkId == id);
+            var req = db.SNAP_Requests.Single(r=>r.pkId == id);
+            var accessReq = new AccessRequest(id);
+            var accessTeamWF = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin)[0];
             var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Team_Approver);
             var wfs2 = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
+
 
             // only manager in the approal wf
             if (wfs.Count == 0 && wfs2.Count == 0)
@@ -1432,6 +1444,8 @@ namespace Apollo.AIM.SNAP.Model
 					Email.SendTaskEmail(EmailTaskType.TransitionToPendingProvisioning, ConfigurationManager.AppSettings["AIM-DG"], null, req.pkId, req.userDisplayName);
                 }
             }
+
+            db.SubmitChanges();
         }
 
         protected bool requestToChangeBy(ActorApprovalType approvalType, string comment)
@@ -1599,7 +1613,7 @@ namespace Apollo.AIM.SNAP.Model
             //{
                 if (wfStateChange(ActorApprovalType.Technical_Approver, WorkflowState.Approved))
                 {
-                    completeRequestApprovalCheck();
+                    CompleteRequestApprovalCheck(req.pkId);
                     db.SubmitChanges();
                     //ts.Complete();
                     return true;
