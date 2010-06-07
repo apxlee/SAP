@@ -35,6 +35,9 @@ namespace Apollo.AIM.SNAP.Web.Controls
                     break;
                 case WorkflowState.Pending_Workflow:
                     _acknowledge.Disabled = true;
+                    _requestChange.Disabled = true;
+                    _deny.Disabled = true;
+                    _cancel.Disabled = true;
                     break;
                 default:
                     _acknowledge.Disabled = true;

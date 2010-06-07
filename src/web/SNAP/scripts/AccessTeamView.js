@@ -207,6 +207,7 @@ function AccessTeamActions(obj, requestId, action) {
                         ActionMessage("Change Requested", "You have just requested a change.");
                         updateRequestTracking(obj, "Access &amp; Identity Management", "Change Requested", true);
                         disableBladeActions(obj);
+                        disableBuilder($("#closed_cancelled_" + requestId), requestId);
                         addComments(obj, "Access &amp; Identity Management", "Change Requested", comments, false);
                         updateFilterCounts();
                         updateCount();
@@ -216,6 +217,7 @@ function AccessTeamActions(obj, requestId, action) {
                         ActionMessage("Closed Cancelled", "You have just closed this request with this cancellation.");
                         updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Cancelled", true);
                         disableBladeActions(obj);
+                        disableBuilder($("#closed_cancelled_" + requestId), requestId);
                         addComments(obj, "Access &amp; Identity Management", "Closed Cancelled", comments, false);
                         animateActions(obj, "Closed Requests");
                         hideSections(obj);
@@ -228,6 +230,7 @@ function AccessTeamActions(obj, requestId, action) {
                         ActionMessage("Closed Denied", "You have just closed this request with this denial.");
                         updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Denied", true);
                         disableBladeActions(obj);
+                        disableBuilder($("#closed_cancelled_" + requestId), requestId);
                         addComments(obj, "Access &amp; Identity Management", "Closed Denied", comments, false);
                         animateActions(obj, "Closed Requests");
                         hideSections(obj);
