@@ -13,8 +13,8 @@
 					<div class="csm_grid_3">
 						<h1>Feedback</h1>
 						<ul>
-							<li><a href="mailto:DG C-APO-Corporate-IT-Access%20%26%20Identity%20Management%20SNAPFU?subject=SNAP%20Comments">Comments</a></li>
-							<li><a href="mailto:DG C-APO-Corporate-IT-Access%20%26%20Identity%20Management%20SNAPFU?subject=SNAP%20Problem">Report Problem</a></li>
+							<li><a href="mailto:DG C-APO-Corporate-ITS Access Management SNAPFU?subject=SNAP%20Comments">Comments</a></li>
+							<li><a href="mailto:DG C-APO-Corporate-ITS Access Management SNAPFU?subject=SNAP%20Problem">Report Problem</a></li>
 							<li><a href="http://www.google.com/analytics">Statistics</a></li>
 						</ul>
 					</div>
