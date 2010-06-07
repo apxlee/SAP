@@ -83,8 +83,9 @@ namespace Apollo.AIM.SNAP.Web.Common
 		{
 			Role currentRole = SnapSession.CurrentUser.CurrentRole;
 			bool isRedirect = true;
-			
-			if (currentRole != Role.SuperUser)
+
+			if (currentRole == Role.SuperUser) {isRedirect = false;}
+			else
 			{
 				if (pageName.ToLower() == PageNames.ACCESS_TEAM.ToLower())
 				{
