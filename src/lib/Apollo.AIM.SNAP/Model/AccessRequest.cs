@@ -339,7 +339,8 @@ namespace Apollo.AIM.SNAP.Model
                     actorIDs.Add(mgrActorId);
                     using (var db = new SNAPDatabaseDataContext())
                     {
-                        result = mustHaveManagerInWorkflow(db, actorIDs);
+                        //result = mustHaveManagerInWorkflow(db, actorIDs);
+                        result = editWorkflowCheck(db, actorIDs, currentPendingApproverType);
                         if (result)
                         {
                             var req = db.SNAP_Requests.Single(r => r.pkId == _id);
@@ -388,6 +389,39 @@ namespace Apollo.AIM.SNAP.Model
             return result;
         }
 
+        private bool editWorkflowCheck(SNAPDatabaseDataContext db, List<int> actorIds, int currentPendingApproverType)
+        {
+            if (mustHaveManagerInWorkflow(db, actorIds))
+            {
+                switch (currentPendingApproverType)
+                {
+                    case (byte) ActorApprovalType.Manager:
+                        return true;
+                    case (byte) ActorApprovalType.Team_Approver:
+                        return true;
+                    case (byte) ActorApprovalType.Technical_Approver:
+                        foreach (var actorId in actorIds)
+                        {
+                            var act = db.SNAP_Actors.Single(a => a.pkId == actorId);
+                            {
+                                var req = db.SNAP_Requests.Single(r => r.pkId == _id);
+                                var approverCnt = req.SNAP_Workflows.Count(x => x.actorId == actorId);
+
+                                // trying to add new team/speacial approver in tech approving time frame
+                                if (act.SNAP_Actor_Group.actorGroupType == (byte) ActorApprovalType.Team_Approver
+                                    && approverCnt == 0
+                                    )
+                                    return false;
+                            }
+                        }
+                        return true;
+                    default:
+                        return false;
+                }
+
+            }
+            return false;
+        }
         private void InformNewPendingApproverNewDueDate(SNAP_Workflow wf, int currentPendingApproverType)
         {
             if (wf.SNAP_Actor.SNAP_Actor_Group.actorGroupType == currentPendingApproverType)

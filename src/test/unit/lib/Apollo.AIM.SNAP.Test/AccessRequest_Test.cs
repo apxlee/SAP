@@ -2458,7 +2458,39 @@ namespace Apollo.AIM.SNAP.Test
             }
         }
 
+        [Test] public void ShouldHandleNotAllowSpecialApproverInTechAprrovingPhase()
+        {
 
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+
+                var accessReq = new AccessRequest(req.pkId);
+                accessReq.Ack();
+                accessReq.CreateWorkflow(new List<int>()
+                                             {
+                                                 managerActorId,
+                                                 windowsServerActorId,
+                                                 databaseActorId,
+                                             });
+
+                // get manager approval
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte) ActorApprovalType.Manager);
+                Assert.IsTrue(
+                    wfs[0].SNAP_Workflow_States.Single(
+                        s => s.workflowStatusEnum == (byte) WorkflowState.Pending_Approval).completedDate == null);
+
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+
+                Assert.IsFalse(accessReq.EditWorkflow(managerUserId, new List<int>() 
+                                                            {
+                                                                windowsServerActorId,
+                                                                databaseActorId,
+                                                                teamApprovalActorId,
+                                                            }));
+            }
+
+        }
         [Test] public void TestDateDiff()
         {
             DateTime dueDate = DateTime.Parse("3/2/2010 1:00:00 AM");
