@@ -55,59 +55,45 @@
 		
 		<div class="csm_grid_3" style="padding-left:10px;">
 			<h1>Tutorials</h1>
-			<!--<table border="0" cellpadding="0" cellspacing="5" style="margin-top:5px;" width="100%">
-				<tr>
-					<td ><img src="images/icon_quicktime.png" /></td>
-					<td style="font-size:.85em;line-height:1.2em;vertical-align:top;padding-bottom:5px;"><a target="_blank"  href="../snap/SupportFiles/MyApprovals_1024x576.mov" onclick="return pageTracker._trackEvent('video','play','MyApprovals.MOV');">My Approvals</a><br />Quicktime 6.6MB</td>
-				</tr>
-				<tr>
-					<td><img src="images/icon_WMV.png" /></td>
-					<td style="font-size:.85em;line-height:1.2em;vertical-align:top;"><a target="_blank"  href="../snap/SupportFiles/MyApprovals.wmv" onclick="return pageTracker._trackEvent('video','play','MyApprovals.WMV');">My Approvals</a><br />WMV 11.7MB</td>
-				</tr>
-			</table>-->
 
 			<table border="0" cellpadding="0" cellspacing="0" style="margin-top:3px;" width="100%">
 				<tr>
-					<td>&nbsp;</td>
-					<td style="font-size:.90em;line-height:1.2em;vertical-align:top;font-weight:bold;">My Approvals</td>
-				</tr>			
-				<tr>
 					<td><img src="images/icon_quicktime.png" alt="Quicktime" /></td>
 					<td style="font-size:.85em;line-height:1.2em;vertical-align:top;">
-						<div style="margin-bottom:18px;">
-							<a target="_blank" style="margin-bottom:30px;" href="../snap/SupportFiles/RequestForm_HQ.mov" onclick="return pageTracker._trackEvent('Training Video','HiRes','MyApprovals.MOV');">Quicktime 6.7MB (HQ)</a>
+						<div style="margin-bottom:10px;">
+							My Approvals<br />
+							<a target="_blank" style="margin-bottom:30px;" href="../snap/SupportFiles/RequestForm_HQ.mov" onclick="return pageTracker._trackEvent('Training Video','HiRes','MyApprovals.MOV');">Quicktime 6.7MB</a> (HQ)
 						</div>
 					</td>
 				</tr>
 				<tr>
 					<td><img src="images/icon_WMV.png" /></td>
 					<td style="font-size:.85em;line-height:1.2em;vertical-align:top;">
-						<a target="_blank" href="../snap/SupportFiles/MyApprovals_HQ.wmv" onclick="return pageTracker._trackEvent('Training Video','HiRes','MyApprovals.WMV');">WMV 8.0MB (HQ)</a><br />
-						<a target="_blank" href="../snap/SupportFiles/MyApprovals_LQ.wmv" onclick="return pageTracker._trackEvent('Training Video','LoRes','MyApprovals.WMV');">WMV 2.0MB (LQ)</a>
+						My Approvals<br />
+						<a target="_blank" href="../snap/SupportFiles/MyApprovals_HQ.wmv" onclick="return pageTracker._trackEvent('Training Video','HiRes','MyApprovals.WMV');">WMV 8.0MB</a> (HQ)<br />
+						<a target="_blank" href="../snap/SupportFiles/MyApprovals_LQ.wmv" onclick="return pageTracker._trackEvent('Training Video','LoRes','MyApprovals.WMV');">WMV 2.0MB</a> (LQ)
 					</td>
 				</tr>
 			</table>
 			
 			<hr />
 			
-			<table border="0" cellpadding="0" cellspacing="0" style="margin-top:3px;" width="100%">
-				<tr>
-					<td>&nbsp;</td>
-					<td style="font-size:.90em;line-height:1.2em;vertical-align:top;font-weight:bold;">Request Form</td>
-				</tr>			
+			<table border="0" cellpadding="0" cellspacing="0" style="margin-top:1px;" width="100%">
 				<tr>
 					<td><img src="images/icon_quicktime.png" alt="Quicktime" /></td>
 					<td style="font-size:.85em;line-height:1.2em;vertical-align:top;">
-						<div style="margin-bottom:18px;">
-							<a target="_blank" style="margin-bottom:30px;" href="../snap/SupportFiles/RequestForm_HQ.mov" onclick="return pageTracker._trackEvent('Training Video','HiRes','RequestForm.MOV');">Quicktime 15.6MB (HQ)</a>
+						<div style="margin-bottom:10px;">
+							Request Form<br />
+							<a target="_blank" style="margin-bottom:30px;" href="../snap/SupportFiles/RequestForm_HQ.mov" onclick="return pageTracker._trackEvent('Training Video','HiRes','RequestForm.MOV');">Quicktime 15.6MB</a> (HQ)
 						</div>
 					</td>
 				</tr>
 				<tr>
 					<td><img src="images/icon_WMV.png" /></td>
 					<td style="font-size:.85em;line-height:1.2em;vertical-align:top;">
-						<a target="_blank" href="../snap/SupportFiles/RequestForm_HQ.wmv" onclick="return pageTracker._trackEvent('Training Video','HiRes','RequestForm.WMV');">WMV 18.6MB (HQ)</a><br />
-						<a target="_blank" href="../snap/SupportFiles/RequestForm_LQ.wmv" onclick="return pageTracker._trackEvent('Training Video','LoRes','RequestForm.WMV');">WMV 4.5MB (LQ)</a>
+						Request Form<br />
+						<a target="_blank" href="../snap/SupportFiles/RequestForm_HQ.wmv" onclick="return pageTracker._trackEvent('Training Video','HiRes','RequestForm.WMV');">WMV 18.6MB</a> (HQ)<br />
+						<a target="_blank" href="../snap/SupportFiles/RequestForm_LQ.wmv" onclick="return pageTracker._trackEvent('Training Video','LoRes','RequestForm.WMV');">WMV 4.5MB</a> (LQ)
 					</td>
 				</tr>
 			</table>			
