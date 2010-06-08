@@ -64,6 +64,9 @@
         <include name="**/*.config" />
         <include name="**/*.exe" />
 
+        <include name="**/*.wmv" />
+        <include name="**/*.mov" />
+
         <exclude name="**/obj"/>
         <exclude name="**/obj/**"/>
       </fileset>
