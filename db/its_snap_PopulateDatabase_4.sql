@@ -1,9 +1,10 @@
 USE [its_snap]
-declare @group_id int
 
 print 'Reseed SNAP_Requests'
 DBCC CHECKIDENT ("dbo.SNAP_Requests", RESEED, 1000);
 GO
+
+declare @group_id int
 
 --// Insert Form Labels and Descriptions
 print 'Insert labels and descriptions'
