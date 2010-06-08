@@ -534,7 +534,7 @@ function builderActions(obj, requestId, state) {
                     $('#_indicatorDiv').hide();
                     $('#_closeMessageDiv').show();
                     $('div.messageBox').children("h2").html("Ticket Creation Failed");
-                    $('div.messageBox').children("p").html("Please try again or create the ticket manually.(add the ticket number within the comments section)");
+                    $('div.messageBox').children("p").html("Please try again or create the ticket manually (add the ticket number within the comments section).");
                     $("#closed_completed_" + requestId).removeAttr("disabled");
                 }
                 else {
@@ -660,7 +660,7 @@ function editCreatedWorkflow(obj, requestId) {
                         $('#_indicatorDiv').hide();
                         $('#_closeMessageDiv').show();
                         $('div.messageBox').children("h2").html("Workflow Updated Failed");
-                        $('div.messageBox').children("p").html("TThe workflow update failed. No changes where made.");
+                        $('div.messageBox').children("p").html("The workflow update failed. No changes where made.");
                     }
                 },
 
