@@ -4,7 +4,7 @@
 		<div class="csm_grid_4 csm_prefix_2 csm_alpha csm_omega logo_itservices"></div>
 		<div class="csm_grid_6 csm_prefix_3 csm_alpha csm_omega logo_oospa">
 			<span class="aim_header_logout">
-				<asp:Label ID="_userNameHeader" runat="server"></asp:Label>
+				<asp:Label ID="_userNameHeader" runat="server" EnableViewState="false"></asp:Label>
 				<asp:LinkButton ID="_logout" runat="server" onclick="Logout_Click" CssClass="aim_logout_link">Logout</asp:LinkButton>
 			</span>
 		</div>
