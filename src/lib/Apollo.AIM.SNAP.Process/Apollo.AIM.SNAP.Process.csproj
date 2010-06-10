@@ -87,6 +87,7 @@
     <None Include="App.config" />
     <None Include="install.bat" />
     <None Include="log4net.snap.config" />
+    <None Include="log4net.snap_email_proc.config" />
     <None Include="uninstall.bat" />
   </ItemGroup>
   <ItemGroup>
