@@ -107,7 +107,7 @@
   <PropertyGroup>
     <PostBuildEvent>copy $(ProjectDir)inst*.exe $(TargetDir)
 copy $(ProjectDir)*.bat $(TargetDir)
-copy $(ProjectDir)log4net.snap_email_proc.config $(TargetDir)
+copy $(ProjectDir)log4net.*.config $(TargetDir)
 copy $(ProjectDir)nagApproval.html $(TargetDir)</PostBuildEvent>
   </PropertyGroup>
 </Project>

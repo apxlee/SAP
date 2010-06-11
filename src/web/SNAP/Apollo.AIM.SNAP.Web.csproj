@@ -526,6 +526,7 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PostBuildEvent>copy $(SolutionDir)lib\log4net.dll $(TargetDir)</PostBuildEvent>
+    <PostBuildEvent>copy $(SolutionDir)lib\log4net.dll $(TargetDir)
+copy $(ProjectDir)log4net.*.config $(TargetDir)</PostBuildEvent>
   </PropertyGroup>
 </Project>
