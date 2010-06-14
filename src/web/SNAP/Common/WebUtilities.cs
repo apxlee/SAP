@@ -108,7 +108,8 @@ namespace Apollo.AIM.SNAP.Web.Common
 			try
 			{
 				Page currentPage = HttpContext.Current.Handler as Page;
-				currentPage.Response.Redirect(redirectUrl, endResponse);
+				//currentPage.Response.Redirect(redirectUrl, endResponse);
+				currentPage.Response.Redirect(redirectUrl, false);
 			}
 			catch (ThreadAbortException)
 			{
