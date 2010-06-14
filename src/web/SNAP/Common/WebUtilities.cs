@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
+using Apollo.CA.Logging;
 using Apollo.AIM.SNAP.Model;
 
 namespace Apollo.AIM.SNAP.Web.Common
@@ -82,6 +83,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 		public static void RoleCheck(string pageName)
 		{
 			Role currentRole = SnapSession.CurrentUser.CurrentRole;
+			Logger.Info("WebUtilities > RoleCheck (85):" + currentRole.ToString() + "/n"); //TODO REMOVE
 			bool isRedirect = true;
 
 			if (currentRole == Role.SuperUser) {isRedirect = false;}
@@ -97,6 +99,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 				}
 			}
 
+			Logger.Info("WebUtilities > isRedirect (102):" + isRedirect + "/n"); //TODO REMOVE
 			if (isRedirect) { WebUtilities.Redirect("AppError.aspx?errorReason=wrongRole", true); }
 		}
          

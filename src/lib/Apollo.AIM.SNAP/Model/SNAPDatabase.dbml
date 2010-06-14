@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Database Name="its_snap" Class="SNAPDatabaseDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=DWAXCAPB006;Initial Catalog=Apollo.AIM.SNAP;Integrated Security=True" SettingsObjectName="Apollo.AIM.SNAP.Properties.Settings" SettingsPropertyName="Apollo_AIM_SNAPConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="AppSettings" ConnectionString="Data Source=DWAXCAPB006;Initial Catalog=its_snap;Integrated Security=True" SettingsObjectName="Apollo.AIM.SNAP.Properties.Settings" SettingsPropertyName="Apollo_AIM_SNAPConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.SNAP_Access_Details_Form" Member="SNAP_Access_Details_Forms">
     <Type Name="SNAP_Access_Details_Form">
       <Column Name="pkId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />

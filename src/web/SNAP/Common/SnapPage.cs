@@ -24,6 +24,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 				, QueryStringConstants.ERROR_REASON);
 			
 			string currentPageName = WebUtilities.GetPageName(Page);
+			Logger.Info("SnapPage > currentPageName (27): " + currentPageName + "/n"); // TODO REMOVE
 
 			if (Request.QueryString.Count > 0)
 			{
@@ -39,6 +40,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 					&& currentPageName != PageNames.APP_ERROR.ToLower() )
 					{
 						WebUtilities.Redirect(PageNames.DEFAULT_LOGIN);
+						Logger.Info("SnapPage > redirecting to DEFAULT_LOGIN (43): " + currentPageName + "/n"); //TODO REMOVE
 					}
 			}
 

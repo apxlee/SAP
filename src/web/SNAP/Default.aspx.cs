@@ -43,6 +43,7 @@ namespace Apollo.AIM.SNAP.Web
 			else
 			{
 				SnapSession.ClearCurrentUser();
+				Logger.Info("Default.ClearCurrentUser (46):/n"); //TODO REMOVE
                 SnapUser currentUser = new SnapUser(_networkId.Text.ToLower().Trim());  // TODO: make sure networkid is validated client-side so no nulls here
                 SnapSession.CurrentUser = currentUser;
 
@@ -65,6 +66,7 @@ namespace Apollo.AIM.SNAP.Web
 					}
 				}
 
+				Logger.Info("Default > WebUtilities.Redirect(" + redirectConstant + ") (72)/n"); //TODO REMOVE
 				WebUtilities.Redirect(redirectConstant);
 			}
 		}

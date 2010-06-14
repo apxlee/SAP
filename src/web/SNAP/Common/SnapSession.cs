@@ -1,5 +1,6 @@
 ﻿using System.Web;
 using System.Web.UI;
+using Apollo.CA.Logging;
 
 namespace Apollo.AIM.SNAP.Web.Common
 {
@@ -37,10 +38,12 @@ namespace Apollo.AIM.SNAP.Web.Common
 
 				if (currentPage.Session[SessionVariables.IS_USER_CREATED] != null) 
 				{
+					Logger.Info("SnapSession > IsUserCreated (41): true/n"); //TODO REMOVE
 					return (bool)currentPage.Session[SessionVariables.IS_USER_CREATED];
 				}
 				else
 				{
+					Logger.Info("SnapSession > IsUserCreated (46): false/n"); // TODO REMOVE
 					return false;
 				}
 			}
@@ -87,6 +90,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 			get
 			{
 				Page currentPage = HttpContext.Current.Handler as Page;
+				Logger.Info("SnapSession > RequestedPage GET (93):" + (string)currentPage.Session[SessionVariables.REQUESTED_PAGE] + "/n"); //TODO REMOVE
 				return (string)currentPage.Session[SessionVariables.REQUESTED_PAGE];
 			}
 			set
