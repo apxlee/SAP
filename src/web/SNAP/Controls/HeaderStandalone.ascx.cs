@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Web.UI.WebControls;
 
+using Apollo.CA.Logging;
 using Apollo.AIM.SNAP.Model;
 using Apollo.AIM.SNAP.Web.Common;
 using MyRequest = Apollo.AIM.SNAP.Web.Common.Request;
@@ -22,6 +23,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
 		protected void Page_Load(object sender, EventArgs e)
 		{
+			Logger.Info(WebUtilities.GetTimestamp() + "Header > Page_Load (25)\r\n"); //TODO REMOVE
 			BuildRibbon();
 		}
 
@@ -38,6 +40,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			}
 			else
 			{
+				Logger.Info(WebUtilities.GetTimestamp() + "Header > BuildRibbon > switch(currentRole) (42): " + this.CurrentRole.ToString() + "\r\n"); //TODO REMOVE
 				switch (this.CurrentRole)
 				{
 					case Role.ApprovingManager:

@@ -16,7 +16,7 @@ namespace Apollo.AIM.SNAP.Web
 	{
 		protected void Page_Load(object sender, EventArgs e)
 		{
-			if (!string.IsNullOrEmpty(SnapSession.RequestedPage))
+			if (!string.IsNullOrEmpty(SnapSession.RequestedPage)) // TODO: don't preselect if requested page was error
 			{
 				_loginCheck1.Attributes["class"] = "aim_checkbox_unchecked";
 				_loginCheck3.Attributes["class"] = "aim_checkbox_checked";
@@ -43,7 +43,8 @@ namespace Apollo.AIM.SNAP.Web
 			else
 			{
 				SnapSession.ClearCurrentUser();
-				Logger.Info("Default.ClearCurrentUser (46):\r\n"); //TODO REMOVE
+				Logger.Info(WebUtilities.GetTimestamp() + "Default > SubmitLoginClick > IsAuthenticatedUser: true (46)\r\n"); //TODO REMOVE
+				Logger.Info(WebUtilities.GetTimestamp() + "Default > SubmitLoginClick > SnapSession.ClearCurrentUser (47)\r\n"); //TODO REMOVE
                 SnapUser currentUser = new SnapUser(_networkId.Text.ToLower().Trim());  // TODO: make sure networkid is validated client-side so no nulls here
                 SnapSession.CurrentUser = currentUser;
 
@@ -66,7 +67,7 @@ namespace Apollo.AIM.SNAP.Web
 					}
 				}
 
-				Logger.Info("Default > WebUtilities.Redirect(" + redirectConstant + ") (72)\r\n"); //TODO REMOVE
+				Logger.Info(WebUtilities.GetTimestamp() + "Default > SubmitLoginClick > WebUtilities.Redirect(" + redirectConstant + ") (72)\r\n"); //TODO REMOVE
 				WebUtilities.Redirect(redirectConstant);
 			}
 		}
