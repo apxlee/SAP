@@ -38,12 +38,12 @@ namespace Apollo.AIM.SNAP.Web.Common
 
 				if (currentPage.Session[SessionVariables.IS_USER_CREATED] != null) 
 				{
-					Logger.Info("SnapSession > IsUserCreated (41): true/n"); //TODO REMOVE
+					Logger.Info("SnapSession > IsUserCreated (41): true\r\n"); //TODO REMOVE
 					return (bool)currentPage.Session[SessionVariables.IS_USER_CREATED];
 				}
 				else
 				{
-					Logger.Info("SnapSession > IsUserCreated (46): false/n"); // TODO REMOVE
+					Logger.Info("SnapSession > IsUserCreated (46): false\r\n"); // TODO REMOVE
 					return false;
 				}
 			}
