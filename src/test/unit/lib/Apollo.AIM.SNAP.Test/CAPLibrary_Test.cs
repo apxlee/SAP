@@ -16,7 +16,7 @@ using DirectoryServices=Apollo.CA.DirectoryServices;
 
 namespace Apollo.AIM.SNAP.Test
 {
-    [TestFixture]
+    //[TestFixture]
     public class CapLibraryTest
     {
         [SetUp]
