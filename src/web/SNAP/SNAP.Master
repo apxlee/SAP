@@ -8,7 +8,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head id="_head" runat="server">
 	<link runat="server" rel="shortcut icon" href="../snap/images/favicon.ico" type="image/x-icon" />
-    <link runat="server" rel="icon" href="../images/favicon.ico" type="image/ico" />
+    <link runat="server" rel="icon" href="../snap/images/favicon.ico" type="image/ico" />
     <asp:ContentPlaceHolder ID="_headPlaceHolder" runat="server"></asp:ContentPlaceHolder>
     <title>Supplemental Access Process</title>
 	<!-- BEGIN GOOGLE ANALYTICS -->

@@ -30,7 +30,6 @@ namespace Apollo.AIM.SNAP.Web.Common
 		
 		public static string GetPageName(Page currentPage)
 		{
-			// TODO: does this work?!?
 			return currentPage.GetType().Name.StripUnderscoreAndExtension().ToLower();
 		}
 		
@@ -108,15 +107,15 @@ namespace Apollo.AIM.SNAP.Web.Common
 			try
 			{
 				Page currentPage = HttpContext.Current.Handler as Page;
-				//currentPage.Response.Redirect(redirectUrl, endResponse);
-				currentPage.Response.Redirect(redirectUrl, false);
+				currentPage.Response.Redirect(redirectUrl, endResponse);
+				//currentPage.Response.Redirect(redirectUrl, false);
 			}
 			catch (ThreadAbortException)
 			{
 				// No need to log this silly ThreadAbortException, can't get around this
 			}
 			
-			HttpContext.Current.ApplicationInstance.CompleteRequest();
+			//HttpContext.Current.ApplicationInstance.CompleteRequest();
         }
         
         public static void Redirect(string pageConstant)
