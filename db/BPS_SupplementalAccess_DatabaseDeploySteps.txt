@@ -1,0 +1,17 @@
+DATABASE DEPLOYMENT STEPS
+REVISED: June 1, 2010
+---
+Step-by-step:
+
+1)	Drop any existing db named “BPS_SupplementalAccess”
+2)	Run the four new create scripts in the following order (creates db "BPS_SupplementalAccess"):
+
+	a) BPS_SupplementalAccess_CreateDatabase_1.sql
+	b) BPS_SupplementalAccess_CreateDBObjects_2.sql
+	c) BPS_SupplementalAccess_GrantExecute_3.sql
+	d) BPS_SupplementalAccess_PopulateDatabase_4.sql
+
+3)	The scripts create a login/user named “svc_snap”, but the password in the script is for our DEV db.
+	Change the svc_snap login password as appropriate for environment
+
+4)	[OPTIONAL] Please grant Nereo dbo permissions on the new database, he will add QA members as appropriate.
