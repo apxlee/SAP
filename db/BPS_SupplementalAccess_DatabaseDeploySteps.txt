@@ -14,4 +14,4 @@ Step-by-step:
 3)	The scripts create a login/user named “svc_snap”, but the password in the script is for our DEV db.
 	Change the svc_snap login password as appropriate for environment
 
-4)	[OPTIONAL] Please grant Nereo dbo permissions on the new database, he will add QA members as appropriate.
+4)	[OPTIONAL] Please grant Nereo Loresto dbo permissions on the new database, he will add QA members as appropriate.
