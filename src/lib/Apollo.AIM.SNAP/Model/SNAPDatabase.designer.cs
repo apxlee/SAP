@@ -20,9 +20,9 @@ namespace Apollo.AIM.SNAP.Model
 	using System.Linq.Expressions;
 	using System.ComponentModel;
 	using System;
-	
-	
-	[System.Data.Linq.Mapping.DatabaseAttribute(Name="its_snap")]
+
+
+	[System.Data.Linq.Mapping.DatabaseAttribute(Name = "BPS_SupplementalAccess")]
 	public partial class SNAPDatabaseDataContext : System.Data.Linq.DataContext
 	{
 		

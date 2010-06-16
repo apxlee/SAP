@@ -13,7 +13,7 @@ namespace Apollo.AIM.SNAP.Properties {
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "9.0.0.0")]
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+    public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
         
@@ -26,7 +26,7 @@ namespace Apollo.AIM.SNAP.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=DWAXCAPB006;Initial Catalog=Apollo.AIM.SNAP;Integrated Security=True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=DWAXCAPB006;Initial Catalog=BPS_SupplementalAccess;Integrated Security=True")]
         public string Apollo_AIM_SNAPConnectionString {
             get {
                 return ((string)(this["Apollo_AIM_SNAPConnectionString"]));
