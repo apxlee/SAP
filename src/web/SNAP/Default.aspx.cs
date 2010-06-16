@@ -16,7 +16,7 @@ namespace Apollo.AIM.SNAP.Web
 	{
 		protected void Page_Load(object sender, EventArgs e)
 		{
-			Session.Add("MakeSticky", "true");
+			Session.Add("MakeSticky", "true"); // TODO REMOVE
 
 			if (!string.IsNullOrEmpty(SnapSession.RequestedPage)) // TODO: don't preselect if requested page was error
 			{
