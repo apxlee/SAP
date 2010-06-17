@@ -23,7 +23,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
 		protected void Page_Load(object sender, EventArgs e)
 		{
-			Logger.Info(WebUtilities.GetTimestamp() + "Header > Page_Load (25)\r\n"); //TODO REMOVE
+			//TODO REMOVE Logger.Info(WebUtilities.GetTimestamp() + "Header > Page_Load (25)\r\n"); 
 			BuildRibbon();
 		}
 
@@ -40,7 +40,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			}
 			else
 			{
-				Logger.Info(WebUtilities.GetTimestamp() + "Header > BuildRibbon > switch(currentRole) (42): " + this.CurrentRole.ToString() + "\r\n"); //TODO REMOVE
+				//TODO REMOVE Logger.Info(WebUtilities.GetTimestamp() + "Header > BuildRibbon > switch(currentRole) (42): " + this.CurrentRole.ToString() + "\r\n"); 
 				switch (this.CurrentRole)
 				{
 					case Role.ApprovingManager:

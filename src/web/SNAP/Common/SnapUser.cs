@@ -90,7 +90,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 		
 		private void SetDefaultPage()
 		{
-			Logger.Info(WebUtilities.GetTimestamp() + "SnapUser > SetDefaultPage > switch(CurrentRole) (93):" + CurrentRole + "\r\n"); //TODO REMOVE
+			//TODO REMOVE Logger.Info(WebUtilities.GetTimestamp() + "SnapUser > SetDefaultPage > switch(CurrentRole) (93):" + CurrentRole + "\r\n"); 
 			switch (CurrentRole)
 			{
 				case Role.ApprovingManager:

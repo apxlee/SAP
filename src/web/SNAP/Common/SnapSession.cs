@@ -38,12 +38,12 @@ namespace Apollo.AIM.SNAP.Web.Common
 
 				if (currentPage.Session[SessionVariables.IS_USER_CREATED] != null) 
 				{
-					Logger.Info(WebUtilities.GetTimestamp() + "SnapSession > IsUserCreated (41): true\r\n"); //TODO REMOVE
+					//TODO REMOVE Logger.Info(WebUtilities.GetTimestamp() + "SnapSession > IsUserCreated (41): true\r\n"); 
 					return (bool)currentPage.Session[SessionVariables.IS_USER_CREATED];
 				}
 				else
 				{
-					Logger.Info(WebUtilities.GetTimestamp() + "SnapSession > IsUserCreated (46): false\r\n"); // TODO REMOVE
+					// TODO REMOVE Logger.Info(WebUtilities.GetTimestamp() + "SnapSession > IsUserCreated (46): false\r\n"); 
 					return false;
 				}
 			}
@@ -90,7 +90,8 @@ namespace Apollo.AIM.SNAP.Web.Common
 			get
 			{
 				Page currentPage = HttpContext.Current.Handler as Page;
-				Logger.Info(WebUtilities.GetTimestamp() + "SnapSession > RequestedPage (getter:93): " + (string)currentPage.Session[SessionVariables.REQUESTED_PAGE] + "\r\n"); //TODO REMOVE
+				//TODO REMOVE Logger.Info(WebUtilities.GetTimestamp() + "SnapSession > RequestedPage (getter:93): " 
+				//	+ (string)currentPage.Session[SessionVariables.REQUESTED_PAGE] + "\r\n"); 
 				return (string)currentPage.Session[SessionVariables.REQUESTED_PAGE];
 			}
 			set

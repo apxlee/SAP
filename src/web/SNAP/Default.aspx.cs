@@ -45,8 +45,8 @@ namespace Apollo.AIM.SNAP.Web
 			else
 			{
 				SnapSession.ClearCurrentUser();
-				Logger.Info(WebUtilities.GetTimestamp() + "Default > SubmitLoginClick > IsAuthenticatedUser: true (46)\r\n"); //TODO REMOVE
-				Logger.Info(WebUtilities.GetTimestamp() + "Default > SubmitLoginClick > SnapSession.ClearCurrentUser (47)\r\n"); //TODO REMOVE
+				//Logger.Info(WebUtilities.GetTimestamp() + "Default > SubmitLoginClick > IsAuthenticatedUser: true (46)\r\n"); 
+				//Logger.Info(WebUtilities.GetTimestamp() + "Default > SubmitLoginClick > SnapSession.ClearCurrentUser (47)\r\n");
                 SnapUser currentUser = new SnapUser(_networkId.Text.ToLower().Trim());  // TODO: make sure networkid is validated client-side so no nulls here
                 SnapSession.CurrentUser = currentUser;
 
@@ -69,7 +69,7 @@ namespace Apollo.AIM.SNAP.Web
 					}
 				}
 
-				Logger.Info(WebUtilities.GetTimestamp() + "Default > SubmitLoginClick > WebUtilities.Redirect(" + redirectConstant + ") (72)\r\n"); //TODO REMOVE
+				//TODO REMOVE Logger.Info(WebUtilities.GetTimestamp() + "Default > SubmitLoginClick > WebUtilities.Redirect(" + redirectConstant + ") (72)\r\n"); 
 				WebUtilities.Redirect(redirectConstant);
 			}
 		}

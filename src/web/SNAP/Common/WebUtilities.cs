@@ -82,7 +82,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 		public static void RoleCheck(string pageName)
 		{
 			Role currentRole = SnapSession.CurrentUser.CurrentRole;
-			Logger.Info(WebUtilities.GetTimestamp() + "WebUtilities > RoleCheck (85):" + currentRole.ToString() + "\r\n"); //TODO REMOVE
+			//TODO REMOVE Logger.Info(WebUtilities.GetTimestamp() + "WebUtilities > RoleCheck (85):" + currentRole.ToString() + "\r\n"); 
 			bool isRedirect = true;
 
 			if (currentRole == Role.SuperUser) {isRedirect = false;}
@@ -98,7 +98,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 				}
 			}
 
-			Logger.Info(WebUtilities.GetTimestamp() + "WebUtilities > isRedirect (102):" + isRedirect + "\r\n"); //TODO REMOVE
+			//TODO REMOVE Logger.Info(WebUtilities.GetTimestamp() + "WebUtilities > isRedirect (102):" + isRedirect + "\r\n"); 
 			if (isRedirect) { WebUtilities.Redirect("AppError.aspx?errorReason=wrongRole", true); }
 		}
          
@@ -108,7 +108,6 @@ namespace Apollo.AIM.SNAP.Web.Common
 			{
 				Page currentPage = HttpContext.Current.Handler as Page;
 				currentPage.Response.Redirect(redirectUrl, endResponse);
-				//currentPage.Response.Redirect(redirectUrl, false);
 			}
 			catch (ThreadAbortException)
 			{
