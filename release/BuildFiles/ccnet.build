@@ -9,8 +9,9 @@
     <property name="configuration" value="debug"/>
     <call target="build.svn"/>
     <call target="test"/>
-<!--
+
     <call target="test.coverage"/>
+<!--
     <call target="analyze.similarity"/>
     <call target="verify.coverage"/>
     <call target="verify.similarity"/>
