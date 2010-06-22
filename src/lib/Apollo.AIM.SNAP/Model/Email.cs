@@ -117,7 +117,7 @@ namespace Apollo.AIM.SNAP.Model
 			{
 				if (Convert.ToBoolean(ConfigurationManager.AppSettings["SendAllEmailToAIM"]))
 				{
-					FormattedEmailTool.SendFormattedEmail(ConfigurationManager.AppSettings["AccessEmailAddress"], subject, templatePath, bodyParameters);
+					FormattedEmailTool.SendFormattedEmail(ConfigurationManager.AppSettings["AIM-DG"], subject, templatePath, bodyParameters);
 				}
 				else
 				{
