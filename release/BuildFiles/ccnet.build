@@ -11,13 +11,10 @@
     <call target="test"/>
 
     <call target="test.coverage"/>
-<!--
     <call target="analyze.similarity"/>
--->
     <call target="verify.coverage"/>
-<!--
     <call target="verify.similarity"/>
--->
+
   </target>
 
 </project>
