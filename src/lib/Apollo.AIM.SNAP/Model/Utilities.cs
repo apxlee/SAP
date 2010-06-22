@@ -16,6 +16,11 @@ namespace Apollo.AIM.SNAP.Model
 			get { return ConfigurationManager.AppSettings["EnvironmentPath"]; }
 		}
 
+		public static string ImagePath
+		{
+			get { return ConfigurationManager.AppSettings["ImagePath"]; }
+		}
+
 		public static string AbsolutePath
 		{
 			get

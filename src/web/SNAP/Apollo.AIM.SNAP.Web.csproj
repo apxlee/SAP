@@ -494,6 +494,9 @@
     <Content Include="log4net.snap_ui.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Web_QA.config" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Properties\" />
     <Folder Include="SupportFiles\" />
   </ItemGroup>

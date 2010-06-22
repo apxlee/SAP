@@ -100,6 +100,7 @@ namespace Apollo.AIM.SNAP.Model
 			Hashtable bodyParameters = new Hashtable()
 				{
 					{"ROOT_PATH", Utilities.WebRootUrl},
+					{"IMAGE_PATH", Utilities.ImagePath},
 					{"RECIPIENT_NAME", recipientName},
 					{"AFFECTED_END_USER", affectedEndUser},
 					{"FOLLOW_URL", Utilities.WebRootUrl + followPageName + ".aspx?requestId=" +  requestId},
