@@ -132,3 +132,35 @@ namespace Apollo.AIM.SNAP.Model
 		}
     }
 }
+
+
+    //  http://www.systemnetmail.com/faq/4.4.aspx
+    //      static void Main(string[] args)
+    //    {
+    //        var mail = new MailMessage("pxlee@apollogrp.edu", "pxlee@apollogrp.edu");
+    //        var smtp = new SmtpClient("mailhost.apollogrp.edu");
+    //        mail.Subject = "Embedded Images";
+    //        var plainView = AlternateView.CreateAlternateViewFromString("plain text", null, @"text/plain");
+    //        var htmlView = AlternateView.CreateAlternateViewFromString(
+    //            @"<b>bold text with image</b><img alt='NunitLogo' hspace=0 src='cid:uniqueId' align=baseline border=0 />", 
+    //            null, 
+    //            @"text/html");
+    //        /*
+    //        var imgView = new AlternateView(@"E:\Program Files\NUnit 2.5.5\doc\img\logo.gif", MediaTypeNames.Image.Gif);
+    //        imgView.ContentId = "uniqueId";
+    //        imgView.TransferEncoding = TransferEncoding.Base64;
+    //        */
+            
+    //        var img = new LinkedResource(@"E:\Program Files\NUnit 2.5.5\doc\img\logo.gif");
+    //        img.ContentId = "uniqueId";
+    //        htmlView.LinkedResources.Add(img);
+
+    //        mail.AlternateViews.Add(plainView);
+    //        mail.AlternateViews.Add(htmlView);
+    //        //mail.AlternateViews.Add(imgView);
+    //        smtp.Send(mail);
+    //        Console.WriteLine("Sending ....");
+    //        Console.ReadKey();
+    //    }
+    //}
+
