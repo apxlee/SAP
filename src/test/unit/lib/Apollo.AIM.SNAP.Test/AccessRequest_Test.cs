@@ -10,7 +10,7 @@ using Apollo.CA.Logging;
 
 namespace Apollo.AIM.SNAP.Test
 {
-    //[TestFixture]
+    [TestFixture]
     public class AccessRequest_Test
     {
         // this is from actor group table
