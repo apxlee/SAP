@@ -283,7 +283,7 @@
     </foreach>
 
     <fail if="${test.failed}" message="At least one test failed when under code coverage for ${fail.assembly}: ${fail.message}"/>
-    <!--<call target="analyze.coverage"/>-->
+    <call target="analyze.coverage"/>
   </target>
 
   <target name="getFullTestPaths" description="Finds the paths of the unit tests directories">
