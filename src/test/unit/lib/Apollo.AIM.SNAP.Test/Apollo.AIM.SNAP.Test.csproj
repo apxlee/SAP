@@ -69,6 +69,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccessGroup_Test.cs" />
     <Compile Include="AccessRequest_Test.cs" />
     <Compile Include="CAPLibrary_Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
