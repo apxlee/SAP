@@ -457,5 +457,31 @@ namespace Apollo.AIM.SNAP.Test
             }
         }
 
+        [Test]
+        public void RUD_SNAP_Workflow()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                db.SNAP_Workflows.InsertOnSubmit(new SNAP_Workflow()
+                {
+                    actorId = 0,
+                    requestId = 0
+                });
+                db.SubmitChanges();
+
+                var test1 = db.SNAP_Workflows.Where(t => t.requestId == 0 && t.actorId == 0).ToList();
+                Assert.IsTrue(test1.Count > 0);
+
+                foreach (var row in test1)
+                {
+                    db.SNAP_Workflows.DeleteOnSubmit(row);
+                }
+                db.SubmitChanges();
+
+                var test2 = db.SNAP_Workflows.Where(t => t.requestId == 0 && t.actorId == 0).ToList();
+                Assert.IsTrue(test2.Count == 0);
+            }
+        }
+
     }
 }
