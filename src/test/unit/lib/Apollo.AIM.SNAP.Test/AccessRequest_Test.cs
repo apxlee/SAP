@@ -2536,7 +2536,7 @@ namespace Apollo.AIM.SNAP.Test
             Console.WriteLine(diff.Days);
         }
 
-        [Test]public void ShouldUpdateRequest()
+        [Ignore] [Test]public void ShouldUpdateRequest()
         {
             int id;
             using (var db = new SNAPDatabaseDataContext())
