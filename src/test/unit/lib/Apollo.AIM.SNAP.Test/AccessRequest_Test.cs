@@ -2536,11 +2536,6 @@ namespace Apollo.AIM.SNAP.Test
             Console.WriteLine(diff.Days);
         }
 
-<<<<<<< HEAD
-        [Ignore]
-=======
-        //[Ignore]
->>>>>>> local
         [Test]public void ShouldUpdateRequest()
         {
             int id;
