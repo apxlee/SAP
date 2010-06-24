@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="log4net.snap.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\lib\Apollo.AIM.SNAP\Apollo.AIM.SNAP.csproj">
@@ -101,6 +102,8 @@
     <PostBuildEvent>copy $(ProjectDir)*.html $(TargetDir)
 
 copy $(SolutionDir)lib\log4net.dll $(TargetDir)
+
+copy $(ProjectDir)log4net*.config $(TargetDir)
 
 xcopy /Y $(SolutionDir)src\lib\Apollo.AIM.SNAP\EmailTemplate\*.html  $(TargetDir)\EmailTemplate\*.*</PostBuildEvent>
   </PropertyGroup>
