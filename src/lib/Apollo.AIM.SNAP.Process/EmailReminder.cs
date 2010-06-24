@@ -25,13 +25,15 @@ namespace Apollo.AIM.SNAP.Process
         {
             InitializeComponent();
             ServiceName = "SNAP Email Reminder";
+            var pollingInterval = Convert.ToInt32(ConfigurationManager.AppSettings["PollingIntervalinMsec"]);
 
             // Set the timer to fire 
             // (remember the timer is in millisecond resolution,
             //  so 1000 = 1 second. )
 
-            _timer = new Timer(1800000);
+            //_timer = new Timer(1800000);
 
+            _timer = new Timer(pollingInterval);
             //    _timer = new Timer(30000);
 
             // Now tell the timer when the timer fires
