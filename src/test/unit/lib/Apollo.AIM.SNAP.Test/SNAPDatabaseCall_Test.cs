@@ -144,5 +144,31 @@ namespace Apollo.AIM.SNAP.Test
             }
         }
 
+        [Test]
+        public void RUD_SNAP_Workflow_State_Types()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                db.SNAP_Workflow_State_Types.InsertOnSubmit(new SNAP_Workflow_State_Type()
+                {
+                    pkId = 20,
+                    typeName = "TESTTYPE"
+                });
+                db.SubmitChanges();
+
+                var test1 = db.SNAP_Workflow_State_Types.Where(t=>t.pkId==20).ToList();
+                Assert.IsTrue(test1.Count > 0);
+
+                foreach (var type in test1)
+                {
+                    db.SNAP_Workflow_State_Types.DeleteOnSubmit(type);
+                }
+                db.SubmitChanges();
+
+                var test2 = db.SNAP_Workflow_State_Types.Where(t => t.pkId == 20).ToList();
+                Assert.IsTrue(test2.Count == 0);
+            }
+        }
+
     }
 }
