@@ -494,6 +494,7 @@ namespace Apollo.AIM.SNAP.Test
 
         }
 
+        [Ignore]
         [Test]
         public void ShouldCreateWorkflowByAccessTeamUsingMgrUsrId()
         {
@@ -2316,7 +2317,7 @@ namespace Apollo.AIM.SNAP.Test
             }
         }
 
-
+        [Ignore]
         [Test] public void ShouldReturnActorId()
         {
             string usrid = "pxlee";
@@ -2535,6 +2536,7 @@ namespace Apollo.AIM.SNAP.Test
             Console.WriteLine(diff.Days);
         }
 
+        [Ignore]
         [Test]public void ShouldUpdateRequest()
         {
             int id;
