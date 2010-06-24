@@ -170,5 +170,84 @@ namespace Apollo.AIM.SNAP.Test
             }
         }
 
+        [Test]
+        public void RUD_SNAP_Request_State_Types()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                db.SNAP_Request_State_Types.InsertOnSubmit(new SNAP_Request_State_Type()
+                {
+                    pkId = 20,
+                    typeName = "TESTTYPE"
+                });
+                db.SubmitChanges();
+
+                var test1 = db.SNAP_Request_State_Types.Where(t => t.pkId == 20).ToList();
+                Assert.IsTrue(test1.Count > 0);
+
+                foreach (var type in test1)
+                {
+                    db.SNAP_Request_State_Types.DeleteOnSubmit(type);
+                }
+                db.SubmitChanges();
+
+                var test2 = db.SNAP_Request_State_Types.Where(t => t.pkId == 20).ToList();
+                Assert.IsTrue(test2.Count == 0);
+            }
+        }
+
+        [Test]
+        public void RUD_SNAP_Comments_Types()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                db.SNAP_Comments_Types.InsertOnSubmit(new SNAP_Comments_Type()
+                {
+                    pkId = 20,
+                    typeName = "TESTTYPE",
+                    audience = "TESTAUDIENCE"
+                });
+                db.SubmitChanges();
+
+                var test1 = db.SNAP_Comments_Types.Where(t => t.pkId == 20).ToList();
+                Assert.IsTrue(test1.Count > 0);
+
+                foreach (var type in test1)
+                {
+                    db.SNAP_Comments_Types.DeleteOnSubmit(type);
+                }
+                db.SubmitChanges();
+
+                var test2 = db.SNAP_Comments_Types.Where(t => t.pkId == 20).ToList();
+                Assert.IsTrue(test2.Count == 0);
+            }
+        }
+
+        [Test]
+        public void RUD_SNAP_Actor_Group_Types()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                db.SNAP_Actor_Group_Types.InsertOnSubmit(new SNAP_Actor_Group_Type()
+                {
+                    pkId = 20,
+                    typeName = "TESTTYPE"
+                });
+                db.SubmitChanges();
+
+                var test1 = db.SNAP_Actor_Group_Types.Where(t => t.pkId == 20).ToList();
+                Assert.IsTrue(test1.Count > 0);
+
+                foreach (var type in test1)
+                {
+                    db.SNAP_Actor_Group_Types.DeleteOnSubmit(type);
+                }
+                db.SubmitChanges();
+
+                var test2 = db.SNAP_Actor_Group_Types.Where(t => t.pkId == 20).ToList();
+                Assert.IsTrue(test2.Count == 0);
+            }
+        }
+
     }
 }
