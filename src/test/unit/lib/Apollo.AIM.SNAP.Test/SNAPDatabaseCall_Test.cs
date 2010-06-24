@@ -145,7 +145,124 @@ namespace Apollo.AIM.SNAP.Test
         }
 
         [Test]
-        public void RUD_SNAP_Workflow_State_Types()
+        public void RUD_SNAP_Access_Details_Form()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                db.SNAP_Access_Details_Forms.InsertOnSubmit(new SNAP_Access_Details_Form()
+                {
+                    parentId = 20,
+                    label = "Test Field",
+                    description = "For Unit Testing",
+                    isActive = false,
+                    isRequired = false
+                });
+                db.SubmitChanges();
+
+                var test1 = db.SNAP_Access_Details_Forms.Where(t => t.label == "Test Field").ToList();
+                Assert.IsTrue(test1.Count > 0);
+
+                foreach (var row in test1)
+                {
+                    db.SNAP_Access_Details_Forms.DeleteOnSubmit(row);
+                }
+                db.SubmitChanges();
+
+                var test2 = db.SNAP_Access_Details_Forms.Where(t => t.label == "Test Field").ToList();
+                Assert.IsTrue(test2.Count == 0);
+            }
+        }
+
+        [Test]
+        public void RUD_SNAP_Access_User_Text()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                db.SNAP_Access_User_Texts.InsertOnSubmit(new SNAP_Access_User_Text()
+                {
+                    requestId = 0,
+                    access_details_formId = 20,
+                    userText = "For unit testing",
+                    modifiedDate = DateTime.Now
+                });
+                db.SubmitChanges();
+
+                var test1 = db.SNAP_Access_User_Texts.Where(t => t.requestId == 0).ToList();
+                Assert.IsTrue(test1.Count > 0);
+
+                foreach (var row in test1)
+                {
+                    db.SNAP_Access_User_Texts.DeleteOnSubmit(row);
+                }
+                db.SubmitChanges();
+
+                var test2 = db.SNAP_Access_User_Texts.Where(t => t.requestId == 0).ToList();
+                Assert.IsTrue(test2.Count == 0);
+            }
+        }
+
+        [Test]
+        public void RUD_SNAP_Actor()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                db.SNAP_Actors.InsertOnSubmit(new SNAP_Actor()
+                {
+                    userId = "testuser",
+                    displayName = "Test User",
+                    emailAddress = "testuser@apollogrp.edu",
+                    isActive = false,
+                    isDefault = false,
+                    isGroup = false,
+                    actor_groupId = 0
+                });
+                db.SubmitChanges();
+
+                var test1 = db.SNAP_Actors.Where(t => t.userId == "testuser").ToList();
+                Assert.IsTrue(test1.Count > 0);
+
+                foreach (var row in test1)
+                {
+                    db.SNAP_Actors.DeleteOnSubmit(row);
+                }
+                db.SubmitChanges();
+
+                var test2 = db.SNAP_Actors.Where(t => t.userId == "testuser").ToList();
+                Assert.IsTrue(test2.Count == 0);
+            }
+        }
+
+        [Test]
+        public void RUD_SNAP_Actor_Group()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                db.SNAP_Actor_Groups.InsertOnSubmit(new SNAP_Actor_Group()
+                {
+                    groupName = "Test Group",
+                    description = "Test Group Description",
+                    actorGroupType = 0,
+                    isActive = false,
+                    isLargeGroup = false
+                });
+                db.SubmitChanges();
+
+                var test1 = db.SNAP_Actor_Groups.Where(t => t.groupName == "Test Group").ToList();
+                Assert.IsTrue(test1.Count > 0);
+
+                foreach (var row in test1)
+                {
+                    db.SNAP_Actor_Groups.DeleteOnSubmit(row);
+                }
+                db.SubmitChanges();
+
+                var test2 = db.SNAP_Actor_Groups.Where(t => t.groupName == "Test Group").ToList();
+                Assert.IsTrue(test2.Count == 0);
+            }
+        }
+
+        [Test]
+        public void RUD_SNAP_Workflow_State_Type()
         {
             using (var db = new SNAPDatabaseDataContext())
             {
@@ -159,9 +276,9 @@ namespace Apollo.AIM.SNAP.Test
                 var test1 = db.SNAP_Workflow_State_Types.Where(t=>t.pkId==20).ToList();
                 Assert.IsTrue(test1.Count > 0);
 
-                foreach (var type in test1)
+                foreach (var row in test1)
                 {
-                    db.SNAP_Workflow_State_Types.DeleteOnSubmit(type);
+                    db.SNAP_Workflow_State_Types.DeleteOnSubmit(row);
                 }
                 db.SubmitChanges();
 
@@ -171,33 +288,7 @@ namespace Apollo.AIM.SNAP.Test
         }
 
         [Test]
-        public void RUD_SNAP_Request_State_Types()
-        {
-            using (var db = new SNAPDatabaseDataContext())
-            {
-                db.SNAP_Request_State_Types.InsertOnSubmit(new SNAP_Request_State_Type()
-                {
-                    pkId = 20,
-                    typeName = "TESTTYPE"
-                });
-                db.SubmitChanges();
-
-                var test1 = db.SNAP_Request_State_Types.Where(t => t.pkId == 20).ToList();
-                Assert.IsTrue(test1.Count > 0);
-
-                foreach (var type in test1)
-                {
-                    db.SNAP_Request_State_Types.DeleteOnSubmit(type);
-                }
-                db.SubmitChanges();
-
-                var test2 = db.SNAP_Request_State_Types.Where(t => t.pkId == 20).ToList();
-                Assert.IsTrue(test2.Count == 0);
-            }
-        }
-
-        [Test]
-        public void RUD_SNAP_Comments_Types()
+        public void RUD_SNAP_Comments_Type()
         {
             using (var db = new SNAPDatabaseDataContext())
             {
@@ -212,9 +303,9 @@ namespace Apollo.AIM.SNAP.Test
                 var test1 = db.SNAP_Comments_Types.Where(t => t.pkId == 20).ToList();
                 Assert.IsTrue(test1.Count > 0);
 
-                foreach (var type in test1)
+                foreach (var row in test1)
                 {
-                    db.SNAP_Comments_Types.DeleteOnSubmit(type);
+                    db.SNAP_Comments_Types.DeleteOnSubmit(row);
                 }
                 db.SubmitChanges();
 
@@ -223,12 +314,128 @@ namespace Apollo.AIM.SNAP.Test
             }
         }
 
-        //[Test]
+        [Test]
+        public void RUD_SNAP_Request()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                db.SNAP_Requests.InsertOnSubmit(new SNAP_Request()
+                {
+                    userId = "testuser",
+                    userTitle = "Unit Tester",
+                    userDisplayName = "Test Account",
+                    managerUserId = "manager",
+                    managerDisplayName = "Test Manager",
+                    submittedBy = "submitter",
+                    isChanged = false,
+                    statusEnum = 0,
+                    createdDate = DateTime.Now,
+                    lastModifiedDate = DateTime.Now,
+                    ticketNumber = "0000"
+                });
+                db.SubmitChanges();
+
+                var test1 = db.SNAP_Requests.Where(t => t.userId == "testuser").ToList();
+                Assert.IsTrue(test1.Count > 0);
+
+                foreach (var row in test1)
+                {
+                    db.SNAP_Requests.DeleteOnSubmit(row);
+                }
+                db.SubmitChanges();
+
+                var test2 = db.SNAP_Requests.Where(t => t.userId == "testuser").ToList();
+                Assert.IsTrue(test2.Count == 0);
+            }
+        }
+
+        [Test]
+        public void RUD_Request_Comment()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                db.SNAP_Request_Comments.InsertOnSubmit(new SNAP_Request_Comment()
+                {
+                    requestId = 0,
+                    commentText = "Test Comment",
+                    commentTypeEnum = 0,
+                    createdDate = DateTime.Now
+                });
+                db.SubmitChanges();
+
+                var test1 = db.SNAP_Request_Comments.Where(t => t.commentText == "Test Comment").ToList();
+                Assert.IsTrue(test1.Count > 0);
+
+                foreach (var row in test1)
+                {
+                    db.SNAP_Request_Comments.DeleteOnSubmit(row);
+                }
+                db.SubmitChanges();
+
+                var test2 = db.SNAP_Request_Comments.Where(t => t.commentText == "Test Comment").ToList();
+                Assert.IsTrue(test2.Count == 0);
+            }
+        }
+
+        [Test]
+        public void RUD_SNAP_Request_State_Type()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                db.SNAP_Request_State_Types.InsertOnSubmit(new SNAP_Request_State_Type()
+                {
+                    pkId = 20,
+                    typeName = "TESTTYPE"
+                });
+                db.SubmitChanges();
+
+                var test1 = db.SNAP_Request_State_Types.Where(t => t.pkId == 20).ToList();
+                Assert.IsTrue(test1.Count > 0);
+
+                foreach (var row in test1)
+                {
+                    db.SNAP_Request_State_Types.DeleteOnSubmit(row);
+                }
+                db.SubmitChanges();
+
+                var test2 = db.SNAP_Request_State_Types.Where(t => t.pkId == 20).ToList();
+                Assert.IsTrue(test2.Count == 0);
+            }
+        }
+
+        [Test]
+        // TODO: SNAP_Weekends_and_Holiday doesnt have a primary key set
+        public void RUD_SNAP_Weekends_and_Holiday()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                //db.SNAP_Weekends_and_Holidays.InsertOnSubmit(new SNAP_Weekends_and_Holiday()
+                //{
+                //    dayName = "TESTDAY",
+                //    dayOfWeekDate = DateTime.Now
+                //});
+                //db.SubmitChanges();
+
+                var test1 = db.SNAP_Weekends_and_Holidays.Where(t => t.dayName == "MON").ToList();
+                Assert.IsTrue(test1.Count > 0);
+
+                //foreach (var row in test1)
+                //{
+                //    db.SNAP_Weekends_and_Holidays.DeleteOnSubmit(row);
+                //}
+                //db.SubmitChanges();
+
+                //var test2 = db.SNAP_Weekends_and_Holidays.Where(t => t.dayName == "TESTDAY").ToList();
+                //Assert.IsTrue(test2.Count == 0);
+            }
+        }
+
+        [Test]
         // TODO: SNAP_Actor_Group_Type doesnt have a primary key set
-        //public void RUD_SNAP_Actor_Group_Types()
-        //{
-        //    using (var db = new SNAPDatabaseDataContext())
-        //    {
+        public void RUD_SNAP_Actor_Group_Types()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
         //        db.SNAP_Actor_Group_Types.InsertOnSubmit(new SNAP_Actor_Group_Type()
         //        {
         //            pkId = 20,
@@ -236,8 +443,8 @@ namespace Apollo.AIM.SNAP.Test
         //        });
         //        db.SubmitChanges();
 
-        //        var test1 = db.SNAP_Actor_Group_Types.Where(t => t.pkId == 20).ToList();
-        //        Assert.IsTrue(test1.Count > 0);
+                var test1 = db.SNAP_Actor_Group_Types.Where(t => t.pkId == 1).ToList();
+                Assert.IsTrue(test1.Count > 0);
 
         //        foreach (var type in test1)
         //        {
@@ -247,8 +454,8 @@ namespace Apollo.AIM.SNAP.Test
 
         //        var test2 = db.SNAP_Actor_Group_Types.Where(t => t.pkId == 20).ToList();
         //        Assert.IsTrue(test2.Count == 0);
-        //    }
-        //}
+            }
+        }
 
     }
 }
