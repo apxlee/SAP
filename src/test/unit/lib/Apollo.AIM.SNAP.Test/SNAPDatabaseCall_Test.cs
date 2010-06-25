@@ -763,6 +763,23 @@ namespace Apollo.AIM.SNAP.Test
         [Test]
         public void EXEC_usp_open_my_request_workflow_details()
         {
+            usp_open_my_request_workflow_detailsResult t = new usp_open_my_request_workflow_detailsResult();
+            t.actor_groupId = 0;
+            t.actorGroupType = 0;
+            t.actorId = 0;
+            t.completedDate = DateTime.Now;
+            t.displayName = "UnitTester";
+            t.dueDate = DateTime.Now;
+            t.emailAddress = "test@test.com";
+            t.isActive = false;
+            t.isDefault = false;
+            t.isGroup = false;
+            t.notifyDate = DateTime.Now;
+            t.requestId = 0;
+            t.userId = "UnitTester";
+            t.workflowId = 0;
+            t.workflowStateId = 0;
+            t.workflowStatusEnum = 0;
 
             using (var db = new SNAPDatabaseDataContext())
             {
