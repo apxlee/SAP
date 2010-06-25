@@ -611,18 +611,21 @@ namespace Apollo.AIM.SNAP.Test
             {
                 IMultipleResults test = db.usp_search_requests("pxlee");
                 Assert.IsTrue(test.GetResult<usp_search_requestsResult>().Count() > 0);
-                foreach(usp_search_requestsResult result in test.GetResult<usp_search_requestsResult>())
+                if (test.GetResult<usp_requestsResult>().Count() > 0)
                 {
-                    Console.WriteLine(result.userId);
-                    Console.WriteLine(result.userDisplayName);
-                    Console.WriteLine(result.userTitle);
-                    Console.WriteLine(result.submittedBy);
-                    Console.WriteLine(result.managerUserId);
-                    Console.WriteLine(result.managerDisplayName);
-                    Console.WriteLine(result.statusEnum);
-                    Console.WriteLine(result.isChanged);
-                    Console.WriteLine(result.ticketNumber);
-                    Console.WriteLine(result.lastModifiedDate); 
+                    foreach (usp_search_requestsResult result in test.GetResult<usp_search_requestsResult>())
+                    {
+                        Console.WriteLine(result.userId);
+                        Console.WriteLine(result.userDisplayName);
+                        Console.WriteLine(result.userTitle);
+                        Console.WriteLine(result.submittedBy);
+                        Console.WriteLine(result.managerUserId);
+                        Console.WriteLine(result.managerDisplayName);
+                        Console.WriteLine(result.statusEnum);
+                        Console.WriteLine(result.isChanged);
+                        Console.WriteLine(result.ticketNumber);
+                        Console.WriteLine(result.lastModifiedDate);
+                    }
                 }
             }
         }
@@ -634,19 +637,94 @@ namespace Apollo.AIM.SNAP.Test
             {
                 IMultipleResults test = db.usp_requests("pxlee","my");
                 Assert.IsTrue(test.GetResult<usp_requestsResult>().Count() > 0);
-                foreach (usp_requestsResult result in test.GetResult<usp_requestsResult>())
+                if (test.GetResult<usp_requestsResult>().Count() > 0)
                 {
-                    Console.WriteLine(result.userId);
-                    Console.WriteLine(result.userDisplayName);
-                    Console.WriteLine(result.userTitle);
-                    Console.WriteLine(result.submittedBy);
-                    Console.WriteLine(result.managerUserId);
-                    Console.WriteLine(result.managerDisplayName);
-                    Console.WriteLine(result.statusEnum);
-                    Console.WriteLine(result.isChanged);
-                    Console.WriteLine(result.ticketNumber);
-                    Console.WriteLine(result.lastModifiedDate); 
+                    foreach (usp_requestsResult result in test.GetResult<usp_requestsResult>())
+                    {
+                        Console.WriteLine(result.userId);
+                        Console.WriteLine(result.userDisplayName);
+                        Console.WriteLine(result.userTitle);
+                        Console.WriteLine(result.submittedBy);
+                        Console.WriteLine(result.managerUserId);
+                        Console.WriteLine(result.managerDisplayName);
+                        Console.WriteLine(result.statusEnum);
+                        Console.WriteLine(result.isChanged);
+                        Console.WriteLine(result.ticketNumber);
+                        Console.WriteLine(result.lastModifiedDate);
+                    }
                 }
+            }
+        }
+
+        [Test]
+        public void EXEC_usp_requests_details()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+
+                var test = db.usp_request_details(req.pkId).First();
+                Assert.IsTrue(test.requestId > 0);
+                Console.WriteLine(test.requestId);
+                Console.WriteLine(test.userId);
+                Console.WriteLine(test.userDisplayName);
+                Console.WriteLine(test.userTitle);
+                Console.WriteLine(test.submittedBy);
+                Console.WriteLine(test.managerUserId);
+                Console.WriteLine(test.managerDisplayName);
+                Console.WriteLine(test.statusEnum);
+                Console.WriteLine(test.isChanged);
+                Console.WriteLine(test.ticketNumber);
+                Console.WriteLine(test.fieldId);
+                Console.WriteLine(test.fieldLabel);
+                Console.WriteLine(test.fieldText);
+                Console.WriteLine(test.modifiedDate);
+                Console.WriteLine(test.createdDate);
+            }
+        }
+
+        [Test]
+        public void EXEC_usp_open_request_tab()
+        {
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+                var accessReq = new AccessRequest(req.pkId);
+                accessReq.Ack();
+            }
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+                Assert.IsTrue(req.statusEnum == (byte)RequestState.Pending);
+                var accessReq = new AccessRequest(req.pkId);
+                accessReq.RequestToChange("TEST");
+            }
+            using (var db = new SNAPDatabaseDataContext())
+            {
+
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+                Assert.IsTrue(req.statusEnum == (byte)RequestState.Change_Requested);
+               
+                var test = db.usp_open_request_tab(req.userId, req.pkId).First();
+                Assert.IsTrue(test.requestId > 0);
+                Console.WriteLine(test.requestId);
+                Console.WriteLine(test.userId);
+                Console.WriteLine(test.userDisplayName);
+                Console.WriteLine(test.userTitle);
+                Console.WriteLine(test.submittedBy);
+                Console.WriteLine(test.managerUserId);
+                Console.WriteLine(test.managerDisplayName);
+                Console.WriteLine(test.statusEnum);
+                Console.WriteLine(test.isChanged);
+                Console.WriteLine(test.ticketNumber);
+                Console.WriteLine(test.fieldId);
+                Console.WriteLine(test.fieldLabel);
+                Console.WriteLine(test.fieldText);
+                Console.WriteLine(test.modifiedDate);
+                Console.WriteLine(test.createdDate);
             }
         }
     }

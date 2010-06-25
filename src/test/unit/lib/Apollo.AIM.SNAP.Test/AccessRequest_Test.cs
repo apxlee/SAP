@@ -337,7 +337,8 @@ namespace Apollo.AIM.SNAP.Test
             }
         }
 
-        [Test] public void ShouldCreateWorkflowByAccessTeam()
+        [Test] 
+        public void ShouldCreateWorkflowByAccessTeam()
         {
             using (var db = new SNAPDatabaseDataContext())
             {
@@ -533,6 +534,7 @@ namespace Apollo.AIM.SNAP.Test
                 
             }
         }
+        
         [Test]
         public void ShouldReturnManagerWorkflowApprovalType()
         {
