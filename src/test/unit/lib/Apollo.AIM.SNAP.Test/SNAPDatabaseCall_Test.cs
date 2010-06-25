@@ -19,7 +19,7 @@ namespace Apollo.AIM.SNAP.Test
 
 
 
-        private int accessTeamActorId = 1;
+        //private int accessTeamActorId = 1;
         private int managerActorId = 0;
         private string managerUserId = string.Empty;
         private int secondManagerActorId = 0;
@@ -94,8 +94,18 @@ namespace Apollo.AIM.SNAP.Test
 
                 db.usp_insert_request_xml(xmlInput, "UnitTester", "pxlee", "Pong Lee", "Programmer", "gjbelang", "Greg Belanger");
             }
-            
-            
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+                db.SNAP_Request_Comments.InsertOnSubmit(new SNAP_Request_Comment()
+                {
+                    requestId = req.pkId,
+                    commentText = "Test Comment",
+                    commentTypeEnum = (byte)CommentsType.Acknowledged,
+                    createdDate = DateTime.Now
+                });
+                db.SubmitChanges();
+            }
         }
 
         [TearDown]
@@ -725,6 +735,114 @@ namespace Apollo.AIM.SNAP.Test
                 Console.WriteLine(test.fieldText);
                 Console.WriteLine(test.modifiedDate);
                 Console.WriteLine(test.createdDate);
+            }
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+                var test = db.usp_open_request_details(req.userId, req.pkId).First();
+                Assert.IsTrue(test.requestId > 0);
+                Console.WriteLine(test.requestId);
+                Console.WriteLine(test.userId);
+                Console.WriteLine(test.userDisplayName);
+                Console.WriteLine(test.userTitle);
+                Console.WriteLine(test.submittedBy);
+                Console.WriteLine(test.managerUserId);
+                Console.WriteLine(test.managerDisplayName);
+                Console.WriteLine(test.statusEnum);
+                Console.WriteLine(test.isChanged);
+                Console.WriteLine(test.ticketNumber);
+                Console.WriteLine(test.fieldId);
+                Console.WriteLine(test.fieldLabel);
+                Console.WriteLine(test.fieldText);
+                Console.WriteLine(test.modifiedDate);
+                Console.WriteLine(test.createdDate);
+            }
+        }
+
+        [Test]
+        public void EXEC_usp_open_my_request_workflow_details()
+        {
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+                var test = db.usp_open_my_request_workflow_details(req.userId).First();
+                Assert.IsTrue(test.displayName != "");
+                Console.WriteLine(test.userId);
+                Console.WriteLine(test.workflowId);
+                Console.WriteLine(test.workflowStateId);
+                Console.WriteLine(test.workflowStatusEnum);
+                Console.WriteLine(test.requestId);
+                Console.WriteLine(test.notifyDate);
+                Console.WriteLine(test.isGroup);
+                Console.WriteLine(test.isDefault);
+                Console.WriteLine(test.isActive);
+                Console.WriteLine(test.emailAddress);
+                Console.WriteLine(test.dueDate);
+                Console.WriteLine(test.displayName);
+                Console.WriteLine(test.completedDate);
+                Console.WriteLine(test.actorId);
+                Console.WriteLine(test.actorGroupType);
+                Console.WriteLine(test.actor_groupId);
+            }
+        }
+
+        [Test]
+        public void EXEC_usp_open_my_request_workflow_comments()
+        {
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+                var test = db.usp_open_my_request_workflow_comments(req.userId).First();
+                Assert.IsTrue(test.requestId > 0);
+                Console.WriteLine(test.pkId);
+                Console.WriteLine(test.requestId);
+                Console.WriteLine(test.workflowId);
+                Console.WriteLine(test.createdDate);
+                Console.WriteLine(test.commentTypeEnum);
+                Console.WriteLine(test.commentText);
+            }
+        }
+
+        [Test]
+        public void EXEC_usp_open_my_request_details()
+        {
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+                var test = db.usp_open_my_request_details(req.userId).First();
+                Assert.IsTrue(test.pkId > 0);
+                Console.WriteLine(test.pkId);
+                Console.WriteLine(test.userId);
+                Console.WriteLine(test.userDisplayName);
+                Console.WriteLine(test.userTitle);
+                Console.WriteLine(test.submittedBy);
+                Console.WriteLine(test.managerUserId);
+                Console.WriteLine(test.managerDisplayName);
+                Console.WriteLine(test.statusEnum);
+                Console.WriteLine(test.isChanged);
+                Console.WriteLine(test.ticketNumber);
+                Console.WriteLine(test.createdDate);
+            }
+        }
+
+        [Test]
+        public void EXEC_usp_open_my_request_comments()
+        {
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+                var test = db.usp_open_my_request_comments(req.userId).First();
+                Assert.IsTrue(test.requestId > 0);
+                Console.WriteLine(test.pkId);
+                Console.WriteLine(test.requestId);
+                Console.WriteLine(test.createdDate);
+                Console.WriteLine(test.commentTypeEnum);
+                Console.WriteLine(test.commentText);
             }
         }
     }
