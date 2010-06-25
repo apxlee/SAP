@@ -12,9 +12,130 @@ namespace Apollo.AIM.SNAP.Test
     [TestFixture]
     public class SNAPDatabaseCall_Test
     {
+        // this is from actor group table
+        private static int TEAMAPPROVALGROUP = 0;
+        private static int TECHNICALAPPROVALGROUP = 1;
+        private static int MANAGERGROUP = 2;
+
+
+
+        private int accessTeamActorId = 1;
+        private int managerActorId = 0;
+        private string managerUserId = string.Empty;
+        private int secondManagerActorId = 0;
+        private string secondMagerUserId = string.Empty;
+        private int teamApprovalActorId = 0;
+        private string teamApprovalUserId = string.Empty;
+        private int windowsServerActorId = 0;
+        private string WindowsServerUserId = string.Empty;
+        private int networkShareActorId = 0;
+        private string networkShareUserId = string.Empty;
+        private int databaseActorId = 0;
+        private string databaseUserId = string.Empty;
+
+        [TestFixtureSetUp]
+        public void Init()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var actors = db.SNAP_Actors.Where(a => a.SNAP_Actor_Group.actorGroupType == TEAMAPPROVALGROUP).ToList();
+                teamApprovalActorId = actors[0].pkId;
+                teamApprovalUserId = actors[0].userId;
+                //actors = db.SNAP_Actors.Where(a => a.actor_groupId == TECHNICALAPPROVALGROUP).ToList();
+                actors = db.SNAP_Actors.Where(a => a.SNAP_Actor_Group.actorGroupType == TECHNICALAPPROVALGROUP).ToList();
+                windowsServerActorId = actors[0].pkId;
+                WindowsServerUserId = actors[0].userId;
+                networkShareActorId = actors[1].pkId;
+                networkShareUserId = actors[1].userId;
+                databaseActorId = actors[2].pkId;
+                databaseUserId = actors[2].userId;
+                //actors = db.SNAP_Actors.Where(a => a.actor_groupId == MANAGERGROUP).ToList();
+                actors = db.SNAP_Actors.Where(a => a.SNAP_Actor_Group.actorGroupType == MANAGERGROUP).ToList();
+                if (actors.Count == 1)
+                {
+                    db.SNAP_Actors.InsertOnSubmit(new SNAP_Actor() { 
+                        actor_groupId = actors[0].actor_groupId,
+                        userId = "pxlee",
+                        displayName = "Pong Lee",
+                        emailAddress = "pxlee@apollogrp.edu",
+                        isActive = true,
+                        isDefault = false
+                    });
+
+                    db.SubmitChanges();
+                    actors = db.SNAP_Actors.Where(a => a.SNAP_Actor_Group.actorGroupType == MANAGERGROUP).ToList();
+                }                
+                managerActorId = actors[0].pkId;
+                managerUserId = actors[0].userId;
+                secondManagerActorId = actors[1].pkId;
+                secondMagerUserId = actors[1].userId;
+            }
+        }
+
         [SetUp]
         public void SetUp()
         {
+            
+            cleanUp();
+
+            
+            using (var db = new SNAPDatabaseDataContext())
+            {
+
+                List<RequestData> requestDataList = new List<RequestData>()
+                                                        {
+                                                            new RequestData() {FormId = "2", UserText = "Request Access 2"},
+                                                            new RequestData() {FormId = "3", UserText = "Request Access 3"},
+                                                            new RequestData() {FormId = "4", UserText = "Request Access 4"},
+                                                            new RequestData() {FormId = "5", UserText = "Request Access 5"}
+                                                        };
+
+                var xmlInput = RequestData.ToXml(requestDataList);
+
+                db.usp_insert_request_xml(xmlInput, "UnitTester", "pxlee", "Pong Lee", "Programmer", "gjbelang", "Greg Belanger");
+            }
+            
+            
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            
+        }
+
+        private void cleanUp()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+
+                var reqs = db.SNAP_Requests.Where(x => x.submittedBy == "UnitTester").ToList();
+                
+                foreach (var r in reqs)
+                {
+                    var wfs = db.SNAP_Workflows.Where(x => x.requestId == r.pkId).ToList();
+                    foreach (SNAP_Workflow wf in wfs)
+                    {
+                        var states = db.SNAP_Workflow_States.Where(x => x.workflowId == wf.pkId);
+                        db.SNAP_Workflow_States.DeleteAllOnSubmit(states);
+
+                        var comments = db.SNAP_Workflow_Comments.Where(c => c.workflowId == wf.pkId);
+                        db.SNAP_Workflow_Comments.DeleteAllOnSubmit(comments);
+                    }
+
+                    db.SNAP_Workflows.DeleteAllOnSubmit(wfs);
+
+                    var uts = db.SNAP_Access_User_Texts.Where(x => x.requestId == r.pkId);
+                    db.SNAP_Access_User_Texts.DeleteAllOnSubmit(uts);
+                    db.SNAP_Requests.DeleteOnSubmit(r);
+
+                    var reqComments = db.SNAP_Request_Comments.Where(c => c.requestId == r.pkId);
+                    db.SNAP_Request_Comments.DeleteAllOnSubmit(reqComments);
+                }
+
+                db.SubmitChanges();
+            }
+
         }
 
         [Test]
@@ -488,8 +609,44 @@ namespace Apollo.AIM.SNAP.Test
         {
             using (var db = new SNAPDatabaseDataContext())
             {
-                IMultipleResults test = db.usp_search_requests("");
+                IMultipleResults test = db.usp_search_requests("pxlee");
                 Assert.IsTrue(test.GetResult<usp_search_requestsResult>().Count() > 0);
+                foreach(usp_search_requestsResult result in test.GetResult<usp_search_requestsResult>())
+                {
+                    Console.WriteLine(result.userId);
+                    Console.WriteLine(result.userDisplayName);
+                    Console.WriteLine(result.userTitle);
+                    Console.WriteLine(result.submittedBy);
+                    Console.WriteLine(result.managerUserId);
+                    Console.WriteLine(result.managerDisplayName);
+                    Console.WriteLine(result.statusEnum);
+                    Console.WriteLine(result.isChanged);
+                    Console.WriteLine(result.ticketNumber);
+                    Console.WriteLine(result.lastModifiedDate); 
+                }
+            }
+        }
+
+        [Test]
+        public void EXEC_usp_requests()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                IMultipleResults test = db.usp_requests("pxlee","my");
+                Assert.IsTrue(test.GetResult<usp_requestsResult>().Count() > 0);
+                foreach (usp_requestsResult result in test.GetResult<usp_requestsResult>())
+                {
+                    Console.WriteLine(result.userId);
+                    Console.WriteLine(result.userDisplayName);
+                    Console.WriteLine(result.userTitle);
+                    Console.WriteLine(result.submittedBy);
+                    Console.WriteLine(result.managerUserId);
+                    Console.WriteLine(result.managerDisplayName);
+                    Console.WriteLine(result.statusEnum);
+                    Console.WriteLine(result.isChanged);
+                    Console.WriteLine(result.ticketNumber);
+                    Console.WriteLine(result.lastModifiedDate); 
+                }
             }
         }
     }

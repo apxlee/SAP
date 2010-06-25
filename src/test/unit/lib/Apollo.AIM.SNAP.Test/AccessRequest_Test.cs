@@ -74,7 +74,6 @@ namespace Apollo.AIM.SNAP.Test
             }
         }
 
-
         [SetUp]
         public void SetUp()
         {
@@ -256,6 +255,7 @@ namespace Apollo.AIM.SNAP.Test
                 }
             }
         }
+        
         [Test]
         public void ShouldCloseCancelledByAccessTeam()
         {
@@ -321,7 +321,6 @@ namespace Apollo.AIM.SNAP.Test
             }
         }
 
-
         [Test]
         public void ShouldFailToCreateWorkflowByAccessTeamDueToMissingManagerApprover()
         {
@@ -369,7 +368,6 @@ namespace Apollo.AIM.SNAP.Test
                 verifyWorkflowState(managerWF, WorkflowState.Pending_Approval);
             }
         }
-
 
         [Test]
         public void ShouldCreateWorkflowByAccessTeamAndThenMakeModification()
@@ -583,7 +581,6 @@ namespace Apollo.AIM.SNAP.Test
 
         }
 
-
         [Test]
         public void ShouldReturnManagerAndTeamAndTechnicalWorkflowApprovalType()
         {
@@ -607,8 +604,6 @@ namespace Apollo.AIM.SNAP.Test
             }
 
         }
-
-
 
         [Test]
         public void ShouldInforManagerForAction()
@@ -782,7 +777,6 @@ namespace Apollo.AIM.SNAP.Test
 
         }
 
-
         [Test]
         public void ShouldHandleonlyManagerApproval()
         {
@@ -940,8 +934,6 @@ namespace Apollo.AIM.SNAP.Test
             
         }
 
-
-
         [Test]
         public void ShouldHandleFromManagerToTeamOnly()
         {
@@ -1046,10 +1038,6 @@ namespace Apollo.AIM.SNAP.Test
             }
         }
 
-
-
-
-
         [Test]
         public void ShouldHandleFromManagerToTeamToOneTechicalApprove()
         {
@@ -1101,7 +1089,6 @@ namespace Apollo.AIM.SNAP.Test
 
 
         }
-
 
         [Test]
         public void ShouldHandleFromManagerToTeamToOneTechicalRequestToChange()
@@ -1338,7 +1325,6 @@ namespace Apollo.AIM.SNAP.Test
             }
 
         }
-
 
         [Test]
         public void ShouldNotEnterToDifferentStateWhenNotReady()
@@ -1606,8 +1592,6 @@ namespace Apollo.AIM.SNAP.Test
 
             }
         }
-
-
 
         [Test]
         public void ShouldHandleUpdateCreateWorkFlowByRemovingTechApproval()
@@ -2012,6 +1996,7 @@ namespace Apollo.AIM.SNAP.Test
             }
 
         }
+        
         [Ignore]
         [Test]
         public void ShouldHandleFinalizeRequestWithSDticket()
@@ -2066,7 +2051,6 @@ namespace Apollo.AIM.SNAP.Test
             }
 
         }
-
 
         [Test]
         public void ShouldHandleManagerDeniedRequest()
@@ -2281,9 +2265,8 @@ namespace Apollo.AIM.SNAP.Test
             
         }
 
-
-
-        [Test] public void SouldReturnApprovalTypeObject()
+        [Test] 
+        public void SouldReturnApprovalTypeObject()
         {
             using (var db = new SNAPDatabaseDataContext())
             {
@@ -2318,7 +2301,8 @@ namespace Apollo.AIM.SNAP.Test
         }
 
         [Ignore]
-        [Test] public void ShouldReturnActorId()
+        [Test] 
+        public void ShouldReturnActorId()
         {
             string usrid = "pxlee";
 
@@ -2422,7 +2406,9 @@ namespace Apollo.AIM.SNAP.Test
                 //Assert.IsTrue(db.GetActiveWorkflowId(req.pkId, teamApprovalUserId) == 0);
             }
         }
-        [Test] public void ShouldHandleRemoveLastAproverAfterAllApproved()
+        
+        [Test] 
+        public void ShouldHandleRemoveLastAproverAfterAllApproved()
         {
             using (var db = new SNAPDatabaseDataContext())
             {
@@ -2459,7 +2445,8 @@ namespace Apollo.AIM.SNAP.Test
             }
         }
 
-        [Test] public void ShouldHandleNotAllowSpecialApproverInTechAprrovingPhase()
+        [Test] 
+        public void ShouldHandleNotAllowSpecialApproverInTechAprrovingPhase()
         {
 
             using (var db = new SNAPDatabaseDataContext())
@@ -2492,7 +2479,9 @@ namespace Apollo.AIM.SNAP.Test
             }
 
         }
-        [Test] public void TestDateDiff()
+        
+        [Test] 
+        public void TestDateDiff()
         {
             DateTime dueDate = DateTime.Parse("3/2/2010 1:00:00 AM");
             DateTime currentDate = DateTime.Parse("3/2/2010 2:05:00 AM");
@@ -2536,7 +2525,9 @@ namespace Apollo.AIM.SNAP.Test
             Console.WriteLine(diff.Days);
         }
 
-        [Ignore] [Test]public void ShouldUpdateRequest()
+        [Ignore] 
+        [Test]
+        public void ShouldUpdateRequest()
         {
             int id;
             using (var db = new SNAPDatabaseDataContext())
