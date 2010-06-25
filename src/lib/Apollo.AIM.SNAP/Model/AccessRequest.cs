@@ -138,7 +138,7 @@ namespace Apollo.AIM.SNAP.Model
                         addAccessTeamComment(accessTeamWF, comment, commentType);
                         //Email.UpdateRequesterStatus(req.submittedBy, req.userDisplayName, _id, wfState, comment);
                         
-                        Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy, req.userDisplayName, _id, req.submittedBy, (WorkflowState)wfState, comment);
+                        Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy + "@apollogrp.edu", req.userDisplayName, _id, req.submittedBy, (WorkflowState)wfState, comment);
                         db.SubmitChanges();
                     }
 
@@ -205,7 +205,7 @@ namespace Apollo.AIM.SNAP.Model
                     if (result)
                     {
                         addAccessTeamComment(accessTeamWF, comment, CommentsType.Requested_Change);
-						Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy, req.userDisplayName, _id, req.submittedBy, WorkflowState.Change_Requested, comment);
+						Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy + "@apollogrp.edu", req.userDisplayName, _id, req.submittedBy, WorkflowState.Change_Requested, comment);
                         db.SubmitChanges();
                     }
                 }
@@ -624,7 +624,7 @@ namespace Apollo.AIM.SNAP.Model
                     if (result)
                     {
                         //Email.UpdateRequesterStatus(req.submittedBy, req.userDisplayName, _id, WorkflowState.Closed_Completed, string.Empty);
-						Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy, req.userDisplayName, _id, req.submittedBy, WorkflowState.Closed_Completed, null);
+						Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy + "@apollogrp.edu", req.userDisplayName, _id, req.submittedBy, WorkflowState.Closed_Completed, null);
                         db.SubmitChanges();
                     }
                     else
@@ -1537,7 +1537,7 @@ namespace Apollo.AIM.SNAP.Model
                 createdDate = DateTime.Now
             });
             //Email.UpdateRequesterStatus(req.submittedBy, req.userDisplayName, req.pkId, WorkflowState.Change_Requested, comment);
-			Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy, req.userDisplayName, req.pkId, req.submittedBy, WorkflowState.Change_Requested, comment);
+			Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy + "@apollogrp.edu", req.userDisplayName, req.pkId, req.submittedBy, WorkflowState.Change_Requested, comment);
             
         }
 
@@ -1579,7 +1579,7 @@ namespace Apollo.AIM.SNAP.Model
                     //Email.UpdateRequesterStatus(req.submittedBy, req.userDisplayName, req.pkId, WorkflowState.Closed_Denied, comment);
 					
 					comment = comment.Replace("<br />", string.Empty);
-					Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy, req.userDisplayName, req.pkId, req.submittedBy, WorkflowState.Closed_Denied, comment);
+					Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy + "@apollogrp.edu", req.userDisplayName, req.pkId, req.submittedBy, WorkflowState.Closed_Denied, comment);
                     break;
                 }
             }
