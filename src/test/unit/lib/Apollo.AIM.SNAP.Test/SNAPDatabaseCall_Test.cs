@@ -669,6 +669,23 @@ namespace Apollo.AIM.SNAP.Test
         [Test]
         public void EXEC_usp_requests_details()
         {
+            usp_request_detailsResult t = new usp_request_detailsResult();
+            t.requestId = 0;
+            t.userId = "test";
+            t.userDisplayName = "test";
+            t.userTitle = "test";
+            t.submittedBy = "test";
+            t.managerUserId = "test";
+            t.managerDisplayName = "test";
+            t.statusEnum = 0;
+            t.isChanged = false;
+            t.ticketNumber = "test";
+            t.fieldId = 0;
+            t.fieldLabel = "test";
+            t.fieldText = "ttest";
+            t.modifiedDate = DateTime.Now;
+            t.createdDate = DateTime.Now;
+
             using (var db = new SNAPDatabaseDataContext())
             {
                 var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
@@ -712,13 +729,29 @@ namespace Apollo.AIM.SNAP.Test
                 var accessReq = new AccessRequest(req.pkId);
                 accessReq.RequestToChange("TEST");
             }
+            usp_open_request_tabResult t = new usp_open_request_tabResult();
+            t.requestId = 0;
+            t.userId = "test";
+            t.userDisplayName = "test";
+            t.userTitle = "test";
+            t.submittedBy = "test";
+            t.managerUserId = "test";
+            t.managerDisplayName = "test";
+            t.statusEnum = 0;
+            t.isChanged = false;
+            t.ticketNumber = "test";
+            t.fieldId = 0;
+            t.fieldLabel = "test";
+            t.fieldText = "ttest";
+            t.modifiedDate = DateTime.Now;
+            t.createdDate = DateTime.Now;
             using (var db = new SNAPDatabaseDataContext())
             {
 
                 var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
                 Assert.IsTrue(req.statusEnum == (byte)RequestState.Change_Requested);
-
-                usp_open_request_tabResult test = db.usp_open_request_tab(req.userId, req.pkId).First();
+               
+                var test = db.usp_open_request_tab(req.userId, req.pkId).First();
                 Assert.IsTrue(test.requestId > 0);
                 Console.WriteLine(test.requestId);
                 Console.WriteLine(test.userId);
@@ -736,11 +769,26 @@ namespace Apollo.AIM.SNAP.Test
                 Console.WriteLine(test.modifiedDate);
                 Console.WriteLine(test.createdDate);
             }
-
+            usp_open_request_detailsResult t2 = new usp_open_request_detailsResult();
+            t2.requestId = 0;
+            t2.userId = "test";
+            t2.userDisplayName = "test";
+            t2.userTitle = "test";
+            t2.submittedBy = "test";
+            t2.managerUserId = "test";
+            t2.managerDisplayName = "test";
+            t2.statusEnum = 0;
+            t2.isChanged = false;
+            t2.ticketNumber = "test";
+            t2.fieldId = 0;
+            t2.fieldLabel = "test";
+            t2.fieldText = "ttest";
+            t2.modifiedDate = DateTime.Now;
+            t2.createdDate = DateTime.Now;
             using (var db = new SNAPDatabaseDataContext())
             {
                 var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-                usp_open_request_detailsResult test = db.usp_open_request_details(req.userId, req.pkId).First();
+                var test = db.usp_open_request_details(req.userId, req.pkId).First();
                 Assert.IsTrue(test.requestId > 0);
                 Console.WriteLine(test.requestId);
                 Console.WriteLine(test.userId);
@@ -763,6 +811,24 @@ namespace Apollo.AIM.SNAP.Test
         [Test]
         public void EXEC_usp_open_my_request_workflow_details()
         {
+            usp_open_my_request_workflow_detailsResult t = new usp_open_my_request_workflow_detailsResult();
+            t.actor_groupId = 0;
+            t.actorGroupType = 0;
+            t.actorId = 0;
+            t.completedDate = DateTime.Now;
+            t.displayName = "UnitTester";
+            t.dueDate = DateTime.Now;
+            t.emailAddress = "test@test.com";
+            t.isActive = false;
+            t.isDefault = false;
+            t.isGroup = false;
+            t.notifyDate = DateTime.Now;
+            t.requestId = 0;
+            t.userId = "UnitTester";
+            t.workflowId = 0;
+            t.workflowStateId = 0;
+            t.workflowStatusEnum = 0;
+
             using (var db = new SNAPDatabaseDataContext())
             {
                 var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
@@ -790,6 +856,13 @@ namespace Apollo.AIM.SNAP.Test
         [Test]
         public void EXEC_usp_open_my_request_workflow_comments()
         {
+            usp_open_my_request_workflow_commentsResult t = new usp_open_my_request_workflow_commentsResult();
+            t.pkId = 0;
+            t.requestId = 0;
+            t.workflowId = 0;
+            t.createdDate = DateTime.Now;
+            t.commentTypeEnum = 0;
+            t.commentText = "Test";
 
             using (var db = new SNAPDatabaseDataContext())
             {
@@ -808,6 +881,18 @@ namespace Apollo.AIM.SNAP.Test
         [Test]
         public void EXEC_usp_open_my_request_details()
         {
+            usp_open_my_request_detailsResult t = new usp_open_my_request_detailsResult();
+            t.pkId = 0;
+            t.userId = "test";
+            t.userDisplayName = "test";
+            t.userTitle = "test";
+            t.submittedBy = "test";
+            t.managerUserId = "test";
+            t.managerDisplayName = "test";
+            t.statusEnum = 0;
+            t.isChanged = false;
+            t.ticketNumber = "test";
+            t.createdDate = DateTime.Now;
 
             using (var db = new SNAPDatabaseDataContext())
             {
@@ -831,6 +916,12 @@ namespace Apollo.AIM.SNAP.Test
         [Test]
         public void EXEC_usp_open_my_request_comments()
         {
+            usp_open_my_request_commentsResult t = new usp_open_my_request_commentsResult();
+            t.pkId = 0;
+            t.requestId = 0;
+            t.createdDate = DateTime.Now;
+            t.commentTypeEnum = 0;
+            t.commentText = "Test";
 
             using (var db = new SNAPDatabaseDataContext())
             {
