@@ -483,5 +483,14 @@ namespace Apollo.AIM.SNAP.Test
             }
         }
 
+        [Test]
+        public void EXEC_usp_search_requests()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                IMultipleResults test = db.usp_search_requests("");
+                Assert.IsTrue(test.GetResult<usp_search_requestsResult>().Count() > 0);
+            }
+        }
     }
 }
