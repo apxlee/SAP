@@ -673,7 +673,7 @@ namespace Apollo.AIM.SNAP.Test
             {
                 var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
 
-                var test = db.usp_request_details(req.pkId).First();
+                usp_request_detailsResult test = db.usp_request_details(req.pkId).First();
                 Assert.IsTrue(test.requestId > 0);
                 Console.WriteLine(test.requestId);
                 Console.WriteLine(test.userId);
@@ -717,8 +717,8 @@ namespace Apollo.AIM.SNAP.Test
 
                 var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
                 Assert.IsTrue(req.statusEnum == (byte)RequestState.Change_Requested);
-               
-                var test = db.usp_open_request_tab(req.userId, req.pkId).First();
+
+                usp_open_request_tabResult test = db.usp_open_request_tab(req.userId, req.pkId).First();
                 Assert.IsTrue(test.requestId > 0);
                 Console.WriteLine(test.requestId);
                 Console.WriteLine(test.userId);
@@ -740,7 +740,7 @@ namespace Apollo.AIM.SNAP.Test
             using (var db = new SNAPDatabaseDataContext())
             {
                 var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-                var test = db.usp_open_request_details(req.userId, req.pkId).First();
+                usp_open_request_detailsResult test = db.usp_open_request_details(req.userId, req.pkId).First();
                 Assert.IsTrue(test.requestId > 0);
                 Console.WriteLine(test.requestId);
                 Console.WriteLine(test.userId);
@@ -763,28 +763,10 @@ namespace Apollo.AIM.SNAP.Test
         [Test]
         public void EXEC_usp_open_my_request_workflow_details()
         {
-            usp_open_my_request_workflow_detailsResult t = new usp_open_my_request_workflow_detailsResult();
-            t.actor_groupId = 0;
-            t.actorGroupType = 0;
-            t.actorId = 0;
-            t.completedDate = DateTime.Now;
-            t.displayName = "UnitTester";
-            t.dueDate = DateTime.Now;
-            t.emailAddress = "test@test.com";
-            t.isActive = false;
-            t.isDefault = false;
-            t.isGroup = false;
-            t.notifyDate = DateTime.Now;
-            t.requestId = 0;
-            t.userId = "UnitTester";
-            t.workflowId = 0;
-            t.workflowStateId = 0;
-            t.workflowStatusEnum = 0;
-
             using (var db = new SNAPDatabaseDataContext())
             {
                 var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-                var test = db.usp_open_my_request_workflow_details(req.userId).First();
+                usp_open_my_request_workflow_detailsResult test = db.usp_open_my_request_workflow_details(req.userId).First();
                 Assert.IsTrue(test.displayName != "");
                 Console.WriteLine(test.userId);
                 Console.WriteLine(test.workflowId);
@@ -812,7 +794,7 @@ namespace Apollo.AIM.SNAP.Test
             using (var db = new SNAPDatabaseDataContext())
             {
                 var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-                var test = db.usp_open_my_request_workflow_comments(req.userId).First();
+                usp_open_my_request_workflow_commentsResult test = db.usp_open_my_request_workflow_comments(req.userId).First();
                 Assert.IsTrue(test.requestId > 0);
                 Console.WriteLine(test.pkId);
                 Console.WriteLine(test.requestId);
@@ -830,7 +812,7 @@ namespace Apollo.AIM.SNAP.Test
             using (var db = new SNAPDatabaseDataContext())
             {
                 var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-                var test = db.usp_open_my_request_details(req.userId).First();
+                usp_open_my_request_detailsResult test = db.usp_open_my_request_details(req.userId).First();
                 Assert.IsTrue(test.pkId > 0);
                 Console.WriteLine(test.pkId);
                 Console.WriteLine(test.userId);
@@ -853,7 +835,7 @@ namespace Apollo.AIM.SNAP.Test
             using (var db = new SNAPDatabaseDataContext())
             {
                 var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-                var test = db.usp_open_my_request_comments(req.userId).First();
+                usp_open_my_request_commentsResult test = db.usp_open_my_request_comments(req.userId).First();
                 Assert.IsTrue(test.requestId > 0);
                 Console.WriteLine(test.pkId);
                 Console.WriteLine(test.requestId);
