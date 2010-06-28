@@ -1582,8 +1582,19 @@ namespace Apollo.AIM.SNAP.Test
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
                 Assert.IsTrue(wfs.Count == 2);
 
+                foreach (var wf in wfs)
+                {
+                    //Console.WriteLine(wf.SNAP_Actor.userId + ",  " +  WindowsServerUserId);
+                    Assert.IsTrue(wf.SNAP_Actor.userId != WindowsServerUserId);    
+                }
+                
+
+                /*
+                
                 var noSuchWorkflow = db.SNAP_Workflows.Where(w => w.actorId == windowsServerActorId);
                 Assert.IsTrue(noSuchWorkflow.Count() == 0);
+                
+                 */
 
                 var noSuchWorkflowState = db.SNAP_Workflow_States.Where(s => s.workflowId == goneWFid);
                 Assert.IsTrue(noSuchWorkflowState.Count() == 0);
