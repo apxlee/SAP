@@ -1,0 +1,1262 @@
+﻿/*
+OOSPA Base Template v1 
+Revised: 1/14/2010  J.Steele
+
+*/
+
+/* Grid976 */
+.csm_container_100 {
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
+	background: transparent url('../images/slice_body_bg.gif') top repeat-y;
+	background: none;
+	background-color: #fff;
+	}
+
+/* Template Defaults
+----------------------------------------------------------------------------------------------------*/
+body {
+	background: transparent url(../images/slice_brand_sides.gif) top repeat-y;
+	background: none;
+	background-color: #5d0c00;
+	}
+
+.csm_template_1 {
+	font-family: Verdana, Arial, Helvetica, Sans-Serif;
+	font-size: .80em;
+	line-height: 1.5em;
+	background-color: #000;	/* NOTE: Also change .csm_static_selected_style bg-color */
+	}
+	
+.csm_template_1 a {color: Blue;text-decoration: inherit;}
+.csm_template_1 a:visited {color: Purple;text-decoration: inherit;}
+
+.csm_template_1 .csm_first {margin-top: 0px !important;}
+.csm_template_1 .csm_last {margin-bottom: 0px !important;}
+.csm_template_1 .csm_top5 {margin-top: 5px;}
+.csm_template_1 .csm_top10 {margin-top: 10px;}
+.csm_template_1 .csm_top15 {margin-top: 15px;}
+.csm_template_1 .csm_bottom5 {margin-bottom: 5px;}
+.csm_template_1 .csm_bottom10 {margin-bottom: 10px;}
+.csm_template_1 .csm_500 {min-height: 500px;padding-bottom:20px;} /* TODO: return to 500 when logo cutoff changed */
+
+.csm_template_1 .csm_content_container {
+	margin: 5px;
+	margin-bottom: 10px;
+	padding: 5px;
+	background-color: #f5f5f5;
+	border: 1px solid #e0e0e0;
+	}
+
+.csm_template_1 .csm_content_container p {
+	margin-bottom: 5px;
+	font-size: .85em;
+	line-height: 1.3em;
+	}
+	
+.csm_template_1 .csm_text_container
+, .csm_template_1 .csm_text_container_nodrop {
+	border: 1px solid #e0e0e0;
+	background-color: #ffffff;
+	padding: 10px;
+	}
+	
+.csm_template_1 .csm_alternating_bg {
+	background-color: #eaeaea !important;
+	}
+	
+.csm_template_1 .csm_hidden_block {display: none;}
+.csm_template_1 .csm_displayed_block {display: block;}
+.csm_template_1 .csm_hidden_span {display: none;}
+.csm_template_1 .csm_displayed_span {display: inline;}
+	
+.csm_template_1 .aim_dark_text {color: #696969;}
+
+
+/* Single Row Text Container
+----------------------------------------------------------------------------------------------------*/
+
+.csm_template_1 .csm_text_container_single_row
+, .csm_template_1 .csm_text_container_single_row_last {
+	margin: 0;
+	padding: 5px;
+	background-color: #f5f5f5;
+	border: 1px solid #b7b7b7;
+	border-bottom: 0;
+	font-size: .85em;
+	line-height: 1em;
+	}
+	
+.csm_template_1 .csm_text_container_single_row_last {
+	border-bottom: 1px solid #b7b7b7;
+	}
+
+
+/* Padded Windowshade with Optional Drop Shadow
+----------------------------------------------------------------------------------------------------*/
+
+.csm_template_1 .csm_padded_windowshade .csm_text_container {
+	margin: 0px 10px 5px;
+	border-top: 0px;
+	background: url('../images/dropshadow_slice_green.gif') top repeat-x;
+	background-color: #666633;
+	}
+	
+.csm_template_1 .csm_padded_windowshade .csm_text_container_nodrop {
+	margin: 0px 10px 5px;
+	border-top: 0px;
+	background-color: #fafafa;
+	}
+	
+.csm_template_1 .csm_padded_windowshade .csm_text_container .csm_alternating_bg {
+	background: url('../images/dropshadow_slice_green.gif') top repeat-x;
+	}
+	
+.csm_template_1 .csm_data_row {
+	margin: 0;
+	padding: 2px 10px 3px;
+	font-size: .90em;
+	font-weight: normal;
+	font-family: Verdana;
+	line-height: 1.5em;
+	background-color: #f0f0f0;
+	border: 1px solid #b5b5b5;
+	border-bottom: 0;
+	}
+	
+.csm_template_1 .csm_data_row tr {
+    line-height: 1.5em;
+    font-size: .95em;
+    }
+	
+
+/* Scrolling Containers
+----------------------------------------------------------------------------------------------------*/
+
+.csm_template_1 .csm_scrolling_container {
+	overflow: scroll;
+	overflow-x: auto;
+	-ms-overflow-x: auto;
+	}
+
+.csm_template_1 .csm_scrolling_container .csm_text_container 	
+,.csm_template_1 .csm_scrolling_container .csm_text_container_single_row 
+,.csm_template_1 .csm_scrolling_container .csm_text_container_single_row_last {
+	border-right: 0;
+	}
+
+
+
+
+
+/* Headings
+----------------------------------------------------------------------------------------------------*/
+
+.csm_template_1 h1 {
+	margin: 10px 0px;
+	padding: 5px;
+	/*background: url('../images/h1_slice.gif') repeat-x;	*/
+	/*border: 1px solid #b7b7b7;*/
+	border-bottom: 2px solid #771111;
+	height: 16px;
+	line-height: 16px;
+	letter-spacing: normal;
+	font-size: 1.4em;
+	font-family: Arial;
+	font-weight: bold;
+	color: #771111;
+	}	
+		
+.csm_template_1 h2 {
+	margin-top: 5px;
+	margin-bottom: 5px;
+	padding: 2px 2px 3px;
+	font-size: 1.2em;
+	font-family: Arial;
+	font-weight: bold;
+	}	
+	
+/*.csm_template_1 h2.csm_special_heading {
+    border-bottom: 1px solid #b7b7b7;
+    }*/
+
+.csm_template_1 h3 {
+	margin-top: 10px;
+	font-family: Verdana;
+	font-size: .85em;
+	font-weight: bold;
+	color: #191919;
+	line-height: 1.5em;
+	}
+	
+.csm_template_1 .csm_data_heading {
+	margin: 0;
+	padding: 2px 10px 3px;
+	font-size: .90em;
+	font-weight: normal;
+	font-family: Verdana;
+	background-color: #e0e0e0;
+	border: 1px solid #b7b7b7;
+	border-bottom: 0;
+	}
+	
+.csm_template_1 .csm_stacked_heading_title {
+    font-size: .65em;
+    font-family: Arial;
+    letter-spacing: 1px;
+    color: #595959;
+    line-height: 1.5em;
+    text-transform: uppercase;
+    }
+    
+.csm_template_1 .csm_stacked_heading_label {
+    line-height: 1.2em;
+    }
+	
+/* Padded Windowshade */
+
+.csm_template_1 .csm_padded_windowshade .csm_data_heading
+, .csm_template_1 .csm_padded_windowshade .csm_data_row {
+	border-bottom: 1px solid #b7b7b7;
+	}	
+	
+.csm_template_1 .csm_padded_windowshade h3.csm_alternating_bg {
+	background-color: #e5e5e5 !important;
+	}	
+
+.csm_template_1 .csm_padded_windowshade h3.csm_toggle_hover {
+	background-color: #fff !important;
+	}
+
+	
+/* Toggle Styles
+----------------------------------------------------------------------------------------------------*/
+
+.csm_template_1 .csm_toggle_container {/* used by jquery to identify toggle elements */}
+
+/*
+.csm_template_1 .csm_toggle_hover {
+	background: url('../images/button_show_details_hover.gif');
+	cursor: pointer;
+	}
+*/
+
+/* Floating Toggle */
+
+.csm_template_1 .csm_divided_heading .csm_toggle_container {	
+	margin: 0;
+	padding: 2px 8px;
+	float: left;
+	}
+.csm_toggle_show {
+    background: url('../images/button_show_details_active.gif');
+    background-repeat: no-repeat;
+    cursor: pointer;
+	}
+.csm_toggle_hide {
+    background: url('../images/button_hide_details_active.gif');
+    background-repeat: no-repeat;
+    cursor: pointer;
+	}
+.csm_toggle_show_hover {
+	background: url('../images/button_show_details_hover.gif');
+    background-repeat: no-repeat;
+    cursor: pointer;
+	}
+.csm_toggle_hide_hover {
+	background: url('../images/button_hide_details_hover.gif');
+	background-repeat: no-repeat;
+	cursor: pointer;
+	}
+.csm_template_1 .csm_divided_heading .csm_toggle_container span {
+	display: block;
+	float: left;
+	margin: 0;
+	margin-right: 0px;
+	padding: 0px;
+	height: 100%;
+	height: 23px;
+	width: 80px;
+	font-size: .80em;
+	}
+
+.csm_template_1 .csm_divided_heading .csm_toggle_container .csm_toggle_icon_down
+,.csm_template_1 .csm_divided_heading .csm_toggle_container .csm_toggle_icon_up {
+	position: relative;
+	margin: 0;
+	margin-top: 4px;
+	padding: 0;
+	width: 16px;
+	height: 100%;
+	}	
+
+.csm_template_1 .csm_divided_heading .csm_toggle_container .csm_toggle_icon_down {
+	background: url('../images/icon_toggle_down.gif') 50% 50% no-repeat;
+	}	
+	
+.csm_template_1 .csm_divided_heading .csm_toggle_container .csm_toggle_icon_up {
+	background: url('../images/icon_toggle_up.gif') 50% 50% no-repeat;
+	}	
+
+.csm_legend_toggle {
+	font-size: 1em;
+	line-height: 1.4em;
+	color: Blue;
+	font-weight: normal;
+	cursor: pointer;
+}
+/* Floating Heading
+----------------------------------------------------------------------------------------------------*/
+
+.csm_template_1 .csm_divided_heading {
+	margin: 0;
+	margin-bottom: 0px;
+	}
+	
+.csm_template_1 .csm_floating_text_container {
+	margin-top: 5px;
+	}
+	
+.csm_template_1 .csm_divided_heading .csm_float_right {
+	float: right;
+	}
+	
+.csm_template_1 .csm_divided_heading .csm_float_left {
+	float: left;
+	}
+
+
+/* Breadcrumb Navigation
+----------------------------------------------------------------------------------------------------*/
+
+.csm_template_1 .csm_breadcrumb {
+	margin: 5px 5px 5px 8px;
+	}
+
+.csm_template_1 .csm_breadcrumb span {
+	font-size: .80em;
+	white-space: nowrap;
+	}
+
+
+/* Input Form
+----------------------------------------------------------------------------------------------------*/
+
+.csm_template_1 fieldset {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	}
+
+.csm_template_1 .csm_input_form_container {
+	margin: 0;
+	margin-bottom: 10px;
+	padding: 0;
+	border-top: 1px solid #b7b7b7;
+	background-color: #f0f0f0;
+	width: 100%
+	}
+	
+.csm_template_1 .csm_input_form_label_column p {
+	display: block;
+	margin: 0;
+	font-size: .85em;
+	line-height: 1.2em;
+	text-align: right;
+	color: #000;
+	}	
+
+.csm_template_1 .csm_input_form_label_column {
+	padding: 8px 7px 8px 28px;
+	width: 30%;
+	vertical-align: top; /* text-top */
+	background-color: #fafafa;
+	border-bottom: 1px solid #b7b7b7;
+	}
+
+.csm_template_1 label {
+	display: block;
+	margin: 0;
+	padding: 0;
+	text-align: right;
+	vertical-align: text-top;
+	font-size: .85em;
+	line-height: 1.5em;
+	font-weight: bold;
+	color: #595959;
+	}
+	
+.csm_template_1 .csm_input_form_control_column {
+	border-bottom: 1px solid #b7b7b7;
+	padding: 5px;
+	}
+
+.csm_template_1 .csm_input_form_control_column span {
+	display: block;
+	margin: 0;
+	font-size: .85em;
+	color: #000;
+	}
+	
+.csm_template_1 .csm_input_form_control_column p {
+	margin-left: 2px;
+	margin-right: 5px;
+	color: #696969;
+	}	
+
+.csm_template_1 	
+.csm_input_form_control_column h2
+, .csm_template_1 
+.csm_input_spanning_column .csm_input_form_control_container h2 {
+	margin: 0;
+	padding: 0;
+	padding-left: 2px;
+	/*color: #696969;*/
+	color: #595959;
+	font-family: Arial;
+	font-size: .90em;
+	font-weight: bold;
+	}	
+	
+.csm_input_form_control_column span.csm_inline {
+	display: block;
+	margin: 0 4px 0 2px;
+	padding: 0;
+	float: left;
+	line-height: 1.7em;
+	}
+
+
+/* Input Specific Tweaks */
+	
+.csm_template_1 textarea 
+, .csm_template_1 select {
+	margin: 0;
+	padding: 0px;
+	padding-left: 5px;
+	font-size: .85em;
+	/*background: #fff url('../images/dropshadow_slice_green.gif') top repeat-x;*/
+	border: 1px solid #b7b7b7;		
+	line-height: 1.7em;
+	height: 1.8em;
+	font-family: Verdana, Arial;
+	}
+
+.csm_template_1 input.csm_text_input
+, .csm_template_1 textarea.csm_text_input {
+	margin: 0;
+	padding: 0px;
+	padding-left: 5px;
+	font-size: .85em;
+	/*background: #fff url('../images/dropshadow_slice_green.gif') top repeat-x;*/
+	border: 1px solid #b7b7b7;		
+	line-height: 1.7em;
+	height: 1.8em;
+	font-family: Verdana, Arial;
+	width: 98%;
+	}
+	
+.csm_template_1 input.csm_text_input_short {
+	margin: 0;
+	padding: 0px;
+	padding-left: 5px;
+	font-size: .85em;
+	/*background: #fff url('../images/dropshadow_slice_green.gif') top repeat-x;*/
+	border: 1px solid #b7b7b7;		
+	line-height: 1.7em;
+	height: 1.8em;
+	font-family: Verdana, Arial;
+	width: 50%;
+	}
+	
+.csm_template_1 input.csm_input_focus
+, .csm_template_1 textarea.csm_input_focus
+, .csm_template_1 select.csm_input_focus {
+	background-color: #ffffdd;
+	}		
+	
+.csm_template_1 textarea {
+	min-height: 100px !important;
+	line-height: 1.3em !important;
+	padding-top: 5px !important;
+	}
+	
+.csm_template_1 textarea.csm_textarea_short {
+	min-height: 50px !important;
+	line-height: 1.3em !important;
+	padding-top: 5px !important;
+	}	
+	
+.csm_template_1 input.csm_input_checkradio {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	line-height: 1.5em;
+	background-color: Transparent;
+	float: left;
+	}
+	
+.csm_template_1 span.csm_input_checkradio_span {
+    line-height: 1.5em;
+    font-size: .85em;
+    margin: 0 8px 0 2px;
+    float: left;
+    }
+
+/* Input Buttons */	
+
+.csm_template_1 .csm_input_buttons_container {
+	margin: 8px 0;
+	padding: 0;
+	text-align: right;
+	}
+	
+.csm_template_1 .csm_input_buttons_container_centered {
+	margin-left: auto;
+	margin-right: auto;
+	padding: 0;
+	text-align: center;
+	}	
+		
+	
+/* Spanning Column Input Form
+----------------------------------------------------------------------------------------------------*/
+
+.csm_template_1 
+.csm_input_spanning_column {
+	margin: 0;
+	padding: 5px 0;
+	background-color: #f5f5f5;
+	}
+
+.csm_template_1 
+.csm_input_spanning_column .csm_input_form_label_container {
+	margin: 0;
+	/*margin-bottom: 5px;*/
+	padding: 5px;
+	background-color: #f5f5f5;
+	border: 1px solid #b7b7b7;
+	border-top: 3px solid #b7b7b7;
+	border-bottom: 3px solid #b7b7b7;
+	}
+	
+.csm_template_1 
+.csm_input_spanning_column .csm_input_form_label_container label {
+	display: inline-block;
+	margin: 0;
+	padding: 0;
+	padding-right: 30px;
+	text-align: left;
+	vertical-align: text-top;
+	font-size: .85em;
+	line-height: 1.8em;
+	font-weight: bold;
+	color: #595959;
+	background-color: #f5f5f5;
+	}
+	
+.csm_template_1 
+.csm_input_spanning_column .csm_input_form_label_container p {
+	margin: 5px 0;
+	font-size: .85em;
+	line-height: 1.2em;
+	font-weight: normal;
+	color: #000;
+	}
+
+.csm_template_1 
+.csm_input_spanning_column .csm_input_form_control_container {
+	margin: 0 5px 0 5px;
+	padding: 5px;
+	background-color: #f9f9f9;
+	border-bottom: 1px solid #b7b7b7;
+	border-left: 1px solid #b7b7b7;
+	border-right: 1px solid #b7b7b7;/**/
+	}
+
+.csm_template_1 
+.csm_input_spanning_column .csm_input_form_control_container p {
+	margin: 5px 2px;
+	font-size: .85em;
+	line-height: 1.2em;
+	font-weight: normal;
+	margin-left: 2px;
+	margin-right: 5px;
+	color: #696969;
+	}
+	
+.csm_template_1 
+.csm_input_spanning_column .csm_input_form_control_container label {
+    text-align: left;
+    padding-left: 2px;
+    margin-top: 10px;
+    }	
+	
+.csm_template_1 
+.csm_input_spanning_column .csm_input_required_field {
+	background-image: url('../images/icon_required_field_small.gif');
+	background-position: right 1px;
+	background-repeat: no-repeat;
+	}
+
+
+/* Validation Controls and Error Messages
+----------------------------------------------------------------------------------------------------*/
+
+.csm_template_1 .csm_input_required_field {
+	background-image: url('../images/icon_required_field_small.gif');
+	background-position: 4px 9px;
+	background-repeat: no-repeat;
+	}
+
+.csm_template_1 .csm_input_validation_summary {
+	margin: 5px 0 0 5px;
+	padding: 0;
+	color: Red;
+	font-weight: bold;
+	}
+	
+.csm_template_1 .request_form_change_comments {
+	margin: 5px 0 0 10px;
+	padding: 0;
+	color: Red;
+	font-weight: bold;
+	display: block;
+	font-family: Arial;
+	/*font-size: .90em;*/
+	}
+	
+.csm_template_1 .request_form_change_comments p {
+     font-weight: normal;
+     padding-right: 15px;
+     padding-left: 0;
+     margin-left: 0;
+     font-family:  Verdana, Arial;
+    }
+	
+.csm_template_1 .csm_input_validation_summary p {
+     font-weight: normal;
+     padding-right: 15px;
+    }
+	
+.csm_template_1 .csm_input_validation_summary label {
+	display: inline;
+	margin: 0;
+	padding: 0;
+	text-align: left;
+	font-size: 1em;
+	line-height: 1.4em;
+	color: Red;
+	font-weight: normal;
+	text-decoration: underline;
+	cursor: pointer;
+	}
+
+.csm_template_1 .csm_input_validation_summary ul {
+	margin: 10px 5px;
+	padding: 0;
+	font-size: .90em;
+	line-height: 1.4em;
+	color: Red;
+	font-weight: normal;
+	}
+	 
+.csm_template_1 .csm_input_validation_summary ul li {
+	list-style-position: inside;
+	list-style-type: disc;
+	list-style: disc inside;
+	font-weight: normal;
+	}
+	
+.csm_template_1 .csm_input_validation_summary ul li label {vertical-align:baseline;}
+
+.csm_template_1 p.csm_error_text
+, .csm_template_1 span.csm_error_text {color: Red;}
+
+/* Footer
+----------------------------------------------------------------------------------------------------*/
+
+.csm_footer_float {
+	position: relative; 
+	bottom: 0px;
+	min-height: 0 !important;
+	}
+
+.csm_template_1 .csm_footer {
+	/*margin-top: 30px;*/
+	padding-bottom: 0px;
+	color: #fff;
+	background: url('../images/slice_footer_bg.gif') top repeat-x;
+	background-color: #5d0c00;	
+	}
+		
+.csm_template_1 .csm_footer div.csm_container_16 {
+	background:  transparent url('../images/slice_brand_sides.gif') top repeat-y;
+	background: none;
+	}
+
+.csm_template_1 .csm_footer .csm_footer_logo {
+	background: url('../images/logo_aim.gif') no-repeat bottom right;
+	min-height: 210px;
+	}
+	
+.csm_template_1 .csm_footer .snap_copyright {
+	margin: 15px 0 10px;
+	padding: 4px 0 0;
+	border-top: 1px solid #783630;
+	text-align: center;
+	width: 586px;
+	display:inline;
+	float: left;
+	line-height: 1em;
+	}
+
+.csm_template_1 .csm_footer .snap_copyright span {
+	padding: 0;
+	margin: 0;
+	color:#783630 !important;
+	font-family:Calibri,Trebuchet MS, Helvetica, sans-serif;
+	font-size:12px;
+	letter-spacing: 0px;
+	line-height: 1.1em;
+	}
+
+.csm_template_1 .csm_footer h1 {
+	margin: 0;
+	padding: 3px 0 1px 5px;
+	width: 95% !important;	
+	background-image: none;
+	border: 0;
+	border-bottom: 1px solid #783630;
+	letter-spacing: normal;
+	font-family: Calibri, "Trebuchet MS", Arial, Helvetica, Sans-Serif;
+	font-weight: bold;
+	font-size: 13px;
+	line-height: 1.2em;	
+	color: #c5c5c5;
+	}
+	
+.csm_template_1 .csm_footer h2 {
+	margin: 10px 0 0;
+	padding: 0 5px;	
+	width: 100% !important;
+	background-image: none;
+	border: 0;
+	line-height: normal;
+	letter-spacing: normal;
+	font-weight: normal;
+	font-size: .85em;
+	color: #f0f0f0;
+	}	
+
+.csm_template_1 .csm_footer ul {
+	margin-left: 5px;
+	padding-left: 0px;
+	line-height: 1.5em;
+	}
+	
+.csm_template_1 .csm_footer ul li {
+	}
+	
+.csm_template_1 .csm_footer a {
+	font-family: Calibri, "Trebuchet MS", Helvetica, Sans-Serif;
+	font-size: .90em;
+	line-height: 1.5em;
+	}
+	
+.csm_template_1 .csm_footer a
+, .csm_template_1 .csm_footer a:link
+, .csm_template_1 .csm_footer a:visited
+, .csm_template_1 .csm_footer a:active {
+	color: #f0f0f0;
+	}
+	
+.csm_template_1 .csm_footer a:hover {text-decoration: underline;}	
+	
+	
+/* OOSPA Specific
+----------------------------------------------------------------------------------------------------*/
+
+
+.csm_template_1 .csm_icon_heading_container {
+	background-position: 0px 0px;
+	margin-bottom: 5px;
+	min-height: 55px;
+    }
+
+.csm_template_1 .csm_icon_heading_container.border {
+	border-bottom: 1px solid #dcdcdc;
+    }    
+    
+.csm_template_1 .csm_icon_heading_container h2 {
+    margin-left: 60px;
+    line-height: 1em;
+    margin: 0 0 0 60px;
+    padding: 5px 0;
+    }    
+
+.csm_template_1 .csm_icon_heading_container p {
+	padding-left: 60px;
+	padding-right: 30px;
+	padding-bottom: 3px;
+	}
+
+.oospa_request_details {
+	background: transparent url('../images/icon_reqdetails.gif') no-repeat;
+    }
+    
+.oospa_request_status {
+	background: transparent url('../images/icon_status.gif') no-repeat;
+    }
+    
+.oospa_aim_builder {
+	background: transparent url('../images/icon_accessteam.gif') no-repeat;
+	}
+	
+.oospa_aim_comments {
+	background: transparent url('../images/icon_accessteam.gif') no-repeat;
+	}
+	
+.oospa_aim_acknowledgement {
+	background: transparent url('../images/icon_accessteam.gif') no-repeat;
+	}
+	
+.snap_my_approvals {
+	background: transparent url('../images/icon_approver.gif') no-repeat;
+	}
+	
+.oospa_delete_icon {
+	background: transparent url('../images/icon_delete_small.gif') 0 2px no-repeat;
+	}
+	
+.oospa_edit_icon {
+	background: transparent url('../images/icon_edit_small.gif') 0 2px no-repeat;
+	}
+.oospa_edit_icon_disabled {
+	background: transparent url('../images/icon_edit_small_disabled.gif') 0 2px no-repeat;
+	}
+.oospa_select_user 
+{
+    width: 320px;
+    height: 200px;
+}
+.oospa_ajax_indicator
+{
+    text-align:center;
+    padding-top:100px;
+}	
+
+    
+table.oospa_workflow_builder_row {
+	margin-bottom: 10px;
+	}
+
+.csm_template_1 
+table.oospa_workflow_builder_row .csm_inline {
+	line-height: 1.8em;
+	}
+
+.csm_template_1 
+table.oospa_workflow_builder_row 
+span.group_description {
+	margin-left: 24px;
+	color: #595959;
+	padding-bottom: 5px;
+	}
+	
+.csm_template_1 .csm_workflow_builder_control_column {
+	padding: 5px;
+	}
+	
+div.modal_li
+{
+    margin:15px;
+    font-family: Calibri, "Trebuchet MS", Helvetica, Sans-Serif;
+    font-size: .90em;
+	line-height: 1.5em;
+}
+.modal_li p
+{
+    text-align:left;
+    font-weight: bold; 
+    padding-left:15px;
+}
+.modal_li ul
+{
+    margin: 10px 35px;
+	padding: 0;
+}
+.modal_li li
+{
+    list-style-position: inside;
+	list-style-type: disc;
+	list-style: disc inside;
+	font-weight: normal; 
+}
+
+/* Login Page
+----------------------------------------------------------------------------------------------------*/
+
+.csm_template_1 .aim_checkbox_checked {
+	background-image: url('../images/icon_checkbox_checked.gif');
+	background-repeat: no-repeat;
+	background-position: 15px 0px;
+	width: 56px;
+	height: 26px;
+	margin-top: 3px;
+	}
+	
+.csm_template_1 .aim_checkbox_unchecked {
+	background-image: url('../images/icon_checkbox_unchecked.gif');
+	background-repeat: no-repeat;
+	background-position: 15px 0px;
+	width: 56px;
+	height: 26px;
+	margin-top: 3px;
+	cursor: pointer;
+	}
+
+.csm_template_1 table.snap_login tr td h2 {
+	padding-left: 0px;
+	}
+
+.csm_template_1 table.snap_login p {
+	padding-right: 50px;
+	}
+	
+.csm_template_1 table.snap_login td {
+	vertical-align: top;
+	padding-top: 4px;
+	}
+	
+.messageBox {  
+    width:350px;
+    height:175px;
+    text-align: center;  
+    background-image: url('../images/modal_small.gif');
+	background-repeat: no-repeat;
+    position:fixed;
+    top:40%;
+    left:50%;
+    margin-left: -175px;
+    z-index:10; 
+}
+.messageBox h2 {
+    margin-top: 5px;
+	margin-bottom: 5px;
+	padding: 35px 2px 2px 3px;
+	font-size: 1.2em;
+	font-family: Arial;
+	font-weight: bold;
+}
+.messageBox p {
+    font-family: Calibri, "Trebuchet MS", Helvetica, Sans-Serif;
+	font-size: .90em;
+	line-height: 1.5em;
+	padding:10px 50px 5px 50px;
+}
+.listview_table
+{
+    width:70%;
+    border:1px solid #b7b7b7;
+}
+.listview_tr
+{
+    background-color:#fafafa;
+    border-bottom:1px solid #b7b7b7;
+}
+.listview_td
+{
+    padding:5px 0 5px 10px;
+    text-align:left;
+}
+.listview_button
+{
+    padding:5px 10px 5px 0;
+    text-align:right;
+}
+
+/************** END CSM_TEMPLATE_V1 **************/
+
+/************** BEGIN SNAP_BRAND **************/
+
+.csm_template_1 {
+	background: transparent url('../images/slice_body_bg.gif') top repeat-y;
+	background: none;
+	}
+
+.csm_template_1 .snap_brand_header {
+	color: #fff;
+	height: 94px;
+	background: url('../images/slice_header_bg.jpg') top repeat-x;
+	}
+	
+.csm_template_1 .snap_brand_header div.csm_container_16 {
+	background: transparent url('../images/slice_brand_sides.gif') top repeat-y;
+	background: none;
+	}
+
+.csm_template_1 .logo_itservices {
+	background: url('../images/logo_itservices.gif') no-repeat;
+	background-position: 83px 2px;
+	height: 58px;
+	}
+
+.csm_template_1 .logo_oospa {
+	background: url('../images/logo_snap.gif')  no-repeat;
+	background-position: 175px 14px;
+	height: 58px;
+	}
+	
+/* Default PAGE */
+
+div#login_description_logo {
+	background: url('../images/logo_aim_small.gif')  no-repeat;
+	width: 110px;
+	height: 110px;
+	}
+	
+/* Support Page */
+
+div#support_contact_logo {
+	background: url('../images/logo_support_small.gif')  no-repeat;
+	width: 87px;
+	height: 88px;
+	}
+	
+/* RIBBON */
+
+span.aim_header_logout {
+	float:right;
+	margin-right:35px;
+	margin-top:8px;
+	font-size:10px;
+	font-family: Verdana;
+	color:#898989;
+	/*letter-spacing:0px;*/
+	}
+
+a.aim_logout_link {color: #797979;}
+a.aim_logout_link:hover {color: #ffffff;}
+
+div#csm_ribbon_container_outer {
+	height: 36px;
+	/*width: 763px;*/
+	margin: 0;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 0;
+	}
+	
+div#csm_ribbon_container_outer 
+ul#csm_ribbon_container_inner {
+	height: 36px; /*36*/
+	width: auto;
+	margin: 0;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 0;
+	position: relative;
+	}
+	
+div#csm_ribbon_container_outer 
+ul#csm_ribbon_container_inner li {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	/*position: absolute;*/
+	float: left;
+	top: 0;
+	}
+	
+ul#csm_ribbon_container_inner li
+, ul#csm_ribbon_container_inner a {
+	height: 35px;
+	display: block;
+	}	
+	
+div#csm_ribbon_container_outer 
+ul#csm_ribbon_container_inner li a {
+	text-indent: -9999px;
+	overflow: hidden;
+	text-decoration: none;
+	}
+ 
+div#csm_ribbon_container_outer ul#csm_ribbon_container_inner li a.snap_approvals_text_two_digits
+, div#csm_ribbon_container_outer ul#csm_ribbon_container_inner li a.snap_approvals_text_one_digit 
+, div#csm_ribbon_container_outer ul#csm_ribbon_container_inner li a.snap_aim_text_two_digits 
+, div#csm_ribbon_container_outer ul#csm_ribbon_container_inner li a.snap_aim_text_one_digit {
+	overflow: hidden;
+	text-indent: 0px;
+	text-decoration: none;
+	text-align: center;
+	}
+
+li a.snap_approvals_text_two_digits span
+, li a.snap_approvals_text_one_digit span
+, li a.snap_aim_text_two_digits span
+, li a.snap_aim_text_one_digit span {
+	font-family: Helvetica;
+	font-size: 12px;
+	font-weight: bold;
+	color: #f5f5f5;
+	position: relative;
+	top: 11px;
+	margin: 0;
+	letter-spacing: 1px;
+	}	
+	
+li a.snap_approvals_text_two_digits span {padding: 0 0 0 105px;}
+li a.snap_approvals_text_one_digit span {padding: 0 0 0 105px;}
+li a.snap_aim_text_two_digits span {padding: 0 0 0 101px;}
+li a.snap_aim_text_one_digit span {padding: 0 0 0 99px;}
+	
+	
+/* LINK BUTTON DEFAULT SIZE */
+
+#default a {width: 47px;}	
+#requestform a {width: 98px;}
+#myrequests a {width: 90px;}
+#myapprovals a {width: 134px;}
+#accessteam a {width: 129px;}
+#search a {width: 47px;}
+#support a {width: 56px;}
+
+#default a
+, #requestform a
+, #myrequests a
+, #myapprovals a
+, #accessteam a
+, #search a
+, #support a {
+	background: url('../images/slider_heading_links.gif') no-repeat;
+	padding: 0 17px 0 17px !important;}
+
+#default a:hover {background-position: -1255px -100px;}
+#requestform a:hover {background-position: -34px -100px;}
+#myrequests a:hover {background-position: -239px -100px;}
+#myapprovals a:hover {background-position: -416px -100px;}
+#accessteam a:hover {background-position: -618px -100px;}
+#search a:hover {background-position: -859px -100px;}
+#support a:hover {background-position: -1055px -100px;}
+
+/* YOU ARE HERE */
+
+#default a {background-position: -1255px 0px;}
+#requestform a {background-position: -34px 0px;}
+#myrequests a {background-position: -239px 0px;}
+#myapprovals a {background-position: -416px 0px;}
+#accessteam a {background-position: -618px 0px;}
+#search a {background-position: -859px 0px;}
+#support a {background-position: -1055px 0px;}
+
+div.default #default a {background-position: -1255px -50px;}
+div.requestform #requestform a {background-position: -34px -50px;}
+div.myrequests #myrequests a {background-position: -239px -50px;}
+div.myapprovals #myapprovals a {background-position: -416px -50px;}
+div.accessteam #accessteam a {background-position: -618px -50px;}
+div.search #search a {background-position: -859px -50px;}
+div.support #support a {background-position: -1055px -50px;}
+
+
+/* ToolTip */
+
+#tooltip{position:absolute;display:none;color:#fff;}
+
+/************** END SNAP_BRAND **************/
+
+/************** BEGIN ACCESS TEAM FILTER **************/
+
+div#access_filter_outer {
+	height: 37px;
+	margin: 0;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 10px;
+	padding: 0;
+	font-family: Helvetica;
+	font-size: 12px;
+	font-weight: normal;
+	color: #f5f5f5;
+	letter-spacing: 1px;
+	background: url('../images/slice_access_filter_bg.jpg') repeat-x top;
+	width: 700px;
+	}
+
+div#access_filter_outer 
+ul#access_filter_inner {
+	height: 37px;
+	margin: 0;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 0;
+	width: 660px;
+	}
+	
+div#access_filter_outer 
+ul#access_filter_inner li {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	float: left;
+	top: 0;
+	}
+	
+ul#access_filter_inner li
+, ul#access_filter_inner span {
+	height: 37px;
+	display: block;
+	padding-top: 6px;
+	margin-left: 0px;
+	margin-right: 0px;
+	}
+	
+ul#access_filter_inner li.disabled_text span {color:#D45766; cursor:default;}
+	
+ul#access_filter_inner span.inline_counter {
+	display: inline;
+	padding: 0;
+	margin: 0;
+	}
+
+#filter_pending_acknowledgement
+, #filter_pending_workflow
+, #filter_pending_provisioning
+, #filter_in_workflow
+, #filter_view_all {
+	cursor: pointer;
+	margin-left: 7px !important;
+	margin-right: 7px !important;
+	}
+	
+#filter_pending_acknowledgement.active_carrot
+, #filter_pending_workflow.active_carrot
+, #filter_pending_provisioning.active_carrot
+, #filter_in_workflow.active_carrot
+, #filter_view_all.active_carrot {
+	background: url('../images/icon_access_filter_active.gif') no-repeat;}
+
+#filter_pending_acknowledgement.hover_carrot
+, #filter_pending_workflow.hover_carrot
+, #filter_pending_provisioning.hover_carrot
+, #filter_in_workflow.hover_carrot
+, #filter_view_all.hover_carrot {
+	background: url('../images/icon_access_filter_hover.gif') no-repeat;}
+
+	
+/* YOU ARE HERE */
+
+#filter_pending_acknowledgement {width:146px;background-position: 57px 60px;}
+#filter_pending_workflow {width:88px;background-position: 34px 60px;}
+#filter_pending_provisioning {width:110px;background-position: 40px 60px;}
+#filter_in_workflow {width:104px;background-position: 40px 60px;}
+#filter_view_all {width:50px;background-position: 29px 60px;}
+
+div.filter_pending_acknowledgement #filter_pending_acknowledgement {background-position: 60px 30px;}
+div.filter_pending_workflow #filter_pending_workflow {background-position: 37px 30px;}
+div.filter_pending_provisioning #filter_pending_provisioning {background-position: 44px 30px;}
+div.filter_in_workflow #filter_in_workflow {background-position: 41px 30px;}
+div.filter_view_all #filter_view_all {background-position: 19px 30px;}
+
+/************** END ACCESS TEAM FILTER **************/
