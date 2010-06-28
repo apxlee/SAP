@@ -278,14 +278,6 @@ namespace Apollo.AIM.SNAP.Test
         [Test]
         public void RUD_SNAP_Access_Details_Form()
         {
-            SNAP_Access_Details_Form test = new SNAP_Access_Details_Form();
-            test.pkId = 0;
-            test.parentId = 0;
-            test.label = "test";
-            test.isRequired = false;
-            test.isActive = false;
-            test.description = "This is a test";
-
             using (var db = new SNAPDatabaseDataContext())
             {
                 db.SNAP_Access_Details_Forms.InsertOnSubmit(new SNAP_Access_Details_Form()
@@ -555,7 +547,11 @@ namespace Apollo.AIM.SNAP.Test
                 //});
                 //db.SubmitChanges();
 
-                var test1 = db.SNAP_Weekends_and_Holidays.Where(t => t.dayName == "MON").ToList();
+                SNAP_Weekends_and_Holiday test = new SNAP_Weekends_and_Holiday();
+                test.dayName = "MON";
+                test.dayOfWeekDate = DateTime.Now;
+
+                var test1 = db.SNAP_Weekends_and_Holidays.Where(t => t.dayName == test.dayName).ToList();
                 Assert.IsTrue(test1.Count > 0);
 
                 //foreach (var row in test1)
@@ -571,7 +567,7 @@ namespace Apollo.AIM.SNAP.Test
 
         [Test]
         // TODO: SNAP_Actor_Group_Type doesnt have a primary key set
-        public void RUD_SNAP_Actor_Group_Types()
+        public void RUD_SNAP_Actor_Group_Type()
         {
             using (var db = new SNAPDatabaseDataContext())
             {
@@ -581,6 +577,10 @@ namespace Apollo.AIM.SNAP.Test
         //            typeName = "TESTTYPE"
         //        });
         //        db.SubmitChanges();
+
+                SNAP_Actor_Group_Type test = new SNAP_Actor_Group_Type();
+                test.pkId = 0;
+                test.typeName = "Test Type";
 
                 var test1 = db.SNAP_Actor_Group_Types.Where(t => t.pkId == 1).ToList();
                 Assert.IsTrue(test1.Count > 0);
