@@ -115,7 +115,7 @@ VALUES('IT Operations Center',NULL,1,0,1)
 select @group_id = scope_identity();
 --//Insert IT Operations Center Members
 INSERT INTO [BPS_SupplementalAccess].[dbo].[SNAP_Actors]([actor_groupId],[userId],[displayName],[emailAddress],[isGroup],[isDefault],[isActive])
-VALUES(@group_id,'DG C-APO-Corporate-ITOC Managers','IT Managers','DGC-APO-Corporate-ITOCManagers@apollogrp.edu',1,1,1)
+VALUES(@group_id,'DG C-APO-Corporate-ITOC Managers','ITOC Managers','ITOCManagers@apollogrp.edu',1,1,1)
 INSERT INTO [BPS_SupplementalAccess].[dbo].[SNAP_Actors]([actor_groupId],[userId],[displayName],[emailAddress],[isGroup],[isDefault],[isActive])
 VALUES(@group_id,'mgsampso','Michael Sampson','mgsampso@apollogrp.edu',0,0,1)
 
