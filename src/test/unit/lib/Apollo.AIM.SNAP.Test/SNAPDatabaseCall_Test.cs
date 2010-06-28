@@ -278,13 +278,13 @@ namespace Apollo.AIM.SNAP.Test
         [Test]
         public void RUD_SNAP_Access_Details_Form()
         {
-            SNAP_Access_Details_Form t = new SNAP_Access_Details_Form();
-            t.pkId = 0;
-            t.parentId = 0;
-            t.label = "test";
-            t.isRequired = false;
-            t.isActive = false;
-            t.description = "This is a test";
+            SNAP_Access_Details_Form test = new SNAP_Access_Details_Form();
+            test.pkId = 0;
+            test.parentId = 0;
+            test.label = "test";
+            test.isRequired = false;
+            test.isActive = false;
+            test.description = "This is a test";
 
             using (var db = new SNAPDatabaseDataContext())
             {
