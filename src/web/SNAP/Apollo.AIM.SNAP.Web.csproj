@@ -494,6 +494,8 @@
     <Content Include="log4net.snap_ui.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="styles\SNAP_IE6.css" />
+    <Content Include="styles\SNAP.css" />
     <Content Include="Web_QA.config" />
   </ItemGroup>
   <ItemGroup>
