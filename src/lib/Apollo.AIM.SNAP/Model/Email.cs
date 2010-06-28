@@ -113,6 +113,9 @@ namespace Apollo.AIM.SNAP.Model
 
 		private static bool SendEmail(string recipientEmailAddress, string subject, string templatePath, Hashtable bodyParameters)
 		{
+			Logger.Info(string.Format("Automated Email [SUBJECT:{0}]  [TO:{1}]  [REQID:{2}]\r\n"
+					, subject.Remove(0, 30), recipientEmailAddress, bodyParameters["REQUEST_ID"].ToString()));
+
 			try
 			{
 				if (Convert.ToBoolean(ConfigurationManager.AppSettings["SendAllEmailToAIM"]))
