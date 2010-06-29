@@ -766,6 +766,11 @@ TODO: REMOVE THIS SECTION
 	letter-spacing: 0px;
 	line-height: 1.1em;
 	}
+	
+.csm_template_1 .csm_footer .snap_copyright span a {
+	color:#783630;
+	font-size:1em;
+	}
 
 .csm_template_1 .csm_footer h1 {
 	margin: 0;
@@ -1303,3 +1308,5 @@ div.filter_in_workflow #filter_in_workflow {background-position: 41px 30px;}
 div.filter_view_all #filter_view_all {background-position: 19px 30px;}
 
 /************** END ACCESS TEAM FILTER **************/
+
+#aim_IE6_nag {display:none; visibility:hidden;}
