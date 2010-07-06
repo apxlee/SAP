@@ -2319,6 +2319,7 @@ namespace Apollo.AIM.SNAP.Test
         {
             string usrid = "pxlee";
 
+            Console.WriteLine("Should return actor id: " + usrid);
             //g.actorGroupType == (byte)ActorGroupType.Manager
             try
             {

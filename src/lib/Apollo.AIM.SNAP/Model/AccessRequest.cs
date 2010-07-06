@@ -1200,6 +1200,7 @@ namespace Apollo.AIM.SNAP.Model
 
         public static int GetActorIdByUserId(ActorGroupType actorGroupType, string userId)
         {
+            Console.WriteLine("GetAtorIdByUSerId: " + userId);
             using (var db = new SNAPDatabaseDataContext())
             {
                 int actorId = 0;
@@ -1209,9 +1210,14 @@ namespace Apollo.AIM.SNAP.Model
                                 join sag in db.SNAP_Actor_Groups on sa.actor_groupId equals sag.pkId
                                 where sa.userId == userId && sag.actorGroupType == (byte) actorGroupType
                                 select sa.pkId;
-                    if (query.Count() > 0) { return (int)query.First(); }
+                    if (query.Count() > 0)
+                    {
+                        Console.WriteLine("return " + (int)query.First());
+                        return (int)query.First();
+                    }
                     else
                     {
+                        Console.WriteLine("Get user detail ...");
                         ADUserDetail usrDetail = Apollo.AIM.SNAP.CA.DirectoryServices.GetUserByLoginName(userId);
                         if (usrDetail != null)
                         {
