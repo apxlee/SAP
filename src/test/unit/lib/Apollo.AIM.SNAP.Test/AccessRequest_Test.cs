@@ -2313,7 +2313,7 @@ namespace Apollo.AIM.SNAP.Test
             }
         }
 
-        [Ignore]
+        //[Ignore]
         [Test] 
         public void ShouldReturnActorId()
         {
