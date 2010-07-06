@@ -1223,6 +1223,7 @@ namespace Apollo.AIM.SNAP.Model
                 }
                 catch (Exception ex)
                 {
+                    Console.WriteLine("AccessRequest - GetAtorIdByUserId, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
                     Logger.Fatal("AccessRequest - GetAtorIdByUserId, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
                 }
 
