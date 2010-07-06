@@ -2313,13 +2313,13 @@ namespace Apollo.AIM.SNAP.Test
             }
         }
 
-        //[Ignore]
+        [Ignore]
         [Test] 
         public void ShouldReturnActorId()
         {
             string usrid = "pxlee";
 
-            Console.WriteLine("Should return actor id: " + usrid);
+            //Console.WriteLine("Should return actor id: " + usrid);
             //g.actorGroupType == (byte)ActorGroupType.Manager
             try
             {
@@ -2333,6 +2333,7 @@ namespace Apollo.AIM.SNAP.Test
                         db.SNAP_Actors.InsertOnSubmit(new SNAP_Actor()
                                                           {
                                                               actor_groupId = 4,
+                                                              userId = "pxlee",
                                                               displayName = "Pong Lee",
                                                               emailAddress = "pxlee@apollogrp.edu",
                                                               isActive = true,
