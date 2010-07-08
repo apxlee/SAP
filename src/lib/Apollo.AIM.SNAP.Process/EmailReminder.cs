@@ -108,18 +108,26 @@ namespace Apollo.AIM.SNAP.Process
         private void outputMessage(string msg, EventLogEntryType type)
         {
             /*
-            FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.Write);
-            StreamWriter m_streamWriter = new StreamWriter(fs);
-            m_streamWriter.BaseStream.Seek(0, SeekOrigin.End);
-            m_streamWriter.WriteLine(msg + DateTime.Now + "\n");
-            m_streamWriter.Flush();
-            m_streamWriter.Close();
-             */
-
             EventLog evt = new EventLog();
             evt.Source = this.ServiceName;
             evt.WriteEntry(msg, type);
+             */
 
+            switch (type)
+            {
+                case EventLogEntryType.Error:
+                    Logger.Error(msg);
+                    break;
+                case EventLogEntryType.Information:
+                    Logger.Info(msg);
+                    break;
+                case EventLogEntryType.Warning:
+                    Logger.Warn(msg);
+                    break;
+                default:
+                    Logger.Info(msg);
+                    break;
+            }
         }
 
         private void emailApproverForOverdueTask()
