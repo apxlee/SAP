@@ -87,7 +87,7 @@ namespace Apollo.AIM.SNAP.Web
 			}
 			catch (Exception ex)
 			{
-                Logger.Error("Default - IsAuthenticatedUser, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
+                Logger.Error("Default > IsAuthenticatedUser\r\nMessage: " + ex.Message + "\r\nStackTrace: " + ex.StackTrace);
 			}
 
 			return false;

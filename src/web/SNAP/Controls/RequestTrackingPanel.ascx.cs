@@ -215,7 +215,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 					workflowComments.AppendFormat("<p{0}><u>{1} by {2} on {3}</u><br />{4}</p>"
 						, (bool)comment["is_new"] ? " class=csm_error_text" : string.Empty
 						, Convert.ToString((CommentsType)Enum.Parse(typeof(CommentsType), comment["action"].ToString())).StripUnderscore()
-						, comment["workflow_actor"].ToString()
+						, (comment["action"].ToString() == CommentsType.Email_Reminder.ToString()) ? "AIM" : comment["workflow_actor"].ToString()
 						, Convert.ToDateTime(comment["comment_date"]).ToString("MMM d, yyyy")
                         , comment["comment"].ToString().Replace("\n", "<br />"));
 				}
@@ -254,7 +254,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 					, (actorName == "Access & Identity Management") ? "AIM" : actorName
 					, list.createdDate
 					, list.commentText
-					, (list.commentTypeEnum == (int)CommentsType.Requested_Change) ? true : false);
+					, (list.commentTypeEnum == (int)CommentsType.Requested_Change || list.commentTypeEnum == (int)CommentsType.Email_Reminder) ? true : false);
             }
 
 			return table;

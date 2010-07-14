@@ -164,7 +164,7 @@ namespace Apollo.AIM.SNAP.Process
                                         {
                                             state.SNAP_Workflow.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
                                                                                                {
-                                                                                                   commentText = "Email Reminder for Overdue Alert",
+                                                                                                   commentText = "Overdue Alert",
 																								   commentTypeEnum = (byte) CommentsType.Email_Reminder,
 																								   createdDate = DateTime.Now
                                                                                                });
