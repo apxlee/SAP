@@ -46,7 +46,7 @@ namespace Apollo.AIM.SNAP.Process
 
         protected override void OnStart(string[] args)
         {
-            outputMessage(" EmailReminderlogger: Service Start \n", EventLogEntryType.Information);
+            outputMessage("EmailReminderlogger: Service Start \n", EventLogEntryType.Information);
             Logger.Info("SNAP Email Reminder started");
             _timer.Start();
 
@@ -54,7 +54,7 @@ namespace Apollo.AIM.SNAP.Process
 
         protected override void OnStop()
         {
-            outputMessage(" EmailReminderlogger: Service Stop \n", EventLogEntryType.Information);
+            outputMessage("EmailReminderlogger: Service Stop \n", EventLogEntryType.Information);
             Logger.Info("SNAP Email Reminder stopped");
             _timer.Stop();
 
@@ -86,11 +86,11 @@ namespace Apollo.AIM.SNAP.Process
         protected void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             var checkTime = Convert.ToInt16(ConfigurationManager.AppSettings["CheckTimeInHour"]);
-            outputMessage(" EmailReminderlogger: time elapsed, check time: " + checkTime, EventLogEntryType.Information);
+            outputMessage("EmailReminderlogger: time elapsed, check time: " + checkTime, EventLogEntryType.Information);
                                                               
             if (DateTime.Now.Hour >= checkTime && !done)
             {
-                outputMessage(" EmailReminderlogger: DO it ", EventLogEntryType.Information);
+                outputMessage("EmailReminderlogger: Checking overdue tasks ... ", EventLogEntryType.Information);
                 emailApproverForOverdueTask();
 
                 done = true;
