@@ -1585,6 +1585,7 @@ namespace Apollo.AIM.SNAP.Model
 					
 					comment = comment.Replace("<br />", string.Empty);
 					Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy + "@apollogrp.edu", req.userDisplayName, req.pkId, req.submittedBy, WorkflowState.Closed_Denied, comment);
+					Email.SendTaskEmail(EmailTaskType.UpdateRequester, ConfigurationManager.AppSettings["AIM-DG"], "AIM for " + req.userDisplayName, req.pkId, req.submittedBy, WorkflowState.Closed_Denied, comment);
                     break;
                 }
             }
