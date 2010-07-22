@@ -487,8 +487,9 @@ namespace Apollo.AIM.SNAP.CA
             _manager = GetProperty(directoryUser, ADProperties.MANAGER);
             if (!String.IsNullOrEmpty(_manager))
             {
+                _manager = _manager.Replace("\\,", "©");   
                 String[] managerArray = _manager.Split(',');
-                _managerName = managerArray[0].Replace("CN=", "");
+                _managerName = managerArray[0].Replace("CN=", "").Replace("©",",");
             }
         }
 
