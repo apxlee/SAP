@@ -160,7 +160,7 @@ namespace Apollo.AIM.SNAP.Process
                                         DateTime dueDate = DateTime.Parse(state.dueDate.ToString());
                                         TimeSpan diff = DateTime.Now.Subtract(dueDate);
 
-                                        if (diff.Days == 1) // more than 24 hours over due
+                                        if (ReadyToSendOverdueAlert(diff))
                                         {
                                             state.SNAP_Workflow.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
                                                                                                {
@@ -172,10 +172,6 @@ namespace Apollo.AIM.SNAP.Process
                                             outputMessage("WF id: " + state.SNAP_Workflow.pkId + " gets email nag",
                                                           EventLogEntryType.Information);
                                                           
-											//Email.OverdueTask(state.SNAP_Workflow.SNAP_Actor.emailAddress,
-											//                  state.SNAP_Workflow.SNAP_Actor.displayName,
-											//                  state.SNAP_Workflow.SNAP_Request.pkId,
-											//                  state.SNAP_Workflow.SNAP_Request.userDisplayName);
                                                               
 											Email.SendTaskEmail(EmailTaskType.Overdue
 												, state.SNAP_Workflow.SNAP_Actor.emailAddress
@@ -204,5 +200,17 @@ namespace Apollo.AIM.SNAP.Process
             }
         }
 
+        private bool ReadyToSendOverdueAlert(TimeSpan diff)
+        {
+            int overdueAlertReminderCount = Convert.ToInt16(ConfigurationManager.AppSettings["OverdueAlertReminderCount"]);
+            if (overdueAlertReminderCount == -1)
+                overdueAlertReminderCount = int.MaxValue;
+
+            IEnumerable<int> overdueRange = Enumerable.Range(1, overdueAlertReminderCount); // at least more than 24 hours over due
+            if (overdueRange.Contains(diff.Days))
+                return true;
+
+            return false;
+        }
     }
 }
