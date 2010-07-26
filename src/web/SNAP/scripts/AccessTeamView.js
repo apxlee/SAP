@@ -134,8 +134,10 @@ function AccessTeamActions(obj, requestId, action) {
     var comments = "";
     var postComments = ""
     var textarea = $(obj).parent().prev().find("textarea");
-    if (textarea.val() > "") { textarea.val(textarea.val().replace(/(<([^>]+)>)/ig, '')); }
-    
+    if (textarea.val() > "") 
+    {
+        textarea.val(textarea.val().replace(/(<([^>]+)>)/ig, "").replace(/\\/g, "/").replace(/\'/g, "\""));
+    }
     switch (action) {
         case '4':
             comments = ""
@@ -306,7 +308,7 @@ function AccessComments(obj, requestId) {
     var action = $(obj).parent().prev().find("input[name=_audience]:checked").val();
     var notesFor = $(obj).parent().prev().find("input[name=_audience]:checked").next().html();
     var textarea = $(obj).parent().prev().find("textarea");
-    textarea.val(textarea.val().replace(/(<([^>]+)>)/ig, ''));
+    textarea.val(textarea.val().replace(/(<([^>]+)>)/ig, "").replace(/\\/, "/").replace(/\'/g, "\""));
     
     ProcessingMessage("Adding Comments", "");
     

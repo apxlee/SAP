@@ -188,7 +188,7 @@ var userManager = {
 
         //remove special characters
         userManager.textAreas.each(function() {
-            $(this).val($(this).val().replace(/(<([^>]+)>)/ig, ''));
+            $(this).val($(this).val().replace(/(<([^>]+)>)/ig, "").replace(/\\/, "/").replace(/\'/g, "\""));
         });
         
         //check dynamic fields

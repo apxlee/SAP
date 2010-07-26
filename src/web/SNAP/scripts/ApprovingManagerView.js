@@ -24,7 +24,7 @@ function ApproverActions(obj, requestId, action) {
     var comments = "";
     var postComments = "";
     var textarea = $(obj).parent().prev().find("textarea");
-    if (textarea.val() > "") { textarea.val(textarea.val().replace(/(<([^>]+)>)/ig, '')); }
+    if (textarea.val() > "") { textarea.val(textarea.val().replace(/(<([^>]+)>)/ig, "").replace(/\\/, "/").replace(/\'/g, "\"")); }
     
     var approverName = $("input[id$='_currentUserDisplayName']").val()
     switch (action) {
