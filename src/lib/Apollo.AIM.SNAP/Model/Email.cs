@@ -123,16 +123,24 @@ namespace Apollo.AIM.SNAP.Model
         {
             get
             {
-                var env = ConfigurationManager.AppSettings["EnvironmentPath"].ToLower();
                 var header = string.Empty;
 
-                if (env.Contains("devapollo"))
+                try
                 {
-                    header = "* Dev * ";
+                    var env = ConfigurationManager.AppSettings["EnvironmentPath"].ToLower();
+
+                    if (env.Contains("devapollo"))
+                    {
+                        header = "* Dev * ";
+                    }
+                    else if (env.Contains("qaapollo"))
+                    {
+                        header = "* QA * ";
+                    }
                 }
-                else if (env.Contains("qaapollo"))
+                catch (Exception ex)
                 {
-                    header = "* QA * ";
+                    
                 }
                 return header + "Supplemental Access Process - ";
             }
