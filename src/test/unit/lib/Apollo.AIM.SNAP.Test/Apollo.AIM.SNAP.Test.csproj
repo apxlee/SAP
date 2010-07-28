@@ -72,6 +72,7 @@
     <Compile Include="AccessGroup_Test.cs" />
     <Compile Include="AccessRequest_Test.cs" />
     <Compile Include="CAPLibrary_Test.cs" />
+    <Compile Include="Email_Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RequestData_Test.cs" />
     <Compile Include="SLAConfiguration_Test.cs" />

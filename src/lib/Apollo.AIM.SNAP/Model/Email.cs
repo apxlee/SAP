@@ -19,7 +19,7 @@ namespace Apollo.AIM.SNAP.Model
 		{
 			string recipientName = string.Empty;
 			string followPageName = string.Empty;
-			string subjectAction = getSubjectAction;
+			string subjectAction = GetSubjectAction;
 			string templatePath = Utilities.AbsolutePath;
 
 
@@ -119,7 +119,7 @@ namespace Apollo.AIM.SNAP.Model
 			return SendEmail(toEmailAddress, subjectAction, templatePath, bodyParameters);						
 		}
 
-        private static string getSubjectAction
+        public static string GetSubjectAction
         {
             get
             {
@@ -138,7 +138,7 @@ namespace Apollo.AIM.SNAP.Model
                         header = "* QA * ";
                     }
                 }
-                catch (Exception ex)
+                catch
                 {
                     
                 }
