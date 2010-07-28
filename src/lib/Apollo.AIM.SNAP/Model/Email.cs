@@ -19,9 +19,10 @@ namespace Apollo.AIM.SNAP.Model
 		{
 			string recipientName = string.Empty;
 			string followPageName = string.Empty;
-			string subjectAction = "Supplemental Access Process - ";
+			string subjectAction = getSubjectAction;
 			string templatePath = Utilities.AbsolutePath;
-			
+
+
 			switch (taskType)
 			{
 				case EmailTaskType.AccessTeamAcknowledge:
@@ -31,13 +32,20 @@ namespace Apollo.AIM.SNAP.Model
 					templatePath += ConfigurationManager.AppSettings["Acknowledgement"];
 					break;
 					
-				case EmailTaskType.Overdue:
+				case EmailTaskType.OverdueApproval:
 					recipientName = toName;
 					followPageName = PageNames.APPROVING_MANAGER;
-					subjectAction += "Overdue Alert";
+					subjectAction += "OverdueApproval Alert";
 					templatePath += ConfigurationManager.AppSettings["NagApproval"];
 					break;
-					
+
+                case EmailTaskType.OverdueChangeRequested:
+                    recipientName = toName;
+                    followPageName = PageNames.USER_VIEW;
+                    subjectAction += "OverdueChangeRequested Alert";
+                    templatePath += ConfigurationManager.AppSettings["NagChangeRequested"];
+                    break;
+
 				case EmailTaskType.AssignToApprover:
 					recipientName = toName;
 					followPageName = PageNames.APPROVING_MANAGER;
@@ -111,10 +119,28 @@ namespace Apollo.AIM.SNAP.Model
 			return SendEmail(toEmailAddress, subjectAction, templatePath, bodyParameters);						
 		}
 
+        private static string getSubjectAction
+        {
+            get
+            {
+                var env = ConfigurationManager.AppSettings["EnvironmentPath"].ToLower();
+                var header = string.Empty;
+
+                if (env.Contains("devapollo"))
+                {
+                    header = "* Dev * ";
+                }
+                else if (env.Contains("qaapollo"))
+                {
+                    header = "* QA * ";
+                }
+                return header + "Supplemental Access Process - ";
+            }
+        }
 		private static bool SendEmail(string recipientEmailAddress, string subject, string templatePath, Hashtable bodyParameters)
 		{
 			Logger.Info(string.Format("Automated Email [SUBJECT:{0}]  [TO:{1}]  [REQID:{2}]\r\n"
-					, subject.Remove(0, 30), recipientEmailAddress, bodyParameters["REQUEST_ID"].ToString()));
+					, subject.Split('-')[1].Trim(), recipientEmailAddress, bodyParameters["REQUEST_ID"].ToString()));
 
 			try
 			{

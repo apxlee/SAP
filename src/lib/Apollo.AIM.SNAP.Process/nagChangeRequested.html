@@ -1,0 +1,55 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>Access & Identity Management</title>
+	<style type="text/css">
+		p {font-family: Verdana, Arial, Helvetica, sans-serif;font-size: 10px;margin:10px 0;}
+		p.change_comment {margin-left:30px;margin-right:30px;}
+		.small_text {font-size:9px;}
+		span.request_form_no_show {display:none;visibility:hidden;}
+	</style>
+</head>
+
+<body>
+	<table width="700" cellpadding="0" cellspacing="0">
+	<tr>
+		<td width="698" height="67">
+			<img src="<<IMAGE_PATH>>header_email.png" width="698" height="67" alt="Supplemental Access Process" />
+		</td>
+	</tr>
+	<tr>
+		<td align="center" valign="top">
+			<table width="80%" border="0" cellspacing="3" cellpadding="3">
+				<tr>
+					<td>
+						<p>Hello <<RECIPIENT_NAME>>,<br /><br />
+						An Approver has <strong>requested a change</strong> be made to your request form. Please refer to the entry below and 
+						make the changes to your request in order to gain approval.
+						</p>
+						
+						<p class="change_comment"><em>"<<REASON>>"</em></p>
+
+						<p>
+						Please login to the <a href="<<FOLLOW_URL>>">Supplemental Access Process</a> application to adjust your request.  
+						By submitting your form again after the change has been made, the request will automatically go back to the approvers for review.<br />
+						</p>
+
+						<p>
+						Thank you,<br />
+						Access & Identity Management
+						</p>
+						
+						<p class="small_text">When contacting the AIM team, please refer to Request ID: <<REQUEST_ID>><br />
+						This e-mail was sent from a "send-only" mailbox. Please do not reply to this e-mail.</p>					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td width="698" height="60">
+			<img src="<<IMAGE_PATH>>footer_email.png" width="698" height="60" alt="Access & Identity Management" />
+		</td>
+	</tr>
+	</table>
+</body>
+</html>
