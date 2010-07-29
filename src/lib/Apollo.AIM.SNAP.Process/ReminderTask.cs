@@ -10,6 +10,7 @@ using Apollo.CA.Logging;
 
 namespace Apollo.AIM.SNAP.Process
 {
+    /*
     public class ReminderTask
     {
         static int AimActorID = 1;
@@ -164,4 +165,5 @@ namespace Apollo.AIM.SNAP.Process
         }
 
     }
+     */
 }
