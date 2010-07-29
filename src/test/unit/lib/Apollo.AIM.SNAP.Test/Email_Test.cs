@@ -15,5 +15,17 @@ namespace Apollo.AIM.SNAP.Test
         {
             Assert.IsTrue(Email.GetSubjectAction != String.Empty);
         }
+
+        [Test] public void ShouldSendOverdueApproval()
+        {
+            Email.SendTaskEmail(EmailTaskType.OverdueApproval, "hello@apollogrp.edu", "Hello", 123, "hello");
+        }
+
+        [Test]
+        public void ShouldSendOverdueChangeRequested()
+        {
+            Email.SendTaskEmail(EmailTaskType.OverdueChangeRequested, "hello@apollogrp.edu", "Hello", 123, "hello");
+        }
+
     }
 }
