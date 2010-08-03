@@ -137,73 +137,21 @@ namespace Apollo.AIM.SNAP.Process
             {
                 using (var db = new SNAPDatabaseDataContext())
                 {
-                    var unfinishedtasks = db.SNAP_Workflow_States.Where(s => s.completedDate == null);
+                    var unfinishedtasks = db.SNAP_Workflow_States.Where(s => s.completedDate == null
+                                                                             && s.dueDate != null
+                                                                             && s.notifyDate != null
+                                                                             && s.SNAP_Workflow.SNAP_Request.statusEnum != (byte)RequestState.Closed); 
                     foreach (var state in unfinishedtasks)
                     {
                         try
                         {
-                            if (state.SNAP_Workflow.SNAP_Request.statusEnum != (byte) RequestState.Closed)
+                            var task = ReminderTask.CreateReminderTask(state);
+                            if (task != null)
                             {
-                                 if ((state.workflowStatusEnum == (byte)WorkflowState.Pending_Approval
-                                      && state.SNAP_Workflow.SNAP_Actor.pkId != 1)
-                                    ||
-                                    (state.workflowStatusEnum == (byte)WorkflowState.Change_Requested))
-                                {
-                                    // only remind approvers and AEU, not access team
-
-                                    outputMessage(
-                                        Enum.GetName(typeof (WorkflowState), state.workflowStatusEnum) + ", Req id: " + state.SNAP_Workflow.SNAP_Request.pkId +  ",WF id: " + state.SNAP_Workflow.pkId + "-" +
-                                        state.SNAP_Workflow.SNAP_Actor.displayName + " due on: " + state.dueDate,
-                                        EventLogEntryType.Information);
-
-
-                                    if (state.dueDate != null && state.notifyDate != null)
-                                    {
-                                        DateTime dueDate = DateTime.Parse(state.dueDate.ToString());
-                                        TimeSpan diff = DateTime.Now.Subtract(dueDate);
-
-
-                                        if (ReadyToSendOverdueAlert(diff))
-                                        {
-                                            sendOverdueAlert(state);
-                                            /*
-                                            
-                                            state.SNAP_Workflow.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
-                                                                                               {
-                                                                                                   commentText = "OverdueApproval Alert",
-																								   commentTypeEnum = (byte) CommentsType.Email_Reminder,
-																								   createdDate = DateTime.Now
-                                                                                               });
-
-                                            outputMessage(Enum.GetName(typeof(WorkflowState), state.workflowStatusEnum) + ", Req id: " + state.SNAP_Workflow.SNAP_Request.pkId + ",WF id: " + state.SNAP_Workflow.pkId + " gets email nag",
-                                                          EventLogEntryType.Information);
-
-                                            if (state.workflowStatusEnum == (byte)WorkflowState.Pending_Approval)
-                                            {
-                                                Email.SendTaskEmail(EmailTaskType.OverdueApproval
-                                                                    , state.SNAP_Workflow.SNAP_Actor.emailAddress
-                                                                    , state.SNAP_Workflow.SNAP_Actor.displayName
-                                                                    , state.SNAP_Workflow.SNAP_Request.pkId
-                                                                    , state.SNAP_Workflow.SNAP_Request.userDisplayName);
-                                            }
-                                            else if (state.workflowStatusEnum == (byte)WorkflowState.Change_Requested)
-                                            {
-                                                Email.SendTaskEmail(EmailTaskType.OverdueChangeRequested
-                                                                    , state.SNAP_Workflow.SNAP_Request.userId +"@apollogrp.edu"
-                                                                    , state.SNAP_Workflow.SNAP_Request.userDisplayName
-                                                                    , state.SNAP_Workflow.SNAP_Request.pkId
-                                                                    , state.SNAP_Workflow.SNAP_Request.userDisplayName
-                                                                    , WorkflowState.Change_Requested
-                                                                    , requestToChangeReason(state.SNAP_Workflow.SNAP_Workflow_Comments));
-                                                
-                                            } 
-                                             */
-                                            db.SubmitChanges();
-                                        }
-
-                                    }
-                                }
+                                if (task.RemindUser())
+                                    db.SubmitChanges();
                             }
+
                         }
                         catch (Exception ex)
                         {
@@ -219,69 +167,5 @@ namespace Apollo.AIM.SNAP.Process
             }
         }
 
-        private bool ReadyToSendOverdueAlert(TimeSpan diff)
-        {
-            int overdueAlertIntervalInDays = Convert.ToInt16(ConfigurationManager.AppSettings["OverdueAlertIntervalInDays"]);
-            int overdueAlertMaxDay = Convert.ToInt16(ConfigurationManager.AppSettings["OverdueAlertMaxDay"]);
-
-            if (diff.Days < overdueAlertMaxDay)
-            {
-                // at least more than 24 hours over due
-                if (diff.Days % overdueAlertIntervalInDays == 1)
-                    return true;
-
-            }
-            return false;
-        }
-
-        private void sendOverdueAlert(SNAP_Workflow_State state)
-        {
-            var overdueType = Enum.GetName(typeof (WorkflowState), state.workflowStatusEnum);
-            outputMessage(overdueType + ", Req id: " + state.SNAP_Workflow.SNAP_Request.pkId + ",WF id: " + state.SNAP_Workflow.pkId + " gets email nag",
-              EventLogEntryType.Information);
-
-            state.SNAP_Workflow.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
-            {
-                commentText = "Overdue:" + overdueType + " Alert",
-                commentTypeEnum = (byte)CommentsType.Email_Reminder,
-                createdDate = DateTime.Now
-            });
-
-            if (state.workflowStatusEnum == (byte)WorkflowState.Pending_Approval)
-            {
-
-                Email.SendTaskEmail(EmailTaskType.OverdueApproval
-                                    , state.SNAP_Workflow.SNAP_Actor.emailAddress
-                                    , state.SNAP_Workflow.SNAP_Actor.displayName
-                                    , state.SNAP_Workflow.SNAP_Request.pkId
-                                    , state.SNAP_Workflow.SNAP_Request.userDisplayName);
-            }
-
-            else if (state.workflowStatusEnum == (byte)WorkflowState.Change_Requested)
-            {
-
-                Email.SendTaskEmail(EmailTaskType.OverdueChangeRequested
-                                    , state.SNAP_Workflow.SNAP_Request.userId + "@apollogrp.edu"
-                                    , state.SNAP_Workflow.SNAP_Request.userDisplayName
-                                    , state.SNAP_Workflow.SNAP_Request.pkId
-                                    , state.SNAP_Workflow.SNAP_Request.userDisplayName
-                                    , WorkflowState.Change_Requested
-                                    , requestToChangeReason(state.SNAP_Workflow.SNAP_Workflow_Comments));
-
-            }
-        }
-
-        private string requestToChangeReason(IEnumerable<SNAP_Workflow_Comment> comments)
-        {
-            var comment = comments.Where(c => c.commentTypeEnum == (byte) CommentsType.Requested_Change)
-                                  .OrderByDescending(c => c.pkId)
-                                  .First();
-            if (comment != null)
-            {
-                // we add a <span> tag for each comment that user enters, so we need to strip that
-                return Regex.Split(comment.commentText, "<span")[0];
-            }
-            return string.Empty;
-        }
     }
 }

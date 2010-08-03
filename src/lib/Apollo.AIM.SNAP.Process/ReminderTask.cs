@@ -10,7 +10,7 @@ using Apollo.CA.Logging;
 
 namespace Apollo.AIM.SNAP.Process
 {
-    /*
+    
     public class ReminderTask
     {
         static int AimActorID = 1;
@@ -41,54 +41,45 @@ namespace Apollo.AIM.SNAP.Process
         }
 
 
-        public virtual bool SendReminder()
+        public virtual bool RemindUser()
         {
-            if (overdue)
-            {
-                wfState.SNAP_Workflow.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
-                {
-                    commentText = "Overdue:" + overdueType + " Alert",
-                    commentTypeEnum = (byte)CommentsType.Email_Reminder,
-                    createdDate = DateTime.Now
-                });
-
-                outputMessage(overdueType + ", Req id: " + wfState.SNAP_Workflow.SNAP_Request.pkId + ",WF id: " + wfState.SNAP_Workflow.pkId + " gets email nag",
-                      EventLogEntryType.Information);
-
-                return true;
-            }
-
             return false;
+
         }
 
-        private bool overdue
+        protected bool overdue
         {
             get
             {
-                if (wfState.dueDate != null && wfState.notifyDate != null)
-                {
-                    DateTime dueDate = DateTime.Parse(wfState.dueDate.ToString());
-                    TimeSpan diff = DateTime.Now.Subtract(dueDate);
+                DateTime dueDate = DateTime.Parse(wfState.dueDate.ToString());
+                TimeSpan diff = DateTime.Now.Subtract(dueDate);
 
-                    return checkoverdueDays(diff);
+
+                int overdueAlertIntervalInDays = Convert.ToInt16(ConfigurationManager.AppSettings["OverdueAlertIntervalInDays"]);
+                int overdueAlertMaxDay = Convert.ToInt16(ConfigurationManager.AppSettings["OverdueAlertMaxDay"]);
+
+                if (diff.Days < overdueAlertMaxDay)
+                {
+                    // at least more than 24 hours over due
+                    if (diff.Days % overdueAlertIntervalInDays == 1)
+                    {
+                        wfState.SNAP_Workflow.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
+                        {
+                            commentText = "Overdue:" + overdueType + " Alert",
+                            commentTypeEnum = (byte)CommentsType.Email_Reminder,
+                            createdDate = DateTime.Now
+                        });
+
+                        outputMessage(overdueType + ", Req id: " + wfState.SNAP_Workflow.SNAP_Request.pkId + ",WF id: " + wfState.SNAP_Workflow.pkId + " gets email nag",
+                              EventLogEntryType.Information);
+
+                        return true;
+                    }
+
                 }
                 return false;
-            }
-        }
-
-        private bool checkoverdueDays(TimeSpan diff)
-        {
-            int overdueAlertIntervalInDays = Convert.ToInt16(ConfigurationManager.AppSettings["OverdueAlertIntervalInDays"]);
-            int overdueAlertMaxDay = Convert.ToInt16(ConfigurationManager.AppSettings["OverdueAlertMaxDay"]);
-
-            if (diff.Days < overdueAlertMaxDay)
-            {
-                // at least more than 24 hours over due
-                if (diff.Days % overdueAlertIntervalInDays == 1)
-                    return true;
 
             }
-            return false;
         }
 
         private void outputMessage(string msg, EventLogEntryType type)
@@ -117,9 +108,9 @@ namespace Apollo.AIM.SNAP.Process
     class ApproverReminderTask : ReminderTask
     {
         public ApproverReminderTask(SNAP_Workflow_State st) : base(st) {}
-        public override bool SendReminder()
+        public override bool RemindUser()
         {
-            if (base.SendReminder())
+            if (overdue)
             {
                 return Email.SendTaskEmail(EmailTaskType.OverdueApproval
                                     , wfState.SNAP_Workflow.SNAP_Actor.emailAddress
@@ -135,9 +126,9 @@ namespace Apollo.AIM.SNAP.Process
     {
         public ChangeRequestedReminderTask(SNAP_Workflow_State st) : base(st) {}
 
-        public override bool SendReminder()
+        public override bool RemindUser()
         {
-            if (base.SendReminder())
+            if (overdue)
             {
                 return Email.SendTaskEmail(EmailTaskType.OverdueChangeRequested
                     , wfState.SNAP_Workflow.SNAP_Request.userId + "@apollogrp.edu"
@@ -165,5 +156,4 @@ namespace Apollo.AIM.SNAP.Process
         }
 
     }
-     */
 }
