@@ -10,11 +10,11 @@ using Apollo.CA.Logging;
 
 namespace Apollo.AIM.SNAP.Process
 {
-    
+
     public class ReminderTask
     {
         static int AimActorID = 1;
-        private string overdueType = string.Empty; 
+        private string overdueType = string.Empty;
 
         protected SNAP_Workflow_State wfState;
 
@@ -35,8 +35,8 @@ namespace Apollo.AIM.SNAP.Process
             wfState = state;
             overdueType = Enum.GetName(typeof(WorkflowState), wfState.workflowStatusEnum);
 
-            outputMessage(overdueType + ", Req id: " + state.SNAP_Workflow.SNAP_Request.pkId + ",WF id: " + state.SNAP_Workflow.pkId + "-" +
-                            state.SNAP_Workflow.SNAP_Actor.displayName + " due on: " + state.dueDate,EventLogEntryType.Information);
+            Utilities.OutputMessage(overdueType + ", Req id: " + state.SNAP_Workflow.SNAP_Request.pkId + ",WF id: " + state.SNAP_Workflow.pkId + "-" +
+                            state.SNAP_Workflow.SNAP_Actor.displayName + " due on: " + state.dueDate, EventLogEntryType.Information);
 
         }
 
@@ -70,7 +70,7 @@ namespace Apollo.AIM.SNAP.Process
                             createdDate = DateTime.Now
                         });
 
-                        outputMessage(overdueType + ", Req id: " + wfState.SNAP_Workflow.SNAP_Request.pkId + ",WF id: " + wfState.SNAP_Workflow.pkId + " gets email nag",
+                        Utilities.OutputMessage(overdueType + ", Req id: " + wfState.SNAP_Workflow.SNAP_Request.pkId + ",WF id: " + wfState.SNAP_Workflow.pkId + " gets email nag",
                               EventLogEntryType.Information);
 
                         return true;
@@ -81,28 +81,6 @@ namespace Apollo.AIM.SNAP.Process
 
             }
         }
-
-        private void outputMessage(string msg, EventLogEntryType type)
-        {
-
-            switch (type)
-            {
-                case EventLogEntryType.Error:
-                    Logger.Error(msg);
-                    break;
-                case EventLogEntryType.Information:
-                    Logger.Info(msg);
-                    break;
-                case EventLogEntryType.Warning:
-                    Logger.Warn(msg);
-                    break;
-                default:
-                    Logger.Info(msg);
-                    break;
-            }
-        }
-
-
     }
 
     class ApproverReminderTask : ReminderTask

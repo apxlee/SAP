@@ -47,7 +47,7 @@ namespace Apollo.AIM.SNAP.Process
 
         protected override void OnStart(string[] args)
         {
-            outputMessage("EmailReminderlogger: Service Start \n", EventLogEntryType.Information);
+            Utilities.OutputMessage("EmailReminderlogger: Service Start \n", EventLogEntryType.Information);
             Logger.Info("SNAP Email Reminder started");
             _timer.Start();
 
@@ -55,7 +55,7 @@ namespace Apollo.AIM.SNAP.Process
 
         protected override void OnStop()
         {
-            outputMessage("EmailReminderlogger: Service Stop \n", EventLogEntryType.Information);
+            Utilities.OutputMessage("EmailReminderlogger: Service Stop \n", EventLogEntryType.Information);
             Logger.Info("SNAP Email Reminder stopped");
             _timer.Stop();
 
@@ -87,11 +87,11 @@ namespace Apollo.AIM.SNAP.Process
         protected void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             var checkTime = Convert.ToInt16(ConfigurationManager.AppSettings["CheckTimeInHour"]);
-            outputMessage("EmailReminderlogger: time elapsed, check time: " + checkTime, EventLogEntryType.Information);
+            Utilities.OutputMessage("EmailReminderlogger: time elapsed, check time: " + checkTime, EventLogEntryType.Information);
                                                               
             if (DateTime.Now.Hour >= checkTime && !done)
             {
-                outputMessage("EmailReminderlogger: Checking overdue tasks ... ", EventLogEntryType.Information);
+                Utilities.OutputMessage("EmailReminderlogger: Checking overdue tasks ... ", EventLogEntryType.Information);
                 emailApproverForOverdueTask();
 
                 done = true;
@@ -105,31 +105,6 @@ namespace Apollo.AIM.SNAP.Process
 
         }
 
-
-        private void outputMessage(string msg, EventLogEntryType type)
-        {
-            /*
-            EventLog evt = new EventLog();
-            evt.Source = this.ServiceName;
-            evt.WriteEntry(msg, type);
-             */
-
-            switch (type)
-            {
-                case EventLogEntryType.Error:
-                    Logger.Error(msg);
-                    break;
-                case EventLogEntryType.Information:
-                    Logger.Info(msg);
-                    break;
-                case EventLogEntryType.Warning:
-                    Logger.Warn(msg);
-                    break;
-                default:
-                    Logger.Info(msg);
-                    break;
-            }
-        }
 
         private void emailApproverForOverdueTask()
         {
@@ -155,7 +130,7 @@ namespace Apollo.AIM.SNAP.Process
                         }
                         catch (Exception ex)
                         {
-                            outputMessage("State id: " + state.pkId + ",WF id: " + state.workflowId + ", Stack Trace : " + ex.StackTrace, EventLogEntryType.Error);
+                            Utilities.OutputMessage("State id: " + state.pkId + ",WF id: " + state.workflowId + ", Stack Trace : " + ex.StackTrace, EventLogEntryType.Error);
                         }
 
                     }
@@ -163,7 +138,7 @@ namespace Apollo.AIM.SNAP.Process
             }
             catch(Exception ex)
             {
-                outputMessage(ex.Message + ", Stack Trace : " + ex.StackTrace, EventLogEntryType.Error);
+                Utilities.OutputMessage(ex.Message + ", Stack Trace : " + ex.StackTrace, EventLogEntryType.Error);
             }
         }
 
