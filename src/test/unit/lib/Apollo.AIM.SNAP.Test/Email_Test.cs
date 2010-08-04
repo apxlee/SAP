@@ -28,6 +28,11 @@ namespace Apollo.AIM.SNAP.Test
             Email.SendTaskEmail(EmailTaskType.OverdueChangeRequested, "hello@apollogrp.edu", "Hello", 123, "hello");
         }
 
+        [Test]
+        public void ShouldSendProxyForAEU()
+        {
+            Email.SendTaskEmail(EmailTaskType.ProxyForAffectedEndUser, "hello@apollogrp.edu", "Hello", 123, "hello");
+        }
 
     }
 }
