@@ -54,7 +54,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 				}
 				catch (Exception ex)
 				{
-					Logger.Error("ReadOnlyRequestPanel > GetFullNameFromAD [USERID:" + userId + ", REQID:" + RequestId+ "]:\r\nMessage:" + ex.Message + "\r\nStackTrace: " + ex.StackTrace);
+					Logger.Error("ReadOnlyRequestPanel > GetFullNameFromAD [USERID:" + userId + ", REQID:" + RequestId+ "]:\r\nMessage: " + ex.Message + "\r\nStackTrace: " + ex.StackTrace);
 					return "<span class=\"csm_error_text\">Unknown (Active Directory Error)</strong></span>";
 				}
 			}

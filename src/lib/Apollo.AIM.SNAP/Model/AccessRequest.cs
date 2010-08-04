@@ -206,7 +206,7 @@ namespace Apollo.AIM.SNAP.Model
                     {
                         addAccessTeamComment(accessTeamWF, comment, CommentsType.Requested_Change);
 						Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy + "@apollogrp.edu", req.userDisplayName, _id, req.submittedBy, WorkflowState.Change_Requested, comment);
-						Email.SendTaskEmail(EmailTaskType.UpdateRequester, ConfigurationManager.AppSettings["AIM-DG"], "AIM for " + req.userDisplayName, req.pkId, req.submittedBy, WorkflowState.Change_Requested, comment);
+						// don't send AIM when AIM makes the change... Email.SendTaskEmail(EmailTaskType.UpdateRequester, ConfigurationManager.AppSettings["AIM-DG"], "AIM for " + req.userDisplayName, req.pkId, req.submittedBy, WorkflowState.Change_Requested, comment);
                         db.SubmitChanges();
                     }
                 }
