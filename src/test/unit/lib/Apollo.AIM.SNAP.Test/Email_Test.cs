@@ -22,10 +22,17 @@ namespace Apollo.AIM.SNAP.Test
         }
 
         [Test]
+        public void ShouldSendOverdueApprovalCC()
+        {
+            Email.SendTaskEmail(EmailTaskType.OverdueApprovalCC, "hello@apollogrp.edu", "Hello", 123, "hello");
+        }
+
+        [Test]
         public void ShouldSendOverdueChangeRequested()
         {
             Email.SendTaskEmail(EmailTaskType.OverdueChangeRequested, "hello@apollogrp.edu", "Hello", 123, "hello");
         }
+
 
     }
 }
