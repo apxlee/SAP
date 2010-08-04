@@ -35,7 +35,7 @@ namespace Apollo.AIM.SNAP.Model
 				case EmailTaskType.OverdueApproval:
 					recipientName = toName;
 					followPageName = PageNames.APPROVING_MANAGER;
-					subjectAction += "OverdueApproval Alert";
+					subjectAction += "Approval Reminder";
 					templatePath += ConfigurationManager.AppSettings["NagApproval"];
 					break;
 
@@ -43,7 +43,7 @@ namespace Apollo.AIM.SNAP.Model
                 case EmailTaskType.OverdueApprovalCC:
                     recipientName = toName;
                     followPageName = PageNames.APPROVING_MANAGER;
-                    subjectAction = string.Format("{0}OverdueApproval Alert (FYI: You are copied on this email)", subjectAction);
+                    subjectAction = string.Format("{0}Approval is Overdue (FYI: You are copied on this email)", subjectAction);
                     templatePath += ConfigurationManager.AppSettings["NagApproval"];
                     break;
                  */
@@ -51,7 +51,7 @@ namespace Apollo.AIM.SNAP.Model
                 case EmailTaskType.OverdueChangeRequested:
                     recipientName = toName;
                     followPageName = PageNames.USER_VIEW;
-                    subjectAction += "OverdueChangeRequested Alert";
+                    subjectAction += "Change Requested Reminder";
                     templatePath += ConfigurationManager.AppSettings["NagChangeRequested"];
                     break;
 
@@ -154,6 +154,7 @@ namespace Apollo.AIM.SNAP.Model
                 return header + "Supplemental Access Process - ";
             }
         }
+
 		private static bool SendEmail(string recipientEmailAddress, string subject, string templatePath, Hashtable bodyParameters)
 		{
 			Logger.Info(string.Format("Automated Email [SUBJECT:{0}]  [TO:{1}]  [REQID:{2}]\r\n"
