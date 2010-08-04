@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Threading;
 using System.Configuration;
 using System.Net;
@@ -20,7 +21,11 @@ namespace Apollo.AIM.SNAP.Web.Common
 		
 		public static string AppVersion
 		{
-			get { return ConfigurationManager.AppSettings["OOSPAVersion"]; }
+			get
+			{
+			    return Assembly.GetExecutingAssembly().GetName().Version.ToString();
+			    //return ConfigurationManager.AppSettings["OOSPAVersion"];
+			}
 		}
 		
 		public static string CurrentServer
