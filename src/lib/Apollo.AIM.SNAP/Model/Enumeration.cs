@@ -87,6 +87,7 @@ namespace Apollo.AIM.SNAP.Model
     public enum EmailTaskType
     {
 		OverdueApproval,
+        OverdueApprovalCC,
         OverdueChangeRequested,
 		UpdateRequester,
 		AssignToApprover,

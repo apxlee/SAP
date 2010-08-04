@@ -27,7 +27,10 @@ namespace Apollo.AIM.SNAP.Model
 			{
 				try
 				{
-					return HttpRuntime.AppDomainAppPath;  // C:\Apollo\idm\snap\trunk\release\build\src\web\SNAP\EmailTemplate
+                    if (HttpContext.Current != null)
+					    return HttpRuntime.AppDomainAppPath;  // C:\Apollo\idm\snap\trunk\release\build\src\web\SNAP\EmailTemplate
+
+				    return string.Empty;
 				}
 				catch (Exception ex)
 				{

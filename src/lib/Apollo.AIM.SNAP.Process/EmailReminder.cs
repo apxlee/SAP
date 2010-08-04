@@ -121,11 +121,8 @@ namespace Apollo.AIM.SNAP.Process
                         try
                         {
                             var task = ReminderTask.CreateReminderTask(state);
-                            if (task != null)
-                            {
-                                if (task.RemindUser())
-                                    db.SubmitChanges();
-                            }
+                            if (task.RemindUser())
+                                db.SubmitChanges();
 
                         }
                         catch (Exception ex)
