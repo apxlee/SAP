@@ -27,14 +27,14 @@ namespace Apollo.AIM.SNAP.Model
 			{
 				try
 				{
-                    if (HttpContext.Current != null)
+                    //if (HttpContext.Current != null)
 					    return HttpRuntime.AppDomainAppPath;  // C:\Apollo\idm\snap\trunk\release\build\src\web\SNAP\EmailTemplate
 
-				    return string.Empty;
+				    //return string.Empty;
 				}
 				catch (Exception ex)
 				{
-                    Logger.Fatal("Utilities - AbsolutePath, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
+                    //Logger.Fatal("Utilities - AbsolutePath, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
 					return string.Empty;
 				}
 			}
