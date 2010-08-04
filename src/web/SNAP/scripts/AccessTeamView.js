@@ -308,7 +308,7 @@ function AccessComments(obj, requestId) {
     var action = $(obj).parent().prev().find("input[name=_audience]:checked").val();
     var notesFor = $(obj).parent().prev().find("input[name=_audience]:checked").next().html();
     var textarea = $(obj).parent().prev().find("textarea");
-    textarea.val(textarea.val().replace(/(<([^>]+)>)/ig, "").replace(/\\/, "/").replace(/\'/g, "\""));
+    textarea.val(textarea.val().replace(/(<([^>]+)>)/ig, "").replace(/\\/g, "/").replace(/\'/g, "\""));
     
     ProcessingMessage("Adding Comments", "");
     
