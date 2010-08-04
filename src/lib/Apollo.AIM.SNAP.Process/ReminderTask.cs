@@ -95,7 +95,8 @@ namespace Apollo.AIM.SNAP.Process
                                         , wfState.SNAP_Workflow.SNAP_Actor.emailAddress
                                         , wfState.SNAP_Workflow.SNAP_Actor.displayName
                                         , wfState.SNAP_Workflow.SNAP_Request.pkId
-                                        , wfState.SNAP_Workflow.SNAP_Request.userDisplayName)
+                                        , wfState.SNAP_Workflow.SNAP_Request.userDisplayName));
+            /*
 
                     &&
                     Email.SendTaskEmail(EmailTaskType.OverdueApprovalCC
@@ -103,6 +104,7 @@ namespace Apollo.AIM.SNAP.Process
                                 , wfState.SNAP_Workflow.SNAP_Actor.displayName
                                 , wfState.SNAP_Workflow.SNAP_Request.pkId
                                 , wfState.SNAP_Workflow.SNAP_Request.userDisplayName));
+             */
         }
     }
 

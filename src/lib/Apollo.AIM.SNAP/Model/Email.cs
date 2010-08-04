@@ -39,12 +39,14 @@ namespace Apollo.AIM.SNAP.Model
 					templatePath += ConfigurationManager.AppSettings["NagApproval"];
 					break;
 
+                /*
                 case EmailTaskType.OverdueApprovalCC:
                     recipientName = toName;
                     followPageName = PageNames.APPROVING_MANAGER;
                     subjectAction = string.Format("{0}OverdueApproval Alert (FYI: You are copied on this email)", subjectAction);
                     templatePath += ConfigurationManager.AppSettings["NagApproval"];
                     break;
+                 */
 
                 case EmailTaskType.OverdueChangeRequested:
                     recipientName = toName;
