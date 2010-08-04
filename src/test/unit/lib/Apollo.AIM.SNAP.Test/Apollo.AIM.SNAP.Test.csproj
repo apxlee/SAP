@@ -77,7 +77,6 @@
     <Compile Include="RequestData_Test.cs" />
     <Compile Include="SLAConfiguration_Test.cs" />
     <Compile Include="SNAPDatabaseCall_Test.cs" />
-    <Compile Include="Utilities_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

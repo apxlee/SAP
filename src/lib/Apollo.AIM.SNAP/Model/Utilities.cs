@@ -8,7 +8,7 @@ using Apollo.CA.Logging;
 
 namespace Apollo.AIM.SNAP.Model
 {
-	public class Utilities
+	class Utilities
 	{
 		public static string WebRootUrl
 		{
