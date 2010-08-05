@@ -416,8 +416,9 @@
 
     <!-- has to be successful with no prior coverage value-->
     <if test="${previous.coverage != ''}">
-      <fail if="${double::parse(current.coverage) &lt; double::parse(previous.coverage)}"
-        message="Code coverage has decreased from ${previous.coverage}% to ${current.coverage}%"/>
+      <if test="${double::parse(current.coverage) < double::parse(previous.coverage)}" >
+        <echo message="Code coverage has decreased from ${previous.coverage}% to ${current.coverage}%"/>
+      </if>
     </if>
   </target>
 
