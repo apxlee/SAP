@@ -38,21 +38,44 @@ namespace Apollo.AIM.SNAP.Web.Common
 		
 		private void SetADProperties()
 		{
+			//ADUserDetail userDetail;
+
+			//try
+			//{
+				
+			//}
+			//catch (Exception ex)
+			//{
+			//}
+			
 			try
 			{
 				ADUserDetail userDetail = CA.DirectoryServices.GetUserByLoginName(LoginId);
-				FullName = userDetail.FirstName + " " + userDetail.LastName;
-				ManagerName = userDetail.ManagerName;
-				ManagerLoginId = userDetail.Manager.LoginName; // TODO: is this id? what is full name?
-                MemberOf = userDetail.MemberOf.Split(';');
+
+				if (String.IsNullOrEmpty(userDetail.FirstName) || String.IsNullOrEmpty(userDetail.LastName)){ FullName = "NOT FOUND"; }
+				else { FullName = userDetail.FirstName + " " + userDetail.LastName; }
+
+				if (String.IsNullOrEmpty(userDetail.ManagerName)) { ManagerName = "NOT FOUND"; }
+				else { ManagerName = userDetail.ManagerName; }
+
+				if (String.IsNullOrEmpty(userDetail.Manager.LoginName)) { ManagerLoginId = "NOT FOUND"; }
+				else { ManagerLoginId = userDetail.Manager.LoginName; } // TODO: is this id? what is full name?
+
+				MemberOf = userDetail.MemberOf.Split(';');
+
+				//if (String.IsNullOrEmpty(userDetail.MemberOf.Split(';'))) { MemberOf = null; }
+				//else { MemberOf = userDetail.MemberOf.Split(';'); }
+
+				//ManagerName = userDetail.ManagerName;
+				//ManagerLoginId = userDetail.Manager.LoginName; // TODO: is this id? what is full name?
             }
 			catch (Exception ex)
 			{
-				FullName = "NOT FOUND";
-				ManagerName = "NOT FOUND";
-				ManagerLoginId = "NOT FOUND";
-                MemberOf = null;
-                Logger.Error("SnapUser - SetADProperties, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
+				//FullName = "NOT FOUND";
+				//ManagerName = "NOT FOUND";
+				//ManagerLoginId = "NOT FOUND";
+				MemberOf = null;
+                Logger.Error("SnapUser > SetADProperties\r\nMessage: " + ex.Message + "\r\nStackTrace: " + ex.StackTrace);
 			}
 		}
 		
