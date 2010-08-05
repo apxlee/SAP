@@ -45,14 +45,14 @@ function updateFilterCounts() {
                         }
                     }
                 });
-            });
+        });
     $("#filter_pending_acknowledgement_count").html(ackCount);
     if (ackCount > 0) { bindFilter($("#filter_pending_acknowledgement")); }
-    else {unbindFilter($("#filter_pending_acknowledgement")); }
+    else { unbindFilter($("#filter_pending_acknowledgement")); }
 
     $("#filter_pending_workflow_count").html(wrkCount);
     if (wrkCount > 0) { bindFilter($("#filter_pending_workflow")); }
-    else {unbindFilter($("#filter_pending_workflow")); }
+    else { unbindFilter($("#filter_pending_workflow")); }
 
     $("#filter_pending_provisioning_count").html(prvCount);
     if (prvCount > 0) { bindFilter($("#filter_pending_provisioning")); }
@@ -86,14 +86,14 @@ function filterHover(obj) {
             $(obj).removeClass("hover_carrot");
             $("#access_filter_container").removeClass($(obj).attr("id"));
         }
-    }       
+    }
 }
 function filterClick(obj) {
     var blade = "";
     var filter = $(obj).attr("snap");
     currentFilterClass = $(obj).attr('id');
     $(obj).addClass("active_carrot");
-    $(obj).removeClass("hover_carrot");  
+    $(obj).removeClass("hover_carrot");
     $("div[id='access_filter_container']").attr("class", $(obj).attr('id'));
 
     $("div.csm_container_center_700").find("div.csm_content_container").each(
@@ -134,8 +134,7 @@ function AccessTeamActions(obj, requestId, action) {
     var comments = "";
     var postComments = ""
     var textarea = $(obj).parent().prev().find("textarea");
-    if (textarea.val() > "") 
-    {
+    if (textarea.val() > "") {
         textarea.val(textarea.val().replace(/(<([^>]+)>)/ig, "").replace(/\\/g, "/").replace(/\'/g, "\""));
     }
     switch (action) {
@@ -145,11 +144,10 @@ function AccessTeamActions(obj, requestId, action) {
             break;
         case '2':
             if (textarea.val() == "") { ActionMessage("Required Input", "Please specify the change required."); return false; }
-            else 
-            {
+            else {
                 postComments = textarea.val().replace("'", "\\'");
                 comments = "<br />" + textarea.val();
-                ProcessingMessage("Updating Request", ""); 
+                ProcessingMessage("Updating Request", "");
             }
             break;
         case '3':
@@ -280,7 +278,7 @@ function addComments(obj, approverName, action, comments, includeDate) {
                     if (commentsContainer.html() == null) {
                         newcomment = "<div class='csm_text_container_nodrop'><p class='csm_error_text'><u>"
                         + action + " by AIM on " + curr_date + "</u>" + comments;
-                            if (includeDate) { newcomment += "<br />Due Date: " + $(this).parent().next().next().children().html(); }
+                        if (includeDate) { newcomment += "<br />Due Date: " + $(this).parent().next().next().children().html(); }
                         newcomment += "</p></div>";
                         $(newcomment).appendTo($(this).closest("div.csm_data_row").parent());
                     }
@@ -309,11 +307,11 @@ function AccessComments(obj, requestId) {
     var notesFor = $(obj).parent().prev().find("input[name=_audience]:checked").next().html();
     var textarea = $(obj).parent().prev().find("textarea");
     textarea.val(textarea.val().replace(/(<([^>]+)>)/ig, "").replace(/\\/g, "/").replace(/\'/g, "\""));
-    
+
     ProcessingMessage("Adding Comments", "");
-    
+
     if (textarea.val() != "") {
-        comments = textarea.val().replace(/(\r\n|[\r\n])/g, "<br />");;
+        comments = textarea.val().replace(/(\r\n|[\r\n])/g, "<br />"); ;
         postComments = comments.replace("'", "\\'");
         textarea.val("");
 
@@ -367,6 +365,8 @@ function AccessComments(obj, requestId) {
 }
 function approverGroupChecked(obj, requestId) {
     $(document).ready(function() {
+        var nameArray = new Array();
+        var approver;
         $(obj).closest("table").find("input[type=radio]").each(
           function() {
               if ($(obj).attr("checked")) {
@@ -376,10 +376,28 @@ function approverGroupChecked(obj, requestId) {
                         function() {
                             $("#_selectedActors_" + requestId).val($("#_selectedActors_" + requestId).val().replace("[" + $(this).attr("id") + "]", ""));
                         });
-                      $("#_selectedActors_" + requestId).val($("#_selectedActors_" + requestId).val() + "[" + $(this).attr("id") + "]");
+                      nameArray = $(this).next().html().split("(");
+                      approver = $.trim(nameArray[0]);
+                      if (checkforDuplicateApprovers(approver, obj, requestId, "approver")) {
+                          ActionMessage("Duplicate Selection", approver + " has already be added to this workflow.");
+                          $(obj).removeAttr("checked");
+                          $(this).attr("disabled", "disabled");
+                      }
+                      else {
+                          $("#_selectedActors_" + requestId).val($("#_selectedActors_" + requestId).val() + "[" + $(this).attr("id") + "]");
+                      }
                   });
                   if ($(this).is(":checked")) {
-                      $("#_selectedActors_" + requestId).val($("#_selectedActors_" + requestId).val() + "[" + $(this).attr("id") + "]");
+                      nameArray = $(this).next().html().split("(");
+                      approver = $.trim(nameArray[0]);
+                      if (checkforDuplicateApprovers(approver, obj, requestId, "approver")) {
+                          ActionMessage("Duplicate Selection", approver + " has already be added to this workflow.");
+                          $(obj).removeAttr("checked");
+                          $(this).attr("disabled", "disabled");
+                      }
+                      else {
+                          $("#_selectedActors_" + requestId).val($("#_selectedActors_" + requestId).val() + "[" + $(this).attr("id") + "]");
+                      }
                   }
               }
               else {
@@ -390,6 +408,75 @@ function approverGroupChecked(obj, requestId) {
               }
           });
     });
+}
+
+function checkforDuplicateApprovers(approver, obj, requestId, source) {
+    var managerName = "";
+    var approverArray = new Array();
+    var nameArray = new Array();
+    var i = 0;
+    var duplicate = false;
+    if (requestId > 0) {
+        managerName = $("#_managerDisplayName_" + requestId).html();
+        nameArray = managerName.split("(");
+        approverArray[i] = $.trim(nameArray[0]);
+        i++;
+    }
+
+    $(obj).closest("table").parent().parent().parent().find("input[type=radio]").each(
+    function() {
+        if ($(this).is(":checked")) {
+            if ($(this).is(':disabled') == false) {
+                nameArray = $(this).next().html().split("(");
+                if (source == "owner") {
+                    if ($.trim(nameArray[0]) == approver) {
+                        approverArray[i] = $.trim(nameArray[0]);
+                        i++;
+                    }
+                }
+                if ($.trim(nameArray[0]) != approver) {
+                    approverArray[i] = $.trim(nameArray[0]);
+                    i++;
+                }
+                if (requestId == 0) {
+                    if ($.trim(nameArray[0]) == approver) {
+                        $(obj).closest("div.csm_content_container").find("div.csm_divided_heading").find("span").each(function() {
+                            if ($(this).attr("snap") == "_accessRequestId") {
+                                requestId = $(this).html();
+                            }
+                        });
+
+                        $(this).closest("table").find("input.csm_input_checkradio").first().removeAttr("checked");
+                        $(this).attr("disabled", "disabled");
+                        $("#_selectedActors_" + requestId).val($("#_selectedActors_" + requestId).val().replace("[" + $(this).attr("id") + "]", ""));
+                        duplicate = true;
+                    }
+                }
+            }
+        }
+    });
+
+    $(obj).closest("table").parent().parent().parent().find("td.listview_td").each(function() {
+        nameArray = $(this).html().split("(");
+        approverArray[i] = $.trim(nameArray[0]);
+        i++;
+
+        if ($.trim(nameArray[0]) == approver) {
+            duplicate = true;
+            if (requestId == 0) {
+                RemoveActor($(this));
+            }
+        }
+        
+    });
+    
+    $.each(approverArray, function() {
+        if (approver == this) {
+            duplicate = true;
+        }
+    });
+
+    return duplicate;
 }
 function actionClicked(obj, requestId, state) {
     switch ($(obj).val()) {
@@ -590,9 +677,9 @@ function animateActions(obj, newSection) {
                         },
 	                    function() {
 	                        $(this).removeClass("csm_toggle_show_hover");
-	                        }
+	                    }
 	                    );
-	                    
+
                         $(this).fadeIn(1000);
                     });
                 }
@@ -605,7 +692,7 @@ function createWorkflow(obj, requestId) {
 
         if ($("#_managerUserId_" + requestId).val() > "") {
             var postData = "{'requestId':'" + requestId.toString() + "','managerUserId':'" + $("#_managerUserId_" + requestId).val() + "','actorIds':'" + $("#_selectedActors_" + requestId).val() + "'}";
-           
+
             $.ajax({
                 type: "POST",
                 contentType: "application/json; character=utf-8",
@@ -697,7 +784,7 @@ function managerEdit(obj) {
 
         managerInputCheckButton.click(function() {
             if (managerInputUserId.val() == "") {
-                GetNames(obj,managerInputDisplayName,"manager");
+                GetNames(obj, managerInputDisplayName, "manager");
             }
             else {
                 managerInputSection.hide();
@@ -706,7 +793,7 @@ function managerEdit(obj) {
         });
     });
 }
-function GetNames(obj,name,section) {
+function GetNames(obj, name, section) {
     var indicator = $('.oospa_ajax_indicator');
     var selection = $('select[id$=_managerSelection]');
     var postData = "{'name':'" + name.val().replace("(", "").replace(")", "").replace(/\\/, "").replace("'", "\\'") + "'}";
@@ -770,9 +857,15 @@ function FillManagerAllFields(obj, name, names) {
     var managerInputUserId = managerLabelDispalyName.next();
     var managerInputSection = $(name).parent();
     var managerInputDisplayName = $(name).parent().children("input[type=text]");
+    var nameArray = new Array();
     $("#_managerSelectionDiv").dialog("destroy");
     managerInputUserId.val(names[0].LoginId);
     managerLabelDispalyName.html(names[0].Name);
+    nameArray = names[0].Name.split("(");
+    if(checkforDuplicateApprovers($.trim(nameArray[0]), obj, 0, "manager")) 
+    {
+        ActionMessage("Duplicate Removed", "Duplicate approver has been removed from the workflow");
+    }
     managerInputSection.hide();
     managerLabelSection.show();
     updateManagerName(obj, names[0].Name);
@@ -793,9 +886,15 @@ function FillManagerSelection(obj, name, names) {
     var managerInputDisplayName = $(name).parent().children("input[type=text]");
     var selection = $('select[id$=_managerSelection]');
     var indicator = $('.oospa_ajax_indicator');
-
+    var nameArray = new Array();
+    
     selection.change(function() {
         managerLabelDispalyName.html($('#' + selection.attr('id') + ' :selected').text());
+        nameArray = $('#' + selection.attr('id') + ' :selected').text().split("(");
+        if(checkforDuplicateApprovers($.trim(nameArray[0]), obj, 0, "manager")) 
+        {
+            ActionMessage("Duplicate Removed", "Duplicate approver has been removed from the workflow");
+        }
         managerInputSection.hide();
         managerLabelSection.show();
         managerInputUserId.val($('#' + selection.attr('id') + ' :selected').val());
@@ -919,7 +1018,7 @@ function ActorSelected(obj) {
     var actorCheckButton = $(obj).parent().children("input[id$='_checkActor']");
 
     actorCheckButton.attr("disabled", "disabled");
-    
+
     if ($(obj).val() != "0") {
         actorDisplayName.val($('#' + $(obj).attr('id') + ' option:selected').text());
         actorActorId.val($(obj).val());
@@ -956,11 +1055,13 @@ function ActorCheck(obj) {
     }
 }
 
-function ActorAdd(obj,requestId) {
+function ActorAdd(obj, requestId) {
     $(document).ready(function() {
+        var actorDisplayName = $(obj).parent().children("input[id$='_actorDisplayName']");
         var actorUserId = $(obj).parent().children("input[id$='_actorUserId']");
         var actorGroupId = $(obj).parent().children("input[id$='_actorGroupId']");
         var actorActorId = $(obj).parent().children("input[id$='_actorActorId']");
+        var nameArray = new Array();
         if (actorActorId.val() == "") {
             var postData = "{'userId':'" + actorUserId.val() + "','groupId':'" + actorGroupId.val() + "'}";
             $.ajax({
@@ -971,8 +1072,17 @@ function ActorAdd(obj,requestId) {
                 dataType: "json",
                 success: function(msg) {
                     if (msg.d > "0") {
-                        $("#_selectedActors_" + requestId).val($("#_selectedActors_" + requestId).val() + "[" + msg.d + "]");
-                        UpdateActorList(obj, msg.d);
+                        nameArray = actorDisplayName.val().split("(");
+                        if (checkforDuplicateApprovers($.trim(nameArray[0]), obj, requestId, "owner")) {
+                            ActionMessage("Duplicate Selection", $.trim(nameArray[0]) + " has already be added to this workflow.");
+                            actorDisplayName.val("");
+                            actorUserId.val("");
+                            actorActorId.val("");
+                        }
+                        else {
+                            $("#_selectedActors_" + requestId).val($("#_selectedActors_" + requestId).val() + "[" + msg.d + "]");
+                            UpdateActorList(obj, msg.d);
+                        }
                     }
                 },
 
@@ -984,8 +1094,17 @@ function ActorAdd(obj,requestId) {
             });
         }
         else {
-            $("#_selectedActors_" + requestId).val($("#_selectedActors_" + requestId).val() + "[" + actorActorId.val() + "]");
-            UpdateActorList(obj, actorActorId.val());
+            nameArray = actorDisplayName.val().split("(");
+            if (checkforDuplicateApprovers($.trim(nameArray[0]), obj, requestId, "owner")) {
+                ActionMessage("Duplicate Selection", $.trim(nameArray[0]) + " has already be added to this workflow.");
+                actorDisplayName.val("");
+                actorUserId.val("");
+                actorActorId.val("");
+            }
+            else {
+                $("#_selectedActors_" + requestId).val($("#_selectedActors_" + requestId).val() + "[" + actorActorId.val() + "]");
+                UpdateActorList(obj, actorActorId.val());
+            }
         }
     });
 }
@@ -995,14 +1114,14 @@ function UpdateActorList(obj, actorId) {
     var actorUserId = $(obj).parent().children("input[id$='_actorUserId']");
     var actorActorId = $(obj).parent().children("input[id$='_actorActorId']");
     var listItem;
-    var table = $('<table />').attr('class','listview_table');
+    var table = $('<table />').attr('class', 'listview_table');
     var tbody = $('<tbody />')
     var tableTr = $('<tr />').attr('class', 'listview_tr');
     var tableButton = $('<td />').attr('class', 'listview_button');
     var removeButton = $("<input type='button'>")
     removeButton.bind('click', function() { RemoveActor(this); });
     removeButton.val("Remove");
-    
+
     if ($(obj).closest("tr").next().find("tr").html() == null) {
         $('<td />').attr('class', 'listview_td').html(actorDisplayName.val()).appendTo(tableTr);
         $('<td />').css('display', 'none').html(actorActorId.val()).appendTo(tableTr);
@@ -1019,7 +1138,7 @@ function UpdateActorList(obj, actorId) {
         tableButton.appendTo(tableTr);
         $(tableTr).insertAfter($(obj).closest("tr").next().find("tr").last());
     }
-    
+
     actorDisplayName.val('');
     actorUserId.val('');
     actorActorId.val('');
@@ -1038,7 +1157,7 @@ function RemoveActor(obj) {
 
     var selectedActors = $(obj).closest("table.csm_input_form_container").next("div.csm_input_buttons_container").children().first();
     selectedActors.val(selectedActors.val().replace("[" + actorActorId.html() + "]", ""));
-    
+
     //finally remove row
     $(obj).closest("tr.listview_tr").remove();
 }

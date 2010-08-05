@@ -15,7 +15,7 @@
 			            <td><asp:Label ID="_affectedEndUserName" runat="server"></asp:Label></td>
 			            <td><asp:Label ID="_overallRequestStatus" runat="server"></asp:Label></td>
 			            <td><asp:Label ID="_lastUpdatedDate" runat="server"></asp:Label></td>
-			            <td><asp:Label ID="_requestId" runat="server"></asp:Label></td>
+			            <td><asp:Label ID="_requestId" snap="_accessRequestId" runat="server"></asp:Label></td>
 			        </tr>
 			    </table>
 			</div>
