@@ -196,10 +196,7 @@ namespace Apollo.AIM.SNAP.Test
         {
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
+                var accessReq = createAndAckAccessReq(db);
                 accessReq.NoAccess(WorkflowAction.Denied, "Deny");
             }
 
@@ -261,10 +258,7 @@ namespace Apollo.AIM.SNAP.Test
         {
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
+                var accessReq = createAndAckAccessReq(db);
                 accessReq.NoAccess(WorkflowAction.Cancel, "Cancel");
             }
 
@@ -286,10 +280,7 @@ namespace Apollo.AIM.SNAP.Test
             {
                 using (var db = new SNAPDatabaseDataContext())
                 {
-                    var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                    var accessReq = new AccessRequest(req.pkId);
-                    accessReq.Ack();
+                    var accessReq = createAndAckAccessReq(db);
                     //accessReq.RequestToChange("Please change it");
                     accessReq.RequestToChange(accessTeamId, "Please change it");
                 }
@@ -326,11 +317,7 @@ namespace Apollo.AIM.SNAP.Test
         {
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-
-                accessReq.Ack();
+                var accessReq = createAndAckAccessReq(db); 
 
                 Assert.IsFalse(accessReq.CreateWorkflow(new List<int>() { windowsServerActorId, databaseActorId }));
 
@@ -345,7 +332,6 @@ namespace Apollo.AIM.SNAP.Test
                 var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
 
                 var accessReq = new AccessRequest(req.pkId);
-
                 accessReq.Ack();
 
                 accessReq.CreateWorkflow(new List<int>() { managerActorId });
@@ -375,13 +361,7 @@ namespace Apollo.AIM.SNAP.Test
         {
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-
-                accessReq.Ack();
-
-                accessReq.CreateWorkflow(new List<int>() { managerActorId, teamApprovalActorId, windowsServerActorId });
+                var accessReq = createTestWorkflow(db, new List<int>() { managerActorId, teamApprovalActorId, windowsServerActorId });
             }
 
             using (var db = new SNAPDatabaseDataContext())
@@ -431,13 +411,7 @@ namespace Apollo.AIM.SNAP.Test
         {
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-
-                accessReq.Ack();
-
-                accessReq.CreateWorkflow(new List<int>() { managerActorId, teamApprovalActorId, windowsServerActorId });
+                var accessReq = createTestWorkflow(db, new List<int>() { managerActorId, teamApprovalActorId, windowsServerActorId });
             }
 
             using (var db = new SNAPDatabaseDataContext())
@@ -505,7 +479,6 @@ namespace Apollo.AIM.SNAP.Test
                 var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
 
                 var accessReq = new AccessRequest(req.pkId);
-
                 accessReq.Ack();
 
                 accessReq.CreateWorkflow(mgrUid, new List<int>() { teamApprovalActorId });
@@ -540,10 +513,7 @@ namespace Apollo.AIM.SNAP.Test
         {
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
+                var accessReq = createAndAckAccessReq(db);
                 accessReq.CreateWorkflow(new List<int>() { teamApprovalActorId, managerActorId });
 
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte) ActorApprovalType.Manager);
@@ -564,10 +534,7 @@ namespace Apollo.AIM.SNAP.Test
         {
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
+                var accessReq = createAndAckAccessReq(db);
                 accessReq.CreateWorkflow(new List<int>() { managerActorId, teamApprovalActorId });
 
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
@@ -588,10 +555,7 @@ namespace Apollo.AIM.SNAP.Test
         {
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
+                var accessReq = createAndAckAccessReq(db);
                 accessReq.CreateWorkflow(new List<int>() { managerActorId, teamApprovalActorId, windowsServerActorId, databaseActorId, networkShareActorId });
 
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
@@ -612,11 +576,7 @@ namespace Apollo.AIM.SNAP.Test
         {
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
-                accessReq.CreateWorkflow(new List<int>()
+                var accessReq = createTestWorkflow(db, new List<int>()
                                              {
                                                  managerActorId,
                                                  teamApprovalActorId,
@@ -640,11 +600,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
-                accessReq.CreateWorkflow(new List<int>()
+                var accessReq = createTestWorkflow(db, new List<int>()
                                              {
                                                  managerActorId,
                                                  teamApprovalActorId,
@@ -688,11 +644,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
-                accessReq.CreateWorkflow(new List<int>()
+                var accessReq = createTestWorkflow(db, new List<int>()
                                              {
                                                  managerActorId,
                                                  teamApprovalActorId,
@@ -736,11 +688,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
-                accessReq.CreateWorkflow(new List<int>()
+                var accessReq = createTestWorkflow(db, new List<int>()
                                              {
                                                  managerActorId,
                                                  teamApprovalActorId,
@@ -785,11 +733,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
-                accessReq.CreateWorkflow(new List<int>()
+                var accessReq = createTestWorkflow(db, new List<int>()
                                              {
                                                  managerActorId,
                                              });
@@ -832,11 +776,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
-                accessReq.CreateWorkflow(new List<int>()
+                var accessReq = createTestWorkflow(db, new List<int>()
                                              {
                                                  managerActorId,
                                                  teamApprovalActorId,
@@ -889,11 +829,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
-                accessReq.CreateWorkflow(new List<int>()
+                var accessReq = createTestWorkflow(db, new List<int>()
                                              {
                                                  managerActorId,
                                                  teamApprovalActorId,
@@ -942,11 +878,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
-                accessReq.CreateWorkflow(new List<int>()
+                var accessReq = createTestWorkflow(db, new List<int>()
                                              {
                                                  managerActorId,
                                                  teamApprovalActorId,
@@ -989,11 +921,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
-                accessReq.CreateWorkflow(new List<int>()
+                var accessReq = createTestWorkflow(db, new List<int>()
                                              {
                                                  managerActorId,
                                                  teamApprovalActorId,
@@ -1046,11 +974,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
-                accessReq.CreateWorkflow(new List<int>()
+                var accessReq = createTestWorkflow(db, new List<int>()
                                              {
                                                  managerActorId,
                                                  teamApprovalActorId,
@@ -1098,11 +1022,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
-                accessReq.CreateWorkflow(new List<int>()
+                var accessReq = createTestWorkflow(db, new List<int>()
                                              {
                                                  managerActorId,
                                                  teamApprovalActorId,
@@ -1151,11 +1071,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
-                accessReq.CreateWorkflow(new List<int>()
+                var accessReq = createTestWorkflow(db, new List<int>()
                                              {
                                                  managerActorId,
                                                  teamApprovalActorId,
@@ -1222,11 +1138,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
-                accessReq.CreateWorkflow(new List<int>()
+                var accessReq = createTestWorkflow(db, new List<int>()
                                              {
                                                  managerActorId,
                                                  teamApprovalActorId,
@@ -1283,11 +1195,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
-                accessReq.CreateWorkflow(new List<int>()
+                var accessReq = createTestWorkflow(db, new List<int>()
                                              {
                                                  managerActorId,
                                                  teamApprovalActorId,
@@ -1354,10 +1262,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
+                var accessReq = createAndAckAccessReq(db);
                 var techApprovers = new List<int>() { 
                                        windowsServerActorId,
                                        databaseActorId,
@@ -1423,11 +1328,7 @@ namespace Apollo.AIM.SNAP.Test
             // set up for first request to change
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
-                accessReq.CreateWorkflow(new List<int>()
+                var accessReq = createTestWorkflow(db, new List<int>()
                                              {
                                                  managerActorId,
                                                  teamApprovalActorId,
@@ -1507,11 +1408,7 @@ namespace Apollo.AIM.SNAP.Test
             // set up for first request to change
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
-                accessReq.CreateWorkflow(new List<int>()
+                var accessReq = createTestWorkflow(db, new List<int>()
                                              {
                                                  managerActorId,
                                                  teamApprovalActorId,
@@ -1613,11 +1510,7 @@ namespace Apollo.AIM.SNAP.Test
             // set up for first request to change
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
-                accessReq.CreateWorkflow(new List<int>()
+                var accessReq = createTestWorkflow(db, new List<int>()
                                              {
                                                  managerActorId,
                                                  teamApprovalActorId,
@@ -1714,11 +1607,7 @@ namespace Apollo.AIM.SNAP.Test
             // set up for first request to change
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
-                accessReq.CreateWorkflow(new List<int>()
+                var accessReq = createTestWorkflow(db, new List<int>()
                                              {
                                                  managerActorId,
                                                  teamApprovalActorId,
@@ -1852,11 +1741,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
-                accessReq.CreateWorkflow(new List<int>()
+                var accessReq = createTestWorkflow(db, new List<int>()
                                              {
                                                  managerActorId,
                                                  teamApprovalActorId,
@@ -1911,11 +1796,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
-                accessReq.CreateWorkflow(new List<int>()
+                var accessReq = createTestWorkflow(db, new List<int>()
                                              {
                                                  managerActorId,
                                                  teamApprovalActorId,
@@ -1962,11 +1843,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
-                accessReq.CreateWorkflow(new List<int>()
+                var accessReq = createTestWorkflow(db, new List<int>()
                                              {
                                                  managerActorId,
                                                  teamApprovalActorId,
@@ -2017,11 +1894,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
-                accessReq.CreateWorkflow(new List<int>()
+                var accessReq = createTestWorkflow(db, new List<int>()
                                              {
                                                  managerActorId,
                                                  teamApprovalActorId,
@@ -2071,11 +1944,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
-                accessReq.CreateWorkflow(new List<int>()
+                var accessReq = createTestWorkflow(db, new List<int>()
                                              {
                                                  managerActorId,
                                                  teamApprovalActorId,
@@ -2115,11 +1984,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
-                accessReq.CreateWorkflow(new List<int>()
+                var accessReq = createTestWorkflow(db, new List<int>()
                                              {
                                                  managerActorId,
                                                  teamApprovalActorId,
@@ -2170,11 +2035,7 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
-                accessReq.CreateWorkflow(new List<int>()
+                var accessReq = createTestWorkflow(db, new List<int>()
                                              {
                                                  managerActorId,
                                                  teamApprovalActorId,
@@ -2225,18 +2086,14 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
-                accessReq.CreateWorkflow(new List<int>()
-                                             {
-                                                 managerActorId,
-                                                 teamApprovalActorId,
-                                                 windowsServerActorId,
-                                                 databaseActorId,
-                                                 networkShareActorId
-                                             });
+                var accessReq = createTestWorkflow(db, new List<int>()
+                                                           {
+                                                               managerActorId,
+                                                               teamApprovalActorId,
+                                                               windowsServerActorId,
+                                                               databaseActorId,
+                                                               networkShareActorId
+                                                           }); 
 
                 // get manager approval
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
@@ -2283,18 +2140,14 @@ namespace Apollo.AIM.SNAP.Test
         {
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
-                accessReq.CreateWorkflow(new List<int>()
-                                             {
-                                                 managerActorId,
-                                                 teamApprovalActorId,
-                                                 windowsServerActorId,
-                                                 databaseActorId,
-                                                 networkShareActorId
-                                             });
+                var accessReq = createTestWorkflow(db, new List<int>()
+                                                           {
+                                                               managerActorId,
+                                                               teamApprovalActorId,
+                                                               windowsServerActorId,
+                                                               databaseActorId,
+                                                               networkShareActorId
+                                                           });
 
                 var wf = accessReq.FindApprovalTypeWF(db, (byte) ActorApprovalType.Manager)[0];
 
@@ -2427,11 +2280,7 @@ namespace Apollo.AIM.SNAP.Test
         {
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
-                accessReq.CreateWorkflow(new List<int>()
+                var accessReq = createTestWorkflow(db,new List<int>()
                                              {
                                                  managerActorId,
                                                  windowsServerActorId,
@@ -2466,16 +2315,12 @@ namespace Apollo.AIM.SNAP.Test
 
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
-                accessReq.CreateWorkflow(new List<int>()
-                                             {
-                                                 managerActorId,
-                                                 windowsServerActorId,
-                                                 databaseActorId,
-                                             });
+                var accessReq = createTestWorkflow(db, new List<int>()
+                                                           {
+                                                               managerActorId,
+                                                               windowsServerActorId,
+                                                               databaseActorId,
+                                                           });
 
                 // get manager approval
                 var wfs = accessReq.FindApprovalTypeWF(db, (byte) ActorApprovalType.Manager);
@@ -2500,17 +2345,12 @@ namespace Apollo.AIM.SNAP.Test
         {
             using (var db = new SNAPDatabaseDataContext())
             {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                var accessReq = new AccessRequest(req.pkId);
-                accessReq.Ack();
-                accessReq.CreateWorkflow(new List<int>()
-                                             {
-                                                 managerActorId,
-                                                 windowsServerActorId,
-                                                 databaseActorId,
-                                             });
-
+                var accessReq = createTestWorkflow(db, new List<int>()
+                                                           {
+                                                               managerActorId,
+                                                               windowsServerActorId,
+                                                               databaseActorId,
+                                                           });
             }
 
             using (var db = new SNAPDatabaseDataContext())
@@ -2606,6 +2446,24 @@ namespace Apollo.AIM.SNAP.Test
                 Console.WriteLine("Mgr Name: " + req.managerDisplayName);
             }
 
+        }
+
+        private AccessRequest createAndAckAccessReq(SNAPDatabaseDataContext db)
+        {
+            var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+
+            var accessReq = new AccessRequest(req.pkId);
+            accessReq.Ack();
+
+            return accessReq;
+        }
+
+        private AccessRequest createTestWorkflow(SNAPDatabaseDataContext db, List<int> approvers)
+        {
+            var accessReq = createAndAckAccessReq(db);
+            accessReq.CreateWorkflow(approvers);
+
+            return accessReq;
         }
 
         private void updateRequest(long requestId, 
