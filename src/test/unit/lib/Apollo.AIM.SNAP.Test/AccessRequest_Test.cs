@@ -2495,6 +2495,40 @@ namespace Apollo.AIM.SNAP.Test
 
         }
         
+        [Test]
+        public void ShouldHandleRemoveInactiveApprovers()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+
+                var accessReq = new AccessRequest(req.pkId);
+                accessReq.Ack();
+                accessReq.CreateWorkflow(new List<int>()
+                                             {
+                                                 managerActorId,
+                                                 windowsServerActorId,
+                                                 databaseActorId,
+                                             });
+
+            }
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+                var accessReq = new AccessRequest(req.pkId);
+
+                accessReq.EditWorkflow(managerUserId, new List<int>() { managerActorId });
+
+                Assert.IsTrue(req.statusEnum == (byte) RequestState.Pending);
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
+                Assert.IsTrue(wfs[0].SNAP_Workflow_States.OrderByDescending(s=>s.pkId).
+                    First().workflowStatusEnum == (byte)WorkflowState.Workflow_Created);
+            }
+
+            
+        }
+
         [Test] 
         public void TestDateDiff()
         {

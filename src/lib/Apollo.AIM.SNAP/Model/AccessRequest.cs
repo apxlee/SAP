@@ -1421,71 +1421,81 @@ namespace Apollo.AIM.SNAP.Model
         public static void CompleteRequestApprovalCheck(int id)
         {
 
-            var db = new SNAPDatabaseDataContext();
-
-            //var twf = db.SNAP_Workflows.Single(w => w.pkId == id);
-            var req = db.SNAP_Requests.Single(r=>r.pkId == id);
-            var accessReq = new AccessRequest(id);
-            var accessTeamWF = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin)[0];
-            var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Team_Approver);
-            var wfs2 = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
-
-
-            // only manager in the approal wf
-            if (wfs.Count == 0 && wfs2.Count == 0)
+            using (var db = new SNAPDatabaseDataContext())
             {
-                AccessRequest.stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF, WorkflowState.Workflow_Created, WorkflowState.Approved);
-				Email.SendTaskEmail(EmailTaskType.TransitionToPendingProvisioning, ConfigurationManager.AppSettings["AIM-DG"], null, req.pkId, req.userDisplayName);
-            }
-            else
-            {
-                // we may or may not have team approver in the wf, if we do make sure all team approvers are approved
-                var done = true;
+                //var twf = db.SNAP_Workflows.Single(w => w.pkId == id);
+                var req = db.SNAP_Requests.Single(r => r.pkId == id);
+                var accessReq = new AccessRequest(id);
+                var accessTeamWF = accessReq.FindApprovalTypeWF(db, (byte) ActorApprovalType.Workflow_Admin)[0];
+                var mgrWF = accessReq.FindApprovalTypeWF(db, (byte) ActorApprovalType.Manager)[0];
+                var teamApproverWFs = accessReq.FindApprovalTypeWF(db, (byte) ActorApprovalType.Team_Approver);
+                var techApproverWFs = accessReq.FindApprovalTypeWF(db, (byte) ActorApprovalType.Technical_Approver);
 
-                foreach (var wf in wfs)
+
+                // only manager in the approal wf
+                if (teamApproverWFs.Count == 0 && techApproverWFs.Count == 0)
                 {
-                    if (
-                        wf.SNAP_Workflow_States.Count(
-                            s => s.completedDate != null && s.workflowStatusEnum == (byte) WorkflowState.Approved) == 1)
+                    // make sure manager has not outstanding approval
+                    if (mgrWF.SNAP_Workflow_States.OrderByDescending(s => s.pkId).First().completedDate != null)
                     {
-                        done = true;
-                    }
-                    else
-                    {
-                        done = false;
-                        break;
+                        AccessRequest.stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF,
+                                                      WorkflowState.Workflow_Created, WorkflowState.Approved);
+                        Email.SendTaskEmail(EmailTaskType.TransitionToPendingProvisioning,
+                                            ConfigurationManager.AppSettings["AIM-DG"], null, req.pkId,
+                                            req.userDisplayName);
                     }
                 }
-
-                // now check technical approvers
-                //wfs = accessReq.FindApprovalTypeWF(db, (byte) ActorApprovalType.Technical_Approver);
-                var totalApproved = 0;
-                var state =
-                    accessTeamWF.SNAP_Workflow_States.Single(
-                        s => s.workflowStatusEnum == (byte) WorkflowState.Workflow_Created
-                             && s.completedDate == null); // get lastest 'worflow created' for the workflowadmin state
-
-                foreach (var w in wfs2)
+                else
                 {
-                    var cnt = w.SNAP_Workflow_States.Count(
-                        s => s.workflowStatusEnum == (byte) WorkflowState.Approved
-                             && s.completedDate != null
-                             && s.pkId >= state.pkId);
+                    // we may or may not have team approver in the wf, if we do make sure all team approvers are approved
+                    var done = true;
+
+                    foreach (var wf in teamApproverWFs)
+                    {
+                        if (wf.SNAP_Workflow_States.Count(s => s.completedDate != null && s.workflowStatusEnum == (byte) WorkflowState.Approved) == 1)
+                        {
+                            done = true;
+                        }
+                        else
+                        {
+                            done = false;
+                            break;
+                        }
+                    }
+
+                    // now check technical approvers
+                    //wfs = accessReq.FindApprovalTypeWF(db, (byte) ActorApprovalType.Technical_Approver);
+                    var totalApproved = 0;
+                    var state =
+                        accessTeamWF.SNAP_Workflow_States.Single(
+                            s => s.workflowStatusEnum == (byte) WorkflowState.Workflow_Created
+                                 && s.completedDate == null);
+                        // get lastest 'worflow created' for the workflowadmin state
+
+                    foreach (var w in techApproverWFs)
+                    {
+                        var cnt = w.SNAP_Workflow_States.Count(
+                            s => s.workflowStatusEnum == (byte) WorkflowState.Approved
+                                 && s.completedDate != null
+                                 && s.pkId >= state.pkId);
                         // only check approval for the latest iteration, ignore previously approved interateion
 
-                    totalApproved += cnt;
+                        totalApproved += cnt;
+                    }
+
+                    if (totalApproved == techApproverWFs.Count && done)
+                    {
+                        AccessRequest.stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF,
+                                                      WorkflowState.Workflow_Created, WorkflowState.Approved);
+
+                        Email.SendTaskEmail(EmailTaskType.TransitionToPendingProvisioning,
+                                            ConfigurationManager.AppSettings["AIM-DG"], null, req.pkId,
+                                            req.userDisplayName);
+                    }
                 }
 
-                if (totalApproved == wfs2.Count && done)
-                {
-                    AccessRequest.stateTransition(ActorApprovalType.Workflow_Admin, accessTeamWF,
-                                                  WorkflowState.Workflow_Created, WorkflowState.Approved);
-					
-					Email.SendTaskEmail(EmailTaskType.TransitionToPendingProvisioning, ConfigurationManager.AppSettings["AIM-DG"], null, req.pkId, req.userDisplayName);
-                }
+                db.SubmitChanges();
             }
-
-            db.SubmitChanges();
         }
 
         protected bool requestToChangeBy(ActorApprovalType approvalType, string comment)
