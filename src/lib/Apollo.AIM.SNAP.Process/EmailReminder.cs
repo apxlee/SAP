@@ -6,6 +6,7 @@ using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.ServiceProcess;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -47,7 +48,8 @@ namespace Apollo.AIM.SNAP.Process
 
         protected override void OnStart(string[] args)
         {
-            Utilities.OutputMessage("EmailReminderlogger: Service Start \n", EventLogEntryType.Information);
+            var ver = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            Utilities.OutputMessage("EmailReminderlogger: Service Start(version:" + ver + ")", EventLogEntryType.Information);
             Logger.Info("SNAP Email Reminder started");
             _timer.Start();
 
@@ -55,7 +57,7 @@ namespace Apollo.AIM.SNAP.Process
 
         protected override void OnStop()
         {
-            Utilities.OutputMessage("EmailReminderlogger: Service Stop \n", EventLogEntryType.Information);
+            Utilities.OutputMessage("EmailReminderlogger: Service Stop", EventLogEntryType.Information);
             Logger.Info("SNAP Email Reminder stopped");
             _timer.Stop();
 

@@ -67,10 +67,13 @@ namespace Apollo.AIM.SNAP.Process
             int overdueAlertIntervalInDays = Convert.ToInt16(ConfigurationManager.AppSettings["OverdueAlertIntervalInDays"]);
             int overdueAlertMaxDay = Convert.ToInt16(ConfigurationManager.AppSettings["OverdueAlertMaxDay"]);
 
-            if (diff.Days < overdueAlertMaxDay)
+            if (overdueAlertMaxDay <= 0 || overdueAlertIntervalInDays <= 0)
+                return false;
+
+            if (diff.Days < overdueAlertMaxDay && diff.Days > 0)
             {
                 // at least more than 24 hours over due
-                if (diff.Days % overdueAlertIntervalInDays == 1) // also every x interval days to send alert
+                if (diff.Days % overdueAlertIntervalInDays == 1 || overdueAlertIntervalInDays == 1) // also every x interval days to send alert
                 {
                     wfState.SNAP_Workflow.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
                     {
