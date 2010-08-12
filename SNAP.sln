@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apollo.AIM.SNAP.Test", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apollo.AIM.SNAP.Process", "src\lib\Apollo.AIM.SNAP.Process\Apollo.AIM.SNAP.Process.csproj", "{26A8AE56-B19F-4D42-8A7F-2E629A0101AF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apollo.AIM.SNAP.QA.DueDateSetter", "src\test\qaUtility\Apollo.AIM.SNAP.QA.DueDateSetter\Apollo.AIM.SNAP.QA.DueDateSetter.csproj", "{3CB2F692-22E0-467E-B130-2200C1F9D4DC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{26A8AE56-B19F-4D42-8A7F-2E629A0101AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26A8AE56-B19F-4D42-8A7F-2E629A0101AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26A8AE56-B19F-4D42-8A7F-2E629A0101AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CB2F692-22E0-467E-B130-2200C1F9D4DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CB2F692-22E0-467E-B130-2200C1F9D4DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CB2F692-22E0-467E-B130-2200C1F9D4DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CB2F692-22E0-467E-B130-2200C1F9D4DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
