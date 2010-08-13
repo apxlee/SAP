@@ -118,6 +118,10 @@ namespace Apollo.AIM.SNAP.Model
                     wfState = WorkflowState.Closed_Cancelled;
                     commentType = CommentsType.Cancelled;
                     break;
+                case WorkflowAction.Abandon:
+                    wfState = WorkflowState.Closed_Abandon;
+                    commentType = CommentsType.Abandon;
+                    break;
 
             }
 
@@ -1058,7 +1062,7 @@ namespace Apollo.AIM.SNAP.Model
             if (approvalType == ActorApprovalType.Workflow_Admin)
             {
                 if (to == WorkflowState.Closed_Cancelled || to == WorkflowState.Closed_Completed ||
-                    to == WorkflowState.Closed_Denied)
+                    to == WorkflowState.Closed_Denied || to == WorkflowState.Closed_Abandon)
                 {
                     newState.completedDate = DateTime.Now;
                     newState.dueDate = dueDate;

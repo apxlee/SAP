@@ -77,7 +77,7 @@ namespace Apollo.AIM.SNAP.Process
                 {
                     wfState.SNAP_Workflow.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
                     {
-                        commentText = "Overdue:" + overdueType + " Alert",
+                        commentText = "Overdue: " + overdueType + " Alert",
                         commentTypeEnum = (byte)CommentsType.Email_Reminder,
                         createdDate = DateTime.Now
                     });
@@ -129,6 +129,7 @@ namespace Apollo.AIM.SNAP.Process
 
         private string requestToChangeReason(IEnumerable<SNAP_Workflow_Comment> comments)
         {
+            /*
             var comment = comments.Where(c => c.commentTypeEnum == (byte)CommentsType.Requested_Change)
                                   .OrderByDescending(c => c.pkId)
                                   .First();
@@ -136,6 +137,29 @@ namespace Apollo.AIM.SNAP.Process
             {
                 // we add a <span> tag for each comment that user enters, so we need to strip that
                 return Regex.Split(comment.commentText, "<span")[0];
+            }
+             */
+
+            try
+            {
+                var reqid = comments.First().SNAP_Workflow.requestId;
+                using (var db = new SNAPDatabaseDataContext())
+                {
+                    var wfids = from w in db.SNAP_Workflows
+                                where w.requestId == reqid
+                                select w.pkId;
+
+                    // get the latest reqest to change comment
+                    var comment = db.SNAP_Workflow_Comments
+                        .Where(c => c.commentTypeEnum == (byte)CommentsType.Requested_Change && wfids.Contains(c.workflowId))
+                        .OrderByDescending(c => c.pkId)
+                        .First();
+                    return comment.commentText;
+                }
+            }
+            catch (Exception ex)
+            {
+                Utilities.OutputMessage(ex.Message + " - " + ex.StackTrace, EventLogEntryType.Error);
             }
             return string.Empty;
         }

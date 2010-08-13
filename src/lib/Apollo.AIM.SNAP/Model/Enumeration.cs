@@ -36,7 +36,8 @@ namespace Apollo.AIM.SNAP.Model
         Pending_Provisioning = 8,
         Pending_Workflow = 9,
         Workflow_Created = 10,
-        In_Workflow = 11
+        In_Workflow = 11,
+        Closed_Abandon = 12
     }
 
 	// TODO: need to tweak how comments are written to db
@@ -53,7 +54,8 @@ namespace Apollo.AIM.SNAP.Model
         Access_Notes_Requestor = 5,
         Access_Notes_ApprovingManager = 6,
         Access_Notes_AccessTeam = 7,
-        Access_Notes_SuperUser = 9
+        Access_Notes_SuperUser = 9,
+        Abandon = 10
     }
 
 	// TODO: rename this enum to match database table
@@ -81,7 +83,8 @@ namespace Apollo.AIM.SNAP.Model
         Cancel = 3,
         Ack = 4,
         Ticket = 5,
-        Complete = 6
+        Complete = 6,
+        Abandon = 7
     }
     
     public enum EmailTaskType

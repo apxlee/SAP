@@ -1189,6 +1189,77 @@ namespace Apollo.AIM.SNAP.Test
 
         }
 
+        [Test] public void ShouldHandleAbandonInPendingApprovalState()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var accessReq = createTestWorkflow(db, new List<int>()
+                                             {
+                                                 managerActorId,
+                                                 teamApprovalActorId,
+                                                 windowsServerActorId,
+                                                 //databaseActorId,
+                                                 //networkShareActorId
+                                             });
+                accessReq.NoAccess(WorkflowAction.Abandon, "Reach Max Overdue");
+            }
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+                var accessReq = new AccessRequest(req.pkId);
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
+                Assert.IsTrue(req.statusEnum == (byte)RequestState.Closed);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Closed_Abandon);
+                verifyWorkflowComment(wfs[0], CommentsType.Abandon);
+            }
+
+        }
+
+        [Test]
+        public void ShouldHandleAbandonInPendingTechApprovalState()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var accessReq = createTestWorkflow(db, new List<int>()
+                                             {
+                                                 managerActorId,
+                                                 teamApprovalActorId,
+                                                 windowsServerActorId,
+                                                 //databaseActorId,
+                                                 //networkShareActorId
+                                             });
+
+                // get manager approal
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
+                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate == null);
+
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+
+                // get team approval
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Team_Approver);
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+
+
+                // get technical approval
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+
+                accessReq.NoAccess(WorkflowAction.Abandon, "Reach Max Overdue");
+            }
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+                var accessReq = new AccessRequest(req.pkId);
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
+                Assert.IsTrue(req.statusEnum == (byte)RequestState.Closed);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Closed_Abandon);
+                verifyWorkflowComment(wfs[0], CommentsType.Abandon);
+            }
+
+        }
+
         [Test]
         public void ShouldHandleAccessTeamCloseAfterAllApproved()
         {
