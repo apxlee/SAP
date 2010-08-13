@@ -92,6 +92,7 @@
     <None Include="uninstall.bat" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="denyToSubmitter.html" />
     <Content Include="InstallUtil.exe" />
     <Content Include="nagApproval.html" />
     <Content Include="nagChangeRequested.html" />
@@ -111,6 +112,6 @@
     <PostBuildEvent>copy $(ProjectDir)inst*.exe $(TargetDir)
 copy $(ProjectDir)*.bat $(TargetDir)
 copy $(ProjectDir)log4net.*.config $(TargetDir)
-copy $(ProjectDir)nag*.html $(TargetDir)</PostBuildEvent>
+copy $(ProjectDir)*.html $(TargetDir)</PostBuildEvent>
   </PropertyGroup>
 </Project>

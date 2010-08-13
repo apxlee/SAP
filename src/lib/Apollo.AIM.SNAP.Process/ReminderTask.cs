@@ -70,6 +70,13 @@ namespace Apollo.AIM.SNAP.Process
             if (overdueAlertMaxDay <= 0 || overdueAlertIntervalInDays <= 0)
                 return false;
 
+            if (diff.Days >= overdueAlertMaxDay && wfState.workflowStatusEnum == (byte)WorkflowState.Pending_Approval)
+            {
+                var accessReq = new AccessRequest(wfState.SNAP_Workflow.requestId);
+                accessReq.NoAccess(WorkflowAction.Abandon, "Max over due days - " + overdueAlertMaxDay  + " reached!");
+                return false;
+            }
+
             if (diff.Days < overdueAlertMaxDay && diff.Days > 0)
             {
                 // at least more than 24 hours over due

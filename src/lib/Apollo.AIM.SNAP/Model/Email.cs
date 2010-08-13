@@ -110,6 +110,12 @@ namespace Apollo.AIM.SNAP.Model
 							followPageName = PageNames.USER_VIEW;
 							templatePath += ConfigurationManager.AppSettings["DenyToSubmitter"];
 							break;
+                        case WorkflowState.Closed_Abandon:
+                            subjectAction += "Abandoned";
+                            followPageName = PageNames.USER_VIEW;
+                            templatePath += ConfigurationManager.AppSettings["DenyToSubmitter"];
+                            break;
+
 					}
 					break;
 			}

@@ -92,7 +92,7 @@ namespace Apollo.AIM.SNAP.QA.DueDateSetter
                 var info = string.Empty;
 
                 if (i == dueDates.Length - 1)
-                    info = " <=== Close-abondaed date!";
+                    info = " <=== Close-abondaned date!";
                 Console.WriteLine("{0}: {1} {2}", i,dueDates[i], info);
             }
             Console.WriteLine("Which one(enter index number)?");
