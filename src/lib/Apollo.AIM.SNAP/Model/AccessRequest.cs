@@ -5,6 +5,7 @@ using System.Data.Linq;
 using System.Linq;
 
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Transactions;
 using Apollo.AIM.SNAP.CA;
 using Apollo.AIM.SNAP.Model;
@@ -576,8 +577,8 @@ namespace Apollo.AIM.SNAP.Model
 
                         changeRequest.CategoryName = "Server.Systems.Privileged Access";
                         changeRequest.Submitter.Get("svc_Cap");
-                        changeRequest.AffectedUser.Get(req.userId);  // req.userId???
-						changeRequest.Attributes["description"] = updatedDescription;
+                        changeRequest.AffectedUser.Get(Regex.Replace(req.userId, "^a.", ""));  // remove a. acct
+                        changeRequest.Attributes["description"] = updatedDescription;
                         changeRequest.Create();
 
                         req.ticketNumber = changeRequest.Number;
