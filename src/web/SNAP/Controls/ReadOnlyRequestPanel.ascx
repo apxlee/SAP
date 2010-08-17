@@ -14,6 +14,16 @@
 				<p><asp:Label ID="_affectedEndUserTitle" runat="server"></asp:Label></p>
 			</td>
 		</tr>
+
+		<asp:PlaceHolder ID="_affectedEndUserIdContainer" runat="server" Visible="false">
+			<tr>
+				<td style="text-align:right;width:140px;padding-right:4px;"><p>User Id&#58;</p></td>
+				<td style="padding:1px 10px 1px 4px;">
+					<p><asp:Label ID="_affectedEndUserId" runat="server"></asp:Label></p>
+				</td>
+			</tr>			
+		</asp:PlaceHolder>		
+		
 		<tr>
 			<td style="text-align:right;width:140px;padding-right:4px;"><p>Manager Name&#58;</p></td>
 			<td style="padding:1px 10px 1px 4px;">

@@ -39,6 +39,12 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			_managerName.Text = requestDemographics.managerDisplayName;
 			_adManagerName.Text = CompareManagerName(requestDemographics.userId, requestDemographics.managerUserId);
 		    _requestorName.Text = GetFullNameFromAD(requestDemographics.submittedBy);
+
+			if (SnapSession.CurrentUser.CurrentRole == Role.AccessTeam || SnapSession.CurrentUser.CurrentRole == Role.SuperUser)
+			{
+				_affectedEndUserIdContainer.Visible = true;
+				_affectedEndUserId.Text = requestDemographics.userId;
+			}
 		}
 
 		private string GetFullNameFromAD(string userId)
