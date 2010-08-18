@@ -70,6 +70,10 @@ namespace Apollo.AIM.SNAP.Process
             if (overdueAlertMaxDay <= 0 || overdueAlertIntervalInDays <= 0)
                 return false;
 
+            if (wfState.workflowStatusEnum != (byte)WorkflowState.Pending_Approval
+                && wfState.workflowStatusEnum != (byte)WorkflowState.Change_Requested)
+                return false;
+
             if (diff.Days >= overdueAlertMaxDay && wfState.workflowStatusEnum == (byte)WorkflowState.Pending_Approval)
             {
                 var accessReq = new AccessRequest(wfState.SNAP_Workflow.requestId);
@@ -82,14 +86,21 @@ namespace Apollo.AIM.SNAP.Process
                 // at least more than 24 hours over due
                 if (diff.Days % overdueAlertIntervalInDays == 1 || overdueAlertIntervalInDays == 1) // also every x interval days to send alert
                 {
-                    wfState.SNAP_Workflow.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
+                    if (wfState.workflowStatusEnum == (byte)WorkflowState.Pending_Approval
+                        || wfState.workflowStatusEnum == (byte)WorkflowState.Change_Requested)
                     {
-                        commentText = "Overdue: " + overdueType + " Alert",
-                        commentTypeEnum = (byte)CommentsType.Email_Reminder,
-                        createdDate = DateTime.Now
-                    });
+                        wfState.SNAP_Workflow.SNAP_Workflow_Comments.Add(new SNAP_Workflow_Comment()
+                                                                             {
+                                                                                 commentText =
+                                                                                     "Overdue: " + overdueType +
+                                                                                     " Alert",
+                                                                                 commentTypeEnum =
+                                                                                     (byte) CommentsType.Email_Reminder,
+                                                                                 createdDate = DateTime.Now
+                                                                             });
 
-                    return true;
+                        return true;
+                    }
                 }
             }
             return false;

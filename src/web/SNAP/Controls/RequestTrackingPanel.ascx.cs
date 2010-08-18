@@ -59,7 +59,10 @@ namespace Apollo.AIM.SNAP.Web.Controls
 				{
 					selectedRow.SetField("workflow_status", WorkflowState.Pending_Provisioning);
 				}
-				
+				else if ((int)selectedRow["workflow_status"] == (int)WorkflowState.Closed_Abandon)
+				{
+					selectedRow.SetField("workflow_status", WorkflowState.Closed_Abandon);
+				}
 				filteredTrackingData.ImportRow(selectedRow);
 				
 				RenderSectionHeading("Access & Identity Management");
