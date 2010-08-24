@@ -214,11 +214,16 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
 				foreach (DataRow comment in workflowCommentsTable.Rows)
 				{
+					string actionActorName = string.Empty;
+					if (comment["action"].ToString() == CommentsType.Email_Reminder.ToString() || comment["action"].ToString() == CommentsType.Requested_Change.ToString())
+					{ actionActorName = "AIM"; }
+					else { actionActorName = comment["workflow_actor"].ToString(); }
+
 					// TODO: move string to config file?
 					workflowComments.AppendFormat("<p{0}><u>{1} by {2} on {3}</u><br />{4}</p>"
 						, (bool)comment["is_new"] ? " class=csm_error_text" : string.Empty
 						, Convert.ToString((CommentsType)Enum.Parse(typeof(CommentsType), comment["action"].ToString())).StripUnderscore()
-						, (comment["action"].ToString() == CommentsType.Email_Reminder.ToString()) ? "AIM" : comment["workflow_actor"].ToString()
+						, actionActorName
 						, Convert.ToDateTime(comment["comment_date"]).ToString("MMM d, yyyy")
                         , comment["comment"].ToString().Replace("\n", "<br />"));
 				}
