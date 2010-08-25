@@ -38,6 +38,7 @@ namespace Apollo.AIM.SNAP.Web.Common
                 null ? new string[] { SnapSession.CurrentUser.DistributionGroup, SnapSession.CurrentUser.LoginId }
                 : new string[] { SnapSession.CurrentUser.LoginId };
             int approvalCount = Request.ApprovalCount(userIds);
+            RequestState OverAllState = new RequestState();
             int lastRow = 1;
             bool IsLastRow = false;
 
@@ -57,8 +58,8 @@ namespace Apollo.AIM.SNAP.Web.Common
                         if (ApproverState == WorkflowState.Pending_Approval) { break; }
                     }
                 }
-
-                if (ApproverState == WorkflowState.Pending_Approval)
+                OverAllState = (RequestState)Enum.Parse(typeof(RequestState), request["overall_request_status"].ToString());
+                if (ApproverState == WorkflowState.Pending_Approval && OverAllState == RequestState.Pending)
                 {
                     if (lastRow == approvalCount) { IsLastRow = true; }
                     pendingContainer.Controls.Add(BuildMasterBlade(request, currentPage, requestState, null, true, IsLastRow));
@@ -116,7 +117,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 			DataTable requestTable = new DataTable();
 			requestTable.Columns.Add("request_id", typeof(string));
 			requestTable.Columns.Add("affected_end_user_name", typeof(string));
-			requestTable.Columns.Add("overall_request_status", typeof(string));
+			requestTable.Columns.Add("overall_request_status", typeof(RequestState));
 			requestTable.Columns.Add("last_updated_date", typeof(string));
 			requestTable.Columns.Add("is_selected", typeof(bool));
 
@@ -126,8 +127,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 				requestTable.Rows.Add(
 					request.pkId
 					, request.userDisplayName.StripTitleFromUserName()
-					, Convert.ToString((RequestState)Enum.Parse(typeof(RequestState)
-					, request.statusEnum.ToString())).StripUnderscore()
+					, request.statusEnum.ToString()
 					, request.lastModifiedDate.ToString("MMM d, yyyy")
 					, (request.pkId.ToString().Trim() == selectedRequestId) ? true : false
 					);
@@ -174,7 +174,8 @@ namespace Apollo.AIM.SNAP.Web.Common
             requestBlade.RequestId = request["request_id"].ToString();
             requestBlade.RequestState = RequestState;
             requestBlade.AffectedEndUserName = request["affected_end_user_name"].ToString();
-            requestBlade.OverallRequestStatus = request["overall_request_status"].ToString();
+            requestBlade.OverallRequestStatus = Convert.ToString((RequestState)Enum.Parse(typeof(RequestState)
+            , request["overall_request_status"].ToString())).StripUnderscore();
             requestBlade.LastUpdatedDate = request["last_updated_date"].ToString();
             requestBlade.IsSelectedRequest = (bool)request["is_selected"];
             requestBlade.AvailableGroups = AvailableGroups;
