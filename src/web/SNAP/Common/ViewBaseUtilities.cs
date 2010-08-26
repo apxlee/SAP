@@ -124,6 +124,21 @@ namespace Apollo.AIM.SNAP.Web.Common
 			var reqDetails = Common.Request.Details(requestState);
 			foreach (usp_open_my_request_detailsResult request in reqDetails)
 			{
+				if ( (request.pkId.ToString().Trim() == selectedRequestId) 
+					&& (request.statusEnum == (int)RequestState.Change_Requested || request.statusEnum == (int)RequestState.Closed ) )
+				{
+					Page currentPage = HttpContext.Current.Handler as Page;
+					
+					Panel statusChangeMessage = new Panel();
+					statusChangeMessage = (Panel)WebUtilities.FindControlRecursive(currentPage, "_statusChangedMessage");
+					statusChangeMessage.Visible = true;
+
+					Label requestIdLabel = new Label();
+					requestIdLabel = (Label)WebUtilities.FindControlRecursive(currentPage, "_requestIdChanged");
+					requestIdLabel.Text = selectedRequestId;
+					requestIdLabel.Visible = true;
+				}
+
 				requestTable.Rows.Add(
 					request.pkId
 					, request.userDisplayName.StripTitleFromUserName()
