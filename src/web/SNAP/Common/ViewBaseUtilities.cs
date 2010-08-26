@@ -58,7 +58,7 @@ namespace Apollo.AIM.SNAP.Web.Common
                         if (ApproverState == WorkflowState.Pending_Approval) { break; }
                     }
                 }
-                OverAllState = (RequestState)Enum.Parse(typeof(RequestState), request["overall_request_status"].ToString());
+                OverAllState = (RequestState)request["overall_request_status"];
                 if (ApproverState == WorkflowState.Pending_Approval && OverAllState == RequestState.Pending)
                 {
                     if (lastRow == approvalCount) { IsLastRow = true; }
