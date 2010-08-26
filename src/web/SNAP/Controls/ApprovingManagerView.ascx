@@ -2,6 +2,13 @@
 <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>MasterRequestBlade.js" type="text/javascript"></script>
 <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>ApprovingManagerView.js" type="text/javascript"></script>
 <div class="csm_container_center_700">
+
+	<asp:Panel ID="_statusChangedMessage" runat="server" CssClass="csm_content_container" Visible="false">
+		<div class="csm_text_container">
+			<p class="csm_error_text"><strong>Request Status Changed</strong><br />The Access Request <asp:Label ID="_requestIdChanged" runat="server"></asp:Label> has had its status changed.  
+			At this time, you cannot perform Approver Actions.<br />See Request Tracking for details.</p>
+		</div>
+	</asp:Panel>
 	
 	<h1>Pending Approval</h1>
 	<asp:PlaceHolder ID="_pendingApprovalsContainer" runat="server"></asp:PlaceHolder>

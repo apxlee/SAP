@@ -14,6 +14,24 @@ namespace Apollo.AIM.SNAP.Web.Controls {
     public partial class ApprovingManagerView {
         
         /// <summary>
+        /// _statusChangedMessage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel _statusChangedMessage;
+        
+        /// <summary>
+        /// _requestIdChanged control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label _requestIdChanged;
+        
+        /// <summary>
         /// _pendingApprovalsContainer control.
         /// </summary>
         /// <remarks>
