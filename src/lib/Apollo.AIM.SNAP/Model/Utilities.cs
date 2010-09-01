@@ -4,11 +4,14 @@ using System.Configuration;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 using Apollo.CA.Logging;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 
 namespace Apollo.AIM.SNAP.Model
 {
-	class Utilities
+	public class Utilities
 	{
 		public static string WebRootUrl
 		{
@@ -38,7 +41,45 @@ namespace Apollo.AIM.SNAP.Model
 					return string.Empty;
 				}
 			}
-		}		
+		}
 
 	}
+
+    [DataContract]
+    public class WebMethodResponse
+    {
+        public WebMethodResponse() { }
+        public static string SerializeResponse(WebMethodResponse response)
+        {
+            DataContractJsonSerializer serializer = new DataContractJsonSerializer(response.GetType());
+            using (MemoryStream ms = new MemoryStream())
+            {
+                serializer.WriteObject(ms, response);
+                string retVal = Encoding.Default.GetString(ms.ToArray());
+                return retVal;
+            }
+        }
+        public static WebMethodResponse DeserializeResponse(string response)
+        {
+
+            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(WebMethodResponse));
+            using (MemoryStream ms = new MemoryStream(Encoding.Unicode.GetBytes(response)))
+            {
+                WebMethodResponse responseObject = (WebMethodResponse)serializer.ReadObject(ms);
+                return responseObject;
+            }
+        }
+        public WebMethodResponse(bool success, string title, string message)
+        {
+            this.Success = success;
+            this.Title = title;
+            this.Message = message;
+        }
+        [DataMember]
+        public bool Success { get; set; }
+        [DataMember]
+        public string Title { get; set; }
+        [DataMember]
+        public string Message { get; set; }
+    }
 }
