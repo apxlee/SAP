@@ -577,7 +577,7 @@ namespace Apollo.AIM.SNAP.Model
 
                         changeRequest.CategoryName = "Server.Systems.Privileged Access";
                         changeRequest.Submitter.Get("svc_Cap");
-                        changeRequest.AffectedUser.Get(Regex.Replace(req.userId, "^a.", ""));  // remove a. acct
+                        changeRequest.AffectedUser.Get(Regex.Replace(req.userId, @"^a\.", ""));  // remove a. acct
                         changeRequest.Attributes["description"] = updatedDescription;
                         changeRequest.Create();
 
