@@ -38,7 +38,7 @@ namespace Apollo.AIM.SNAP.CA
         {
             try
             {
-                var directorySearch = new DirectorySearcher(_ldapconn.UserSearchBase);
+                var directorySearch = new DirectorySearcher(new DirectoryEntry("LDAP://" + _ldapconn.UserSearchBase));
                 directorySearch.Filter = "(&(objectClass=user)(SAMAccountName=" + userName + "))";
                 SearchResult results = directorySearch.FindOne();
 
@@ -60,7 +60,7 @@ namespace Apollo.AIM.SNAP.CA
         {
             try
             {
-                var directorySearch = new DirectorySearcher(_ldapconn.UserSearchBase); // ActiveDirectoryHelper.SearchRoot);
+                var directorySearch = new DirectorySearcher(new DirectoryEntry("LDAP://" + _ldapconn.UserSearchBase));
                 directorySearch.Filter = "(&(objectClass=user)(cn=" + userName + "))";
                 SearchResult results = directorySearch.FindOne();
 
@@ -85,7 +85,7 @@ namespace Apollo.AIM.SNAP.CA
         {
             try
             {
-                var directorySearch = new DirectorySearcher(_ldapconn.UserSearchBase); // ActiveDirectoryHelper.SearchRoot);
+                var directorySearch = new DirectorySearcher(new DirectoryEntry("LDAP://" + _ldapconn.UserSearchBase));
                 directorySearch.Filter = "(&(objectClass=user)(cn=" + userName + "*))";
                 SearchResultCollection results = directorySearch.FindAll();
 
