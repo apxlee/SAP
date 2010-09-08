@@ -596,7 +596,7 @@ namespace Apollo.AIM.SNAP.Model
         public WebMethodResponse CreateServiceDeskTicket()
         {
             WebMethodResponse resp = new WebMethodResponse();
-            var result = false;
+            //var result = false;
             try 
             {
                 using (var db = new SNAPDatabaseDataContext())
@@ -607,7 +607,7 @@ namespace Apollo.AIM.SNAP.Model
                         
                     initializeData(db, WorkflowState.Approved, out req, out accessTeamWF, out dueDate);
 
-                    result = reqStateTransition(req, RequestState.Pending, RequestState.Pending, accessTeamWF
+                    var result = reqStateTransition(req, RequestState.Pending, RequestState.Pending, accessTeamWF
 						, WorkflowState.Approved, WorkflowState.Pending_Provisioning);
 
                     if (result)
@@ -645,7 +645,6 @@ namespace Apollo.AIM.SNAP.Model
             catch (Exception ex)
             {
                 Logger.Error("[SNAP] AccessRequest > CreateServiceDeskTicket", ex);
-                result = false;
                 resp = new WebMethodResponse(false, "Create Ticket Failed", ex.Message);
             }
             return resp;
