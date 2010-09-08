@@ -319,7 +319,7 @@ namespace Apollo.AIM.SNAP.Test
             {
                 var accessReq = createAndAckAccessReq(db); 
 
-                Assert.IsFalse(accessReq.CreateWorkflow(new List<int>() { windowsServerActorId, databaseActorId }));
+                Assert.IsFalse(accessReq.CreateWorkflow(new List<int>() { windowsServerActorId, databaseActorId }).Success);
 
             }
         }
@@ -1315,15 +1315,15 @@ namespace Apollo.AIM.SNAP.Test
                 var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
 
                 var accessReq = new AccessRequest(req.pkId);
-                Assert.IsFalse(accessReq.CreateServiceDeskTicket());
-                Assert.IsFalse(accessReq.CreateWorkflow(new List<int>() { 1, 2, 3 }));
-                Assert.IsFalse(accessReq.FinalizeRequest());
-                Assert.IsFalse(accessReq.RequestChanged());
+                Assert.IsFalse(accessReq.CreateServiceDeskTicket().Success);
+                Assert.IsFalse(accessReq.CreateWorkflow(new List<int>() { 1, 2, 3 }).Success);
+                Assert.IsFalse(accessReq.FinalizeRequest().Success);
+                Assert.IsFalse(accessReq.RequestChanged().Success);
                 accessReq.Ack();
-                Assert.IsFalse(accessReq.CreateServiceDeskTicket());
-                Assert.IsFalse(accessReq.Ack());
-                Assert.IsFalse(accessReq.FinalizeRequest());
-                Assert.IsFalse(accessReq.RequestChanged());
+                Assert.IsFalse(accessReq.CreateServiceDeskTicket().Success);
+                Assert.IsFalse(accessReq.Ack().Success);
+                Assert.IsFalse(accessReq.FinalizeRequest().Success);
+                Assert.IsFalse(accessReq.RequestChanged().Success);
             }
         }
 
@@ -2406,7 +2406,7 @@ namespace Apollo.AIM.SNAP.Test
                                                                 windowsServerActorId,
                                                                 databaseActorId,
                                                                 teamApprovalActorId,
-                                                            }));
+                                                            }).Success);
             }
 
         }

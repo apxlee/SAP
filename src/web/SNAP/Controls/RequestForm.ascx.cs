@@ -144,7 +144,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
                     RequestData.UpdateRequestData(newRequestDataList, _requestFormData);
 
                     var accessReq = new AccessRequest(requestID);
-                    if (!accessReq.RequestChanged())
+                    if (!accessReq.RequestChanged().Success)
                     {
                         sendEmail = false;
                     }

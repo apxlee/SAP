@@ -80,7 +80,7 @@ namespace Apollo.AIM.SNAP.Web
 */
 
         [WebMethod]
-        public static bool CreateWorkflow(int requestId, string managerUserId, string actorIds)
+        public static WebMethodResponse CreateWorkflow(int requestId, string managerUserId, string actorIds)
         {
             var accessReq = new AccessRequest(requestId);
             List<int> actorsList = GetActorsList(actorIds);
@@ -89,7 +89,7 @@ namespace Apollo.AIM.SNAP.Web
         }
 
         [WebMethod]
-        public static bool EditWorkflow(int requestId, string managerUserId, string actorIds)
+        public static WebMethodResponse EditWorkflow(int requestId, string managerUserId, string actorIds)
         {
             var accessReq = new AccessRequest(requestId);
             List<int> actorsList = GetActorsList(actorIds);
@@ -120,7 +120,7 @@ namespace Apollo.AIM.SNAP.Web
         }
         
         [WebMethod]
-        public static bool ApproverActions(int requestId, WorkflowAction action, string comments)
+        public static WebMethodResponse ApproverActions(int requestId, WorkflowAction action, string comments)
         {
             var currentUsrId = SnapSession.CurrentUser.DistributionGroup != null ? SnapSession.CurrentUser.DistributionGroup : SnapSession.CurrentUser.LoginId;
             int wfId = 0;
@@ -129,7 +129,7 @@ namespace Apollo.AIM.SNAP.Web
             {
                 wfId = db.GetActiveWorkflowId(requestId, currentUsrId);
                 if (wfId == 0)
-                    return false;
+                    return new WebMethodResponse(false, "Approver Action Failed", "Approver has nothing to approve" );
             }
             
 
@@ -157,7 +157,7 @@ namespace Apollo.AIM.SNAP.Web
         }
         
         [WebMethod]
-        public static bool AccessTeamActions(int requestId, WorkflowAction action, string comments)
+        public static WebMethodResponse AccessTeamActions(int requestId, WorkflowAction action, string comments)
         {
             //TODO: get actorId from current user
             var accessReq = new AccessRequest(requestId);
@@ -172,13 +172,14 @@ namespace Apollo.AIM.SNAP.Web
                     return accessReq.NoAccess(action, comments);
                 case WorkflowAction.Denied:
                     return accessReq.NoAccess(action, comments);
+                 
                 default:
-                    return false;
+                    return new WebMethodResponse(false,"AIM","Unknown operation");
             }
         }
 
         [WebMethod]
-        public static bool BuilderActions(int requestId, WorkflowAction action)
+        public static WebMethodResponse BuilderActions(int requestId, WorkflowAction action)
         {
             //TODO: get actorId from current user
             var accessReq = new AccessRequest(requestId);
@@ -191,13 +192,14 @@ namespace Apollo.AIM.SNAP.Web
                     return accessReq.FinalizeRequest();
                 case WorkflowAction.Ticket:
                     return accessReq.CreateServiceDeskTicket();
+                 
                 default:
-                    return false;
+                    return new WebMethodResponse(false, "BuilderActions", "Unknown action");
             }
         }
 
         [WebMethod]
-        public static bool AccessComments(int requestId, CommentsType action, string comments)
+        public static WebMethodResponse AccessComments(int requestId, CommentsType action, string comments)
         {
             var accessReq = new AccessRequest(requestId);
             return accessReq.AddComment(comments, action);

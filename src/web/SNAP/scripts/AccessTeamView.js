@@ -177,7 +177,7 @@ function AccessTeamActions(obj, requestId, action) {
         data: postData,
         dataType: "json",
         success: function(msg) {
-            if (msg.d) {
+            if (msg.d.Success) {
                 switch (action) {
                     case '4':
                         $('#_indicatorDiv').hide();
@@ -243,8 +243,10 @@ function AccessTeamActions(obj, requestId, action) {
             else {
                 $('#_indicatorDiv').hide();
                 $('#_closeMessageDiv').show();
-                $('div.messageBox').children("h2").html("Action Failed");
-                $('div.messageBox').children("p").html("Please try again.");
+                //$('div.messageBox').children("h2").html("Action Failed");
+                //$('div.messageBox').children("p").html("Please try again.");
+                $('div.messageBox').children("h2").html(msg.d.Title);
+                $('div.messageBox').children("p").html(msg.d.Message + " Please try again.");
             }
         }
 		,
@@ -323,7 +325,7 @@ function AccessComments(obj, requestId) {
             data: postData,
             dataType: "json",
             success: function(msg) {
-                if (msg.d) {
+                if (msg.d.Success) {
                     $('#_indicatorDiv').hide();
                     ActionMessage("Access Comment", "Your comment has been added to this request.");
                     $(obj).closest("div.csm_content_container").find("div.oospa_request_details").next().find("tr").each(function() {
@@ -347,8 +349,11 @@ function AccessComments(obj, requestId) {
                 else {
                     $('#_indicatorDiv').hide();
                     $('#_closeMessageDiv').show();
-                    $('div.messageBox').children("h2").html("Action Failed");
-                    $('div.messageBox').children("p").html("Please try again.");
+                    //$('div.messageBox').children("h2").html("Action Failed");
+                    //$('div.messageBox').children("p").html("Please try again.");
+                    $('div.messageBox').children("h2").html(msg.d.Title);
+                    $('div.messageBox').children("p").html(msg.d.Message + " Please try again.");
+
                 }
             }
 		,
@@ -586,7 +591,7 @@ function builderActions(obj, requestId, state) {
         data: postData,
         dataType: "json",
         success: function(msg) {
-            if (msg.d) {
+            if (msg.d.Success) {
                 switch (state) {
                     case "3":
                         $('#_indicatorDiv').hide();
@@ -622,15 +627,20 @@ function builderActions(obj, requestId, state) {
                 if (state == 5) {
                     $('#_indicatorDiv').hide();
                     $('#_closeMessageDiv').show();
-                    $('div.messageBox').children("h2").html("Ticket Creation Failed");
-                    $('div.messageBox').children("p").html("Please try again or create the ticket manually (add the ticket number within the comments section).");
+                    //$('div.messageBox').children("h2").html("Ticket Creation Failed");
+                    //$('div.messageBox').children("p").html("Please try again or create the ticket manually (add the ticket number within the comments section).");
+                    $('div.messageBox').children("h2").html(msg.d.Title);
+                    $('div.messageBox').children("p").html(msg.d.Message + " Please try again.");
                     $("#closed_completed_" + requestId).removeAttr("disabled");
                 }
                 else {
                     $('#_indicatorDiv').hide();
                     $('#_closeMessageDiv').show();
-                    $('div.messageBox').children("h2").html("Action Failed");
-                    $('div.messageBox').children("p").html("Please try again.");
+                    //$('div.messageBox').children("h2").html("Action Failed");
+                    //$('div.messageBox').children("p").html("Please try again.");
+                    $('div.messageBox').children("h2").html(msg.d.Title);
+                    $('div.messageBox').children("p").html(msg.d.Message + " Please try again.");
+
                 }
             }
         }
@@ -700,7 +710,7 @@ function createWorkflow(obj, requestId) {
                 data: postData,
                 dataType: "json",
                 success: function(msg) {
-                    if (msg.d) {
+                    if (msg.d.Success) {
                         $('#_indicatorDiv').hide();
                         ActionMessage("Workflow Created", "The workflow has been created for this request.");
                         updateRequestTracking(obj, "Access &amp; Identity Management", "In Workflow", false);
@@ -710,8 +720,11 @@ function createWorkflow(obj, requestId) {
                     else {
                         $('#_indicatorDiv').hide();
                         $('#_closeMessageDiv').show();
-                        $('div.messageBox').children("h2").html("Workflow Creation Failed");
-                        $('div.messageBox').children("p").html("The workflow creation failed.");
+                        //$('div.messageBox').children("h2").html("Workflow Creation Failed");
+                        //$('div.messageBox').children("p").html("The workflow creation failed.");
+                        $('div.messageBox').children("h2").html(msg.d.Title);
+                        $('div.messageBox').children("p").html(msg.d.Message);
+
                     }
                 },
 
@@ -739,7 +752,7 @@ function editCreatedWorkflow(obj, requestId) {
                 data: postData,
                 dataType: "json",
                 success: function(msg) {
-                    if (msg.d) {
+                    if (msg.d.Success) {
                         $('#_indicatorDiv').hide();
                         ActionMessage("Workflow Updated", "The workflow has been updated for this request.");
                         disableBuilder(obj, requestId);
@@ -748,8 +761,11 @@ function editCreatedWorkflow(obj, requestId) {
                     else {
                         $('#_indicatorDiv').hide();
                         $('#_closeMessageDiv').show();
-                        $('div.messageBox').children("h2").html("Workflow Updated Failed");
-                        $('div.messageBox').children("p").html("The workflow update failed. No changes where made.");
+                        //$('div.messageBox').children("h2").html("Workflow Updated Failed");
+                        //$('div.messageBox').children("p").html("The workflow update failed. No changes where made.");
+                        $('div.messageBox').children("h2").html(msg.d.Title);
+                        $('div.messageBox').children("p").html(msg.d.Message);
+
                     }
                 },
 
