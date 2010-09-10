@@ -8,6 +8,7 @@ using System.IO;
 using Apollo.CA.Logging;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
+using System.Web.Script.Serialization;
 
 namespace Apollo.AIM.SNAP.Model
 {
@@ -45,10 +46,27 @@ namespace Apollo.AIM.SNAP.Model
 
 	}
 
+    public static class JSONHelper
+    {
+        public static string ToJSONString(this object obj)
+        {
+            var serializer = new JavaScriptSerializer();
+            return serializer.Serialize(obj);
+        }
+
+        public static T FromJSONStringToType<T> (this string jsonString)
+        {
+            var serializer = new JavaScriptSerializer();
+            return serializer.Deserialize<T>(jsonString);
+        }
+
+    }
+
     [DataContract]
     public class WebMethodResponse
     {
         public WebMethodResponse() { }
+        /*
         public static string SerializeResponse(WebMethodResponse response)
         {
             DataContractJsonSerializer serializer = new DataContractJsonSerializer(response.GetType());
@@ -69,6 +87,7 @@ namespace Apollo.AIM.SNAP.Model
                 return responseObject;
             }
         }
+         */
         public WebMethodResponse(bool success, string title, string message)
         {
             this.Success = success;
