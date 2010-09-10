@@ -21,6 +21,8 @@ namespace Apollo.AIM.SNAP.Model
 
     public class AccessRequest
     {
+        public const string SeeDetailsReqTracking = "Incorrect State. Please see details in Request Tracking. ";
+
         private int _id;
         private static int AccessTeamActorId = 1;
 
@@ -35,20 +37,10 @@ namespace Apollo.AIM.SNAP.Model
         public WebMethodResponse Ack()
         { 
             WebMethodResponse resp = new WebMethodResponse() ;
-            bool result = false;
             try
             {
                 using (var db = new SNAPDatabaseDataContext())
                 {
-                    /*
-                    var req = db.SNAP_Requests.Single(r => r.pkId == _id);
-                    var accessTeamWF = req.SNAP_Workflows.Single(x => x.actorId == AccessTeamActorId);
-                    var dueDate = accessTeamWF.SNAP_Workflow_States.Single(
-                            s =>
-                            s.completedDate == null &&
-                            s.workflowStatusEnum == (byte) WorkflowState.Pending_Acknowledgement).dueDate;
-                    
-                    */
                     
                     SNAP_Workflow accessTeamWF;
                     DateTime? dueDate;
@@ -56,7 +48,7 @@ namespace Apollo.AIM.SNAP.Model
 
                     initializeData(db, WorkflowState.Pending_Acknowledgement, out req, out accessTeamWF, out dueDate);
                     
-                    result = reqStateTransition(req, RequestState.Open, RequestState.Pending,
+                    var result = reqStateTransition(req, RequestState.Open, RequestState.Pending,
                                                 accessTeamWF, WorkflowState.Pending_Acknowledgement,
                                                 WorkflowState.Pending_Workflow);
 
@@ -65,6 +57,10 @@ namespace Apollo.AIM.SNAP.Model
 						addAccessTeamComment(accessTeamWF, "Due Date: " + Convert.ToDateTime(dueDate).ToString("MMM d, yyyy"), CommentsType.Acknowledged);
                         db.SubmitChanges();
                         resp = new WebMethodResponse(true, "Acknowledgement", "Success");
+                    }
+                    else
+                    {
+                        resp = new WebMethodResponse(false, "Acknowledgement Error", SeeDetailsReqTracking);
                     }
 
                 }
@@ -82,7 +78,6 @@ namespace Apollo.AIM.SNAP.Model
         {
             WebMethodResponse resp = new WebMethodResponse();
 			comment = comment.Replace("<br />", string.Empty);
-            //var result = false;
             try
             {
                 using (var db = new SNAPDatabaseDataContext())
@@ -95,14 +90,12 @@ namespace Apollo.AIM.SNAP.Model
                                                           createdDate = DateTime.Now
                                                        });
                     db.SubmitChanges();
-                    //result = true;
                     resp = new WebMethodResponse(true, "Add Comment", "Success");
                 }
             }
             catch (Exception ex)
             {
                 Logger.Fatal("AccessRequest - AddComment, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
-                //result = false;
                 resp = new WebMethodResponse(false, "Add Comment Exception", ex.Message);
             }
             return resp;
@@ -111,7 +104,6 @@ namespace Apollo.AIM.SNAP.Model
         public WebMethodResponse NoAccess(WorkflowAction action, string comment)
         {
             WebMethodResponse resp = new WebMethodResponse();
-            bool result = false;
 
             WorkflowState wfState = WorkflowState.Not_Active;
             CommentsType commentType = CommentsType.Cancelled;
@@ -140,7 +132,7 @@ namespace Apollo.AIM.SNAP.Model
                     var req = db.SNAP_Requests.Single(r => r.pkId == _id);
                     var accessTeamWF = req.SNAP_Workflows.Single(x => x.actorId == AccessTeamActorId);
                     var currentAccessTeamWFState = (WorkflowState) accessTeamWF.SNAP_Workflow_States.Single(s => s.completedDate == null).workflowStatusEnum;
-                    result = reqStateTransition(req, RequestState.Pending, RequestState.Closed,
+                    var result = reqStateTransition(req, RequestState.Pending, RequestState.Closed,
                                                 accessTeamWF, currentAccessTeamWFState, /* WorkflowState.Pending_Workflow,*/
                                                 wfState);
 
@@ -154,13 +146,16 @@ namespace Apollo.AIM.SNAP.Model
                         db.SubmitChanges();
                         resp = new WebMethodResponse(true, "Cancel/Deny", "Success");
                     }
+                    else
+                    {
+                        resp = new WebMethodResponse(false, "Cancel/Deny Error", SeeDetailsReqTracking); 
+                    }
 
                 }
             }
             catch (Exception ex)
             {
                 Logger.Fatal("AccessRequest - NoAccess, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
-                result = false;
                 resp = new WebMethodResponse(false, "Cancel/Deny Exception", ex.Message);
             }
             return resp;
@@ -170,9 +165,6 @@ namespace Apollo.AIM.SNAP.Model
 
         public WebMethodResponse RequestToChange(int actorId, string comment)
         {
-            WebMethodResponse resp = new WebMethodResponse();
-            bool result = false;
-
             try
             {
                 if (actorId == AccessTeamActorId)
@@ -188,24 +180,19 @@ namespace Apollo.AIM.SNAP.Model
                         wid = req.SNAP_Workflows.Single(w => w.actorId == actorId).pkId; // TODO: can one actor plays multiple roles such as manager and technical approver, if so, this will not work
                     }
                     return WorkflowAck(wid, WorkflowAction.Change);
-                    //resp = new WebMethodResponse(true, "Request to Change", "Success");
                 }
             }
             catch(Exception ex)
             {
                 Logger.Error("SNAP - AccessRequst: Request To Change", ex);
-                result = false;
-                resp = new WebMethodResponse(false, "Request to Change Exception", ex.Message);
+                return new WebMethodResponse(false, "Request Change Exception", ex.Message);
             }
-
-            return resp;
         }
 
 
         public WebMethodResponse RequestToChange(string comment)
         {
             WebMethodResponse resp = new WebMethodResponse();
-            bool result = false;
 
             try
             {
@@ -213,7 +200,7 @@ namespace Apollo.AIM.SNAP.Model
                 {
                     var req = db.SNAP_Requests.Single(r => r.pkId == _id);
                     var accessTeamWF = req.SNAP_Workflows.Single(x => x.actorId == AccessTeamActorId);
-                    result = reqStateTransition(req, RequestState.Pending, RequestState.Change_Requested,
+                    var result = reqStateTransition(req, RequestState.Pending, RequestState.Change_Requested,
                                                 accessTeamWF, WorkflowState.Pending_Workflow,
                                                 WorkflowState.Change_Requested);
 
@@ -227,15 +214,18 @@ namespace Apollo.AIM.SNAP.Model
 						Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy + "@apollogrp.edu", req.userDisplayName, _id, req.submittedBy, WorkflowState.Change_Requested, comment);
 						// don't send AIM when AIM makes the change... Email.SendTaskEmail(EmailTaskType.UpdateRequester, ConfigurationManager.AppSettings["AIM-DG"], "AIM for " + req.userDisplayName, req.pkId, req.submittedBy, WorkflowState.Change_Requested, comment);
                         db.SubmitChanges();
-                        resp = new WebMethodResponse(true, "Request to Change", "Success");
+                        resp = new WebMethodResponse(true, "Request Change", "Success");
+                    }
+                    else
+                    {
+                        resp = new WebMethodResponse(false, "Request Change Error", SeeDetailsReqTracking); 
                     }
                 }
             }
             catch (Exception ex)
             {
                 Logger.Fatal("AccessRequest - RequestToChange, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
-                result = false;
-                resp = new WebMethodResponse(false, "Request to Change Exception", ex.Message);
+                resp = new WebMethodResponse(false, "Request Change Exception", ex.Message);
             }
 
             return resp;
@@ -244,7 +234,6 @@ namespace Apollo.AIM.SNAP.Model
         public WebMethodResponse RequestChanged()
         {
             WebMethodResponse resp = new WebMethodResponse();
-            var result = false;
              
             try
             {
@@ -252,22 +241,26 @@ namespace Apollo.AIM.SNAP.Model
                 {
                     var req = db.SNAP_Requests.Single(r => r.pkId == _id);
                     var accessTeamWF = req.SNAP_Workflows.Single(x => x.actorId == AccessTeamActorId);
-                    result = reqStateTransition(req, RequestState.Change_Requested, RequestState.Open,
+                    var result = reqStateTransition(req, RequestState.Change_Requested, RequestState.Open,
                                                 accessTeamWF, WorkflowState.Change_Requested,
                                                 WorkflowState.Pending_Acknowledgement);
 
                     if (result)
                     {
                         db.SubmitChanges();
-                        resp = new WebMethodResponse(true, "Request to Change", "Success");
+                        resp = new WebMethodResponse(true, "Request Changed", "Success");
                     }
+                    else
+                    {
+                        resp = new WebMethodResponse(false, "Request Changed Error", SeeDetailsReqTracking);
+                    }
+
 
                 }
             }
             catch (Exception ex)
             {
                 Logger.Fatal("AccessRequest - RequestChanged, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
-                result = false;
                 resp = new WebMethodResponse(false, "Request Changed Exception", ex.Message);
             }
 
@@ -284,8 +277,8 @@ namespace Apollo.AIM.SNAP.Model
                 actorIDs.Add(mgrActorId);
                 return CreateWorkflow(actorIDs);
             }
-
-            return new WebMethodResponse(false, "Create Workflow", "Missing Manager");
+            
+            return new WebMethodResponse(false, "Workflow Creation", "Manager Approver Not in AD. Please adjust approver. ");
         }
 
         /// <summary>
@@ -301,15 +294,6 @@ namespace Apollo.AIM.SNAP.Model
             {
                 using (var db = new SNAPDatabaseDataContext())
                 {
-                    /*
-                    var req = db.SNAP_Requests.Single(r => r.pkId == _id);
-                    var accessTeamWF = req.SNAP_Workflows.Single(x => x.actorId == AccessTeamActorId);
-                    var dueDate = accessTeamWF.SNAP_Workflow_States.Single(
-                            s =>
-                            s.completedDate == null &&
-                            s.workflowStatusEnum == (byte)WorkflowState.Pending_Workflow).dueDate;
-
-                    */
                     
                     SNAP_Workflow accessTeamWF;
                     DateTime? dueDate;
@@ -331,16 +315,16 @@ namespace Apollo.AIM.SNAP.Model
                             createrApprovalWorkFlow(db, actorIds);
                             addAccessTeamComment(accessTeamWF, "Due Date: " + Convert.ToDateTime(dueDate).ToString("MMM d, yyyy"), CommentsType.Workflow_Created);
                             db.SubmitChanges();
-                            resp = new WebMethodResponse(true, "Create Workflow", "Success");
+                            resp = new WebMethodResponse(true, "Workflow Creation", "Success");
                         }
                         else
                         {
-                            resp = new WebMethodResponse(false, "Create Workflow Failed", "Missing manager");
+                            resp = new WebMethodResponse(false, "Workflow Creation Error", "Missing Manager. Please adjust manager. ");
                         }
                     }
                     else
                     {
-                        resp = new WebMethodResponse(false, "Create Workflow Failed", "Bad state transition");
+                        resp = new WebMethodResponse(false, "Workflow Creation Error", SeeDetailsReqTracking);
                     }
 
                 }
@@ -350,8 +334,7 @@ namespace Apollo.AIM.SNAP.Model
             catch (Exception ex) 
             {
                 Logger.Fatal("AccessRequest - CreateWorkflow, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
-                result = false;
-                resp = new WebMethodResponse(false, "Create Workflow Exception", ex.Message);
+                resp = new WebMethodResponse(false, "Workflow Creation Exception", ex.Message);
             }
             return resp;
         }
@@ -365,7 +348,7 @@ namespace Apollo.AIM.SNAP.Model
         public WebMethodResponse EditWorkflow(string mgrusrId, List<int> actorIDs)
         {
             WebMethodResponse resp = new WebMethodResponse();
-            bool result = false;
+
             var mgrActorId = ApprovalWorkflow.GetActorIdByUserId(ActorGroupType.Manager, mgrusrId);
             if (mgrActorId != 0)
             {
@@ -376,7 +359,6 @@ namespace Apollo.AIM.SNAP.Model
                     actorIDs.Add(mgrActorId);
                     using (var db = new SNAPDatabaseDataContext())
                     {
-                        //result = mustHaveManagerInWorkflow(db, actorIDs);
                         var check = editWorkflowCheck(db, actorIDs, currentPendingApproverType);
                         if (check.Success)
                         {
@@ -413,13 +395,12 @@ namespace Apollo.AIM.SNAP.Model
 
                                 // in case we are removing the last approver who has not approved yet
                                 ApprovalWorkflow.CompleteRequestApprovalCheck(_id);
-                                resp = new WebMethodResponse(true, "Edit Workflow", "Success");
+                                resp = new WebMethodResponse(true, "Workflow Change", "Success");
                                 
                             }
                             else
                             {
-                                result = false;
-                                resp = new WebMethodResponse(false, "Edit Workflow Failed", "Not in workflow state");
+                                resp = new WebMethodResponse(false, "Workflow Change Error", SeeDetailsReqTracking);
                             }
                         }
                         else
@@ -440,9 +421,9 @@ namespace Apollo.AIM.SNAP.Model
                 switch (currentPendingApproverType)
                 {
                     case (byte) ActorApprovalType.Manager:
-                        return new WebMethodResponse(true, "Edit Workflow", "Success");
+                        return new WebMethodResponse(true, "Workflow Change", "Success");
                     case (byte) ActorApprovalType.Team_Approver:
-                        return new WebMethodResponse(true, "Edit Workflow", "Success");
+                        return new WebMethodResponse(true, "Workflow Change", "Success");
                     case (byte) ActorApprovalType.Technical_Approver:
                         foreach (var actorId in actorIds)
                         {
@@ -455,16 +436,16 @@ namespace Apollo.AIM.SNAP.Model
                                 if (act.SNAP_Actor_Group.actorGroupType == (byte) ActorApprovalType.Team_Approver
                                     && approverCnt == 0
                                     )
-                                    return new WebMethodResponse(false, "Edit Workflow Failed", "Wrong time frame");
+                                    return new WebMethodResponse(false, "Workflow Change Error", "Wrong time frame. ");
                             }
                         }
-                        return new WebMethodResponse(true, "Edit Workflow", "Success"); ;
+                        return new WebMethodResponse(true, "Workflow Change", "Success"); ;
                     default:
-                        return new WebMethodResponse(false, "Edit Workflow Failed", "Inproper approver");
+                        return new WebMethodResponse(false, "Workflow Change Error", "Unknown Approver Type. Pleae adjust approver. ");
                 }
 
             }
-            return new WebMethodResponse(false, "Edit Workflow Failed", "Missing manager");
+            return new WebMethodResponse(false, "Workflow Change Error", "No Manager. Please adjust approver. ");
         }
 
         private void InformNewPendingApproverNewDueDate(SNAP_Workflow wf, int currentPendingApproverType)
@@ -596,7 +577,6 @@ namespace Apollo.AIM.SNAP.Model
         public WebMethodResponse CreateServiceDeskTicket()
         {
             WebMethodResponse resp = new WebMethodResponse();
-            //var result = false;
             try 
             {
                 using (var db = new SNAPDatabaseDataContext())
@@ -634,18 +614,18 @@ namespace Apollo.AIM.SNAP.Model
 							, CommentsType.Ticket_Created);
                         
 						db.SubmitChanges();
-                        resp = new WebMethodResponse(true, "Create Ticket", "Success");
+                        resp = new WebMethodResponse(true, "Ticket Creation", "Success");
                     }
                     else
                     {
-                        resp = new WebMethodResponse(false, "Create Ticket Failed", "Wrong state");
+                        resp = new WebMethodResponse(false, "Ticket Creation Error", SeeDetailsReqTracking);
                     }
                 }
             }
             catch (Exception ex)
             {
                 Logger.Error("[SNAP] AccessRequest > CreateServiceDeskTicket", ex);
-                resp = new WebMethodResponse(false, "Create Ticket Failed", ex.Message);
+                resp = new WebMethodResponse(false, "Ticket Creation Exception", ex.Message);
             }
             return resp;
         }
@@ -663,14 +643,13 @@ namespace Apollo.AIM.SNAP.Model
         public WebMethodResponse FinalizeRequest()
         {
             WebMethodResponse resp = new WebMethodResponse();
-            var result = false;
             try
             {
                 using (var db = new SNAPDatabaseDataContext())
                 {
                     var req = db.SNAP_Requests.Single(r => r.pkId == _id);
                     var accessTeamWF = req.SNAP_Workflows.Single(x => x.actorId == AccessTeamActorId);
-                    result = reqStateTransition(req, RequestState.Pending, RequestState.Closed,
+                    var result = reqStateTransition(req, RequestState.Pending, RequestState.Closed,
                                                 accessTeamWF, WorkflowState.Pending_Provisioning,
                                                 WorkflowState.Closed_Completed);
 
@@ -689,11 +668,11 @@ namespace Apollo.AIM.SNAP.Model
                         {
                             Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy, req.userDisplayName, _id, req.submittedBy, WorkflowState.Closed_Completed, null);
                             db.SubmitChanges();
-                            resp = new WebMethodResponse(true, "Finalize Request", "Success");
+                            resp = new WebMethodResponse(true, "Finalization", "Success");
                         }
                         else
                         {
-                            resp = new WebMethodResponse(false, "Finalize Request Failed", "Wrong State");
+                            resp = new WebMethodResponse(false, "Finalization Error", SeeDetailsReqTracking);
                         }
                     }
                 }
@@ -701,8 +680,7 @@ namespace Apollo.AIM.SNAP.Model
             catch (Exception ex)
             {
                 Logger.Fatal("AccessRequest - FinalizeRequest, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
-                result = false;
-                resp = new WebMethodResponse(false, "Finalize Request Failed", ex.Message);
+                resp = new WebMethodResponse(false, "Finalization Exception", ex.Message);
             }
 
             return resp;
@@ -1433,9 +1411,11 @@ namespace Apollo.AIM.SNAP.Model
 
         protected WebMethodResponse approveAndInformOtherSequentialManager()
         {
-
+            /*
             if (req.statusEnum != (byte)RequestState.Pending)
-                return new WebMethodResponse(false, "Approver Action Failed", "Request not in Pending state.");
+                return new WebMethodResponse(false, "Approver Error", AccessRequest.SeeDetailsReqTracking);
+
+             */
 
             //using (TransactionScope ts = new TransactionScope())
             //{
@@ -1450,7 +1430,7 @@ namespace Apollo.AIM.SNAP.Model
                 }
             //}
 
-            return new WebMethodResponse(false, "Approver Action Failed", "Failed to move to approved state.");
+            return new WebMethodResponse(false, "Approver Error", AccessRequest.SeeDetailsReqTracking);
 
         }
 
@@ -1559,9 +1539,10 @@ namespace Apollo.AIM.SNAP.Model
 
         protected WebMethodResponse requestToChangeBy(ActorApprovalType approvalType, string comment)
         {
-            
+            /*
             if (req.statusEnum != (byte)RequestState.Pending)
-                return new WebMethodResponse(false, "Approver Action Failed", "Request not in Pending state.");
+                return new WebMethodResponse(false, "Approver Error", AccessRequest.SeeDetailsReqTracking);
+             */
 
             //using (TransactionScope ts = new TransactionScope())
             //{
@@ -1571,10 +1552,10 @@ namespace Apollo.AIM.SNAP.Model
                     approvalRequestToChange(comment);
                     db.SubmitChanges();
                     //ts.Complete();
-                    return new WebMethodResponse(false, "Approver", "Success"); ;
+                    return new WebMethodResponse(true, "Approver", "Success"); ;
                 }
             //}
-                return new WebMethodResponse(false, "Approver Action Failed", "Can't move to Approved state."); ;
+                return new WebMethodResponse(false, "Approver Error", AccessRequest.SeeDetailsReqTracking); ;
         }
 
         protected void approvalRequestToChange(string comment)
@@ -1620,9 +1601,10 @@ namespace Apollo.AIM.SNAP.Model
 
         protected WebMethodResponse denyBy(ActorApprovalType approvalType, string comment)
         {
-
+            /*
             if (req.statusEnum != (byte)RequestState.Pending)
-                return new WebMethodResponse(false, "Approver Action Failed", "Request not in Pending state.");
+                return new WebMethodResponse(false, "Approver Error", AccessRequest.SeeDetailsReqTracking);
+            */
 
             //using (TransactionScope ts = new TransactionScope())
             //{
@@ -1635,7 +1617,7 @@ namespace Apollo.AIM.SNAP.Model
                     return new WebMethodResponse(true, "Approver", "Success"); 
                 }
             //}
-                return new WebMethodResponse(false, "Approver Action Failed", "Can't move to Approved state.");
+                return new WebMethodResponse(false, "Approver Error", AccessRequest.SeeDetailsReqTracking);
         }
 
         protected void approvalDeny(ActorApprovalType type, string comment)
@@ -1719,8 +1701,10 @@ namespace Apollo.AIM.SNAP.Model
 
         public override WebMethodResponse Approve()
         {
+            /*
             if (req.statusEnum != (byte)RequestState.Pending)
-                return new WebMethodResponse(false, "Approver Action Failed", "Request not in pending state.");
+                return new WebMethodResponse(false, "Approver Error", AccessRequest.SeeDetailsReqTracking);
+            */
 
             //using (TransactionScope ts = new TransactionScope())
             //{
@@ -1733,7 +1717,7 @@ namespace Apollo.AIM.SNAP.Model
                 }
             //}
 
-                return new WebMethodResponse(false, "Approver Action Failed", "Can't move to Approved state."); ;
+                return new WebMethodResponse(false, "Approver Error", AccessRequest.SeeDetailsReqTracking); ;
         }
 
         public override WebMethodResponse Deny(string comment)
