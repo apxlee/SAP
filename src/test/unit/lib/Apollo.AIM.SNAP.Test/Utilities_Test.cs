@@ -23,7 +23,7 @@ namespace Apollo.AIM.SNAP.Test
             Console.WriteLine("Json String: " + jstring);
 
 
-            var responses2 = jstring.FromJSONStringToType<List<WebMethodResponse>>();
+            var responses2 = jstring.FromJSONStringToObj<List<WebMethodResponse>>();
             Assert.IsInstanceOfType(typeof(List<WebMethodResponse>), responses2);
             responses2.ForEach(r => Console.WriteLine(r.Message));
             Assert.IsInstanceOfType(typeof(WebMethodResponse), responses2[0]);
