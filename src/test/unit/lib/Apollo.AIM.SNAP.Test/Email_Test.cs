@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using Apollo.AIM.SNAP.Model;
 using NUnit.Framework;
 
@@ -33,5 +34,14 @@ namespace Apollo.AIM.SNAP.Test
             Email.SendTaskEmail(EmailTaskType.ProxyForAffectedEndUser, "hello@apollogrp.edu", "Hello", 123, "hello");
         }
 
+        [Test]
+        public void RegExp()
+        {
+                                                     //"^a\\."
+            Console.WriteLine(Regex.Replace("a.pxlee", @"^a\.", ""));
+            Console.WriteLine(Regex.Replace("pa.xlee", @"^a\.", ""));
+            Console.WriteLine(Regex.Replace("a.agnair", @"^a\.", ""));
+            Console.WriteLine(Regex.Replace("agnair", @"^a\.", ""));
+        }
     }
 }

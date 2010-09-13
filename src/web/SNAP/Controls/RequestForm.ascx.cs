@@ -107,6 +107,14 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
                 this._requestForm.Controls.Add(requestFormSection);
             }
+
+
+            if (_requestFormData.Count == 0 && !string.IsNullOrEmpty(SnapSession.SelectedRequestId))
+            {
+                _changeComments.Text = "Permission Denied or Request Status Changed! At this time, you cannot perform modification. ";
+                SnapSession.SelectedRequestId = string.Empty;
+            }
+
         }
 
         protected void _submitForm_Click(object sender, EventArgs e)
@@ -239,11 +247,14 @@ namespace Apollo.AIM.SNAP.Web.Controls
             {
                 var req = db.SNAP_Requests.Single(x => x.pkId == requestId);
 
+                // we want to keep submitter the same, eventhough aeu can modify the form after requestchange
+                /*
                 if (req.submittedBy != submitterId)
                 {
                     req.submittedBy = submitterId;
                     change = true;
                 }
+                 */
 
                 if (req.userId != userId)
                 {
