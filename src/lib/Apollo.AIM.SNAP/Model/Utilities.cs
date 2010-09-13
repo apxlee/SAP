@@ -50,14 +50,28 @@ namespace Apollo.AIM.SNAP.Model
     {
         public static string ToJSONString(this object obj)
         {
-            var serializer = new JavaScriptSerializer();
-            return serializer.Serialize(obj);
+            var serializer = new DataContractJsonSerializer(obj.GetType());
+            using (MemoryStream ms = new MemoryStream())
+            {
+                serializer.WriteObject(ms, obj);
+                string retVal = Encoding.Default.GetString(ms.ToArray());
+                return retVal;
+            }
+
         }
 
         public static T FromJSONStringToObj<T> (this string jsonString)
         {
-            var serializer = new JavaScriptSerializer();
-            return serializer.Deserialize<T>(jsonString);
+            //var serializer = new JavaScriptSerializer();
+            //return serializer.Deserialize<T>(jsonString);
+
+            var serializer = new DataContractJsonSerializer(typeof (T));
+            using (MemoryStream ms = new MemoryStream(Encoding.Unicode.GetBytes(jsonString)))
+            {
+                var obj = (T) serializer.ReadObject(ms);
+                return obj;
+            }
+
         }
 
     }
