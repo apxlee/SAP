@@ -111,7 +111,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
             if (_requestFormData.Count == 0 && !string.IsNullOrEmpty(SnapSession.SelectedRequestId))
             {
-                _changeComments.Text = "Permission Denied or Request Status Changed! At this time, you cannot perform modification. ";
+                _changeComments.Text = "Request Status Changed! At this time, you cannot perform modification or Not Your Request. ";
                 SnapSession.SelectedRequestId = string.Empty;
             }
 
