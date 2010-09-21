@@ -134,6 +134,10 @@ namespace Apollo.AIM.SNAP.Model
                     var currentAccessTeamWFState = (WorkflowState) accessTeamWF.SNAP_Workflow_States.Single(s => s.completedDate == null).workflowStatusEnum;
                     var result = reqStateTransition(req, RequestState.Pending, RequestState.Closed,
                                                 accessTeamWF, currentAccessTeamWFState, /* WorkflowState.Pending_Workflow,*/
+                                                wfState)
+                            || 
+                            reqStateTransition(req, RequestState.Change_Requested, RequestState.Closed,
+                                                accessTeamWF, currentAccessTeamWFState, /* WorkflowState.Pending_Workflow,*/
                                                 wfState);
 
                     if (result)
