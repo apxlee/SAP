@@ -683,6 +683,48 @@ namespace Apollo.AIM.SNAP.Test
         }
 
         [Test]
+        public void ShouldHandleAIMCancelWhenRequestInRequestToChangeState()
+        {
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var accessReq = createTestWorkflow(db, new List<int>()
+                                             {
+                                                 managerActorId,
+                                                 teamApprovalActorId,
+                                                 windowsServerActorId,
+                                                 databaseActorId,
+                                                 networkShareActorId
+                                             });
+
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
+
+                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate == null);
+
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Change);
+
+                accessReq.NoAccess(WorkflowAction.Cancel, "Cancel it");
+
+            }
+
+
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+                var accessReq = new AccessRequest(req.pkId);
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
+
+                Assert.IsTrue(req.statusEnum == (byte)RequestState.Closed);
+                verifyWorkflowState(wfs[0], WorkflowState.Closed_Cancelled);
+                verifyWorkflowComment(wfs[0], CommentsType.Cancelled);
+
+            }
+
+        }
+
+
+        [Test]
         public void ShouldHandleFromManagerToTeamApprove()
         {
 
@@ -2008,6 +2050,53 @@ namespace Apollo.AIM.SNAP.Test
             }
 
         }
+
+        [Test]
+        public void ShouldHandleFinalizeWithoutSDTicket()
+        {
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var accessReq = createTestWorkflow(db, new List<int>()
+                                             {
+                                                 managerActorId,
+                                                 teamApprovalActorId,
+                                                 windowsServerActorId,
+                                                 //databaseActorId,
+                                                 //networkShareActorId
+                                             });
+
+
+                // get manager approal
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
+                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate == null);
+
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+
+                // get team approval
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Team_Approver);
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+
+
+                // get technical approval
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+
+                accessReq.FinalizeRequest();
+            }
+
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
+                var accessReq = new AccessRequest(req.pkId);
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Workflow_Admin);
+                verifyWorkflowStateComplete(wfs[0], WorkflowState.Closed_Completed);
+                Assert.IsTrue(req.statusEnum == (byte)RequestState.Closed);
+
+            }
+
+        }
+
 
         [Test]
         public void ShouldHandleManagerDeniedRequest()

@@ -654,8 +654,12 @@ namespace Apollo.AIM.SNAP.Model
                     var req = db.SNAP_Requests.Single(r => r.pkId == _id);
                     var accessTeamWF = req.SNAP_Workflows.Single(x => x.actorId == AccessTeamActorId);
                     var result = reqStateTransition(req, RequestState.Pending, RequestState.Closed,
-                                                accessTeamWF, WorkflowState.Pending_Provisioning,
-                                                WorkflowState.Closed_Completed);
+                                                    accessTeamWF, WorkflowState.Pending_Provisioning,
+                                                    WorkflowState.Closed_Completed)
+                                 ||
+                                 reqStateTransition(req, RequestState.Pending, RequestState.Closed,
+                                                    accessTeamWF, WorkflowState.Approved,
+                                                    WorkflowState.Closed_Completed);
 
                     if (result)
                     {
