@@ -11,6 +11,16 @@ var curr_month = d.getMonth();
 var curr_year = d.getFullYear();
 var curr_date = m_names[curr_month] + " " + curr_day + ", " + curr_year;
 
+var ViewIndexEnum = {
+		Login: 0,
+		Request_Form: 1,
+		My_Requests: 2,
+		My_Approvals: 3,
+		Access_Team: 4,
+		Search: 5,
+		Support: 6	
+		}
+
 function GetRequests(viewIndex) {
     var postData = "{\"view\":\"" + viewIndex + "\"}";
     $.ajax({

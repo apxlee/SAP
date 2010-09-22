@@ -13,8 +13,8 @@
 					<div class="csm_grid_3">
 						<h1>Feedback</h1>
 						<ul>
-							<li><a href="mailto:DG C-APO-Corporate-ITS Access Management SNAPFU?subject=SNAP%20Comments">Comments</a></li>
-							<li><a href="mailto:DG C-APO-Corporate-ITS Access Management SNAPFU?subject=SNAP%20Problem">Report Problem</a></li>
+							<li><a href="mailto:DG C-APO-Corporate-ITS Access Management?subject=SAP%20Contact%20Team">Contact Team</a></li>
+							<li><a href="mailto:DG C-APO-Corporate-ITS Access Management SNAPFU?subject=SAP%20Comments%20or%20Problem">Comments or Report Problem</a></li>
 							<li><a href="http://www.google.com/analytics">Statistics</a></li>
 						</ul>
 					</div>

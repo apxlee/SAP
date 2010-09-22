@@ -20,12 +20,11 @@
 	</div>	
 </div>
 <script type="text/javascript">
-	//<![CDATA[
-	//]]>
-</script>
-<script type="text/javascript">
-    try {GetRequests(2);}
+
+    try { GetRequests(ViewIndexEnum.My_Requests); }
     catch (err) {}
+    
 	try { pageTracker._trackPageview("UserView"); }
 	catch (err) {}
+
 </script>

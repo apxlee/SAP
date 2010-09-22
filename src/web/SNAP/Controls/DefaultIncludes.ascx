@@ -368,7 +368,7 @@
 	<div ID="_workflowBladeData" class="csm_data_row %%AlternatingCss%%">
         <table border="0" cellpadding="0" cellspacing="0">
             <tr>
-				<td style="width:230px;"><span snap="_actorDisplayName">%%ActorName%% | %%GroupTypeId%%</span></td>
+				<td style="width:230px;"><span snap="_actorDisplayName">%%ActorName%%</span></td>
 				<td style="width:170px;"><span snap="_workflowStatus">%%Status%%</span></td>
 				<td style="width:120px;"><span snap="_workflowDueDate">%%DueDate%%</span></td>
 				<td style="width:120px;"><span snap="_workflowCompletedDate">%%CompletedDate%%</span></td>
