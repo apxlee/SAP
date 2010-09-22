@@ -43,7 +43,7 @@
         </div>
 </div>
 <script type="text/javascript">
-    try { GetRequests(4); }
+    try { GetRequests(ViewIndexEnum.Access_Team); }
     catch (err) { }
 	try { pageTracker._trackPageview("AccessTeamView"); }
 	catch (err) {}
