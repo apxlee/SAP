@@ -655,10 +655,6 @@ namespace Apollo.AIM.SNAP.Model
                     var accessTeamWF = req.SNAP_Workflows.Single(x => x.actorId == AccessTeamActorId);
                     var result = reqStateTransition(req, RequestState.Pending, RequestState.Closed,
                                                     accessTeamWF, WorkflowState.Pending_Provisioning,
-                                                    WorkflowState.Closed_Completed)
-                                 ||
-                                 reqStateTransition(req, RequestState.Pending, RequestState.Closed,
-                                                    accessTeamWF, WorkflowState.Approved,
                                                     WorkflowState.Closed_Completed);
 
                     if (result)
@@ -666,7 +662,14 @@ namespace Apollo.AIM.SNAP.Model
                         //Email.UpdateRequesterStatus(req.submittedBy, req.userDisplayName, _id, WorkflowState.Closed_Completed, string.Empty);
 						Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy + "@apollogrp.edu", req.userDisplayName, _id, req.submittedBy, WorkflowState.Closed_Completed, null);
                         db.SubmitChanges();
+                        resp = new WebMethodResponse(true, "Finalization", "Success");
                     }
+                    else
+                    {
+                        resp = new WebMethodResponse(false, "Finalization Error", SeeDetailsReqTracking);
+                    }
+
+                    /*
                     else
                     {
                         result = reqStateTransition(req, RequestState.Pending, RequestState.Closed,
@@ -683,6 +686,7 @@ namespace Apollo.AIM.SNAP.Model
                             resp = new WebMethodResponse(false, "Finalization Error", SeeDetailsReqTracking);
                         }
                     }
+                     */
                 }
             }
             catch (Exception ex)

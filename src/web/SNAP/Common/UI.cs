@@ -920,7 +920,7 @@ namespace Apollo.AIM.SNAP.Web.Common
             {
                 case WorkflowState.Approved:
                     availableButtons.Add(new BuilderButton("closed_cancelled_" + requestId, "Closed Cancelled", "3", false));
-                    availableButtons.Add(new BuilderButton("closed_completed_" + requestId, "Closed Completed", "6", true));
+                    availableButtons.Add(new BuilderButton("closed_completed_" + requestId, "Closed Completed", "6", false));
                     availableButtons.Add(new BuilderButton("create_ticket_" + requestId, "Create Ticket", "5", false));
                     currentBuilder.IsDisabled = true;
                     break;
