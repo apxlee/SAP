@@ -22,10 +22,7 @@
 			</ul>
 		</div>
 	</div>	
-	<div class="quicksearch_container">
-	    <div class="quicksearch_input_container"><input type="text" id="__quicksearchInput" class="quicksearch_input" /><input type="hidden" /></div>
-	    <div class="quicksearch_link">Q</div>
-	</div>
+	
 	<div id="_openRequestsContainer"></div>
 	<div id="_nullDataMessage_OpenRequests" class="csm_content_container" style="display:none;">
 		<div class="csm_text_container">

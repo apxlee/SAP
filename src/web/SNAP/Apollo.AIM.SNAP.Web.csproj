@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{5AB65A15-CF1E-40AE-B0B7-6000B447EA8C}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
@@ -250,7 +250,6 @@
     </Compile>
     <Compile Include="Common\SnapSession.cs" />
     <Compile Include="Common\SnapUser.cs" />
-    <Compile Include="Common\TrackingUI.cs" />
     <Compile Include="Common\UI.cs" />
     <Compile Include="Common\ViewBaseUtilities.cs" />
     <Compile Include="Common\WebUtilities.cs" />
@@ -429,21 +428,6 @@
     <Compile Include="AppMaintenance.aspx.designer.cs">
       <DependentUpon>AppMaintenance.aspx</DependentUpon>
     </Compile>
-    <Compile Include="JONTEST\FilteredTrackingData.cs" />
-    <Compile Include="JONTEST\TrackingAjax.aspx.cs">
-      <DependentUpon>TrackingAjax.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="JONTEST\TrackingAjax.aspx.designer.cs">
-      <DependentUpon>TrackingAjax.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="JONTEST\TrackingBladeTest.aspx.cs">
-      <DependentUpon>TrackingBladeTest.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="JONTEST\TrackingBladeTest.aspx.designer.cs">
-      <DependentUpon>TrackingBladeTest.aspx</DependentUpon>
-    </Compile>
     <Compile Include="MyApprovals.aspx.cs">
       <DependentUpon>MyApprovals.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -550,8 +534,6 @@
     <Content Include="ajax\AjaxUI.aspx" />
     <Content Include="ajax\AjaxUtilities.aspx" />
     <Content Include="images\button_loading.gif" />
-    <Content Include="JONTEST\TrackingAjax.aspx" />
-    <Content Include="JONTEST\TrackingBladeTest.aspx" />
     <Content Include="scripts\jquery.hotkeys-0.7.9.min.js" />
     <Content Include="scripts\jquery.json-2.2.min.js" />
     <Content Include="scripts\MyRequestsView.js" />
@@ -582,6 +564,9 @@
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/SNAP</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
