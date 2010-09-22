@@ -13,8 +13,8 @@ function CreateBlades(requests) {
         .replace("__lastUpdatedDate_ID", "__lastUpdatedDate_" + data.RequestId)
         .replace("__requestId_TEXT", data.RequestId)
         .replace("__requestId_ID", "__requestId_" + data.RequestId)
-        .replace("__toggleIconContainer", "__toggleIconContainer_" + data.RequestId)
-        .replace("__toggledContentContainer", "__toggledContentContainer_" + data.RequestId)
+        .replace("__toggleIconContainer_ID", "__toggleIconContainer_" + data.RequestId)
+        .replace("__toggledContentContainer_ID", "__toggledContentContainer_" + data.RequestId)
         .replace("__snapRequestId", data.RequestId)
         .replace("__workflowStatus_ID", "__workflowStatus_" + data.RequestId)
         .replace("__workflowStatus_TEXT", data.WorkflowStatus);
@@ -37,12 +37,12 @@ function CreateBlades(requests) {
 	    );
 
         $("#__toggleIconContainer_" + data.RequestId).bind('click', function() {
-            ToggleDetails($("#__toggleIconContainer_" + data.RequestId), data.RequestId);
+            ToggleDetails(data.RequestId);
         });
     });
-    if (pendingCount > 1) { $("#__multiplePendingApprovals").val("true"); }
+    if (pendingCount > 1) { $("#__multiplePendingApprovals").val(true); }
 }
-function CreateRequestDetails(details, sender, requestId) {
+function CreateRequestDetails(details, requestId) {
     var data = jQuery.parseJSON(details);
     var ADManagaer = "";
     if (data.ADManager != "") { ADManagaer = "[Active Directory: " + data.ADManager + "]"; }
@@ -83,12 +83,13 @@ function CreateRequestDetails(details, sender, requestId) {
 
     $("#__toggledContentContainer_" + requestId).html($("#__toggledContentContainer_" + requestId).html()
     .replace("<!--__requestDetailsSection-->", newRequestDetails));
-    if ($("#__workflowStatus_" + requestId).val() == 7) { CreateApproverActions(sender, requestId); }
-    else { ToggleLoading(sender, requestId); }
+    if ($("#__workflowStatus_" + requestId).val() == 7) { CreateApproverActions(requestId); }
+    else { GetTracking(requestId); }
 }
-function CreateApproverActions(sender, requestId) {
+function CreateApproverActions(requestId) {
     var newApproval = $("#_approverActions").html();
-    newApproval = newApproval.replace(/__changeDeny_ID/g, "__changeDeny_" + requestId)
+    newApproval = newApproval.replace("__approverActions_ID", "__approverActions_" + requestId)
+    .replace(/__changeDeny_ID/g, "__changeDeny_" + requestId)
     .replace("__approve_ID", "__approve_" + requestId)
     .replace("__approveAndMoveNext_ID", "__approveAndMoveNext_" + requestId)
     .replace("__radioApproverChange_ID", "__radioApproverChange_" + requestId)
@@ -99,12 +100,12 @@ function CreateApproverActions(sender, requestId) {
 
     $("#__toggledContentContainer_" + requestId).html($("#__toggledContentContainer_" + requestId).html()
     .replace("<!--__requestApproval-->", newApproval));
-
+    
     if (!$("#__multiplePendingApprovals").val()) { $("#__approveAndMoveNext_" + requestId).hide(); }
     
-    BindEvents(sender, requestId);
+    BindEvents(requestId);
 }
-function BindEvents(sender, requestId) {
+function BindEvents(requestId) {
 
     $("#__approve_" + requestId).click(function() {
         ApproverActions(this, requestId, '0');
@@ -130,7 +131,7 @@ function BindEvents(sender, requestId) {
         ChangeDenyClick(this);
     });
 
-    ToggleLoading(sender, requestId);
+    GetTracking(requestId);
 }
 function ChangeDenyClick(obj) {
     $(obj).closest("table").next().find("input[type=button]").each(
@@ -158,21 +159,22 @@ function ApproverActions(obj, requestId, action) {
     }
     comments = "<br />" + textarea.val();
     var newAction = new Comment(requestId, action, textarea.val());
-    $.ajax({
-        type: "POST",
-        contentType: "application/json; character=utf-8",
-        url: "AjaxCalls.aspx/ApproverActions",
-        data: newAction.toJSON,
-        dataType: "json",
-        success: function(msg) {
-            if (msg.d.Success) {
+//    $.ajax({
+//        type: "POST",
+//        contentType: "application/json; character=utf-8",
+//        url: "AjaxCalls.aspx/ApproverActions",
+//        data: newAction.toJSON,
+//        dataType: "json",
+//        success: function(msg) {
+//            if (msg.d) {
 
                 switch (action) {
                     case '0':
                         $('#_indicatorDiv').hide();
                         ActionMessage("Approved", "You have successfully approved this request.");
                         //updateRequestTracking(obj, approverName, "Approved");
-                        AnimateActions(obj, "Open Requests");
+                        AnimateActions("Open Requests", requestId);
+                        $("#__approverActions_" + requestId).hide();
                         if ($(obj).attr("id").indexOf("_approveAndMoveNext") > -1) { OpenNext(requestId); }
                         UpdateCount();
                         break;
@@ -181,7 +183,8 @@ function ApproverActions(obj, requestId, action) {
                         ActionMessage("Change Requested", "You have just requested a change.");
                         //updateRequestTracking(obj, approverName, "Change Requested");
                         AddComments(obj, approverName, "Change Requested", comments, false);
-                        AnimateActions(obj, "Open Requests");
+                        AnimateActions("Open Requests", requestId);
+                        $("#__approverActions_" + requestId).hide();
                         $(obj).closest("div.csm_content_container").find("tr.csm_stacked_heading_label").children().each(function() {
                             if ($(this).next().children().html() == "Pending") {
                                 $(this).next().children().html("Change Requested");
@@ -192,9 +195,10 @@ function ApproverActions(obj, requestId, action) {
                     case '1':
                         $('#_indicatorDiv').hide();
                         ActionMessage("Closed Denied", "You have just denied this request.");
+                        $("#__approverActions_" + requestId).hide();
                         //updateRequestTracking(obj, approverName, "Closed Denied");
                         AddComments(obj, approverName, "Closed Denied", comments, false);
-                        AnimateActions(obj, "Closed Requests");
+                        AnimateActions("Closed Requests", requestId);
                         $(obj).closest("div.csm_content_container").find("tr.csm_stacked_heading_label").children().each(function() {
                             if ($(this).next().children().html() == "Pending") {
                                 $(this).next().children().html("Closed");
@@ -203,24 +207,21 @@ function ApproverActions(obj, requestId, action) {
                         UpdateCount();
                         break;
                 }
-            }
-            else {
-                $('#_indicatorDiv').hide();
-                $('#_closeMessageDiv').show();
-                //$('div.messageBox').children("h2").html("Action Failed");
-                //$('div.messageBox').children("p").html("Please try again.");
-                $('div.messageBox').children("h2").html(msg.d.Title);
-                $('div.messageBox').children("p").html(msg.d.Message + " Please try again.");
-
-            }
-        }
-		,
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            alert("ApproverAction Error: " + XMLHttpRequest);
-            alert("ApproverAction Error: " + textStatus);
-            alert("ApproverAction Error: " + errorThrown);
-        }
-    });
+//            }
+//            else {
+//                $('#_indicatorDiv').hide();
+//                $('#_closeMessageDiv').show();
+//                $('div.messageBox').children("h2").html("Action Failed");
+//                $('div.messageBox').children("p").html("Please try again.");
+//            }
+//        }
+//		,
+//        error: function(XMLHttpRequest, textStatus, errorThrown) {
+//            alert("ApproverAction Error: " + XMLHttpRequest);
+//            alert("ApproverAction Error: " + textStatus);
+//            alert("ApproverAction Error: " + errorThrown);
+//        }
+//    });
 }
 function OpenNext(requestId) {
     var requestIds = [];
@@ -228,10 +229,17 @@ function OpenNext(requestId) {
     $("#_pendingApprovalsContainer").find("div.csm_toggle_container").each(function() {
         if($(this).attr("snap") != ""){requestIds.push($(this).attr("snap"));}
     });
+
     $.each(requestIds, function(index, value) {
+        if (requestIds.length == 2) {
+            $("#__multiplePendingApprovals").val(false);
+            $("#__approveAndMoveNext_" + requestIds[index]).hide();
+        }
         if (value == requestId) {
-            if(index == requestIds.length-1){openRequest = requestIds[0];}
-            else{openRequest = requestIds[index+1];}
+            if (index == requestIds.length - 1) { openRequest = requestIds[0]; }
+            else {
+                openRequest = requestIds[index + 1];
+            }
         }
     });
     var blade = $("#__toggleIconContainer_" + openRequest);

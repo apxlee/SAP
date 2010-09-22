@@ -21,8 +21,8 @@ function CreateBlades(requests) {
         if (data.RequestStatus != "Closed") { $("#_openRequestsContainer").append($(newRequestBlade)); }
         else { $("#_closedRequestsContainer").append($(newRequestBlade)); }
         $("#__toggleIconContainer_" + data.RequestId).hover(function() {
-                $(this).addClass("csm_toggle_show_hover");
-            },
+            $(this).addClass("csm_toggle_show_hover");
+        },
 		    function() {
 		        $(this).removeClass("csm_toggle_show_hover");
 		    }
@@ -32,7 +32,7 @@ function CreateBlades(requests) {
         });
     });
 }
-function CreateRequestDetails(details, sender, requestId) {
+function CreateRequestDetails(details, requestId) {
     var data = jQuery.parseJSON(details);
     var ADManagaer = "";
     if (data.ADManager != "") { ADManagaer = "[Active Directory: " + data.ADManager + "]"; }
@@ -74,6 +74,6 @@ function CreateRequestDetails(details, sender, requestId) {
     $("#__toggledContentContainer_" + requestId).html($("#__toggledContentContainer_" + requestId).html()
     .replace("<!--__requestDetailsSection-->", newRequestDetails));
 
-    ToggleLoading(sender, requestId);
+    GetTracking(requestId);
 }
 // VIEW SPECIFIC - END

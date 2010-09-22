@@ -560,7 +560,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>31582</DevelopmentServerPort>
+          <DevelopmentServerPort>2977</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/SNAP</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

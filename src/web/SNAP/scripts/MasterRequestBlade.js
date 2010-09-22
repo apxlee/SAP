@@ -51,7 +51,7 @@ function GetSearchRequests(searchString) {
         }
     });
 }
-function GetDetails(sender, requestId) {
+function GetDetails(requestId) {
     var postData = "{\"requestId\":\"" + requestId + "\"}";
     $.ajax({
         type: "POST",
@@ -61,7 +61,7 @@ function GetDetails(sender, requestId) {
         dataType: "json",
         success: function(msg) {
         if (msg.d.length > 0) {
-                CreateRequestDetails(msg.d, sender, requestId);
+                CreateRequestDetails(msg.d, requestId);
             }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -71,12 +71,13 @@ function GetDetails(sender, requestId) {
         }
     });
 }
-function ToggleLoading(sender, requestId) {
-    if ($(sender).hasClass("csm_toggle_loading")) {
-        $(sender).removeClass("csm_toggle_loading");
+function ToggleLoading(requestId) {
+    var blade = $("#__toggleIconContainer_" + requestId);
+    if (blade.hasClass("csm_toggle_loading")) {
+        blade.removeClass("csm_toggle_loading");
         $("#__toggledContentContainer_" + requestId).removeClass("csm_hidden_block");
-        $(sender).addClass("csm_toggle_hide");
-        $(sender).hover(function() {
+        blade.addClass("csm_toggle_hide");
+        blade.hover(function() {
             $(this).addClass("csm_toggle_hide_hover");
         },
 	      function() {
@@ -85,27 +86,28 @@ function ToggleLoading(sender, requestId) {
 	    );
     }
     else {
-        $(sender).removeClass("csm_toggle_show");
-        $(sender).removeClass("csm_toggle_show_hover");
-        $(sender).unbind('mouseenter mouseleave')
-        $(sender).addClass("csm_toggle_loading");
+        blade.removeClass("csm_toggle_show");
+        blade.removeClass("csm_toggle_show_hover");
+        blade.unbind('mouseenter mouseleave')
+        blade.addClass("csm_toggle_loading");
     }
 }
-function ToggleDetails(sender, requestId) {
+function ToggleDetails(requestId) {
     var section = $("#__toggledContentContainer_" + requestId);
+    var blade = $("#__toggleIconContainer_" + requestId);
     //Search for (Request Details) which is the title of the first section
     if (section.html().indexOf("Request Details") == -1) {
-        ToggleLoading(sender, requestId);
-        GetDetails(sender, requestId);
+        ToggleLoading(requestId);
+        GetDetails(requestId);
     }
     else {
         if (section.hasClass("csm_hidden_block")) {
             section.removeClass("csm_hidden_block");
-            $(sender).addClass("csm_toggle_hide");
-            $(sender).removeClass("csm_toggle_show");
-            $(sender).removeClass("csm_toggle_show_hover");
-            $(sender).unbind('mouseenter mouseleave')
-            $(sender).hover(function() {
+            blade.addClass("csm_toggle_hide");
+            blade.removeClass("csm_toggle_show");
+            blade.removeClass("csm_toggle_show_hover");
+            blade.unbind('mouseenter mouseleave')
+            blade.hover(function() {
                 $(this).addClass("csm_toggle_hide_hover");
             },
 			      function() {
@@ -115,11 +117,11 @@ function ToggleDetails(sender, requestId) {
         }
         else {
             section.addClass("csm_hidden_block");
-            $(sender).addClass("csm_toggle_show");
-            $(sender).removeClass("csm_toggle_hide");
-            $(sender).removeClass("csm_toggle_hide_hover");
-            $(sender).unbind('mouseenter mouseleave')
-            $(sender).hover(function() {
+            blade.addClass("csm_toggle_show");
+            blade.removeClass("csm_toggle_hide");
+            blade.removeClass("csm_toggle_hide_hover");
+            blade.unbind('mouseenter mouseleave')
+            blade.hover(function() {
                 $(this).addClass("csm_toggle_show_hover");
             },
 			      function() {
@@ -243,6 +245,128 @@ function Comment(requestId, action, comments) {
     this.action = action;
     this.comments = $.quoteString(comments);
     this.toJSON = $.toJSON(this);
+}
+// JON JS
+
+// Apollo.AIM.SNAP.Model.Enumeration
+//
+var ActorGroupTypeEnum =
+{
+    Team_Approver: 0,
+    Technical_Approver: 1,
+    Manager: 2,
+    Workflow_Admin: 3
+};
+
+function GetTracking(requestId) {
+    var postData = "{\"requestId\":\"" + requestId + "\"}";
+    $.ajax({
+        type: "POST",
+        contentType: "application/json; character=utf-8",
+        url: "ajax/AjaxUI.aspx/GetAllTrackingData",
+        data: postData,
+        dataType: "json",
+        success: function(msg) {
+        if (msg.d.length > 0) {
+                BuildTrackingSection(msg.d, requestId);
+            }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert("GetTracking Error: " + XMLHttpRequest);
+            alert("GetTracking Error: " + textStatus);
+            alert("GetTracking Error: " + errorThrown);
+        }
+    });
+}
+
+function BuildTrackingSection(trackingObject, requestId) {
+    var trackingSectionHtml = "";
+
+    // Build sections in the following order and loop thru them
+    //	
+    var headingOrder = [
+		ActorGroupTypeEnum.Workflow_Admin,
+		ActorGroupTypeEnum.Manager,
+		ActorGroupTypeEnum.Team_Approver,
+		ActorGroupTypeEnum.Technical_Approver
+		];
+
+    for (var i = 0; i < headingOrder.length; i++) {
+        // If the trackingObject has at least one row that matches the heading, then draw it
+        //
+        if (IsActorGroupInTrackingData(trackingObject, headingOrder[i])) {
+            trackingSectionHtml += CreateTrackingHeader(headingOrder[i]);
+
+            $.each(trackingObject, function(index, value) {
+                var data = jQuery.parseJSON(value);
+                if (data.ActorGroupType == headingOrder[i]) {
+                    trackingSectionHtml += CreateTrackingBlade(data);
+                }
+            });
+        }
+    }
+
+    $("#__toggledContentContainer_" + requestId).html($("#__toggledContentContainer_" + requestId).html()
+    .replace("<!--__requestTracking-->", trackingSectionHtml));
+    
+    ToggleLoading(requestId);
+}
+
+function IsActorGroupInTrackingData(trackingObject, actorGroupEnum) {
+    var isInGroup = false;
+
+    $.each(trackingObject, function(index, value) {
+        var data = jQuery.parseJSON(value);
+        if (data.ActorGroupType == actorGroupEnum) {
+            isInGroup = true;
+        }
+    });
+
+    return isInGroup;
+}
+
+function CreateTrackingBlade(data) {
+    var newTrackingBlade = $("#_trackingBladeTemplate").html();
+
+    newTrackingBlade = newTrackingBlade
+			.replace("%%ActorName%%", data.ActorName)
+			.replace("%%Status%%", data.WorkflowStatus)
+			.replace("%%DueDate%%", data.DueDate)
+			.replace("%%CompletedDate%%", data.CompletedDate)
+			.replace("%%GroupTypeId%%", data.ActorGroupType)
+			.replace("%%WorkflowComments%%", data.WorkflowComments)
+
+    return newTrackingBlade;
+}
+
+function CreateTrackingHeader(actorGroupType) {
+    var heading;
+
+    switch (actorGroupType) {
+        case ActorGroupTypeEnum.Team_Approver:
+            heading = "Team Approvers";
+            break;
+
+        case ActorGroupTypeEnum.Technical_Approver:
+            heading = "Technical Approvers";
+            break;
+
+        case ActorGroupTypeEnum.Manager:
+            heading = "Affected End User's Manager";
+            break;
+
+        case ActorGroupTypeEnum.Workflow_Admin:
+            heading = "Access & Identity Management";
+            break;
+
+        default:
+            heading = "Unknown Group";
+            break;
+    }
+
+    var trackingHeader = $("#_trackingBladeSectionHeadingTemplate").html();
+    trackingHeader = trackingHeader.replace("%%HeadingLabel%%", heading);
+    return trackingHeader;
 }
 
 // ALL VIEWS - END

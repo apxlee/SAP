@@ -47,6 +47,12 @@ namespace Apollo.AIM.SNAP.Web.ajax
         {
             return UI.GetBuilder(requestId);
         }
+
+        [WebMethod]
+        public static List<string> GetAllTrackingData(string requestId)
+        {
+            return UI.GetTrackingBlades(requestId);
+        }
         #endregion  
     }
 }

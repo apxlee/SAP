@@ -51,11 +51,11 @@ function CreateBlades(requests) {
 		    }
 	    );
         $("#__toggleIconContainer_" + data.RequestId).bind('click', function() {
-            ToggleDetails($("#__toggleIconContainer_" + data.RequestId), data.RequestId);
+            ToggleDetails(data.RequestId);
         });
     });
 }
-function CreateRequestDetails(details, sender, requestId) {
+function CreateRequestDetails(details, requestId) {
     var data = jQuery.parseJSON(details);
     var ADManagaer = "";
     if (data.ADManager != "") { ADManagaer = "[Active Directory: " + data.ADManager + "]"; }
@@ -96,6 +96,6 @@ function CreateRequestDetails(details, sender, requestId) {
 
     $("#__toggledContentContainer_" + requestId).html($("#__toggledContentContainer_" + requestId).html()
     .replace("<!--__requestDetailsSection-->", newRequestDetails));
-
-    ToggleLoading(sender, requestId);
+    
+    GetTracking(requestId);
 }

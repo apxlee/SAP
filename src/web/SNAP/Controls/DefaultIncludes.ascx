@@ -45,17 +45,17 @@
 		        </table> 
 		    </div> 
 		    <div class="csm_float_right"> 
-			    <div id="__toggleIconContainer" snap="__snapRequestId" class="csm_toggle_container csm_toggle_show"> 
+			    <div id="__toggleIconContainer_ID" snap="__snapRequestId" class="csm_toggle_container csm_toggle_show"> 
 				    <span>&nbsp;</span> 
 			    </div> 
 		    </div> 
 	    </div>
 	    <input id="__workflowStatus_ID" type="hidden" value="__workflowStatus_TEXT">
-	    <input id="__multiplePendingApprovals_ID" type="hidden" value=""> 
+	    <input id="__multiplePendingApprovals_ID" type="hidden" value="false"> 
 	    <div class="csm_clear">&nbsp;</div> 
 	    <!-- END FLOATING HEADING --> 
 	    <!-- TOGGLED CONTENT AREA --> 
-        <div id="__toggledContentContainer" class="csm_hidden_block">
+        <div id="__toggledContentContainer_ID" class="csm_hidden_block">
             <!--__requestDetailsSection-->
             <!--__requestAcknowledgement-->
             <!--__requestApproval-->
@@ -118,7 +118,7 @@
     <p><u>__commentLabel</u><br />__commentText</p> 
 </script>
 <script type='html/template' id='_approverActions'>
-    <div class="csm_text_container csm_top5"> 
+    <div id="__approverActions_ID" class="csm_text_container csm_top5"> 
 	    <div class="csm_icon_heading_container snap_my_approvals"> 
 		    <h2>Approver Actions</h2> 
 		    <p class="">As an Approver, please review the access details above and select an appropriate action below.  Denials
@@ -349,6 +349,35 @@
 	    </div>				
         </fieldset>	        
     </div> 
+</script>
+<script type="html/template" id="_trackingBladeSectionHeadingTemplate">
+<div class="csm_padded_windowshade">
+   <table class="csm_top5" border="0" cellpadding="0" cellspacing="0" style="margin-left:12px;"><!-- width 654 -->
+        <tr class="csm_stacked_heading_title">
+            <td style="width:228px;">%%HeadingLabel%%</td>
+            <td style="width:168px;">STATUS</td>
+            <td style="width:120px;">DUE DATE</td>
+            <td style="width:120px;">COMPLETED DATE</td>
+        </tr>
+    </table>    
+</div>
+<div class="csm_clear">&nbsp;</div>
+</script>
+<script type='html/template' id='_trackingBladeTemplate'>
+<div class="csm_padded_windowshade">
+	<div ID="_workflowBladeData" class="csm_data_row %%AlternatingCss%%">
+        <table border="0" cellpadding="0" cellspacing="0">
+            <tr>
+				<td style="width:230px;"><span snap="_actorDisplayName">%%ActorName%% | %%GroupTypeId%%</span></td>
+				<td style="width:170px;"><span snap="_workflowStatus">%%Status%%</span></td>
+				<td style="width:120px;"><span snap="_workflowDueDate">%%DueDate%%</span></td>
+				<td style="width:120px;"><span snap="_workflowCompletedDate">%%CompletedDate%%</span></td>
+            </tr>
+        </table>
+     </div>
+     <div ID="_workflowBladeCommentsContainer" class="csm_text_container_nodrop" style="display:inline;">%%WorkflowComments%%</div>
+</div>
+<div class="csm_clear">&nbsp;</div>
 </script>
 
 <div id="_actionMessageDiv" style="display:none;">

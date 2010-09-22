@@ -1,4 +1,6 @@
 ﻿//<![CDATA[
+$(document).bind('keyup', 'alt+ctrl+s', ToggleQuickSearch);
+
 var m_names = new Array("Jan", "Feb", "Mar",
     "Apr", "May", "Jun", "Jul", "Aug", "Sep",
     "Oct", "Nov", "Dec");
@@ -16,8 +18,19 @@ $(document).ready(function() {
     quicksearchInput.keyup(function() {
         QuickFilter(quicksearchInput.val());
     });
-    quicksearchInput.focus();
 });
+function ToggleQuickSearch() {
+    var quicksearch = $("#__quicksearch");
+    var quicksearchInput = $("#__quicksearchInput");
+    if (quicksearch.hasClass("hide")) {
+        quicksearch.removeClass("hide");
+        quicksearchInput.focus();
+    }
+    else {
+        quicksearch.addClass("hide");
+        QuickFilter("");
+    }
+}
 function QuickFilter(quicksearch) {
     $("#_openRequestsContainer").find("tr.csm_stacked_heading_label").each(function() {
         var found = false;
@@ -31,7 +44,7 @@ function QuickFilter(quicksearch) {
         else { $(this).closest("div.csm_content_container").hide(); $(this).closest("div.csm_content_container").next().hide(); }
     });
 }
-function GetAccessTeamFilter(sender, requestId) {
+function GetAccessTeamFilter(requestId) {
     $.ajax({
         type: "POST",
         contentType: "application/json; character=utf-8",
@@ -188,7 +201,7 @@ function CreateBlades(requests) {
 	    });
     });
 }
-function CreateRequestDetails(details, sender, requestId) {
+function CreateRequestDetails(details, requestId) {
     var data = jQuery.parseJSON(details);
     var ADManagaer = "";
     if (data.ADManager != "") { ADManagaer = "[Active Directory: " + data.ADManager + "]"; }
@@ -230,11 +243,11 @@ function CreateRequestDetails(details, sender, requestId) {
     $("#__toggledContentContainer_" + requestId).html($("#__toggledContentContainer_" + requestId).html()
     .replace("<!--__requestDetailsSection-->", newRequestDetails));
 
-    if ($("#__overallRequestStatus_" + requestId).html() != "Closed") { GetBuilder(sender, requestId); }
-    else { ToggleLoading(sender, requestId); }
+    if ($("#__overallRequestStatus_" + requestId).html() != "Closed") { GetBuilder(requestId); }
+    else { GetTracking(requestId); }
     
 }
-function GetBuilder(sender, requestId) {
+function GetBuilder(requestId) {
     var postData = "{\"requestId\":\"" + requestId + "\"}";
     $.ajax({
         type: "POST",
@@ -244,7 +257,7 @@ function GetBuilder(sender, requestId) {
         dataType: "json",
         success: function(msg) {
             if (msg.d.length > 0) {
-                CreateBuilder(msg.d, sender, requestId);
+                CreateBuilder(msg.d, requestId);
             }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -254,7 +267,7 @@ function GetBuilder(sender, requestId) {
         }
     });
 }
-function CreateBuilder(builder, sender, requestId) {
+function CreateBuilder(builder, requestId) {
     var data = jQuery.parseJSON(builder);
     var newAck = $("#_acknowledgement").html();
     newAck = newAck.replace(/__acknowledge_ID/g, "__acknowledge_" + requestId)
@@ -275,12 +288,11 @@ function CreateBuilder(builder, sender, requestId) {
             $("#__acknowledge_" + requestId).removeAttr("disabled");
             break;
         case "Pending_Workflow":
-        case "Change_Requested":
             $("#__radioCancel_" + requestId).removeAttr("disabled");
+            $("#__radioChange_" + requestId).removeAttr("disabled");
             $("#__radioDeny_" + requestId).removeAttr("disabled");
             break;
     }
-
 
     var newBuilder = $("#_workflowBuilder").html();
     newBuilder = newBuilder.replace("__workflowBuilder_ID", "__workflowBuilder_" + requestId)
@@ -402,9 +414,9 @@ function CreateBuilder(builder, sender, requestId) {
     $("#__toggledContentContainer_" + requestId).html($("#__toggledContentContainer_" + requestId).html()
     .replace("<!--__requestComments-->", newComments));
 
-    BindEvents(sender, data.AvailableGroups, data.AvailableButtons, requestId);
+    BindEvents(data.AvailableGroups, data.AvailableButtons, requestId);
 }
-function BindEvents(sender, builderGroups, builderButtons, requestId) {
+function BindEvents(builderGroups, builderButtons, requestId) {
     //AIM SECTION
     $("#__managerEditButton_" + requestId).click(function() {
         ManagerEdit(requestId);
@@ -495,7 +507,7 @@ function BindEvents(sender, builderGroups, builderButtons, requestId) {
     });
     // AIM SECTION END
 
-    ToggleLoading(sender, requestId);
+    GetTracking(requestId);
 }
 function ChangeDenyCancelClick(obj, requestId) {
     $("#__actionComments_" + requestId).removeAttr("disabled");
