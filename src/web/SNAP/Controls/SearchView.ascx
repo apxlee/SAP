@@ -15,37 +15,25 @@
 						<label>Search Criteria:</label>
 					</td>
 					<td class="csm_input_form_control_column">
-						<input type="text" id="_searchInput" runat="server" class="csm_text_input_short" />
+						<input type="text" id="__searchInput" class="csm_text_input_short" />
+						<input type="text" style="visibility:hidden"></input>
 						<p><em>Enter: User ID, Username, or Request ID</em></p>
 					</td>
 				</tr>
 		</table>
 		<div class="csm_input_buttons_container" style="margin-right:6px;">
-			<asp:Button ID="_searchButton" Text="Search" CssClass="csm_html_button" OnClientClick="return validateInput(this);" OnClick="Search_Click" runat="server" />
+			<input type="button" id="__searchButton" value="Search" class="csm_html_button" onclick="return ValidateInput();" />
 		</div>
 	</div>
 	<h1>Search Results</h1>
-	<asp:PlaceHolder ID="_searchResultsContainer" runat="server"></asp:PlaceHolder>
-	<asp:Panel ID="_nullDataMessage_SearchRequests" runat="server" CssClass="csm_content_container" Visible="false">
+	<div id="_searchResultsContainer"></div>
+	<div id="_nullDataMessage_SearchRequests" class="csm_content_container" style="display:none;">
 		<div class="csm_text_container">
 			<p>There are no Search Results.</p>
 		</div>
-	</asp:Panel>
-	
-	<div id="_actionMessageDiv" style="display:none;">
-        <div class="messageBox"> 
-            <h2>header</h2>
-            <div id="_indicatorDiv" style="display:none;text-align:center;padding-top:15px;">
-                <img alt="creating ticket..." src="images/ajax_indicator.gif" width="16" height="16" />
-            </div>
-            <p>message</p>
-            <div id="_closeMessageDiv" style="display:none;">
-                <input type="button" value="Close" onclick="$('#_actionMessageDiv').hide();$('#_closeMessageDiv').hide();" />
-            </div>
-        </div>
-    </div>
+	</div>
 </div>
 <script type="text/javascript">
-	try { pageTracker._trackPageview("SearchView"); }
-	catch (err) {}
+    try { pageTracker._trackPageview("SearchView"); }
+    catch (err) { }
 </script>

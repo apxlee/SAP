@@ -18,51 +18,36 @@
 				<li style="width:4px;padding-left:2px;margin-right:4px;font-weight:bold;"><span>|</span></li>
 				<li id="filter_in_workflow" class="active_carrot" snap="In Workflow"><span>In Workflow (<span class="inline_counter"  id="filter_in_workflow_count">00</span>)</span></li>
 				<li style="width:4px;padding-left:2px;margin-right:4px;font-weight:bold;"><span>|</span></li>
-				<li id="filter_view_all" onmouseover="filterHover(this);" onmouseout="filterHover(this);" onclick="filterClick(this);" class="active_carrot" snap="All"><span>View All</span></li>
+				<li id="filter_view_all" onmouseover="FilterHover(this);" onmouseout="FilterHover(this);" onclick="FilterClick(this);" class="active_carrot" snap="All"><span>View All</span></li>
 			</ul>
 		</div>
 	</div>	
-	
-	<asp:PlaceHolder ID="_openRequestsContainer" runat="server"></asp:PlaceHolder>
-	<asp:Panel ID="_nullDataMessage_OpenRequests" snap="_nullDataMessage" runat="server" CssClass="csm_content_container" Visible="false">
+	<div class="quicksearch_container">
+	    <div class="quicksearch_input_container"><input type="text" id="__quicksearchInput" class="quicksearch_input" /><input type="hidden" /></div>
+	    <div class="quicksearch_link">Q</div>
+	</div>
+	<div id="_openRequestsContainer"></div>
+	<div id="_nullDataMessage_OpenRequests" class="csm_content_container" style="display:none;">
 		<div class="csm_text_container">
 			<p>There are no Open Requests at this time.</p>
 		</div>
-	</asp:Panel>
+	</div>
 	
 	<h1>Closed Requests</h1>
-	<asp:PlaceHolder ID="_closedRequestsContainer" runat="server"></asp:PlaceHolder>
-	<asp:Panel ID="_nullDataMessage_ClosedRequests" snap="_nullDataMessage" runat="server" CssClass="csm_content_container" Visible="false">
+	<div id="_closedRequestsContainer"></div>
+	<div id="_nullDataMessage_ClosedRequests" class="csm_content_container" style="display:none;">
 		<div class="csm_text_container">
 			<p>There are no Closed Requests at this time.</p>
 		</div>
-	</asp:Panel>	
-    <div id="_managerSelectionDiv" style="display:none"; >
-      <p />
-      <div style="display:none;text-align:center;padding-top:100px;" class="oospa_ajax_indicator">
-            <img alt="loading..." src="images/ajax_indicator.gif" width="16" height="16" />
-      </div>
-      <select style="display:none;" size="3" class="oospa_select_user" name="managerSelection" id="_managerSelection"></select>
-        
-    </div>
+	</div>	
     
-    <div id="_actionMessageDiv" style="display:none;">
-        <div class="messageBox"> 
-            <h2>header</h2>
-            <div id="_indicatorDiv" style="display:none;text-align:center;padding-top:15px;">
-                <img alt="creating ticket..." src="images/ajax_indicator.gif" width="16" height="16" />
-            </div>
-            <p style="margin-left:5px;margin-right:5px;">message</p>
-            <div id="_closeMessageDiv" style="display:none;">
-                <input type="button" value="Close" onclick="$('#_actionMessageDiv').hide();$('#_closeMessageDiv').hide();" />
-            </div>
-        </div>
-    </div>
     <div style="display:none;">
             <asp:Button ID="_submit_form" Text="submit form" CommandName="AccessTeam" CssClass="csm_html_button" runat="server" OnClick="_submitForm_Click" />
         </div>
 </div>
 <script type="text/javascript">
+    try { GetRequests(4); }
+    catch (err) { }
 	try { pageTracker._trackPageview("AccessTeamView"); }
 	catch (err) {}
 </script>

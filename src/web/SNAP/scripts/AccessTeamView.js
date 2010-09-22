@@ -11,70 +11,115 @@ var curr_date = m_names[curr_month] + " " + curr_day + ", " + curr_year;
 var currentFilterClass = "filter_view_all";
 
 $(document).ready(function() {
-    updateFilterCounts();
+    GetAccessTeamFilter();
+    var quicksearchInput = $("#__quicksearchInput");
+    quicksearchInput.keyup(function() {
+        QuickFilter(quicksearchInput.val());
+    });
+    quicksearchInput.focus();
 });
-
-function updateFilterCounts() {
-    var ackCount = 0;
-    var wrkCount = 0;
-    var prvCount = 0;
-    var inCount = 0;
-    $("div.csm_container_center_700").find("div.csm_content_container").each(
-        function() {
-            $(this).find("div.csm_hidden_block").children().find("span").each(
-                function() {
-                    if ($(this).attr("snap") == "_actorDisplayName") {
-                        if ($(this).html() == "Access &amp; Identity Management") {
-                            if ($(this).parent().next().next().next().children().html() == "-") {
-                                var status = $(this).parent().next().children().html();
-                                switch (status) {
-                                    case "Pending Acknowledgement":
-                                        ackCount++;
-                                        break;
-                                    case "Pending Workflow":
-                                        wrkCount++;
-                                        break;
-                                    case "Pending Provisioning":
-                                        prvCount++;
-                                        break;
-                                    case "In Workflow":
-                                        inCount++;
-                                        break;
-                                }
-                            }
-                        }
-                    }
-                });
+function QuickFilter(quicksearch) {
+    $("#_openRequestsContainer").find("tr.csm_stacked_heading_label").each(function() {
+        var found = false;
+        var blade = $(this).closest("div.csm_content_container");
+        $(this).find("span").each(function() {
+            if ($(this).html().indexOf(quicksearch) > -1) {
+                found = true;
+            }
         });
+        if (found) { $(this).closest("div.csm_content_container").show(); $(this).closest("div.csm_content_container").next().show(); }
+        else { $(this).closest("div.csm_content_container").hide(); $(this).closest("div.csm_content_container").next().hide(); }
+    });
+}
+function GetAccessTeamFilter(sender, requestId) {
+    $.ajax({
+        type: "POST",
+        contentType: "application/json; character=utf-8",
+        url: "ajax/AjaxUI.aspx/GetAccessTeamFilter",
+        dataType: "json",
+        success: function(msg) {
+            if (msg.d.length > 0) {
+                UpdateFilterCounts(msg.d);
+            }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert("GetDetails Error: " + XMLHttpRequest);
+            alert("GetDetails Error: " + textStatus);
+            alert("GetDetails Error: " + errorThrown);
+        }
+    });
+}
+function UpdateFilterCounts(filter) {
+    var ackCount = 0;
+    var ackIds = "";
+    var wrkCount = 0;
+    var wrkIds = "";
+    var prvCount = 0;
+    var prvIds = "";
+    var inCount = 0;
+    var inIds = "";
+    var data = jQuery.parseJSON(filter);
+    $.each(data.Filters, function(index, value) {
+        switch (value.FilterName) {
+            case "Pending Acknowledgement":
+                ackCount = value.RequestIds.length;
+                $.each(value.RequestIds, function(index, requestId) {
+                    ackIds = ackIds + "[" + requestId + "]";
+                });
+                break;
+            case "Pending Workflow":
+                wrkCount = value.RequestIds.length;
+                $.each(value.RequestIds, function(index, requestId) {
+                    wrkIds = wrkIds + "[" + requestId + "]";
+                });
+                break;
+            case "Pending Provisioning":
+                prvCount = value.RequestIds.length;
+                $.each(value.RequestIds, function(index, requestId) {
+                    prvIds = prvIds + "[" + requestId + "]";
+                });
+                break;
+            case "In Workflow":
+                inCount = value.RequestIds.length;
+                $.each(value.RequestIds, function(index, requestId) {
+                    inIds = inIds + "[" + requestId + "]";
+                });
+                break;
+        }
+    });
     $("#filter_pending_acknowledgement_count").html(ackCount);
-    if (ackCount > 0) { bindFilter($("#filter_pending_acknowledgement")); }
-    else { unbindFilter($("#filter_pending_acknowledgement")); }
+    $("#filter_pending_acknowledgement").attr("requestIds", ackIds);
+    if (ackCount > 0) { BindFilter($("#filter_pending_acknowledgement")); }
+    else { UnbindFilter($("#filter_pending_acknowledgement")); }
 
     $("#filter_pending_workflow_count").html(wrkCount);
-    if (wrkCount > 0) { bindFilter($("#filter_pending_workflow")); }
-    else { unbindFilter($("#filter_pending_workflow")); }
+    $("#filter_pending_workflow").attr("requestIds", wrkIds);
+    if (wrkCount > 0) { BindFilter($("#filter_pending_workflow")); }
+    else { UnbindFilter($("#filter_pending_workflow")); }
 
     $("#filter_pending_provisioning_count").html(prvCount);
-    if (prvCount > 0) { bindFilter($("#filter_pending_provisioning")); }
-    else { unbindFilter($("#filter_pending_provisioning")); }
+    $("#filter_pending_provisioning").attr("requestIds", prvIds);
+    if (prvCount > 0) { BindFilter($("#filter_pending_provisioning")); }
+    else { UnbindFilter($("#filter_pending_provisioning")); }
 
     $("#filter_in_workflow_count").html(inCount);
-    if (inCount > 0) { bindFilter($("#filter_in_workflow")); }
-    else { unbindFilter($("#filter_in_workflow")); }
+    $("#filter_in_workflow").attr("requestIds", inIds);
+    if (inCount > 0) { BindFilter($("#filter_in_workflow")); }
+    else { UnbindFilter($("#filter_in_workflow")); }
 }
-function bindFilter(obj) {
+function BindFilter(obj) {
     obj.removeClass("disabled_text");
-    obj.bind('click', function() { filterClick(this); });
-    obj.bind('mouseenter', function() { filterHover(this); });
-    obj.bind('mouseleave', function() { filterHover(this); });
+    obj.bind('click', function() { FilterClick(this); });
+    obj.bind('mouseenter', function() { FilterHover(this); });
+    obj.bind('mouseleave', function() { FilterHover(this); });
 }
-function unbindFilter(obj) {
+function UnbindFilter(obj) {
     obj.addClass("disabled_text");
     obj.unbind("click");
     obj.unbind("mouseenter");
     obj.unbind("mouseleave");
 }
-function filterHover(obj) {
+function FilterHover(obj) {
     if ($(obj).attr('id') != currentFilterClass) {
         if ($(obj).hasClass("active_carrot")) {
             $(obj).removeClass("active_carrot");
@@ -88,38 +133,372 @@ function filterHover(obj) {
         }
     }
 }
-function filterClick(obj) {
-    var blade = "";
+function FilterClick(obj) {
     var filter = $(obj).attr("snap");
+    var requestIds = $(obj).attr("requestIds");
+
+    $("#_openRequestsContainer").find("div.csm_content_container").each(function() {
+        var blade = this;
+        if (filter == "All") { $(blade).show(); $(blade).next().show(); }
+        else { $(blade).hide(); $(blade).next().hide(); }
+    });
+    if (requestIds > "") {
+        var requestList = requestIds.split("[");
+        $.each(requestList, function(index, value) {
+            var requestId = value.replace("]", "");
+            if (requestId > "") {
+                $("#__requestContainer_" + requestId).show();
+                $("#__requestContainer_" + requestId).next().show();
+            }
+        });
+    }
     currentFilterClass = $(obj).attr('id');
     $(obj).addClass("active_carrot");
     $(obj).removeClass("hover_carrot");
     $("div[id='access_filter_container']").attr("class", $(obj).attr('id'));
-
-    $("div.csm_container_center_700").find("div.csm_content_container").each(
-        function() {
-            blade = this;
-            if (filter == "All") {
-                $(blade).show();
-            }
-            else {
-                $(this).find("div.csm_hidden_block").children().find("span").each(
-                    function() {
-                        if ($(this).attr("snap") == "_actorDisplayName") {
-                            if ($(this).html() == "Access &amp; Identity Management") {
-                                if ($(this).parent().next().next().next().children().html() == "-") {
-                                    var status = $(this).parent().next().children().html();
-                                    if (status == filter) { $(blade).show(); }
-                                    else { $(blade).hide(); }
-                                }
-                            }
-                        }
-                    });
-            }
-        });
 }
-function changeDenyCancelClick(obj) {
-    $(obj).parent().children("textarea").removeAttr("disabled");
+function CreateBlades(requests) {
+    $.each(requests, function(index, value) {
+        var data = jQuery.parseJSON(value);
+        var newRequestBlade = $("#_requestBlade").html();
+        newRequestBlade = newRequestBlade.replace("__requestContainer_ID","__requestContainer_" + data.RequestId)
+        .replace("__affectedEndUserName_TEXT", data.DisplayName)
+        .replace("__affectedEndUserName_ID", "__affectedEndUserName_" + data.RequestId)
+        .replace("__overallRequestStatus_TEXT", data.RequestStatus)
+        .replace("__overallRequestStatus_ID", "__overallRequestStatus_" + data.RequestId)
+        .replace("__lastUpdatedDate_TEXT", data.LastModified)
+        .replace("__lastUpdatedDate_ID", "__lastUpdatedDate_" + data.RequestId)
+        .replace("__requestId_TEXT", data.RequestId)
+        .replace("__requestId_ID", "__requestId_" + data.RequestId)
+        .replace("__toggleIconContainer_ID", "__toggleIconContainer_" + data.RequestId)
+        .replace("__toggledContentContainer_ID", "__toggledContentContainer_" + data.RequestId)
+        .replace("__snapRequestId", data.RequestId);
+
+        if (data.RequestStatus != "Closed") { $("#_openRequestsContainer").append($(newRequestBlade)); }
+        else { $("#_closedRequestsContainer").append($(newRequestBlade)); }
+        $("#__toggleIconContainer_" + data.RequestId).hover(function() {
+            $(this).addClass("csm_toggle_show_hover");
+        },
+		    function() {
+		        $(this).removeClass("csm_toggle_show_hover");
+		    }
+	    );
+	    $("#__toggleIconContainer_" + data.RequestId).bind('click', function() {
+	        ToggleDetails(data.RequestId);
+	    });
+    });
+}
+function CreateRequestDetails(details, sender, requestId) {
+    var data = jQuery.parseJSON(details);
+    var ADManagaer = "";
+    if (data.ADManager != "") { ADManagaer = "[Active Directory: " + data.ADManager + "]"; }
+    var newRequestDetails = $("#_requestDetails").html();
+    newRequestDetails = newRequestDetails.replace("__affectedEndUserTitle_TEXT", data.Title)
+    .replace("__affectedEndUserTitle_ID", "__affectedEndUserTitle_" + requestId)
+    .replace("__requestorsManager_TEXT", data.Manager)
+    .replace("__requestorsManager_ID", "__requestorsManager_" + requestId)
+    .replace("__adManagerName_TEXT", ADManagaer)
+    .replace("__adManagerName_ID", "__adManagerName_" + requestId)
+    .replace("__requestorName_TEXT", data.Requestor)
+    .replace("__requestorName_ID", "__requestorName_" + requestId);
+
+    var newForm = "";
+    $.each(data.Details, function(index, value) {
+        var newField = $("#_requestFormField").html();
+        newField = newField.replace("__fieldLabel", value.Label + ":")
+        .replace("__fieldText", value.Text);
+        newForm = newForm + newField
+    });
+
+    var newCommentSection = "";
+
+    if (data.Comments.length > 0) {
+        var newComments = "";
+        $.each(data.Comments, function(index, value) {
+            var newComment = $("#_requestComment").html();
+            newComment = newComment.replace("__commentLabel", value.CreatedDate + " for " + value.Audience).replace("__commentText", value.Text);
+            newComments = newComments + newComment
+        });
+
+        newCommentSection = $("#_requestCommentSection").html();
+        newCommentSection = newCommentSection.replace("<!--__requestComments-->", newComments);
+    }
+
+    newRequestDetails = newRequestDetails.replace("<!--__requestFormDetails-->", newForm);
+    newRequestDetails = newRequestDetails.replace("<!--__requestCommentSection-->", newCommentSection);
+
+    $("#__toggledContentContainer_" + requestId).html($("#__toggledContentContainer_" + requestId).html()
+    .replace("<!--__requestDetailsSection-->", newRequestDetails));
+
+    if ($("#__overallRequestStatus_" + requestId).html() != "Closed") { GetBuilder(sender, requestId); }
+    else { ToggleLoading(sender, requestId); }
+    
+}
+function GetBuilder(sender, requestId) {
+    var postData = "{\"requestId\":\"" + requestId + "\"}";
+    $.ajax({
+        type: "POST",
+        contentType: "application/json; character=utf-8",
+        url: "ajax/AjaxUI.aspx/GetBuilder",
+        data: postData,
+        dataType: "json",
+        success: function(msg) {
+            if (msg.d.length > 0) {
+                CreateBuilder(msg.d, sender, requestId);
+            }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert("GetDetails Error: " + XMLHttpRequest);
+            alert("GetDetails Error: " + textStatus);
+            alert("GetDetails Error: " + errorThrown);
+        }
+    });
+}
+function CreateBuilder(builder, sender, requestId) {
+    var data = jQuery.parseJSON(builder);
+    var newAck = $("#_acknowledgement").html();
+    newAck = newAck.replace(/__acknowledge_ID/g, "__acknowledge_" + requestId)
+    .replace(/__changeDenyCancel_ID/g, "__changeDenyCancel_" + requestId)
+    .replace("__radioChange_ID", "__radioChange_" + requestId)
+    .replace("__radioDeny_ID", "__radioDeny_" + requestId)
+    .replace("__radioCancel_ID", "__radioCancel_" + requestId)
+    .replace("__actionComments_ID", "__actionComments_" + requestId)
+    .replace("__requestChange_ID", "__requestChange_" + requestId)
+    .replace("__requestDeny_ID", "__requestDeny_" + requestId)
+    .replace("__requestCancel_ID", "__requestCancel_" + requestId);
+
+    $("#__toggledContentContainer_" + requestId).html($("#__toggledContentContainer_" + requestId).html()
+    .replace("<!--__requestAcknowledgement-->", newAck));
+
+    switch (data.AccessTeamState) {
+        case "Pending_Acknowledgement":
+            $("#__acknowledge_" + requestId).removeAttr("disabled");
+            break;
+        case "Pending_Workflow":
+        case "Change_Requested":
+            $("#__radioCancel_" + requestId).removeAttr("disabled");
+            $("#__radioDeny_" + requestId).removeAttr("disabled");
+            break;
+    }
+
+
+    var newBuilder = $("#_workflowBuilder").html();
+    newBuilder = newBuilder.replace("__workflowBuilder_ID", "__workflowBuilder_" + requestId)
+    .replace("__managerLabelSection_ID", "__managerLabelSection_" + requestId)
+    .replace("__managerDisplayName_TEXT", data.ManagerDisplayName)
+    .replace("__managerDisplayName_ID", "__managerDisplayName_" + requestId)
+    .replace("__managerInputSection_ID", "__managerInputSection_" + requestId)
+    .replace("__managerUserId_TEXT", data.ManagerUserId)
+    .replace("__managerUserId_ID", "__managerUserId_" + requestId)
+    .replace("__managerName_ID", "__managerName_" + requestId)
+    .replace("__checkManagerName_ID", "__checkManagerName_" + requestId)
+    .replace("__managerEditButton_ID", "__managerEditButton_" + requestId);
+    var addSpecial = true;
+    var addTechnical = true;
+    var groupSection = "";
+    var largeGroupSection = "";
+    $.each(data.AvailableGroups, function(index, group) {
+        if (group.IsLargeGroup) {
+            var largeGroup = $("#_workflowLargeGroup").html();
+            largeGroup = largeGroup.replace("__workflowBuilderLargeGroupTitle_TEXT", group.GroupName)
+            .replace("__workflowBuilderLargeGroupDescription_TEXT", group.Description)
+            .replace("__dropdownActors_ID_GROUPID", "__dropdownActors_" + requestId + "_" + group.GroupId)
+            .replace("__actorDisplayName_ID_GROUPID", "__actorDisplayName_" + requestId + "_" + group.GroupId)
+            .replace("__actorUserId_ID_GROUPID", "__actorUserId_" + requestId + "_" + group.GroupId)
+            .replace("__actorActorId_ID_GROUPID", "__actorActorId_" + requestId + "_" + group.GroupId)
+            .replace("__actorGroupId_ID_GROUPID", "__actorGroupId_" + requestId + "_" + group.GroupId)
+            .replace("__checkActor_ID_GROUPID", "__checkActor_" + requestId + "_" + group.GroupId)
+            .replace("__addActor_ID_GROUPID", "__addActor_" + requestId + "_" + group.GroupId);
+            var selected = "";
+            var options = "";
+            $.each(group.AvailableActors, function(index, actor) {
+                if (actor.IsSelected) {
+                    var newSelected = $("#_workflowLargeGroupActorSelected").html();
+                    newSelected = newSelected.replace("__actorId", actor.ActorId)
+                    .replace("__actorDisplayName", actor.DisplayName);
+                    selected = selected + newSelected;
+                }
+                else {
+                    var newOption = $("#_workflowLargeGroupActorOption").html();
+                    newOption = newOption.replace("__actorId", actor.ActorId)
+                    .replace("__actorDisplayName", actor.DisplayName);
+                    options = options + newOption;
+                }
+            });
+            largeGroup = largeGroup.replace("<!--__actorsSelected-->", selected)
+            .replace("<!--__actorOptions-->", options);
+            largeGroupSection = largeGroupSection + largeGroup;
+        }
+        else {
+            var newGroup = $("#_actorGroup").html();
+            if (addSpecial || addTechnical) {
+                switch (group.ActorGroupType) {
+                    case 0:
+                        newGroup = newGroup.replace("<!--__actorGroupTitle-->", $("#_workflowBuilderSpecial").html());
+                        addSpecial = false;
+                        break;
+                    case 1:
+                        newGroup = newGroup.replace("<!--__actorGroupTitle-->", $("#_workflowBuilderTechnical").html());
+                        addTechnical = false;
+                        break;
+                }
+            }
+            newGroup = newGroup.replace("__actorGroup_ID_GROUPID", "__actorGroup_" + requestId + "_" + group.GroupId)
+            .replace("__actorGroupCheckbox_ID_GROUPID", "__actorGroupCheckbox_" + requestId + "_" + group.GroupId)
+            .replace("__requestId", requestId)
+            .replace("__actorGroupName_ID_GROUPID", "__actorGroupName_" + requestId + "_" + group.GroupId)
+            .replace("__actorGroupName_TEXT", group.GroupName)
+            .replace("__actorGroupDescription_ID_GROUPID", "__actorGroupDescription_" + requestId + "_" + group.GroupId);
+            if (group.Description != null) { newGroup = newGroup.replace("__actorGroupDescription_TEXT", group.Description); }
+            else { newGroup = newGroup.replace("__actorGroupDescription_TEXT", ""); }
+            var actorSection = "";
+            $.each(group.AvailableActors, function(index, actor) {
+                var newActor = $("#_workflowActor").html();
+                newActor = newActor.replace("__radio_ID_GROUPID_ACTORID", "__radio_" + requestId + "_" + group.GroupId + "_" + actor.ActorId)
+                .replace("__radio_ID_GROUPID", "__radio_" + requestId + "_" + group.GroupId)
+                .replace("_ACTORID", actor.ActorId);
+                if (actor.IsDefault) { newActor = newActor.replace("__actorDisplayName_TEXT", actor.DisplayName + " (Default)"); }
+                else { newActor = newActor.replace("__actorDisplayName_TEXT", actor.DisplayName); }
+
+                if (group.IsSelected) {
+                    if (!actor.IsSelected) { newActor = newActor.replace("checked=\"checked\"", ""); }
+                }
+                else {
+                    newGroup = newGroup.replace("checked=\"checked\"", "");
+                    if (!actor.IsDefault) { newActor = newActor.replace("checked=\"checked\"", ""); }
+                }
+
+                actorSection = actorSection + newActor;
+            });
+            newGroup = newGroup.replace("<!--__actorSection-->", actorSection);
+            groupSection = groupSection + newGroup;
+
+        }
+    });
+    var buttonSection = "";
+    $.each(data.AvailableButtons, function(index, button) {
+        var newButton = $("#_workflowBuilderButton").html();
+        newButton = newButton.replace("__builderButton_ID", button.ButtonId)
+        .replace("__builderButton_TEXT", button.ButtonName);
+        buttonSection = buttonSection + newButton;
+    });
+
+    newBuilder = newBuilder.replace("<!--__workflowBuilder_normal_approvers-->", groupSection)
+    .replace("<!--__workflowBuilder_large_group_approvers-->", largeGroupSection)
+    .replace("<!--__workflowBuilderButtons-->", buttonSection)
+    .replace("__selectedActors_ID", "__selectedActors_" + requestId);
+    $("#__toggledContentContainer_" + requestId).html($("#__toggledContentContainer_" + requestId).html()
+    .replace("<!--__requestWorkflowBuilder-->", newBuilder));
+    if (data.IsDisabled) { DisableBuilder(requestId); }
+
+    var newComments = $("#_comments").html();
+    newComments = newComments.replace(/_audience_ID/g, "_audience_" + requestId)
+    .replace("__radioAIM_ID", "__radioAIM_" + requestId)
+    .replace("__radioApprovers_ID", "__radioApprovers_" + requestId)
+    .replace("__radioEveryone_ID", "__radioEveryone_" + requestId)
+    .replace("__comments_ID", "__comments_" + requestId)
+    .replace(/__submitComments_ID/g, "__submitComments_" + requestId);
+
+    $("#__toggledContentContainer_" + requestId).html($("#__toggledContentContainer_" + requestId).html()
+    .replace("<!--__requestComments-->", newComments));
+
+    BindEvents(sender, data.AvailableGroups, data.AvailableButtons, requestId);
+}
+function BindEvents(sender, builderGroups, builderButtons, requestId) {
+    //AIM SECTION
+    $("#__managerEditButton_" + requestId).click(function() {
+        ManagerEdit(requestId);
+    });
+
+    var builder = $("#__workflowBuilder_" + requestId);
+    builder.find("input[type=checkbox]").each(function() {
+        if ($(this).attr("id").indexOf("_requiredCheck") < 0) {
+            $(this).click(function() {
+                ApproverGroupChecked(this, requestId);
+            });
+        }
+    });
+
+    $.each(builderGroups, function(index, group) {
+        if (group.IsLargeGroup) {
+            $("#__dropdownActors_" + requestId + "_" + group.GroupId).change(function() {
+                ActorSelected(this, requestId, group.GroupId);
+            });
+            $("#__actorDisplayName_" + requestId + "_" + group.GroupId).keyup(function() {
+                ActorChanged(requestId, group.GroupId);
+            });
+            $("#__checkActor_" + requestId + "_" + group.GroupId).click(function() {
+                ActorCheck(this, requestId, group.GroupId);
+            });
+            $("#__addActor_" + requestId + "_" + group.GroupId).click(function() {
+                ActorAdd(this, requestId, group.GroupId);
+            });
+        }
+    });
+
+    builder.find("td.listview_button").each(function() {
+        $(this).children("input[type=button]").click(function() {
+            RemoveActor(this);
+        });
+    });
+
+    $.each(builderButtons, function(index, button) {
+        var builderButton = $("#" + button.ButtonId);
+        if (!button.IsDisabled) { builderButton.removeAttr("disabled"); }
+        builderButton.click(function() {
+            ActionClicked(builderButton, requestId, button.ActionId);
+        });
+    });
+
+    $("#__radioAIM_" + requestId).click(function() {
+        AudienceClick(this);
+    });
+
+    $("#__radioApprovers_" + requestId).click(function() {
+        AudienceClick(this);
+    });
+
+    $("#__radioEveryone_" + requestId).click(function() {
+        AudienceClick(this);
+    });
+
+    $("#__submitComments_" + requestId).click(function() {
+        AccessComments(this, requestId);
+    });
+
+    $("#__acknowledge_" + requestId).click(function() {
+        AccessTeamActions(this, requestId, '4');
+    });
+
+    $("#__radioChange_" + requestId).click(function() {
+        ChangeDenyCancelClick(this, requestId);
+    });
+
+    $("#__radioDeny_" + requestId).click(function() {
+        ChangeDenyCancelClick(this, requestId);
+    });
+
+    $("#__radioCancel_" + requestId).click(function() {
+        ChangeDenyCancelClick(this, requestId);
+    });
+
+    $("#__requestChange_" + requestId).click(function() {
+        AccessTeamActions(this, requestId, '2');
+    });
+
+    $("#__requestDeny_" + requestId).click(function() {
+        AccessTeamActions(this, requestId, '1');
+    });
+
+    $("#__requestCancel_" + requestId).click(function() {
+        AccessTeamActions(this, requestId, '3');
+    });
+    // AIM SECTION END
+
+    ToggleLoading(sender, requestId);
+}
+function ChangeDenyCancelClick(obj, requestId) {
+    $("#__actionComments_" + requestId).removeAttr("disabled");
     $(obj).closest("table").next().find("input[type=button]").each(
      function() {
          if ($(this).val() == $(obj).val()) {
@@ -132,70 +511,48 @@ function changeDenyCancelClick(obj) {
 }
 function AccessTeamActions(obj, requestId, action) {
     var comments = "";
-    var postComments = ""
-    var textarea = $(obj).parent().prev().find("textarea");
-    if (textarea.val() > "") {
-        textarea.val(textarea.val().replace(/(<([^>]+)>)/ig, "").replace(/\\/g, "/").replace(/\'/g, "\""));
-    }
+    var textarea = $("#__actionComments_" + requestId);
+    ProcessingMessage("Updating Request", "");
     switch (action) {
-        case '4':
-            comments = ""
-            ProcessingMessage("Updating Request", "");
-            break;
         case '2':
             if (textarea.val() == "") { ActionMessage("Required Input", "Please specify the change required."); return false; }
-            else {
-                postComments = textarea.val().replace("'", "\\'");
-                comments = "<br />" + textarea.val();
-                ProcessingMessage("Updating Request", "");
-            }
             break;
         case '3':
             if (textarea.val() == "") { ActionMessage("Required Input", "Please specify the reason for cancel."); return false; }
-            else {
-                postComments = textarea.val().replace("'", "\\'");
-                comments = "<br />" + textarea.val();
-                ProcessingMessage("Updating Request", "");
-            }
             break;
         case '1':
             if (textarea.val() == "") { ActionMessage("Required Input", "Please specify the reason for denial."); return false; }
-            else {
-                postComments = textarea.val().replace("'", "\\'");
-                comments = "<br />" + textarea.val();
-                ProcessingMessage("Updating Request", "");
-            }
             break;
     }
-    comments = comments.replace(/(\r\n|[\r\n])/g, "<br />");
-    var postData = "{'requestId':'" + requestId.toString() + "','action':'" + action + "','comments':'" + postComments + "'}";
+    var newAction = new Comment(requestId, action, textarea.val());
+    comments = "<br />" + textarea.val().replace(/(\r\n|[\r\n])/g, "<br />");
     textarea.val("");
     $.ajax({
         type: "POST",
         contentType: "application/json; character=utf-8",
         url: "AjaxCalls.aspx/AccessTeamActions",
-        data: postData,
+        data: newAction.toJSON,
         dataType: "json",
         success: function(msg) {
-            if (msg.d.Success) {
+            if (msg.d) {
                 switch (action) {
                     case '4':
                         $('#_indicatorDiv').hide();
                         ActionMessage("Acknowledged", "You have just acknowledged this request, you may now create its workflow.");
-                        updateRequestTracking(obj, "Access &amp; Identity Management", "Pending Workflow", false);
+                        //UpdateRequestTracking(obj, "Access &amp; Identity Management", "Pending Workflow", false);
                         $(obj).attr("disabled", "disabled");
                         $(obj).closest("tr").next().children("td.csm_input_form_control_column").find("input").each(function() {
                             $(this).removeAttr("disabled");
                         });
                         $("#create_workflow_" + requestId).removeAttr("disabled");
-                        addComments(obj, "Access &amp; Identity Management", "Acknowledged", "", true);
-                        editBuilder($("#closed_cancelled_" + requestId), requestId);
+                        AddComments(obj, "Access &amp; Identity Management", "Acknowledged", "", true);
+                        EditBuilder($("#closed_cancelled_" + requestId), requestId);
                         $(obj).closest("div.csm_content_container").find("tr.csm_stacked_heading_label").children().each(function() {
                             if ($(this).next().children().html() == "Open") {
                                 $(this).next().children().html("Pending");
                             }
                         });
-                        updateFilterCounts()
+                        //updateFilterCounts()
                         break;
                     case '2':
                         $('#_indicatorDiv').hide();
@@ -205,48 +562,46 @@ function AccessTeamActions(obj, requestId, action) {
                             }
                         });
                         ActionMessage("Change Requested", "You have just requested a change.");
-                        updateRequestTracking(obj, "Access &amp; Identity Management", "Change Requested", true);
-                        disableBladeActions(obj);
-                        disableBuilder($("#closed_cancelled_" + requestId), requestId);
-                        addComments(obj, "Access &amp; Identity Management", "Change Requested", comments, false);
-                        updateFilterCounts();
-                        updateCount();
+                        //UpdateRequestTracking(obj, "Access &amp; Identity Management", "Change Requested", true);
+                        DisableBladeActions(obj);
+                        DisableBuilder(requestId);
+                        AddComments(obj, "Access &amp; Identity Management", "Change Requested", comments, false);
+                        //updateFilterCounts();
+                        //updateCount();
                         break;
                     case '3':
                         $('#_indicatorDiv').hide();
                         ActionMessage("Closed Cancelled", "You have just closed this request with this cancellation.");
-                        updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Cancelled", true);
-                        disableBladeActions(obj);
-                        disableBuilder($("#closed_cancelled_" + requestId), requestId);
-                        addComments(obj, "Access &amp; Identity Management", "Closed Cancelled", comments, false);
-                        animateActions(obj, "Closed Requests");
-                        hideSections(obj);
-                        updateRequestStatus(obj);
-                        updateFilterCounts();
-                        updateCount();
+                        //updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Cancelled", true);
+                        DisableBladeActions(obj);
+                        DisableBuilder(requestId);
+                        AddComments(obj, "Access &amp; Identity Management", "Closed Cancelled", comments, false);
+                        AnimateActions("Closed Requests", requestId);
+                        HideSections(obj);
+                        UpdateRequestStatus(obj);
+                        //updateFilterCounts();
+                        //updateCount();
                         break;
                     case '1':
                         $('#_indicatorDiv').hide();
                         ActionMessage("Closed Denied", "You have just closed this request with this denial.");
-                        updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Denied", true);
-                        disableBladeActions(obj);
-                        disableBuilder($("#closed_cancelled_" + requestId), requestId);
-                        addComments(obj, "Access &amp; Identity Management", "Closed Denied", comments, false);
-                        animateActions(obj, "Closed Requests");
-                        hideSections(obj);
-                        updateRequestStatus(obj);
-                        updateFilterCounts();
-                        updateCount();
+                        //UpdateRequestTracking(obj, "Access &amp; Identity Management", "Closed Denied", true);
+                        DisableBladeActions(obj);
+                        DisableBuilder(requestId);
+                        AddComments(obj, "Access &amp; Identity Management", "Closed Denied", comments, false);
+                        AnimateActions("Closed Requests", requestId);
+                        HideSections(obj);
+                        UpdateRequestStatus(obj);
+                        //updateFilterCounts();
+                        //updateCount();
                         break;
                 }
             }
             else {
                 $('#_indicatorDiv').hide();
                 $('#_closeMessageDiv').show();
-                //$('div.messageBox').children("h2").html("Action Failed");
-                //$('div.messageBox').children("p").html("Please try again.");
-                $('div.messageBox').children("h2").html(msg.d.Title);
-                $('div.messageBox').children("p").html(msg.d.Message + " Please try again.");
+                $('div.messageBox').children("h2").html("Action Failed");
+                $('div.messageBox').children("p").html("Please try again.");
             }
         }
 		,
@@ -257,75 +612,30 @@ function AccessTeamActions(obj, requestId, action) {
         }
     });
 }
-function updateCount() {
-    $("span").each(function() {
-        if ($(this).attr("snap") == "_accessTeamCount") {
-            $(this).html((parseInt($(this).html()) - 1).toString());
-        }
-    });
-}
-function disableBladeActions(obj) {
-    $(obj).closest("div.csm_content_container").find("input").each(function() {
-        $(this).attr("disabled", "disabled");
-    });
-}
-function addComments(obj, approverName, action, comments, includeDate) {
-    var newcomment = "";
-    comments = comments.replace(/(\r\n|[\r\n])/g, "<br />");
-    $(obj).closest("div.csm_hidden_block").children().find("span").each(
-        function() {
-            if ($(this).attr("snap") == "_actorDisplayName") {
-                if ($(this).html() == approverName) {
-                    var commentsContainer = $(this).closest("div.csm_data_row").parent().find("div.csm_text_container_nodrop");
-                    if (commentsContainer.html() == null) {
-                        newcomment = "<div class='csm_text_container_nodrop'><p class='csm_error_text'><u>"
-                        + action + " by AIM on " + curr_date + "</u>" + comments;
-                        if (includeDate) { newcomment += "<br />Due Date: " + $(this).parent().next().next().children().html(); }
-                        newcomment += "</p></div>";
-                        $(newcomment).appendTo($(this).closest("div.csm_data_row").parent());
-                    }
-                    else {
-                        newcomment = "<p class='csm_error_text'><u>"
-                        + action + " by AIM on " + curr_date + "</u>" + comments;
-                        if (includeDate) { newcomment += "<br />Due Date: " + $(this).parent().next().next().children().html(); }
-                        newcomment += "</p>";
-                        $(newcomment).appendTo(commentsContainer);
-                    }
-
-                }
-            }
-        });
-
-}
-function audienceClick(obj) {
+function AudienceClick(obj) {
     $(obj).closest("table").next().find("input[type=button]").removeAttr("disabled");
 }
-
 function AccessComments(obj, requestId) {
     var comments = "";
     var postComments = ""
     var newNotes = true;
-    var action = $(obj).parent().prev().find("input[name=_audience]:checked").val();
-    var notesFor = $(obj).parent().prev().find("input[name=_audience]:checked").next().html();
-    var textarea = $(obj).parent().prev().find("textarea");
-    textarea.val(textarea.val().replace(/(<([^>]+)>)/ig, "").replace(/\\/g, "/").replace(/\'/g, "\""));
+    var action = $(obj).parent().prev().find("input[name=_audience_" + requestId + "]:checked");
+    var notesFor = action.next().html();
+    var textarea = $("#__comments_" + requestId);
 
     ProcessingMessage("Adding Comments", "");
-
     if (textarea.val() != "") {
+        var newAction = new Comment(requestId, action.val(), textarea.val());
         comments = textarea.val().replace(/(\r\n|[\r\n])/g, "<br />"); ;
-        postComments = comments.replace("'", "\\'");
         textarea.val("");
-
-        var postData = "{'requestId':'" + requestId.toString() + "','action':'" + action + "','comments':'" + postComments + "'}";
         $.ajax({
             type: "POST",
             contentType: "application/json; character=utf-8",
             url: "AjaxCalls.aspx/AccessComments",
-            data: postData,
+            data: newAction.toJSON,
             dataType: "json",
             success: function(msg) {
-                if (msg.d.Success) {
+                if (msg.d) {
                     $('#_indicatorDiv').hide();
                     ActionMessage("Access Comment", "Your comment has been added to this request.");
                     $(obj).closest("div.csm_content_container").find("div.oospa_request_details").next().find("tr").each(function() {
@@ -349,11 +659,8 @@ function AccessComments(obj, requestId) {
                 else {
                     $('#_indicatorDiv').hide();
                     $('#_closeMessageDiv').show();
-                    //$('div.messageBox').children("h2").html("Action Failed");
-                    //$('div.messageBox').children("p").html("Please try again.");
-                    $('div.messageBox').children("h2").html(msg.d.Title);
-                    $('div.messageBox').children("p").html(msg.d.Message + " Please try again.");
-
+                    $('div.messageBox').children("h2").html("Action Failed");
+                    $('div.messageBox').children("p").html("Please try again.");
                 }
             }
 		,
@@ -368,455 +675,50 @@ function AccessComments(obj, requestId) {
         ActionMessage("Required Input", "Please insert comment");
     }
 }
-function approverGroupChecked(obj, requestId) {
-    $(document).ready(function() {
-        var nameArray = new Array();
-        var approver;
-        $(obj).closest("table").find("input[type=radio]").each(
-          function() {
-              if ($(obj).attr("checked")) {
-                  $(this).removeAttr("disabled");
-                  $(this).change(function() {
-                      $(obj).closest("table").find("input[type=radio]").each(
-                        function() {
-                            $("#_selectedActors_" + requestId).val($("#_selectedActors_" + requestId).val().replace("[" + $(this).attr("id") + "]", ""));
-                        });
-                      nameArray = $(this).next().html().split("(");
-                      approver = $.trim(nameArray[0]);
-                      if (checkforDuplicateApprovers(approver, obj, requestId, "approver")) {
-                          ActionMessage("Duplicate Selection", approver + " has already be added to this workflow.");
-                          $(obj).removeAttr("checked");
-                          $(this).attr("disabled", "disabled");
-                      }
-                      else {
-                          $("#_selectedActors_" + requestId).val($("#_selectedActors_" + requestId).val() + "[" + $(this).attr("id") + "]");
-                      }
-                  });
-                  if ($(this).is(":checked")) {
-                      nameArray = $(this).next().html().split("(");
-                      approver = $.trim(nameArray[0]);
-                      if (checkforDuplicateApprovers(approver, obj, requestId, "approver")) {
-                          ActionMessage("Duplicate Selection", approver + " has already be added to this workflow.");
-                          $(obj).removeAttr("checked");
-                          $(this).attr("disabled", "disabled");
-                      }
-                      else {
-                          $("#_selectedActors_" + requestId).val($("#_selectedActors_" + requestId).val() + "[" + $(this).attr("id") + "]");
-                      }
-                  }
-              }
-              else {
-                  $(this).attr("disabled", "disabled");
-                  if ($(this).is(":checked")) {
-                      $("#_selectedActors_" + requestId).val($("#_selectedActors_" + requestId).val().replace("[" + $(this).attr("id") + "]", ""));
-                  }
-              }
-          });
-    });
+function DisableBuilder(requestId) {
+    var editLink = $("#__managerEditButton_" + requestId);
+    var builder = $("#__workflowBuilder_" + requestId);
+    builder.find("input[type=checkbox]").attr("disabled", "disabled");
+    builder.find("input[type=radio]").attr("disabled", "disabled");
+    builder.find("input[type=text]").attr("disabled", "disabled");
+    builder.find("input[type=button]").attr("disabled", "disabled");
+    builder.find("select").attr("disabled", "disabled");
+    $("#__selectedActors_" + requestId).val("");
+    editLink.removeClass("oospa_edit_icon");
+    editLink.addClass("oospa_edit_icon_disabled");
+    editLink.unbind("click");
 }
+function ManagerEdit(requestId) {
+    var managerLabelSection = $("#__managerLabelSection_" + requestId);
+    var managerLabelDispalyName = $("#__managerDisplayName_" + requestId);
+    var managerInputSection = $("#__managerInputSection_" + requestId);
+    var managerInputUserId = $("#__managerUserId_" + requestId);
+    var managerInputDisplayName = $("#__managerName_" + requestId);
+    var managerInputCheckButton = $("#__checkManagerName_" + requestId);
+    managerLabelSection.hide();
+    managerInputDisplayName.val(managerLabelDispalyName.html());
+    managerInputSection.show();
 
-function checkforDuplicateApprovers(approver, obj, requestId, source) {
-    var managerName = "";
-    var approverArray = new Array();
-    var nameArray = new Array();
-    var i = 0;
-    var duplicate = false;
-    if (requestId > 0) {
-        managerName = $("#_managerDisplayName_" + requestId).html();
-        nameArray = managerName.split("(");
-        approverArray[i] = $.trim(nameArray[0]);
-        i++;
-    }
-
-    $(obj).closest("table").parent().parent().parent().find("input[type=radio]").each(
-    function() {
-        if ($(this).is(":checked")) {
-            if ($(this).is(':disabled') == false) {
-                nameArray = $(this).next().html().split("(");
-                if (source == "owner") {
-                    if ($.trim(nameArray[0]) == approver) {
-                        approverArray[i] = $.trim(nameArray[0]);
-                        i++;
-                    }
-                }
-                if ($.trim(nameArray[0]) != approver) {
-                    approverArray[i] = $.trim(nameArray[0]);
-                    i++;
-                }
-                if (requestId == 0) {
-                    if ($.trim(nameArray[0]) == approver) {
-                        $(obj).closest("div.csm_content_container").find("div.csm_divided_heading").find("span").each(function() {
-                            if ($(this).attr("snap") == "_accessRequestId") {
-                                requestId = $(this).html();
-                            }
-                        });
-
-                        $(this).closest("table").find("input.csm_input_checkradio").first().removeAttr("checked");
-                        $(this).attr("disabled", "disabled");
-                        $("#_selectedActors_" + requestId).val($("#_selectedActors_" + requestId).val().replace("[" + $(this).attr("id") + "]", ""));
-                        duplicate = true;
-                    }
-                }
-            }
-        }
+    managerInputDisplayName.bind('change', function() {
+        managerInputUserId.val("");
     });
-
-    $(obj).closest("table").parent().parent().parent().find("td.listview_td").each(function() {
-        nameArray = $(this).html().split("(");
-        approverArray[i] = $.trim(nameArray[0]);
-        i++;
-
-        if ($.trim(nameArray[0]) == approver) {
-            duplicate = true;
-            if (requestId == 0) {
-                RemoveActor($(this));
-            }
-        }
-        
-    });
-    
-    $.each(approverArray, function() {
-        if (approver == this) {
-            duplicate = true;
-        }
-    });
-
-    return duplicate;
-}
-function actionClicked(obj, requestId, state) {
-    switch ($(obj).val()) {
-        case "Closed Cancelled":
-            ProcessingMessage("Updating Request", "");
-            builderActions(obj, requestId, state);
-            break;
-        case "Closed Completed":
-            ProcessingMessage("Updating Request", "");
-            builderActions(obj, requestId, state);
-            break;
-        case "Create Ticket":
-            ProcessingMessage("Creating Ticket", "")
-            builderActions(obj, requestId, state);
-            break;
-        case "Edit Workflow":
-            editBuilder(obj, requestId);
-            $(obj).attr("disabled", "disabled");
-            break;
-        case "Create Workflow":
-            ProcessingMessage("Creating Workflow", "");
-            createWorkflow(obj, requestId);
-            break;
-        case "Continue Workflow":
-            ProcessingMessage("Updating Workflow", "");
-            editCreatedWorkflow(obj, requestId);
-            break;
-    }
-}
-function hideSections(obj) {
-    $(document).ready(function() {
-        $(obj).closest("div.csm_content_container").find("div.csm_text_container").each(function() {
-            if ($(this).children().children().html() == "Acknowledgement" ||
-                $(this).children().children().html() == "Workflow Builder" ||
-                $(this).children().children().html() == "Comments") {
-                $(this).hide();
-            }
-        });
-    });
-}
-function updateRequestStatus(obj) {
-    $(obj).closest("div.csm_content_container").find("tr.csm_stacked_heading_label").children().each(function() {
-        if ($(this).next().children().html() == "Open" || $(this).next().children().html() == "Pending" || $(this).next().children().html() == "Change Requested") {
-            $(this).next().children().html("Closed");
-        }
-    });
-}
-function editBuilder(obj, requestId) {
-    $(document).ready(function() {
-        $(obj).parent().parent().find("input[type=checkbox]").each(
-          function() {
-              if ($(this).attr("id").indexOf("_requiredCheck") < 0) {
-                  $(this).removeAttr("disabled");
-                  approverGroupChecked(this, requestId);
-              }
-          });
-        $(obj).parent().parent().find("input[type=text]").removeAttr("disabled");
-        $(obj).parent().parent().find("input[type=button]").each(function() {
-            $(this).removeAttr("disabled");
-            if ($(this).val() == "Remove") {
-                $("#_selectedActors_" + requestId).val($("#_selectedActors_" + requestId).val() + "[" + $(this).parent().prev().html() + "]");
-            }
-        });
-        $(obj).parent().parent().find("select").removeAttr("disabled");
-
-        $("#closed_cancelled_" + requestId).removeAttr("disabled");
-        $("#continue_workflow_" + requestId).removeAttr("disabled");
-
-        var editLink = $(obj).parent().parent().find(".oospa_edit_icon_disabled");
-        editLink.addClass("oospa_edit_icon");
-        editLink.removeClass("oospa_edit_icon_disabled");
-        editLink.click(function() {
-            managerEdit(this);
-        });
-    });
-}
-function disableBuilder(obj, requestId) {
-    $(document).ready(function() {
-        $(obj).parent().parent().find("input[type=checkbox]").each(
-          function() {
-              if ($(this).attr("id").indexOf("_requiredCheck") < 0) {
-                  $(this).attr("disabled", "disabled");
-              }
-          });
-        $(obj).parent().parent().find("input[type=text]").attr("disabled", "disabled");
-        $(obj).parent().parent().find("input[type=button]").attr("disabled", "disabled");
-        $(obj).parent().parent().find("select").attr("disabled", "disabled");
-        $("#_selectedActors_" + requestId).val("");
-        $("#closed_cancelled_" + requestId).attr("disabled", "disabled");
-        $("#create_workflow_" + requestId).attr("disabled", "disabled");
-        $(obj).attr("disabled", "disabled");
-
-        var editLink = $(obj).parent().parent().find(".oospa_edit_icon");
-        editLink.addClass("oospa_edit_icon_disabled");
-        editLink.removeClass("oospa_edit_icon");
-        editLink.unbind("click");
-    });
-}
-function builderActions(obj, requestId, state) {
-
-    var postData = "{'requestId':'" + requestId.toString() + "','action':'" + state + "'}";
-
-    $.ajax({
-        type: "POST",
-        contentType: "application/json; character=utf-8",
-        url: "AjaxCalls.aspx/BuilderActions",
-        data: postData,
-        dataType: "json",
-        success: function(msg) {
-            if (msg.d.Success) {
-                switch (state) {
-                    case "3":
-                        $('#_indicatorDiv').hide();
-                        ActionMessage("Closed Cancelled", "You have just cancelled this request.");
-                        updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Cancelled", true);
-                        animateActions(obj, "Closed Requests");
-                        hideSections(obj);
-                        updateRequestStatus(obj);
-                        updateFilterCounts();
-                        updateCount();
-                        break;
-                    case "6":
-                        $('#_indicatorDiv').hide();
-                        ActionMessage("Closed Completed", "You have just completed this request.");
-                        updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Completed", true);
-                        animateActions(obj, "Closed Requests");
-                        hideSections(obj);
-                        updateRequestStatus(obj);
-                        updateFilterCounts();
-                        updateCount();
-                        break;
-                    case "5":
-                        $('#_indicatorDiv').hide();
-                        ActionMessage("Pending Provisioning", "A ticket has been created to provision the access for this request.");
-                        updateRequestTracking(obj, "Access &amp; Identity Management", "Pending Provisioning", false);
-                        $("#closed_completed_" + requestId).removeAttr("disabled");
-                        $("#create_ticket_" + requestId).attr("disabled", "disabled");
-                        $("input[id$='_submit_form']").trigger('click');
-                        break;
-                }
-            }
-            else {
-                if (state == 5) {
-                    $('#_indicatorDiv').hide();
-                    $('#_closeMessageDiv').show();
-                    //$('div.messageBox').children("h2").html("Ticket Creation Failed");
-                    //$('div.messageBox').children("p").html("Please try again or create the ticket manually (add the ticket number within the comments section).");
-                    $('div.messageBox').children("h2").html(msg.d.Title);
-                    $('div.messageBox').children("p").html(msg.d.Message + " Please try again.");
-                    $("#closed_completed_" + requestId).removeAttr("disabled");
-                }
-                else {
-                    $('#_indicatorDiv').hide();
-                    $('#_closeMessageDiv').show();
-                    //$('div.messageBox').children("h2").html("Action Failed");
-                    //$('div.messageBox').children("p").html("Please try again.");
-                    $('div.messageBox').children("h2").html(msg.d.Title);
-                    $('div.messageBox').children("p").html(msg.d.Message + " Please try again.");
-
-                }
-            }
-        }
-		,
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            alert("GetNames Error: " + XMLHttpRequest);
-            alert("GetNames Error: " + textStatus);
-            alert("GetNames Error: " + errorThrown);
-        }
-    });
-}
-function updateRequestTracking(obj, approverName, newStatus, includeDate) {
-    $(obj).closest("div.csm_hidden_block").children().find("span").each(
-        function() {
-            if ($(this).attr("snap") == "_actorDisplayName") {
-                if ($(this).html() == approverName) {
-                    $(this).parent().next().children().html(newStatus);
-                    if (includeDate) { $(this).parent().next().next().next().children().html("<span>" + curr_date + "</span>"); }
-                }
-            }
-        });
-}
-function animateActions(obj, newSection) {
-    var blade = $(obj).closest("div.csm_content_container");
-    var emptyDiv = "<div class='csm_clear'></div>";
-    $(obj).closest("div.csm_text_container").fadeOut("slow", function() {
-        $(obj).closest("div.csm_content_container").children().next().slideUp("fast", function() {
-            $(obj).closest("div.csm_container_center_700").find("h1").each(
-            function() {
-                var section = $(this);
-                if ($(this).html() == newSection) {
-                    blade.fadeOut(1000, function() {
-                        if ($(section).next().attr("snap") == "_nullDataMessage") { $(section).next().remove(); }
-                        $(emptyDiv).insertAfter(section);
-                        $(this).insertAfter(section);
-
-                        var toggle = $(obj).closest("div.csm_content_container").children().find("div.csm_toggle_container");
-                        toggle.addClass("csm_toggle_show");
-                        toggle.removeClass("csm_toggle_hide");
-                        toggle.removeClass("csm_toggle_hide_hover");
-                        toggle.unbind('mouseenter mouseleave')
-                        toggle.hover(function() {
-                            $(this).addClass("csm_toggle_show_hover");
-                        },
-	                    function() {
-	                        $(this).removeClass("csm_toggle_show_hover");
-	                    }
-	                    );
-
-                        $(this).fadeIn(1000);
-                    });
-                }
-            });
-        });
-    });
-}
-function createWorkflow(obj, requestId) {
-    $(document).ready(function() {
-
-        if ($("#_managerUserId_" + requestId).val() > "") {
-            var postData = "{'requestId':'" + requestId.toString() + "','managerUserId':'" + $("#_managerUserId_" + requestId).val() + "','actorIds':'" + $("#_selectedActors_" + requestId).val() + "'}";
-
-            $.ajax({
-                type: "POST",
-                contentType: "application/json; character=utf-8",
-                url: "AjaxCalls.aspx/CreateWorkflow",
-                data: postData,
-                dataType: "json",
-                success: function(msg) {
-                    if (msg.d.Success) {
-                        $('#_indicatorDiv').hide();
-                        ActionMessage("Workflow Created", "The workflow has been created for this request.");
-                        updateRequestTracking(obj, "Access &amp; Identity Management", "In Workflow", false);
-                        disableBuilder(obj, requestId);
-                        $("input[id$='_submit_form']").trigger('click');
-                    }
-                    else {
-                        $('#_indicatorDiv').hide();
-                        $('#_closeMessageDiv').show();
-                        //$('div.messageBox').children("h2").html("Workflow Creation Failed");
-                        //$('div.messageBox').children("p").html("The workflow creation failed.");
-                        $('div.messageBox').children("h2").html(msg.d.Title);
-                        $('div.messageBox').children("p").html(msg.d.Message);
-
-                    }
-                },
-
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    alert("GetNames Error: " + XMLHttpRequest);
-                    alert("GetNames Error: " + textStatus);
-                    alert("GetNames Error: " + errorThrown);
-                }
-            });
+    managerInputCheckButton.click(function() {
+        if (managerInputUserId.val() == "") {
+            GetNames(requestId, 0, managerInputDisplayName, "manager");
         }
         else {
-            ActionMessage("Validation Error", "The manager you have selected has not been checked.");
+            managerInputSection.hide();
+            managerLabelSection.show();
         }
     });
 }
-function editCreatedWorkflow(obj, requestId) {
-    $(document).ready(function() {
-        if ($("#_managerUserId_" + requestId).val() > "") {
-            var postData = "{'requestId':'" + requestId.toString() + "','managerUserId':'" + $("#_managerUserId_" + requestId).val() + "','actorIds':'" + $("#_selectedActors_" + requestId).val() + "'}";
-
-            $.ajax({
-                type: "POST",
-                contentType: "application/json; character=utf-8",
-                url: "AjaxCalls.aspx/EditWorkflow",
-                data: postData,
-                dataType: "json",
-                success: function(msg) {
-                    if (msg.d.Success) {
-                        $('#_indicatorDiv').hide();
-                        ActionMessage("Workflow Updated", "The workflow has been updated for this request.");
-                        disableBuilder(obj, requestId);
-                        $("input[id$='_submit_form']").trigger('click');
-                    }
-                    else {
-                        $('#_indicatorDiv').hide();
-                        $('#_closeMessageDiv').show();
-                        //$('div.messageBox').children("h2").html("Workflow Updated Failed");
-                        //$('div.messageBox').children("p").html("The workflow update failed. No changes where made.");
-                        $('div.messageBox').children("h2").html(msg.d.Title);
-                        $('div.messageBox').children("p").html(msg.d.Message);
-
-                    }
-                },
-
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    alert("GetNames Error: " + XMLHttpRequest);
-                    alert("GetNames Error: " + textStatus);
-                    alert("GetNames Error: " + errorThrown);
-                }
-            });
-        }
-        else {
-            ActionMessage("Validation Error", "The manager you have selected has not been checked.");
-        }
-    });
-}
-function managerEdit(obj) {
-    $(document).ready(function() {
-        var managerLabelSection = $(obj).prev().prev().prev().prev()
-        var managerLabelDispalyName = $(obj).prev().prev().prev().prev().children();
-        var managerInputUserId = managerLabelDispalyName.next();
-        var managerInputSection = $(obj).prev().prev().prev();
-        var managerInputDisplayName = $(obj).prev().prev().prev().children("input[type=text]");
-        var managerInputCheckButton = managerInputDisplayName.next();
-
-        managerLabelSection.hide();
-        managerInputDisplayName.val(managerLabelDispalyName.html());
-        managerInputSection.show();
-
-        managerInputDisplayName.change(function() {
-            managerInputUserId.val("");
-        });
-
-        managerInputCheckButton.click(function() {
-            if (managerInputUserId.val() == "") {
-                GetNames(obj, managerInputDisplayName, "manager");
-            }
-            else {
-                managerInputSection.hide();
-                managerLabelSection.show();
-            }
-        });
-    });
-}
-function GetNames(obj, name, section) {
+function GetNames(requestId, groupId, name, section) {
     var indicator = $('.oospa_ajax_indicator');
     var selection = $('select[id$=_managerSelection]');
-    var postData = "{'name':'" + name.val().replace("(", "").replace(")", "").replace(/\\/, "").replace("'", "\\'") + "'}";
+    var postData = "{\"name\":\"" + name.val().replace("(", "").replace(")", "").replace(/\\/, "").replace("'", "\\'") + "\"}";
     selection.hide();
     indicator.show();
     OpenDialog(name);
-
     $.ajax({
         type: "POST",
         contentType: "application/json; character=utf-8",
@@ -824,41 +726,35 @@ function GetNames(obj, name, section) {
         data: postData,
         dataType: "json",
         success: function(msg) {
-
             var names = msg.d;
             // no match
             if (section == "manager") {
                 if (names.length == 0) {
-                    FillManagerErrorFields(name);
+                    FillManagerErrorFields(requestId, name);
                 }
-
                 // direct match
                 if (names.length == 1) {
-                    FillManagerAllFields(obj, name, names);
+                    FillManagerAllFields(requestId, name, names);
                 }
-
                 // match list of names
                 if (names.length > 1) {
-                    FillManagerSelection(obj, name, names);
+                    FillManagerSelection(requestId, name, names);
                 }
             }
             else {
                 if (names.length == 0) {
-                    FillActorErrorFields(name);
+                    FillActorErrorFields(requestId, groupId, name);
                 }
-
                 // direct match
                 if (names.length == 1) {
-                    FillActorAllFields(obj, name, names);
+                    FillActorAllFields(requestId, groupId, name, names);
                 }
-
                 // match list of names
                 if (names.length > 1) {
-                    FillActorSelection(obj, name, names);
+                    FillActorSelection(requestId, groupId, name, names);
                 }
             }
         },
-
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             $("#_managerSelectionDiv").dialog("destroy");
             alert("GetNames Error: " + XMLHttpRequest);
@@ -867,55 +763,55 @@ function GetNames(obj, name, section) {
         }
     });
 }
-function FillManagerAllFields(obj, name, names) {
-    var managerLabelSection = $(name).parent().prev();
-    var managerLabelDispalyName = $(name).parent().prev().children("span");
-    var managerInputUserId = managerLabelDispalyName.next();
-    var managerInputSection = $(name).parent();
-    var managerInputDisplayName = $(name).parent().children("input[type=text]");
+function FillManagerAllFields(requestId, name, names) {
+    var managerLabelSection = $("#__managerLabelSection_" + requestId);
+    var managerLabelDispalyName = $("#__managerDisplayName_" + requestId);
+    var managerInputSection = $("#__managerInputSection_" + requestId);
+    var managerInputUserId = $("#__managerUserId_" + requestId);
+    var managerInputDisplayName = $("#__managerName_" + requestId);
+
     var nameArray = new Array();
     $("#_managerSelectionDiv").dialog("destroy");
     managerInputUserId.val(names[0].LoginId);
     managerLabelDispalyName.html(names[0].Name);
     nameArray = names[0].Name.split("(");
-    if(checkforDuplicateApprovers($.trim(nameArray[0]), obj, 0, "manager")) 
-    {
+    if (CheckForDuplicateApprovers($.trim(nameArray[0]), requestId, "manager")) {
         ActionMessage("Duplicate Removed", "Duplicate approver has been removed from the workflow");
     }
     managerInputSection.hide();
     managerLabelSection.show();
-    updateManagerName(obj, names[0].Name);
+    UpdateManagerName(requestId, names[0].Name);
 }
-function FillManagerErrorFields(name) {
-    var managerInputDisplayName = $(name).parent().children("input[type=text]");
-    var managerInputUserId = $(name).parent().prev().children("span").next();
+function FillManagerErrorFields(requestId, name) {
+    var managerInputDisplayName = $("#__managerName_" + requestId);
+    var managerInputUserId = $("#__managerUserId_" + requestId);
     $("#_managerSelectionDiv").dialog("destroy");
     managerInputDisplayName.val("No such name! Try again");
     managerInputUserId.val("");
     managerInputDisplayName.focus();
 }
-function FillManagerSelection(obj, name, names) {
-    var managerLabelSection = $(name).parent().prev();
-    var managerLabelDispalyName = $(name).parent().prev().children("span");
-    var managerInputUserId = managerLabelDispalyName.next();
-    var managerInputSection = $(name).parent();
-    var managerInputDisplayName = $(name).parent().children("input[type=text]");
+function FillManagerSelection(requestId, name, names) {
+    var managerLabelSection = $("#__managerLabelSection_" + requestId);
+    var managerLabelDispalyName = $("#__managerDisplayName_" + requestId);
+    var managerInputSection = $("#__managerInputSection_" + requestId);
+    var managerInputUserId = $("#__managerUserId_" + requestId);
+    var managerInputDisplayName = $("#__managerName_" + requestId);
+
     var selection = $('select[id$=_managerSelection]');
     var indicator = $('.oospa_ajax_indicator');
     var nameArray = new Array();
-    
+
     selection.change(function() {
         managerLabelDispalyName.html($('#' + selection.attr('id') + ' :selected').text());
         nameArray = $('#' + selection.attr('id') + ' :selected').text().split("(");
-        if(checkforDuplicateApprovers($.trim(nameArray[0]), obj, 0, "manager")) 
-        {
+        if (CheckForDuplicateApprovers($.trim(nameArray[0]), requestId, "manager")) {
             ActionMessage("Duplicate Removed", "Duplicate approver has been removed from the workflow");
         }
         managerInputSection.hide();
         managerLabelSection.show();
         managerInputUserId.val($('#' + selection.attr('id') + ' :selected').val());
         $("#_managerSelectionDiv").dialog("destroy");
-        updateManagerName(obj, $('#' + selection.attr('id') + ' :selected').text());
+        UpdateManagerName(requestId, $('#' + selection.attr('id') + ' :selected').text());
     });
 
     var listItems = [];
@@ -935,25 +831,99 @@ function FillManagerSelection(obj, name, names) {
     selection.show();
 
 }
+function CheckForDuplicateApprovers(approver, requestId, source) {
+    var managerName = "";
+    var approverArray = new Array();
+    var nameArray = new Array();
+    var i = 0;
+    var isApprover = false;
+    var duplicate = false;
+    var builder = $("#__workflowBuilder_" + requestId);
+    var managerName = $("#__managerDisplayName_" + requestId).html();
 
-function FillActorAllFields(obj, name, names) {
-    var actorDisplayName = $(obj).parent().children("input[id$='_actorDisplayName']");
-    var actorUserId = $(obj).parent().children("input[id$='_actorUserId']");
+    if (source != "manager") {
+        nameArray = managerName.split("(");
+        approverArray[i] = $.trim(nameArray[0]);
+        i++;
+    }
+
+    builder.find("input[type=radio]").each(function() {
+        var checkbox = $(this).closest("table").find("input[type=checkbox]");
+        if (checkbox.is(":checked")) {
+            if (!checkbox.is(':disabled')) {
+                if ($(this).is(":checked")) {
+                    nameArray = $(this).next().html().split("(");
+                    if (source == "manager") {
+                        if ($.trim(nameArray[0]) == approver) {
+                            duplicate = true;
+                            checkbox.removeAttr("checked");
+                            $(this).attr("disabled", "disabled");
+                            $(this).closest("table").find("input[type=radio]").each(function() {
+                                $(this).attr("disabled", "disabled");
+                            });
+                            $("#__selectedActors_" + requestId).val($("#__selectedActors_" + requestId).val().replace("[" + $(this).val() + "]", ""));
+                        }
+                    }
+                    else {
+                        approverArray[i] = $.trim(nameArray[0]);
+                        i++;
+                    }
+                }
+            }
+        }
+    });
+
+    builder.find("td.listview_td").each(function() {
+        nameArray = $(this).html().split("(");
+        if (source == "manager") {
+            if ($.trim(nameArray[0]) == approver) {
+                duplicate = true;
+                RemoveActor($(this));
+            }
+        }
+        else {
+            approverArray[i] = $.trim(nameArray[0]);
+            i++;
+        }
+    });
+
+    if (!duplicate) {
+        $.each(approverArray, function() {
+            if (source == "large") {
+                if (approver == this) {
+                    duplicate = true;
+                }
+            }
+            if (approver == this) {
+                if (isApprover) { duplicate = true; }
+                else { isApprover = true; }
+            }
+        });
+    }
+
+    return duplicate;
+}
+function FillActorAllFields(requestId, groupId, name, names) {
+    var actorDisplayName = $("#__actorDisplayName_" + requestId + "_" + groupId);
+    var actorUserId = $("#__actorUserId_" + requestId + "_" + groupId);
+    var addActor = $("#__addActor_" + requestId + "_" + groupId);
     $("#_managerSelectionDiv").dialog("destroy");
     actorUserId.val(names[0].LoginId);
     actorDisplayName.val(names[0].Name);
+    addActor.removeAttr("disabled");
 }
-function FillActorErrorFields(name) {
-    var actorDisplayName = $(name).parent().children("input[id$='_actorDisplayName']");
-    var actorUserId = $(name).parent().children("input[id$='_actorUserId']");
+function FillActorErrorFields(requestId, groupId, name) {
+    var actorDisplayName = $("#__actorDisplayName_" + requestId + "_" + groupId);
+    var actorUserId = $("#__actorUserId_" + requestId + "_" + groupId);
     $("#_managerSelectionDiv").dialog("destroy");
     actorDisplayName.val("No such name! Try again");
     actorUserId.val("");
     actorDisplayName.focus();
 }
-function FillActorSelection(obj, name, names) {
-    var actorDisplayName = $(obj).parent().children("input[id$='_actorDisplayName']");
-    var actorUserId = $(obj).parent().children("input[id$='_actorUserId']");
+function FillActorSelection(requestId, groupId, name, names) {
+    var actorDisplayName = $("#__actorDisplayName_" + requestId + "_" + groupId);
+    var actorUserId = $("#__actorUserId_" + requestId + "_" + groupId);
+    var addActor = $("#__addActor_" + requestId + "_" + groupId);
     var selection = $('select[id$=_managerSelection]');
     var indicator = $('.oospa_ajax_indicator');
 
@@ -961,6 +931,7 @@ function FillActorSelection(obj, name, names) {
         actorDisplayName.val($('#' + selection.attr('id') + ' :selected').text());
         actorUserId.val($('#' + selection.attr('id') + ' :selected').val());
         $("#_managerSelectionDiv").dialog("destroy");
+        addActor.removeAttr("disabled");
     });
 
     var listItems = [];
@@ -979,7 +950,6 @@ function FillActorSelection(obj, name, names) {
     indicator.hide();
     selection.show();
 }
-
 function OpenDialog(name) {
     $("#_managerSelectionDiv").dialog({
         title: 'Select User',
@@ -1003,42 +973,286 @@ function OpenDialog(name) {
     });
 
 }
-function updateManagerName(obj, newManager) {
-    $(obj).closest("div.csm_content_container").find("div.oospa_request_details").next().find("tr").each(function() {
-        if ($(this).children().children().html() == "Manager Name:") {
-            $(this).children().next().children().html(newManager);
+function ApproverGroupChecked(obj, requestId) {
+    var nameArray = new Array();
+    var approver;
+    var isChecked = false;
+    var builder = $("#__workflowBuilder_" + requestId);
+    if ($(obj).is(":checked")) {
+        builder.find("input[type=checkbox]").each(function() {
+            if ($(this).is(":checked")) {
+                if ($(obj).attr("id") == $(this).attr("id")) {
+                    $(this).closest("table").find("input[type=radio]").each(function() {
+                        $(this).removeAttr("disabled");
+                        if ($(this).is(":checked")) {
+                            nameArray = $(this).next().html().split("(");
+                        }
+                    });
+                    approver = $.trim(nameArray[0]);
+                    if (CheckForDuplicateApprovers(approver, requestId, "approver")) {
+                        ActionMessage("Duplicate Selection", approver + " has already be added to this workflow.");
+                        $(obj).removeAttr("checked");
+                        $(obj).closest("table").find("input[type=radio]").each(function() {
+                            $(this).attr("disabled", "disabled");
+                        });
+                    }
+                    else {
+                        isChecked = true;
+                    }
+                }
+                else {
+                    $(this).closest("table").find("input[type=radio]").each(function() {
+                        $(this).removeAttr("disabled");
+                    });
+                }
+            }
+        });
+    }
+    else {
+        $(obj).closest("table").find("input[type=radio]").each(function() {
+            $(this).attr("disabled", "disabled");
+        });
+    }
+
+    $(obj).closest("table").find("input[type=radio]").each(function() {
+        if ($(this).is(":checked")) {
+            if (isChecked) {
+                $("#__selectedActors_" + requestId).val($("#__selectedActors_" + requestId).val() + "[" + $(this).val() + "]");
+            }
+            else {
+                $("#__selectedActors_" + requestId).val($("#__selectedActors_" + requestId).val().replace("[" + $(this).val() + "]", ""));
+            }
         }
     });
 }
-function ProcessingMessage(header, message) {
-    $(document).ready(function() {
-        $('#_closeMessageDiv').hide();
-        $('div.messageBox').children("h2").html(header);
-        $('div.messageBox').children("p").html(message);
-        $('#_indicatorDiv').show();
-        $('#_actionMessageDiv').fadeIn();
+function ActionClicked(obj, requestId, state) {
+    switch ($(obj).val()) {
+        case "Closed Cancelled":
+            ProcessingMessage("Updating Request", "");
+            BuilderActions(obj, requestId, state);
+            break;
+        case "Closed Completed":
+            ProcessingMessage("Updating Request", "");
+            BuilderActions(obj, requestId, state);
+            break;
+        case "Create Ticket":
+            ProcessingMessage("Creating Ticket", "")
+            BuilderActions(obj, requestId, state);
+            break;
+        case "Edit Workflow":
+            EditBuilder(obj, requestId);
+            $(obj).attr("disabled", "disabled");
+            break;
+        case "Create Workflow":
+            ProcessingMessage("Creating Workflow", "");
+            CreateWorkflow(obj, requestId);
+            break;
+        case "Continue Workflow":
+            ProcessingMessage("Updating Workflow", "");
+            EditCreatedWorkflow(obj, requestId);
+            break;
+    }
+}
+function EditBuilder(obj, requestId) {
+    var builder = $("#__workflowBuilder_" + requestId);
+    builder.find("input[type=checkbox]").each(function() {
+        if ($(this).attr("id").indexOf("_requiredCheck") < 0) {
+            $(this).removeAttr("disabled");
+            ApproverGroupChecked(this, requestId);
+        }
+    });
+    builder.find("input[type=text]").removeAttr("disabled");
+    builder.find("input[type=button]").each(function() {
+        $(this).removeAttr("disabled");
+        if ($(this).val() == "Remove") {
+            $("#__selectedActors_" + requestId).val($("#__selectedActors_" + requestId).val() + "[" + $(this).parent().prev().html() + "]");
+        }
+    });
+    builder.find("select").removeAttr("disabled");
+    $("#closed_cancelled_" + requestId).removeAttr("disabled");
+    $("#continue_workflow_" + requestId).removeAttr("disabled");
+    var editLink = $(obj).parent().parent().find(".oospa_edit_icon_disabled");
+    editLink.addClass("oospa_edit_icon");
+    editLink.removeClass("oospa_edit_icon_disabled");
+    editLink.click(function() {
+        ManagerEdit(this);
     });
 }
-function ActionMessage(header, message) {
-    $(document).ready(function() {
-        $('div.messageBox').children("h2").html(header);
-        $('div.messageBox').children("p").html(message);
-        $('#_actionMessageDiv').fadeIn().delay(2000).fadeOut();
+function BuilderActions(obj, requestId, state) {
+    var postData = "{\"requestId\":\"" + requestId.toString() + "\",\"action\":\"" + state + "\"}";
+    $.ajax({
+        type: "POST",
+        contentType: "application/json; character=utf-8",
+        url: "AjaxCalls.aspx/BuilderActions",
+        data: postData,
+        dataType: "json",
+        success: function(msg) {
+            if (msg.d) {
+                switch (state) {
+                    case "3":
+                        $('#_indicatorDiv').hide();
+                        ActionMessage("Closed Cancelled", "You have just cancelled this request.");
+                        //UpdateRequestTracking(obj, "Access &amp; Identity Management", "Closed Cancelled", true);
+                        AnimateActions("Closed Requests", requestId);
+                        HideSections(obj);
+                        UpdateRequestStatus(obj);
+                        //UpdateFilterCounts();
+                        //UpdateCount();
+                        break;
+                    case "6":
+                        $('#_indicatorDiv').hide();
+                        ActionMessage("Closed Completed", "You have just completed this request.");
+                        //UpdateRequestTracking(obj, "Access &amp; Identity Management", "Closed Completed", true);
+                        AnimateActions("Closed Requests", requestId);
+                        HideSections(obj);
+                        UpdateRequestStatus(obj);
+                        //UpdateFilterCounts();
+                        //UpdateCount();
+                        break;
+                    case "5":
+                        $('#_indicatorDiv').hide();
+                        ActionMessage("Pending Provisioning", "A ticket has been created to provision the access for this request.");
+                        //UpdateRequestTracking(obj, "Access &amp; Identity Management", "Pending Provisioning", false);
+                        $("#closed_completed_" + requestId).removeAttr("disabled");
+                        $("#create_ticket_" + requestId).attr("disabled", "disabled");
+                        $("input[id$='_submit_form']").trigger('click');
+                        break;
+                }
+            }
+            else {
+                if (state == 5) {
+                    $('#_indicatorDiv').hide();
+                    $('#_closeMessageDiv').show();
+                    $('div.messageBox').children("h2").html("Ticket Creation Failed");
+                    $('div.messageBox').children("p").html("Please try again or create the ticket manually (add the ticket number within the comments section).");
+                    $("#closed_completed_" + requestId).removeAttr("disabled");
+                }
+                else {
+                    $('#_indicatorDiv').hide();
+                    $('#_closeMessageDiv').show();
+                    $('div.messageBox').children("h2").html("Action Failed");
+                    $('div.messageBox').children("p").html("Please try again.");
+                }
+            }
+        }
+		,
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert("GetNames Error: " + XMLHttpRequest);
+            alert("GetNames Error: " + textStatus);
+            alert("GetNames Error: " + errorThrown);
+        }
+    });
+}
+function CreateWorkflow(obj, requestId) {
+    if ($("#__managerUserId_" + requestId).val() > "") {
+        var postData = "{\"requestId\":\"" + requestId.toString() + "\",\"managerUserId\":\"" + $("#__managerUserId_" + requestId).val() + "\",\"actorIds\":\"" + $("#__selectedActors_" + requestId).val() + "\"}";
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; character=utf-8",
+            url: "AjaxCalls.aspx/CreateWorkflow",
+            data: postData,
+            dataType: "json",
+            success: function(msg) {
+                if (msg.d) {
+                    $('#_indicatorDiv').hide();
+                    ActionMessage("Workflow Created", "The workflow has been created for this request.");
+                    //UpdateRequestTracking(obj, "Access &amp; Identity Management", "In Workflow", false);
+                    DisableBuilder(requestId);
+                    //$("input[id$='_submit_form']").trigger('click');
+                }
+                else {
+                    $('#_indicatorDiv').hide();
+                    $('#_closeMessageDiv').show();
+                    $('div.messageBox').children("h2").html("Workflow Creation Failed");
+                    $('div.messageBox').children("p").html("The workflow creation failed.");
+                }
+            },
+
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                alert("GetNames Error: " + XMLHttpRequest);
+                alert("GetNames Error: " + textStatus);
+                alert("GetNames Error: " + errorThrown);
+            }
+        });
+    }
+    else {
+        ActionMessage("Validation Error", "The manager you have selected has not been checked.");
+    }
+}
+function EditCreatedWorkflow(obj, requestId) {
+    if ($("#__managerUserId_" + requestId).val() > "") {
+        var postData = "{\"requestId\":\"" + requestId.toString() + "\",\"managerUserId\":\"" + $("#__managerUserId_" + requestId).val() + "\",\"actorIds\":\"" + $("#__selectedActors_" + requestId).val() + "\"}";
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; character=utf-8",
+            url: "AjaxCalls.aspx/EditWorkflow",
+            data: postData,
+            dataType: "json",
+            success: function(msg) {
+                if (msg.d) {
+                    $('#_indicatorDiv').hide();
+                    ActionMessage("Workflow Updated", "The workflow has been updated for this request.");
+                    DisableBuilder(requestId);
+                    $("input[id$='_submit_form']").trigger('click');
+                }
+                else {
+                    $('#_indicatorDiv').hide();
+                    $('#_closeMessageDiv').show();
+                    $('div.messageBox').children("h2").html("Workflow Updated Failed");
+                    $('div.messageBox').children("p").html("The workflow update failed. No changes where made.");
+                }
+            },
+
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                alert("GetNames Error: " + XMLHttpRequest);
+                alert("GetNames Error: " + textStatus);
+                alert("GetNames Error: " + errorThrown);
+            }
+        });
+    }
+    else {
+        ActionMessage("Validation Error", "The manager you have selected has not been checked.");
+    }
+}
+function HideSections(obj) {
+    $(obj).closest("div.csm_content_container").find("div.csm_text_container").each(function() {
+        if ($(this).children().children().html() == "Acknowledgement" ||
+            $(this).children().children().html() == "Workflow Builder" ||
+            $(this).children().children().html() == "Comments") {
+            $(this).hide();
+        }
+    });
+}
+function DisableBladeActions(obj) {
+    $(obj).closest("div.csm_content_container").find("input").each(function() {
+        $(this).attr("disabled", "disabled");
+    });
+}
+function UpdateRequestStatus(obj) {
+    $(obj).closest("div.csm_content_container").find("tr.csm_stacked_heading_label").children().each(function() {
+        if ($(this).next().children().html() == "Open" || $(this).next().children().html() == "Pending" || $(this).next().children().html() == "Change Requested") {
+            $(this).next().children().html("Closed");
+        }
     });
 }
 
-function ActorSelected(obj) {
-    var actorDisplayName = $(obj).parent().children("input[id$='_actorDisplayName']");
-    var actorUserId = $(obj).parent().children("input[id$='_actorUserId']");
-    var actorActorId = $(obj).parent().children("input[id$='_actorActorId']");
-    var actorCheckButton = $(obj).parent().children("input[id$='_checkActor']");
+function UpdateManagerName(requestId, newManager) {
+    $("#__requestorsManager_" + requestId).html()
+}
+function ActorSelected(obj, requestId, groupId) {
+    var actorDisplayName = $("#__actorDisplayName_" + requestId + "_" + groupId);
+    var actorUserId = $("#__actorUserId_" + requestId + "_" + groupId);
+    var actorActorId = $("#__actorActorId_" + requestId + "_" + groupId);
+    var actorCheckButton = $("#__checkActor_" + requestId + "_" + groupId);
+    var addActor = $("#__addActor_" + requestId + "_" + groupId);
 
     actorCheckButton.attr("disabled", "disabled");
-
     if ($(obj).val() != "0") {
         actorDisplayName.val($('#' + $(obj).attr('id') + ' option:selected').text());
         actorActorId.val($(obj).val());
         actorUserId.val("");
+        addActor.removeAttr("disabled");
     }
     else {
         actorDisplayName.val("");
@@ -1047,14 +1261,16 @@ function ActorSelected(obj) {
     }
 }
 
-function ActorChanged(obj) {
-    var actorDisplayName = $(obj).parent().children("input[id$='_actorDisplayName']");
-    var actorUserId = $(obj).parent().children("input[id$='_actorUserId']");
-    var actorActorId = $(obj).parent().children("input[id$='_actorActorId']");
-    var actorCheckButton = $(obj).parent().children("input[id$='_checkActor']");
+function ActorChanged(requestId, groupId) {
+    var actorDisplayName = $("#__actorDisplayName_" + requestId + "_" + groupId);
+    var actorUserId = $("#__actorUserId_" + requestId + "_" + groupId);
+    var actorActorId = $("#__actorActorId_" + requestId + "_" + groupId);
+    var actorCheckButton = $("#__checkActor_" + requestId + "_" + groupId);
+    var addActor = $("#__addActor_" + requestId + "_" + groupId);
 
     actorUserId.val("");
     actorActorId.val("");
+    addActor.attr("disabled", "disabled");
 
     if (actorDisplayName.val().length == 0) { actorCheckButton.attr("disabled", "disabled"); }
     else {
@@ -1062,73 +1278,73 @@ function ActorChanged(obj) {
     }
 }
 
-function ActorCheck(obj) {
-    var actorDisplayName = $(obj).parent().children("input[id$='_actorDisplayName']");
-    var actorUserId = $(obj).parent().children("input[id$='_actorUserId']");
-
+function ActorCheck(obj, requestId, groupId) {
+    var actorDisplayName = $("#__actorDisplayName_" + requestId + "_" + groupId);
+    var actorUserId = $("#__actorUserId_" + requestId + "_" + groupId);
+    $(obj).attr("disabled", "disabled");
     if (actorUserId.val() == "") {
-        GetNames(obj, actorDisplayName, "actor");
+        GetNames(requestId, groupId, actorDisplayName, "actor");
     }
 }
 
-function ActorAdd(obj, requestId) {
-    $(document).ready(function() {
-        var actorDisplayName = $(obj).parent().children("input[id$='_actorDisplayName']");
-        var actorUserId = $(obj).parent().children("input[id$='_actorUserId']");
-        var actorGroupId = $(obj).parent().children("input[id$='_actorGroupId']");
-        var actorActorId = $(obj).parent().children("input[id$='_actorActorId']");
-        var nameArray = new Array();
-        if (actorActorId.val() == "") {
-            var postData = "{'userId':'" + actorUserId.val() + "','groupId':'" + actorGroupId.val() + "'}";
-            $.ajax({
-                type: "POST",
-                contentType: "application/json; character=utf-8",
-                url: "AjaxCalls.aspx/GetActorId",
-                data: postData,
-                dataType: "json",
-                success: function(msg) {
-                    if (msg.d > "0") {
-                        nameArray = actorDisplayName.val().split("(");
-                        if (checkforDuplicateApprovers($.trim(nameArray[0]), obj, requestId, "owner")) {
-                            ActionMessage("Duplicate Selection", $.trim(nameArray[0]) + " has already be added to this workflow.");
-                            actorDisplayName.val("");
-                            actorUserId.val("");
-                            actorActorId.val("");
-                        }
-                        else {
-                            $("#_selectedActors_" + requestId).val($("#_selectedActors_" + requestId).val() + "[" + msg.d + "]");
-                            UpdateActorList(obj, msg.d);
-                        }
-                    }
-                },
+function ActorAdd(obj, requestId, groupId) {
+    var actorDisplayName = $("#__actorDisplayName_" + requestId + "_" + groupId);
+    var actorUserId = $("#__actorUserId_" + requestId + "_" + groupId);
+    var actorActorId = $("#__actorActorId_" + requestId + "_" + groupId);
+    var addActor = $("#__addActor_" + requestId + "_" + groupId);
 
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    alert("GetNames Error: " + XMLHttpRequest);
-                    alert("GetNames Error: " + textStatus);
-                    alert("GetNames Error: " + errorThrown);
+    var nameArray = new Array();
+    if (actorActorId.val() == "") {
+        var postData = "{\"userId\":\"" + actorUserId.val() + "\",\"groupId\":\"" + groupId + "\"}";
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; character=utf-8",
+            url: "AjaxCalls.aspx/GetActorId",
+            data: postData,
+            dataType: "json",
+            success: function(msg) {
+                if (msg.d > "0") {
+                    nameArray = actorDisplayName.val().split("(");
+                    if (CheckForDuplicateApprovers($.trim(nameArray[0]), requestId, "large")) {
+                        ActionMessage("Duplicate Selection", $.trim(nameArray[0]) + " has already be added to this workflow.");
+                        actorDisplayName.val("");
+                        actorUserId.val("");
+                        actorActorId.val("");
+                    }
+                    else {
+                        $("#__selectedActors_" + requestId).val($("#__selectedActors_" + requestId).val() + "[" + msg.d + "]");
+                        UpdateActorList(requestId, groupId, msg.d);
+                    }
                 }
-            });
+            },
+
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                alert("AddActor Error: " + XMLHttpRequest);
+                alert("AddActor Error: " + textStatus);
+                alert("AddActor Error: " + errorThrown);
+            }
+        });
+    }
+    else {
+        nameArray = actorDisplayName.val().split("(");
+        if (CheckForDuplicateApprovers($.trim(nameArray[0]), requestId, "large")) {
+            ActionMessage("Duplicate Selection", $.trim(nameArray[0]) + " has already be added to this workflow.");
+            actorDisplayName.val("");
+            actorUserId.val("");
+            actorActorId.val("");
         }
         else {
-            nameArray = actorDisplayName.val().split("(");
-            if (checkforDuplicateApprovers($.trim(nameArray[0]), obj, requestId, "owner")) {
-                ActionMessage("Duplicate Selection", $.trim(nameArray[0]) + " has already be added to this workflow.");
-                actorDisplayName.val("");
-                actorUserId.val("");
-                actorActorId.val("");
-            }
-            else {
-                $("#_selectedActors_" + requestId).val($("#_selectedActors_" + requestId).val() + "[" + actorActorId.val() + "]");
-                UpdateActorList(obj, actorActorId.val());
-            }
+            $("#__selectedActors_" + requestId).val($("#__selectedActors_" + requestId).val() + "[" + actorActorId.val() + "]");
+            UpdateActorList(requestId, groupId, actorActorId.val());
         }
-    });
+    }
+    addActor.attr("disabled", "disabled");
 }
 
-function UpdateActorList(obj, actorId) {
-    var actorDisplayName = $(obj).parent().children("input[id$='_actorDisplayName']");
-    var actorUserId = $(obj).parent().children("input[id$='_actorUserId']");
-    var actorActorId = $(obj).parent().children("input[id$='_actorActorId']");
+function UpdateActorList(requestId, groupId, actorId) {
+    var actorDisplayName = $("#__actorDisplayName_" + requestId + "_" + groupId);
+    var actorUserId = $("#__actorUserId_" + requestId + "_" + groupId);
+    var actorActorId = $("#__actorActorId_" + requestId + "_" + groupId);
     var listItem;
     var table = $('<table />').attr('class', 'listview_table');
     var tbody = $('<tbody />')
@@ -1138,32 +1354,31 @@ function UpdateActorList(obj, actorId) {
     removeButton.bind('click', function() { RemoveActor(this); });
     removeButton.val("Remove");
 
-    if ($(obj).closest("tr").next().find("tr").html() == null) {
+    if (actorDisplayName.closest("tr").next().find("tr").html() == null) {
         $('<td />').attr('class', 'listview_td').html(actorDisplayName.val()).appendTo(tableTr);
         $('<td />').css('display', 'none').html(actorActorId.val()).appendTo(tableTr);
         removeButton.appendTo(tableButton);
         tableButton.appendTo(tableTr);
         tableTr.appendTo(tbody)
         tbody.appendTo(table);
-        table.appendTo($(obj).closest("tr").next().children());
+        table.appendTo(actorDisplayName.closest("tr").next().children());
     }
     else {
         $('<td />').attr('class', 'listview_td').html(actorDisplayName.val()).appendTo(tableTr);
-        $('<td />').css('display', 'none').html(actorActorId.val()).appendTo(tableTr);
+        $('<td />').css('display', 'none').html(actorId).appendTo(tableTr);
         removeButton.appendTo(tableButton);
         tableButton.appendTo(tableTr);
-        $(tableTr).insertAfter($(obj).closest("tr").next().find("tr").last());
+        $(tableTr).insertAfter(actorDisplayName.closest("tr").next().find("tr").last());
     }
 
     actorDisplayName.val('');
     actorUserId.val('');
     actorActorId.val('');
-    $(obj).parent().find("option").each(function() {
+    actorDisplayName.parent().find("option").each(function() {
         if ($(this).val() == actorId) { $(this).remove(); }
     });
 
 }
-
 function RemoveActor(obj) {
     var actorDisplayName = $(obj).closest("tr.listview_tr").children();
     var actorActorId = $(obj).closest("tr.listview_tr").children().next();
@@ -1177,5 +1392,5 @@ function RemoveActor(obj) {
     //finally remove row
     $(obj).closest("tr.listview_tr").remove();
 }
-
+// ACCESS TEAM VIEW - END
 //]]>

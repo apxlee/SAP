@@ -1,27 +1,4 @@
-﻿$(document).ready(function() {
-    var searchInput = $("#__searchInput");
-    var searchButton = $("#__searchButton");
-    searchInput.keypress(function() {
-        return ClickButton(event, searchButton);
-    });
-    searchInput.focus();
-});
-function ValidateInput() {
-    $(document).ready(function() {
-        var searchInput = $("#__searchInput");
-        if (searchInput.val() > "") { $("#_searchResultsContainer").html(""); GetSearchRequests(searchInput.val()); }
-        else { ActionMessage("No input", "Input criteria is required for a successful search."); return false; }
-    });
-}
-function ClickButton(e, button) {
-    $(document).ready(function() {
-        var evt = e ? e : window.event;
-        if (evt.keyCode == 13) {
-            ValidateInput();
-            return false;
-        }
-    });
-}
+﻿// VIEW SPECIFIC
 function CreateBlades(requests) {
     $.each(requests, function(index, value) {
         var data = jQuery.parseJSON(value);
@@ -41,11 +18,11 @@ function CreateBlades(requests) {
         .replace("__workflowStatus_ID", "__workflowStatus_" + data.RequestId)
         .replace("__workflowStatus_TEXT", data.WorkflowStatus);
 
-        $("#_searchResultsContainer").append($(newRequestBlade));
-        
+        if (data.RequestStatus != "Closed") { $("#_openRequestsContainer").append($(newRequestBlade)); }
+        else { $("#_closedRequestsContainer").append($(newRequestBlade)); }
         $("#__toggleIconContainer_" + data.RequestId).hover(function() {
-            $(this).addClass("csm_toggle_show_hover");
-        },
+                $(this).addClass("csm_toggle_show_hover");
+            },
 		    function() {
 		        $(this).removeClass("csm_toggle_show_hover");
 		    }
@@ -70,15 +47,15 @@ function CreateRequestDetails(details, sender, requestId) {
     .replace("__requestorName_ID", "__requestorName_" + requestId);
 
     var newForm = "";
-    $.each(data.Details, function(index, value) {
+    $.each(data.Details, function(index, value){
         var newField = $("#_requestFormField").html();
-        newField = newField.replace("__fieldLabel", value.Label + ":")
-        .replace("__fieldText", value.Text);
+        newField = newField.replace("__fieldLabel",value.Label + ":")
+        .replace("__fieldText",value.Text);
         newForm = newForm + newField
     });
 
     var newCommentSection = "";
-
+    
     if (data.Comments.length > 0) {
         var newComments = "";
         $.each(data.Comments, function(index, value) {
@@ -88,14 +65,15 @@ function CreateRequestDetails(details, sender, requestId) {
         });
 
         newCommentSection = $("#_requestCommentSection").html();
-        newCommentSection = newCommentSection.replace("<!--__requestComments-->", newComments);
+        newCommentSection = newCommentSection.replace("<!--__requestComments-->", newComments);  
     }
 
     newRequestDetails = newRequestDetails.replace("<!--__requestFormDetails-->", newForm);
     newRequestDetails = newRequestDetails.replace("<!--__requestCommentSection-->", newCommentSection);
-
+    
     $("#__toggledContentContainer_" + requestId).html($("#__toggledContentContainer_" + requestId).html()
     .replace("<!--__requestDetailsSection-->", newRequestDetails));
 
     ToggleLoading(sender, requestId);
 }
+// VIEW SPECIFIC - END

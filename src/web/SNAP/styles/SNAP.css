@@ -300,6 +300,11 @@ TODO: REMOVE THIS SECTION
     background-repeat: no-repeat;
     cursor: pointer;
 	}
+.csm_toggle_loading {
+    background: url('../images/button_loading.gif');
+    background-repeat: no-repeat;
+    cursor:wait;
+	}
 .csm_toggle_hide {
     background: url('../images/button_hide_details_active.png');
     background-repeat: no-repeat;
@@ -1310,3 +1315,37 @@ div.filter_view_all #filter_view_all {background-position: 19px 30px;}
 /************** END ACCESS TEAM FILTER **************/
 
 #aim_IE6_nag {display:none; visibility:hidden;}
+
+div.quicksearch_container
+{
+    position:relative;
+    top:-77px;
+    left:73%;
+    z-index:10;
+}
+div.quicksearch_link
+{
+    position:relative;
+    float:left;
+    width: 2%;
+    right: 1%;
+    height: 2em;
+    color:#FFF;
+    background-color:#000;
+}
+div.quicksearch_input_container
+{
+    position:relative;
+    float:left;
+    width: 98%;
+}
+input.quicksearch_input {
+	margin: 0;
+	padding: 0px;
+	font-size: .85em;
+	border: 1px solid #b7b7b7;		
+	line-height: 1.7em;
+	height: 1.8em;
+	font-family: Verdana, Arial;
+	width: 25%;
+	}

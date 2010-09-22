@@ -131,6 +131,13 @@ namespace Apollo.AIM.SNAP.Web.Common
 		{
 			return "[" + DateTime.Now.ToString("HH:mm:ss.ffff") + "] ";
 		}
+
+		// TODO: deprecated?  Will adding escape sequence to comma interfere with non-json code?
+		public static string TestAndConvertDate(string date)
+		{
+			if (!string.IsNullOrEmpty(date.ToString())) { return Convert.ToDateTime(date).ToString("MMM d, yyyy"); }
+			else { return "-"; }
+		}
      }
         
     public static class ExtensionMethods

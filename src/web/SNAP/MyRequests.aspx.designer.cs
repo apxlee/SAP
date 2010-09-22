@@ -12,14 +12,5 @@ namespace Apollo.AIM.SNAP.Web {
     
     
     public partial class MyRequests {
-        
-        /// <summary>
-        /// _userViewControl control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Apollo.AIM.SNAP.Web.Controls.UserView _userViewControl;
     }
 }

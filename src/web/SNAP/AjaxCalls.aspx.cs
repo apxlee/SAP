@@ -161,7 +161,7 @@ namespace Apollo.AIM.SNAP.Web
         {
             //TODO: get actorId from current user
             var accessReq = new AccessRequest(requestId);
-
+            comments = comments.Replace("\"", "").Replace("\\n", System.Environment.NewLine);
             switch (action)
             {
                 case WorkflowAction.Ack:
@@ -202,6 +202,7 @@ namespace Apollo.AIM.SNAP.Web
         public static WebMethodResponse AccessComments(int requestId, CommentsType action, string comments)
         {
             var accessReq = new AccessRequest(requestId);
+            comments = comments.Replace("\"", "").Replace("\\n", System.Environment.NewLine);
             return accessReq.AddComment(comments, action);
         }
     }
