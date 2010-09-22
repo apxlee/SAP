@@ -45,7 +45,7 @@
 		        </table> 
 		    </div> 
 		    <div class="csm_float_right"> 
-			    <div id="__toggleIconContainer_ID" snap="__snapRequestId" class="csm_toggle_container csm_toggle_show"> 
+			    <div id="__toggleIconContainer" snap="__snapRequestId" class="csm_toggle_container csm_toggle_show"> 
 				    <span>&nbsp;</span> 
 			    </div> 
 		    </div> 
@@ -55,7 +55,7 @@
 	    <div class="csm_clear">&nbsp;</div> 
 	    <!-- END FLOATING HEADING --> 
 	    <!-- TOGGLED CONTENT AREA --> 
-        <div id="__toggledContentContainer_ID" class="csm_hidden_block">
+        <div id="__toggledContentContainer" class="csm_hidden_block">
             <!--__requestDetailsSection-->
             <!--__requestAcknowledgement-->
             <!--__requestApproval-->
@@ -118,7 +118,7 @@
     <p><u>__commentLabel</u><br />__commentText</p> 
 </script>
 <script type='html/template' id='_approverActions'>
-    <div id="__approverActions_ID" class="csm_text_container csm_top5"> 
+    <div class="csm_text_container csm_top5"> 
 	    <div class="csm_icon_heading_container snap_my_approvals"> 
 		    <h2>Approver Actions</h2> 
 		    <p class="">As an Approver, please review the access details above and select an appropriate action below.  Denials

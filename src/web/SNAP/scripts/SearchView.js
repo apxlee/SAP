@@ -35,8 +35,8 @@ function CreateBlades(requests) {
         .replace("__lastUpdatedDate_ID", "__lastUpdatedDate_" + data.RequestId)
         .replace("__requestId_TEXT", data.RequestId)
         .replace("__requestId_ID", "__requestId_" + data.RequestId)
-        .replace("__toggleIconContainer_ID", "__toggleIconContainer_" + data.RequestId)
-        .replace("__toggledContentContainer_ID", "__toggledContentContainer_" + data.RequestId)
+        .replace("__toggleIconContainer", "__toggleIconContainer_" + data.RequestId)
+        .replace("__toggledContentContainer", "__toggledContentContainer_" + data.RequestId)
         .replace("__snapRequestId", data.RequestId)
         .replace("__workflowStatus_ID", "__workflowStatus_" + data.RequestId)
         .replace("__workflowStatus_TEXT", data.WorkflowStatus);
@@ -51,7 +51,7 @@ function CreateBlades(requests) {
 		    }
 	    );
         $("#__toggleIconContainer_" + data.RequestId).bind('click', function() {
-            ToggleDetails(data.RequestId);
+            ToggleDetails($("#__toggleIconContainer_" + data.RequestId), data.RequestId);
         });
     });
 }
