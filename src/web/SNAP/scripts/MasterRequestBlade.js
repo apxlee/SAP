@@ -91,23 +91,21 @@ function ToggleLoading(sender, requestId) {
         $(sender).addClass("csm_toggle_loading");
     }
 }
-function ToggleDetails(requestId) {
+function ToggleDetails(sender, requestId) {
     var section = $("#__toggledContentContainer_" + requestId);
-    var toggle = $("#__toggleIconContainer_" + requestId);
-
     //Search for (Request Details) which is the title of the first section
-    if ($(section).html().indexOf("Request Details") == -1) {
-        ToggleLoading(toggle, requestId);
-        GetDetails(toggle, requestId);
+    if (section.html().indexOf("Request Details") == -1) {
+        ToggleLoading(sender, requestId);
+        GetDetails(sender, requestId);
     }
     else {
         if (section.hasClass("csm_hidden_block")) {
             section.removeClass("csm_hidden_block");
-            toggle.addClass("csm_toggle_hide");
-            toggle.removeClass("csm_toggle_show");
-            toggle.removeClass("csm_toggle_show_hover");
-            toggle.unbind('mouseenter mouseleave')
-            toggle.hover(function() {
+            $(sender).addClass("csm_toggle_hide");
+            $(sender).removeClass("csm_toggle_show");
+            $(sender).removeClass("csm_toggle_show_hover");
+            $(sender).unbind('mouseenter mouseleave')
+            $(sender).hover(function() {
                 $(this).addClass("csm_toggle_hide_hover");
             },
 			      function() {
@@ -117,11 +115,11 @@ function ToggleDetails(requestId) {
         }
         else {
             section.addClass("csm_hidden_block");
-            toggle.addClass("csm_toggle_show");
-            toggle.removeClass("csm_toggle_hide");
-            toggle.removeClass("csm_toggle_hide_hover");
-            toggle.unbind('mouseenter mouseleave')
-            toggle.hover(function() {
+            $(sender).addClass("csm_toggle_show");
+            $(sender).removeClass("csm_toggle_hide");
+            $(sender).removeClass("csm_toggle_hide_hover");
+            $(sender).unbind('mouseenter mouseleave')
+            $(sender).hover(function() {
                 $(this).addClass("csm_toggle_show_hover");
             },
 			      function() {
@@ -190,22 +188,36 @@ function AddComments(obj, approverName, action, comments, includeDate) {
             }
         });
 }
-function AnimateActions(newSection, requestId) {
-    var blade = $("#__requestContainer_" + requestId);
-    var emptyDiv = "<div class='csm_clear'></div>";
-    var toggle = $("#__toggleIconContainer_" + requestId);
-    
-    $(blade).closest("div.csm_container_center_700").find("h1").each(
-    function() {
-        var section = $(this);
-        if ($(this).html() == newSection) {
-            blade.fadeOut(1000, function() {
-                if ($(section).next().attr("snap") == "_nullDataMessage") { $(section).next().remove(); }
-                $(this).insertAfter(section);
-                ToggleDetails(requestId);
-                $(this).fadeIn(1000);
+function AnimateActions(obj, newSection) {
+    var blade = $(obj).closest("div.csm_content_container");
+    $(obj).closest("div.csm_text_container").fadeOut("slow", function() {
+        $(obj).closest("div.csm_content_container").children().next().slideUp("fast", function() {
+            $(obj).closest("div.csm_container_center_700").find("h1").each(
+            function() {
+                var section = $(this);
+                if ($(this).html() == newSection) {
+                    blade.fadeOut(1000, function() {
+                        if ($(section).next().attr("snap") == "_nullDataMessage") { $(section).next().remove(); }
+                        $(this).insertAfter(section);
+
+                        var toggle = $(obj).closest("div.csm_content_container").children().find("div.csm_toggle_container");
+                        toggle.addClass("csm_toggle_show");
+                        toggle.removeClass("csm_toggle_hide");
+                        toggle.removeClass("csm_toggle_hide_hover");
+                        toggle.unbind('mouseenter mouseleave')
+                        toggle.hover(function() {
+                            $(this).addClass("csm_toggle_show_hover");
+                        },
+	                    function() {
+	                        $(this).removeClass("csm_toggle_show_hover");
+	                    }
+	                    );
+
+                        $(this).fadeIn(1000);
+                    });
+                }
             });
-        }
+        });
     });
 }
 function UpdateCount() {

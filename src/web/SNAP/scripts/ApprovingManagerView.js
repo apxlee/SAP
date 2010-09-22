@@ -13,8 +13,8 @@ function CreateBlades(requests) {
         .replace("__lastUpdatedDate_ID", "__lastUpdatedDate_" + data.RequestId)
         .replace("__requestId_TEXT", data.RequestId)
         .replace("__requestId_ID", "__requestId_" + data.RequestId)
-        .replace("__toggleIconContainer_ID", "__toggleIconContainer_" + data.RequestId)
-        .replace("__toggledContentContainer_ID", "__toggledContentContainer_" + data.RequestId)
+        .replace("__toggleIconContainer", "__toggleIconContainer_" + data.RequestId)
+        .replace("__toggledContentContainer", "__toggledContentContainer_" + data.RequestId)
         .replace("__snapRequestId", data.RequestId)
         .replace("__workflowStatus_ID", "__workflowStatus_" + data.RequestId)
         .replace("__workflowStatus_TEXT", data.WorkflowStatus);
@@ -37,7 +37,7 @@ function CreateBlades(requests) {
 	    );
 
         $("#__toggleIconContainer_" + data.RequestId).bind('click', function() {
-            ToggleDetails(data.RequestId);
+            ToggleDetails($("#__toggleIconContainer_" + data.RequestId), data.RequestId);
         });
     });
     if (pendingCount > 1) { $("#__multiplePendingApprovals").val("true"); }
@@ -88,8 +88,7 @@ function CreateRequestDetails(details, sender, requestId) {
 }
 function CreateApproverActions(sender, requestId) {
     var newApproval = $("#_approverActions").html();
-    newApproval = newApproval.replace("__approverActions_ID", "__approverActions_" + requestId)
-    .replace(/__changeDeny_ID/g, "__changeDeny_" + requestId)
+    newApproval = newApproval.replace(/__changeDeny_ID/g, "__changeDeny_" + requestId)
     .replace("__approve_ID", "__approve_" + requestId)
     .replace("__approveAndMoveNext_ID", "__approveAndMoveNext_" + requestId)
     .replace("__radioApproverChange_ID", "__radioApproverChange_" + requestId)
@@ -173,8 +172,7 @@ function ApproverActions(obj, requestId, action) {
                         $('#_indicatorDiv').hide();
                         ActionMessage("Approved", "You have successfully approved this request.");
                         //updateRequestTracking(obj, approverName, "Approved");
-                        AnimateActions("Open Requests", requestId);
-                        $("#__approverActions_" + requestId).hide();
+                        AnimateActions(obj, "Open Requests");
                         if ($(obj).attr("id").indexOf("_approveAndMoveNext") > -1) { OpenNext(requestId); }
                         UpdateCount();
                         break;
@@ -183,8 +181,7 @@ function ApproverActions(obj, requestId, action) {
                         ActionMessage("Change Requested", "You have just requested a change.");
                         //updateRequestTracking(obj, approverName, "Change Requested");
                         AddComments(obj, approverName, "Change Requested", comments, false);
-                        AnimateActions("Open Requests", requestId);
-                        $("#__approverActions_" + requestId).hide();
+                        AnimateActions(obj, "Open Requests");
                         $(obj).closest("div.csm_content_container").find("tr.csm_stacked_heading_label").children().each(function() {
                             if ($(this).next().children().html() == "Pending") {
                                 $(this).next().children().html("Change Requested");
@@ -195,10 +192,9 @@ function ApproverActions(obj, requestId, action) {
                     case '1':
                         $('#_indicatorDiv').hide();
                         ActionMessage("Closed Denied", "You have just denied this request.");
-                        $("#__approverActions_" + requestId).hide();
                         //updateRequestTracking(obj, approverName, "Closed Denied");
                         AddComments(obj, approverName, "Closed Denied", comments, false);
-                        AnimateActions("Closed Requests", requestId);
+                        AnimateActions(obj, "Closed Requests");
                         $(obj).closest("div.csm_content_container").find("tr.csm_stacked_heading_label").children().each(function() {
                             if ($(this).next().children().html() == "Pending") {
                                 $(this).next().children().html("Closed");
