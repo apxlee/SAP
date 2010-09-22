@@ -983,8 +983,8 @@ namespace Apollo.AIM.SNAP.Web.Common
                     ActorName = trackingRow["workflow_actor_name"].ToString(),
                     //WorkflowStatus = trackingRow["workflow_status"].ToString(),
                     WorkflowStatus = Convert.ToString((WorkflowState)Enum.Parse(typeof(WorkflowState), trackingRow["workflow_status"].ToString())).StripUnderscore(),
-                    DueDate = trackingRow["workflow_due_date"].ToString(),
-                    CompletedDate = trackingRow["workflow_completed_date"].ToString(),
+                    DueDate = WebUtilities.TestAndConvertDate(trackingRow["workflow_due_date"].ToString()),
+                    CompletedDate = WebUtilities.TestAndConvertDate(trackingRow["workflow_completed_date"].ToString()),
                     ActorGroupType = Convert.ToInt32(trackingRow["actor_group_type"].ToString()),
                     WorkflowComments = FilteredTrackingData.BuildBladeComments(Convert.ToInt32(trackingRow["workflow_pkid"]))
                 };

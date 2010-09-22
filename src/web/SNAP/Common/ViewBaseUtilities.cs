@@ -124,6 +124,8 @@ namespace Apollo.AIM.SNAP.Web.Common
 			var reqDetails = Common.Request.Details(requestState);
 			foreach (usp_open_my_request_detailsResult request in reqDetails)
 			{
+				// Display message to approver if overall status has changed since email was sent out
+				//
 				if ( (request.pkId.ToString().Trim() == selectedRequestId) 
 					&& (request.statusEnum == (int)RequestState.Change_Requested || request.statusEnum == (int)RequestState.Closed ) )
 				{
