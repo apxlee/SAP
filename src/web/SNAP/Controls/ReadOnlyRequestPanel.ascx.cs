@@ -33,18 +33,18 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
 		private void PopulateRequestDemographics()
 		{
-			var requestDemographics = Common.Request.Details(RequestState).Single(x => x.pkId.ToString() == RequestId);
+			//var requestDemographics = Common.Request.Details(RequestState).Single(x => x.pkId.ToString() == RequestId);
 
-			_affectedEndUserTitle.Text = requestDemographics.userTitle;
-			_managerName.Text = requestDemographics.managerDisplayName;
-			_adManagerName.Text = CompareManagerName(requestDemographics.userId, requestDemographics.managerUserId);
-		    _requestorName.Text = GetFullNameFromAD(requestDemographics.submittedBy);
+			//_affectedEndUserTitle.Text = requestDemographics.userTitle;
+			//_managerName.Text = requestDemographics.managerDisplayName;
+			//_adManagerName.Text = CompareManagerName(requestDemographics.userId, requestDemographics.managerUserId);
+			//_requestorName.Text = GetFullNameFromAD(requestDemographics.submittedBy);
 
-			if (SnapSession.CurrentUser.CurrentRole == Role.AccessTeam || SnapSession.CurrentUser.CurrentRole == Role.SuperUser)
-			{
-				_affectedEndUserIdContainer.Visible = true;
-				_affectedEndUserId.Text = requestDemographics.userId;
-			}
+			//if (SnapSession.CurrentUser.CurrentRole == Role.AccessTeam || SnapSession.CurrentUser.CurrentRole == Role.SuperUser)
+			//{
+			//    _affectedEndUserIdContainer.Visible = true;
+			//    _affectedEndUserId.Text = requestDemographics.userId;
+			//}
 		}
 
 		private string GetFullNameFromAD(string userId)
@@ -78,7 +78,8 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			}
 			catch (Exception ex)
 			{
-				Logger.Error("ReadOnlyRequestPanel > CompareManagerName [USERID:" + userId + ", MGRUSERID:" + mgrUserId + ", REQID:" + RequestId + "]:\r\nMessage" + ex.Message + "\r\nStackTrace: " + ex.StackTrace);
+				Logger.Info("ReadOnlyRequestPanel > CompareManagerName [Manager Name Not Found.  USERID:" + userId + ", MGRUSERID:" + mgrUserId + ", REQID:" + RequestId + "]");
+				return "<span class=\"csm_error_text\">[Active Directory: Manager Not Found]</span>";
 			}
 
 			return string.Empty;
@@ -164,13 +165,13 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			table.Columns.Add("comment_date", typeof(string));
 			table.Columns.Add("comment", typeof(string));
 
-            var reqComments = Common.Request.Comments(RequestState);
-            var comments = reqComments.Where(x => x.requestId.ToString() == RequestId).ToList();
+			//var reqComments = Common.Request.Comments(RequestState);
+			//var comments = reqComments.Where(x => x.requestId.ToString() == RequestId).ToList();
             
-            foreach (usp_open_my_request_commentsResult result in comments)
-            {
-                table.Rows.Add(result.commentTypeEnum, result.createdDate, result.commentText.Replace("\n", "<br />"));
-			}
+			//foreach (usp_open_my_request_commentsResult result in comments)
+			//{
+			//    table.Rows.Add(result.commentTypeEnum, result.createdDate, result.commentText.Replace("\n", "<br />"));
+			//}
 
 			return table;
 		}

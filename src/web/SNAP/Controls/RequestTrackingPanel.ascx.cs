@@ -215,7 +215,8 @@ namespace Apollo.AIM.SNAP.Web.Controls
 				foreach (DataRow comment in workflowCommentsTable.Rows)
 				{
 					string actionActorName = string.Empty;
-					if (comment["action"].ToString() == CommentsType.Email_Reminder.ToString() || comment["action"].ToString() == CommentsType.Requested_Change.ToString())
+					if (comment["action"].ToString() == CommentsType.Email_Reminder.ToString() 
+						|| comment["action"].ToString() == CommentsType.Requested_Change.ToString())
 					{ actionActorName = "AIM"; }
 					else { actionActorName = comment["workflow_actor"].ToString(); }
 
@@ -253,17 +254,17 @@ namespace Apollo.AIM.SNAP.Web.Controls
 			table.Columns.Add("comment", typeof(string));
 			table.Columns.Add("is_new", typeof(bool));
 
-		    var wfComments = Common.Request.WfComments(RequestState);
-            var details = wfComments.Where(x => x.workflowId == WorkflowId);
+			//var wfComments = Common.Request.WfComments(RequestState);
+			//var details = wfComments.Where(x => x.workflowId == WorkflowId);
 
-            foreach (usp_open_my_request_workflow_commentsResult list in details)
-            {
-                table.Rows.Add(list.commentTypeEnum
-					, (actorName == "Access & Identity Management") ? "AIM" : actorName
-					, list.createdDate
-					, list.commentText
-					, (list.commentTypeEnum == (int)CommentsType.Requested_Change || list.commentTypeEnum == (int)CommentsType.Email_Reminder) ? true : false);
-            }
+			//foreach (usp_open_my_request_workflow_commentsResult list in details)
+			//{
+			//    table.Rows.Add(list.commentTypeEnum
+			//        , (actorName == "Access & Identity Management") ? "AIM" : actorName
+			//        , list.createdDate
+			//        , list.commentText
+			//        , (list.commentTypeEnum == (int)CommentsType.Requested_Change || list.commentTypeEnum == (int)CommentsType.Email_Reminder) ? true : false);
+			//}
 
 			return table;
 		}
@@ -272,15 +273,15 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		{
 			DataTable unfilteredTrackingData = BuildEmptyTrackingBladeTable();
 
-            var wfDetails = Common.Request.WfDetails(RequestState);
-            var details = wfDetails.Where(x => x.requestId.ToString() == RequestId)
-                          .OrderByDescending(o => o.workflowStateId).Reverse();
+			//var wfDetails = Common.Request.WfDetails(RequestState);
+			//var details = wfDetails.Where(x => x.requestId.ToString() == RequestId)
+			//              .OrderByDescending(o => o.workflowStateId).Reverse();
 
-            foreach (usp_open_my_request_workflow_detailsResult list in details)
-            {
-				unfilteredTrackingData.Rows.Add(list.displayName, Convert.ToInt32(list.workflowStatusEnum), list.dueDate, list.completedDate, list.workflowId, list.actorGroupType);
-                // why is workflowStatusEnum byte instead of int?
-            }
+			//foreach (usp_open_my_request_workflow_detailsResult list in details)
+			//{
+			//    unfilteredTrackingData.Rows.Add(list.displayName, Convert.ToInt32(list.workflowStatusEnum), list.dueDate, list.completedDate, list.workflowId, list.actorGroupType);
+			//    // why is workflowStatusEnum byte instead of int?
+			//}
 
 			return unfilteredTrackingData;
 		}

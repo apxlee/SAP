@@ -71,21 +71,21 @@ namespace Apollo.AIM.SNAP.Web.Controls
 		
 		private void LoadReadOnlyRequestPanel()
 		{
-			ReadOnlyRequestPanel readOnlyRequestPanel;
-			readOnlyRequestPanel = LoadControl("~/Controls/ReadOnlyRequestPanel.ascx") as ReadOnlyRequestPanel;
-			readOnlyRequestPanel.RequestId = RequestId.ToString();
-            readOnlyRequestPanel.RequestState = RequestState;
-			_readOnlyRequestPanelContainer.Controls.Add(readOnlyRequestPanel);		
+			//ReadOnlyRequestPanel readOnlyRequestPanel;
+			//readOnlyRequestPanel = LoadControl("~/Controls/ReadOnlyRequestPanel.ascx") as ReadOnlyRequestPanel;
+			//readOnlyRequestPanel.RequestId = RequestId.ToString();
+			//readOnlyRequestPanel.RequestState = RequestState;
+			//_readOnlyRequestPanelContainer.Controls.Add(readOnlyRequestPanel);		
 		}
 		
 		private void LoadRequestTrackingPanel()
 		{
-			RequestTrackingPanel requestTrackingPanel;
+			//RequestTrackingPanel requestTrackingPanel;
 
-            requestTrackingPanel = LoadControl("~/Controls/RequestTrackingPanel.ascx") as RequestTrackingPanel;
-			requestTrackingPanel.RequestId = RequestId.ToString();
-            requestTrackingPanel.RequestState = RequestState;
-			_requestTrackingPanelContainer.Controls.Add(requestTrackingPanel);		
+			//requestTrackingPanel = LoadControl("~/Controls/RequestTrackingPanel.ascx") as RequestTrackingPanel;
+			//requestTrackingPanel.RequestId = RequestId.ToString();
+			//requestTrackingPanel.RequestState = RequestState;
+			//_requestTrackingPanelContainer.Controls.Add(requestTrackingPanel);		
 		}
 		
 		private void LoadAccessTeamPanels() 
@@ -207,10 +207,10 @@ namespace Apollo.AIM.SNAP.Web.Controls
             table.Columns.Add("ManagerUserID", typeof(string));
             table.Columns.Add("ManagerActorID", typeof(string));
 
-            var reqDetails = Common.Request.Details(RequestState);
-            var reqDetail = reqDetails.Single(x => x.pkId.ToString() == RequestId);
+			//var reqDetails = Common.Request.Details(RequestState);
+			//var reqDetail = reqDetails.Single(x => x.pkId.ToString() == RequestId);
 
-            table.Rows.Add(reqDetail.managerDisplayName, reqDetail.managerUserId, ApprovalWorkflow.GetActorIdByUserId(ActorGroupType.Manager, reqDetail.managerUserId));
+			//table.Rows.Add(reqDetail.managerDisplayName, reqDetail.managerUserId, ApprovalWorkflow.GetActorIdByUserId(ActorGroupType.Manager, reqDetail.managerUserId));
 
             return table;
         }

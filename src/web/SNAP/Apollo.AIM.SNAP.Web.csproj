@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{5AB65A15-CF1E-40AE-B0B7-6000B447EA8C}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
@@ -112,24 +112,13 @@
   <ItemGroup>
     <Content Include="AppBrowserMessage.html" />
     <Content Include="AppError.aspx" />
-    <Content Include="Controls\AccessCommentsPanel.ascx" />
-    <Content Include="Controls\AccessTeamView.ascx" />
-    <Content Include="Controls\AcknowledgementPanel.ascx" />
-    <Content Include="Controls\ApprovingManagerPanel.ascx" />
-    <Content Include="Controls\ApprovingManagerView.ascx" />
     <Content Include="Controls\DefaultIncludes.ascx" />
     <Content Include="Controls\Footer.ascx" />
-    <Content Include="Controls\MasterRequestBlade.ascx" />
-    <Content Include="Controls\ReadOnlyRequestPanel.ascx" />
     <Content Include="Controls\RequestForm.ascx" />
     <Content Include="Controls\RequestFormField.ascx" />
     <Content Include="Controls\RequestFormSection.ascx" />
-    <Content Include="Controls\RequestTrackingPanel.ascx" />
-    <Content Include="Controls\SearchView.ascx" />
     <Content Include="Controls\UserManager.ascx" />
-    <Content Include="Controls\UserView.ascx" />
     <Content Include="Controls\WorkflowApprover.ascx" />
-    <Content Include="Controls\WorkflowBlade.ascx" />
     <Content Include="Controls\WorkflowBuilderPanel.ascx" />
     <Content Include="images\example_linuxunix_1.png" />
     <Content Include="images\example_shareddrive_1.png" />
@@ -243,8 +232,9 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Common\Constants.cs" />
     <Compile Include="Common\Enumerations.cs" />
-    <Compile Include="Common\Request.cs" />
-    <Compile Include="Common\RequestLoader.cs" />
+    <Compile Include="Common\Request.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Common\SnapPage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -253,48 +243,6 @@
     <Compile Include="Common\UI.cs" />
     <Compile Include="Common\ViewBaseUtilities.cs" />
     <Compile Include="Common\WebUtilities.cs" />
-    <Compile Include="Controls\AccessCommentsPanel.ascx.cs">
-      <DependentUpon>AccessCommentsPanel.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Controls\AccessCommentsPanel.ascx.designer.cs">
-      <DependentUpon>AccessCommentsPanel.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\AccessTeamView.ascx.cs">
-      <DependentUpon>AccessTeamView.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Controls\AccessTeamView.ascx.designer.cs">
-      <DependentUpon>AccessTeamView.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\AcknowledgementPanel.ascx.cs">
-      <DependentUpon>AcknowledgementPanel.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Controls\AcknowledgementPanel.ascx.designer.cs">
-      <DependentUpon>AcknowledgementPanel.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\ApprovingManagerPanel.ascx.cs">
-      <DependentUpon>ApprovingManagerPanel.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Controls\ApprovingManagerPanel.ascx.designer.cs">
-      <DependentUpon>ApprovingManagerPanel.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\ApprovingManagerView.ascx.cs">
-      <DependentUpon>ApprovingManagerView.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Controls\ApprovingManagerView.ascx.designer.cs">
-      <DependentUpon>ApprovingManagerView.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\WorkflowBladeSectionHeading.ascx.cs">
-      <DependentUpon>WorkflowBladeSectionHeading.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Controls\WorkflowBladeSectionHeading.ascx.designer.cs">
-      <DependentUpon>WorkflowBladeSectionHeading.ascx</DependentUpon>
-    </Compile>
     <Compile Include="Controls\WorkflowLargeGroup.ascx.cs">
       <DependentUpon>WorkflowLargeGroup.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -323,20 +271,6 @@
     <Compile Include="Controls\HeaderStandalone.ascx.designer.cs">
       <DependentUpon>HeaderStandalone.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Controls\MasterRequestBlade.ascx.cs">
-      <DependentUpon>MasterRequestBlade.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Controls\MasterRequestBlade.ascx.designer.cs">
-      <DependentUpon>MasterRequestBlade.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\ReadOnlyRequestPanel.ascx.cs">
-      <DependentUpon>ReadOnlyRequestPanel.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Controls\ReadOnlyRequestPanel.ascx.designer.cs">
-      <DependentUpon>ReadOnlyRequestPanel.ascx</DependentUpon>
-    </Compile>
     <Compile Include="Controls\RequestForm.ascx.cs">
       <DependentUpon>RequestForm.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -358,20 +292,6 @@
     <Compile Include="Controls\RequestFormSection.ascx.designer.cs">
       <DependentUpon>RequestFormSection.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Controls\RequestTrackingPanel.ascx.cs">
-      <DependentUpon>RequestTrackingPanel.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Controls\RequestTrackingPanel.ascx.designer.cs">
-      <DependentUpon>RequestTrackingPanel.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SearchView.ascx.cs">
-      <DependentUpon>SearchView.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Controls\SearchView.ascx.designer.cs">
-      <DependentUpon>SearchView.ascx</DependentUpon>
-    </Compile>
     <Compile Include="Controls\UserManager.ascx.cs">
       <DependentUpon>UserManager.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -379,26 +299,12 @@
     <Compile Include="Controls\UserManager.ascx.designer.cs">
       <DependentUpon>UserManager.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Controls\UserView.ascx.cs">
-      <DependentUpon>UserView.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Controls\UserView.ascx.designer.cs">
-      <DependentUpon>UserView.ascx</DependentUpon>
-    </Compile>
     <Compile Include="Controls\WorkflowApprover.ascx.cs">
       <DependentUpon>WorkflowApprover.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Controls\WorkflowApprover.ascx.designer.cs">
       <DependentUpon>WorkflowApprover.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\WorkflowBlade.ascx.cs">
-      <DependentUpon>WorkflowBlade.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Controls\WorkflowBlade.ascx.designer.cs">
-      <DependentUpon>WorkflowBlade.ascx</DependentUpon>
     </Compile>
     <Compile Include="Controls\WorkflowBuilderPanel.ascx.cs">
       <DependentUpon>WorkflowBuilderPanel.ascx</DependentUpon>
@@ -483,7 +389,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AccessTeam.aspx" />
-    <Content Include="Controls\WorkflowBladeSectionHeading.ascx" />
     <Content Include="Controls\WorkflowLargeGroup.ascx" />
     <Content Include="Controls\HeaderStandalone.ascx" />
     <Content Include="Default.aspx" />
@@ -564,9 +469,6 @@
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/SNAP</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
