@@ -16,7 +16,9 @@ function CreateBlades(requests) {
         .replace("__toggledContentContainer_ID", "__toggledContentContainer_" + data.RequestId)
         .replace("__snapRequestId", data.RequestId)
         .replace("__workflowStatus_ID", "__workflowStatus_" + data.RequestId)
-        .replace("__workflowStatus_TEXT", data.WorkflowStatus);
+        .replace("__workflowStatus_TEXT", data.WorkflowStatus)
+        .replace("__legendToggle_ID", "__legendToggle_" + data.RequestId)
+        .replace("__legend_ID", "__legend_" + data.RequestId);
 
         if (data.RequestStatus != "Closed") { $("#_openRequestsContainer").append($(newRequestBlade)); }
         else { $("#_closedRequestsContainer").append($(newRequestBlade)); }
@@ -45,7 +47,7 @@ function CreateRequestDetails(details, requestId) {
     .replace("__adManagerName_ID", "__adManagerName_" + requestId)
     .replace("__requestorName_TEXT", data.Requestor)
     .replace("__requestorName_ID", "__requestorName_" + requestId);
-
+    
     var newForm = "";
     $.each(data.Details, function(index, value){
         var newField = $("#_requestFormField").html();
@@ -74,6 +76,12 @@ function CreateRequestDetails(details, requestId) {
     $("#__toggledContentContainer_" + requestId).html($("#__toggledContentContainer_" + requestId).html()
     .replace("<!--__requestDetailsSection-->", newRequestDetails));
 
-    GetTracking(requestId);
+    GetTracking(null,null,requestId);
+}
+function BindEvents(builderGroups, builderButtons, requestId) {
+    $("#__legendToggle_" + requestId).click(function() {
+        ToggleLegend(requestId);
+    });
+    ToggleLoading(requestId);
 }
 // VIEW SPECIFIC - END

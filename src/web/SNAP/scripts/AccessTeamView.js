@@ -185,7 +185,9 @@ function CreateBlades(requests) {
         .replace("__requestId_ID", "__requestId_" + data.RequestId)
         .replace("__toggleIconContainer_ID", "__toggleIconContainer_" + data.RequestId)
         .replace("__toggledContentContainer_ID", "__toggledContentContainer_" + data.RequestId)
-        .replace("__snapRequestId", data.RequestId);
+        .replace("__snapRequestId", data.RequestId)
+        .replace("__legendToggle_ID", "__legendToggle_" + data.RequestId)
+        .replace("__legend_ID", "__legend_" + data.RequestId);
 
         if (data.RequestStatus != "Closed") { $("#_openRequestsContainer").append($(newRequestBlade)); }
         else { $("#_closedRequestsContainer").append($(newRequestBlade)); }
@@ -242,7 +244,7 @@ function CreateRequestDetails(details, requestId) {
 
     $("#__toggledContentContainer_" + requestId).html($("#__toggledContentContainer_" + requestId).html()
     .replace("<!--__requestDetailsSection-->", newRequestDetails));
-
+    
     if ($("#__overallRequestStatus_" + requestId).html() != "Closed") { GetBuilder(requestId); }
     else { GetTracking(requestId); }
     
@@ -413,11 +415,11 @@ function CreateBuilder(builder, requestId) {
 
     $("#__toggledContentContainer_" + requestId).html($("#__toggledContentContainer_" + requestId).html()
     .replace("<!--__requestComments-->", newComments));
-
-    BindEvents(data.AvailableGroups, data.AvailableButtons, requestId);
+    GetTracking(data.AvailableGroups, data.AvailableButtons, requestId);
 }
+
 function BindEvents(builderGroups, builderButtons, requestId) {
-    //AIM SECTION
+
     $("#__managerEditButton_" + requestId).click(function() {
         ManagerEdit(requestId);
     });
@@ -505,9 +507,7 @@ function BindEvents(builderGroups, builderButtons, requestId) {
     $("#__requestCancel_" + requestId).click(function() {
         AccessTeamActions(this, requestId, '3');
     });
-    // AIM SECTION END
-
-    GetTracking(requestId);
+    ToggleLoading(requestId);
 }
 function ChangeDenyCancelClick(obj, requestId) {
     $("#__actionComments_" + requestId).removeAttr("disabled");

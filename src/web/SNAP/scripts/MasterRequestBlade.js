@@ -102,6 +102,9 @@ function ToggleLoading(requestId) {
         blade.addClass("csm_toggle_loading");
     }
 }
+function ToggleLegend(requestId) {
+    $("#__legend_" + requestId).toggle();
+}
 function ToggleDetails(requestId) {
     var section = $("#__toggledContentContainer_" + requestId);
     var blade = $("#__toggleIconContainer_" + requestId);
@@ -200,36 +203,22 @@ function AddComments(obj, approverName, action, comments, includeDate) {
             }
         });
 }
-function AnimateActions(obj, newSection) {
-    var blade = $(obj).closest("div.csm_content_container");
-    $(obj).closest("div.csm_text_container").fadeOut("slow", function() {
-        $(obj).closest("div.csm_content_container").children().next().slideUp("fast", function() {
-            $(obj).closest("div.csm_container_center_700").find("h1").each(
-            function() {
-                var section = $(this);
-                if ($(this).html() == newSection) {
-                    blade.fadeOut(1000, function() {
-                        if ($(section).next().attr("snap") == "_nullDataMessage") { $(section).next().remove(); }
-                        $(this).insertAfter(section);
+function AnimateActions(newSection, requestId) {
+    var blade = $("#__requestContainer_" + requestId);
+    var emptyDiv = "<div class='csm_clear'></div>";
+    var toggle = $("#__toggleIconContainer_" + requestId);
 
-                        var toggle = $(obj).closest("div.csm_content_container").children().find("div.csm_toggle_container");
-                        toggle.addClass("csm_toggle_show");
-                        toggle.removeClass("csm_toggle_hide");
-                        toggle.removeClass("csm_toggle_hide_hover");
-                        toggle.unbind('mouseenter mouseleave')
-                        toggle.hover(function() {
-                            $(this).addClass("csm_toggle_show_hover");
-                        },
-	                    function() {
-	                        $(this).removeClass("csm_toggle_show_hover");
-	                    }
-	                    );
-
-                        $(this).fadeIn(1000);
-                    });
-                }
+    $(blade).closest("div.csm_container_center_700").find("h1").each(
+    function() {
+        var section = $(this);
+        if ($(this).html() == newSection) {
+            blade.fadeOut(1000, function() {
+                if ($(section).next().attr("snap") == "_nullDataMessage") { $(section).next().remove(); }
+                $(this).insertAfter(section);
+                ToggleDetails(requestId);
+                $(this).fadeIn(1000);
             });
-        });
+        }
     });
 }
 function UpdateCount() {
@@ -256,10 +245,7 @@ function Comment(requestId, action, comments) {
     this.comments = $.quoteString(comments);
     this.toJSON = $.toJSON(this);
 }
-// JON JS
 
-// Apollo.AIM.SNAP.Model.Enumeration
-//
 var ActorGroupTypeEnum =
 {
     Team_Approver: 0,
@@ -268,7 +254,8 @@ var ActorGroupTypeEnum =
     Workflow_Admin: 3
 };
 
-function GetTracking(requestId) {
+function GetTracking(builderGroups, builderButtons, requestId) {
+    
     var postData = "{\"requestId\":\"" + requestId + "\"}";
     $.ajax({
         type: "POST",
@@ -278,7 +265,7 @@ function GetTracking(requestId) {
         dataType: "json",
         success: function(msg) {
         if (msg.d.length > 0) {
-                BuildTrackingSection(msg.d, requestId);
+            BuildTrackingSection(msg.d, builderGroups, builderButtons, requestId);
             }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -289,7 +276,7 @@ function GetTracking(requestId) {
     });
 }
 
-function BuildTrackingSection(trackingObject, requestId) {
+function BuildTrackingSection(trackingObject, builderGroups, builderButtons, requestId) {
     var trackingSectionHtml = "";
 
     // Build sections in the following order and loop thru them
@@ -318,8 +305,8 @@ function BuildTrackingSection(trackingObject, requestId) {
 
     $("#__toggledContentContainer_" + requestId).html($("#__toggledContentContainer_" + requestId).html()
     .replace("<!--__requestTracking-->", trackingSectionHtml));
-    
-    ToggleLoading(requestId);
+
+    BindEvents(builderGroups, builderButtons, requestId);
 }
 
 function IsActorGroupInTrackingData(trackingObject, actorGroupEnum) {

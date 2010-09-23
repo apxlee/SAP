@@ -17,7 +17,9 @@ function CreateBlades(requests) {
         .replace("__toggledContentContainer_ID", "__toggledContentContainer_" + data.RequestId)
         .replace("__snapRequestId", data.RequestId)
         .replace("__workflowStatus_ID", "__workflowStatus_" + data.RequestId)
-        .replace("__workflowStatus_TEXT", data.WorkflowStatus);
+        .replace("__workflowStatus_TEXT", data.WorkflowStatus)
+        .replace("__legendToggle_ID", "__legendToggle_" + data.RequestId)
+        .replace("__legend_ID", "__legend_" + data.RequestId);
 
         if (data.RequestStatus != "Closed") {
             if (data.WorkflowStatus == 7) {
@@ -41,6 +43,7 @@ function CreateBlades(requests) {
         });
     });
     if (pendingCount > 1) { $("#__multiplePendingApprovals").val(true); }
+
 }
 function CreateRequestDetails(details, requestId) {
     var data = jQuery.parseJSON(details);
@@ -83,8 +86,10 @@ function CreateRequestDetails(details, requestId) {
 
     $("#__toggledContentContainer_" + requestId).html($("#__toggledContentContainer_" + requestId).html()
     .replace("<!--__requestDetailsSection-->", newRequestDetails));
+    
     if ($("#__workflowStatus_" + requestId).val() == 7) { CreateApproverActions(requestId); }
     else { GetTracking(requestId); }
+
 }
 function CreateApproverActions(requestId) {
     var newApproval = $("#_approverActions").html();
@@ -102,10 +107,11 @@ function CreateApproverActions(requestId) {
     .replace("<!--__requestApproval-->", newApproval));
     
     if (!$("#__multiplePendingApprovals").val()) { $("#__approveAndMoveNext_" + requestId).hide(); }
-    
-    BindEvents(requestId);
+
+    GetTracking(null, null, requestId);
+
 }
-function BindEvents(requestId) {
+function BindEvents(builderGroups, builderButtons, requestId) {
 
     $("#__approve_" + requestId).click(function() {
         ApproverActions(this, requestId, '0');
@@ -130,8 +136,8 @@ function BindEvents(requestId) {
     $("#__radioApproverChange_" + requestId).click(function() {
         ChangeDenyClick(this);
     });
+    ToggleLoading(requestId);
 
-    GetTracking(requestId);
 }
 function ChangeDenyClick(obj) {
     $(obj).closest("table").next().find("input[type=button]").each(
@@ -143,6 +149,7 @@ function ChangeDenyClick(obj) {
              $(this).attr("disabled", "disabled");
          }
      });
+ 
 }
 function ApproverActions(obj, requestId, action) {
     var comments = "";
@@ -221,7 +228,8 @@ function ApproverActions(obj, requestId, action) {
 //            alert("ApproverAction Error: " + textStatus);
 //            alert("ApproverAction Error: " + errorThrown);
 //        }
-//    });
+                //    });
+            
 }
 function OpenNext(requestId) {
     var requestIds = [];
@@ -244,5 +252,6 @@ function OpenNext(requestId) {
     });
     var blade = $("#__toggleIconContainer_" + openRequest);
     blade.click();
+
 }
 //]]>

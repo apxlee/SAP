@@ -67,9 +67,9 @@
 					<h2>Request Tracking</h2>
 					<p class="">This section tracks the status of your request and includes all the people and groups 
 					that are involved in the approval process.  Status "Not Active" indicates the person or team will be notified after prerequisite approvals
-					have been made.  Due Dates do not include weekends or holidays.&nbsp;&nbsp;<span class="csm_legend_toggle" onclick="toggleLegend(this);">Show Legend</span></p>
+					have been made.  Due Dates do not include weekends or holidays.&nbsp;&nbsp;<span class="csm_legend_toggle" id="__legendToggle_ID">Show Legend</span></p>
 				</div>
-				<div snap="_legend" style="display:inline;">
+				<div id="__legend_ID" style="display:none;">
 					<style type="text/css">
 						.legendPadding {margin-left:15px;}
 					</style>
