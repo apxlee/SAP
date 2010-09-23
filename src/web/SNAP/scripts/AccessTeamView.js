@@ -507,6 +507,10 @@ function BindEvents(builderGroups, builderButtons, requestId) {
     $("#__requestCancel_" + requestId).click(function() {
         AccessTeamActions(this, requestId, '3');
     });
+
+    $("#__legendToggle_" + requestId).click(function() {
+        ToggleLegend(requestId);
+    });
     ToggleLoading(requestId);
 }
 function ChangeDenyCancelClick(obj, requestId) {

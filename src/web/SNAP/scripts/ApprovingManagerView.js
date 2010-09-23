@@ -136,6 +136,10 @@ function BindEvents(builderGroups, builderButtons, requestId) {
     $("#__radioApproverChange_" + requestId).click(function() {
         ChangeDenyClick(this);
     });
+
+    $("#__legendToggle_" + requestId).click(function() {
+        ToggleLegend(requestId);
+    });
     ToggleLoading(requestId);
 
 }
