@@ -414,7 +414,6 @@
 </div>
 <div class="csm_clear">&nbsp;</div>
 </script>
-<input id="__multiplePendingApprovals" type="hidden"> 
 <div id="_actionMessageDiv" style="display:none;">
     <div class="messageBox"> 
         <h2>header</h2>
