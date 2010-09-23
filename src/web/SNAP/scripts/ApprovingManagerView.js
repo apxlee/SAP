@@ -177,7 +177,7 @@ function ApproverActions(obj, requestId, action) {
         data: newAction.toJSON,
         dataType: "json",
         success: function(msg) {
-            if (msg.d) {
+            if (msg.d.Success) {
 
                 switch (action) {
                     case '0':
@@ -222,8 +222,11 @@ function ApproverActions(obj, requestId, action) {
             else {
                 $('#_indicatorDiv').hide();
                 $('#_closeMessageDiv').show();
-                $('div.messageBox').children("h2").html("Action Failed");
-                $('div.messageBox').children("p").html("Please try again.");
+                //$('div.messageBox').children("h2").html("Action Failed");
+                //$('div.messageBox').children("p").html("Please try again.");
+                $('div.messageBox').children("h2").html(msg.d.Title);
+                $('div.messageBox').children("p").html(msg.d.Message);
+
             }
         }
 		,
