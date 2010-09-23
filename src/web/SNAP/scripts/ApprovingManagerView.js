@@ -42,7 +42,7 @@ function CreateBlades(requests) {
             ToggleDetails(data.RequestId);
         });
     });
-    if (pendingCount > 1) { $("#__multiplePendingApprovals").val(true); }
+    if (pendingCount > 1) { $("#__multiplePendingApprovals").val("yes"); }
 
 }
 function CreateRequestDetails(details, requestId) {
@@ -106,7 +106,7 @@ function CreateApproverActions(requestId) {
     $("#__toggledContentContainer_" + requestId).html($("#__toggledContentContainer_" + requestId).html()
     .replace("<!--__requestApproval-->", newApproval));
     
-    if (!$("#__multiplePendingApprovals").val()) { $("#__approveAndMoveNext_" + requestId).hide(); }
+    if ($("#__multiplePendingApprovals").val() == "no") { $("#__approveAndMoveNext_" + requestId).hide(); }
 
     GetTracking(null, null, requestId);
 
@@ -170,14 +170,14 @@ function ApproverActions(obj, requestId, action) {
     }
     comments = "<br />" + textarea.val();
     var newAction = new Comment(requestId, action, textarea.val());
-//    $.ajax({
-//        type: "POST",
-//        contentType: "application/json; character=utf-8",
-//        url: "AjaxCalls.aspx/ApproverActions",
-//        data: newAction.toJSON,
-//        dataType: "json",
-//        success: function(msg) {
-//            if (msg.d) {
+    $.ajax({
+        type: "POST",
+        contentType: "application/json; character=utf-8",
+        url: "AjaxCalls.aspx/ApproverActions",
+        data: newAction.toJSON,
+        dataType: "json",
+        success: function(msg) {
+            if (msg.d) {
 
                 switch (action) {
                     case '0':
@@ -218,22 +218,21 @@ function ApproverActions(obj, requestId, action) {
                         UpdateCount();
                         break;
                 }
-//            }
-//            else {
-//                $('#_indicatorDiv').hide();
-//                $('#_closeMessageDiv').show();
-//                $('div.messageBox').children("h2").html("Action Failed");
-//                $('div.messageBox').children("p").html("Please try again.");
-//            }
-//        }
-//		,
-//        error: function(XMLHttpRequest, textStatus, errorThrown) {
-//            alert("ApproverAction Error: " + XMLHttpRequest);
-//            alert("ApproverAction Error: " + textStatus);
-//            alert("ApproverAction Error: " + errorThrown);
-//        }
-                //    });
-            
+            }
+            else {
+                $('#_indicatorDiv').hide();
+                $('#_closeMessageDiv').show();
+                $('div.messageBox').children("h2").html("Action Failed");
+                $('div.messageBox').children("p").html("Please try again.");
+            }
+        }
+		,
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert("ApproverAction Error: " + XMLHttpRequest);
+            alert("ApproverAction Error: " + textStatus);
+            alert("ApproverAction Error: " + errorThrown);
+        }
+    });
 }
 function OpenNext(requestId) {
     var requestIds = [];
@@ -243,9 +242,12 @@ function OpenNext(requestId) {
     });
 
     $.each(requestIds, function(index, value) {
-        if (requestIds.length == 2) {
-            $("#__multiplePendingApprovals").val(false);
+        if (requestIds.length <= 2) {
+            $("#__multiplePendingApprovals").val("no");
             $("#__approveAndMoveNext_" + requestIds[index]).hide();
+        }
+        else {
+            $("#__multiplePendingApprovals").val("yes");
         }
         if (value == requestId) {
             if (index == requestIds.length - 1) { openRequest = requestIds[0]; }

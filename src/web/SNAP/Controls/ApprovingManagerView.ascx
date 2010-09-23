@@ -11,9 +11,6 @@
 		</div>
 	</asp:Panel>
 	
-
-	<input type="hidden" id="__multiplePendingApprovals" value"" />
-
 	<h1>Pending Approval</h1>
 	<div id="_pendingApprovalsContainer"></div>
 	<asp:Panel ID="_nullDataMessage_PendingApprovals" snap="_nullDataMessage" runat="server" CssClass="csm_content_container" Visible="false">

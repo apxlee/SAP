@@ -51,7 +51,6 @@
 		    </div> 
 	    </div>
 	    <input id="__workflowStatus_ID" type="hidden" value="__workflowStatus_TEXT">
-	    <input id="__multiplePendingApprovals_ID" type="hidden" value="false"> 
 	    <div class="csm_clear">&nbsp;</div> 
 	    <!-- END FLOATING HEADING --> 
 	    <!-- TOGGLED CONTENT AREA --> 
@@ -415,7 +414,7 @@
 </div>
 <div class="csm_clear">&nbsp;</div>
 </script>
-
+<input id="__multiplePendingApprovals" type="hidden"> 
 <div id="_actionMessageDiv" style="display:none;">
     <div class="messageBox"> 
         <h2>header</h2>
