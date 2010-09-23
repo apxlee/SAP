@@ -117,9 +117,6 @@
     <Content Include="Controls\RequestForm.ascx" />
     <Content Include="Controls\RequestFormField.ascx" />
     <Content Include="Controls\RequestFormSection.ascx" />
-    <Content Include="Controls\UserManager.ascx" />
-    <Content Include="Controls\WorkflowApprover.ascx" />
-    <Content Include="Controls\WorkflowBuilderPanel.ascx" />
     <Content Include="images\example_linuxunix_1.png" />
     <Content Include="images\example_shareddrive_1.png" />
     <Content Include="images\example_windows_1.png" />
@@ -243,13 +240,6 @@
     <Compile Include="Common\SnapUser.cs" />
     <Compile Include="Common\UI.cs" />
     <Compile Include="Common\WebUtilities.cs" />
-    <Compile Include="Controls\WorkflowLargeGroup.ascx.cs">
-      <DependentUpon>WorkflowLargeGroup.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Controls\WorkflowLargeGroup.ascx.designer.cs">
-      <DependentUpon>WorkflowLargeGroup.ascx</DependentUpon>
-    </Compile>
     <Compile Include="Controls\DefaultIncludes.ascx.cs">
       <DependentUpon>DefaultIncludes.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -291,27 +281,6 @@
     </Compile>
     <Compile Include="Controls\RequestFormSection.ascx.designer.cs">
       <DependentUpon>RequestFormSection.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\UserManager.ascx.cs">
-      <DependentUpon>UserManager.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Controls\UserManager.ascx.designer.cs">
-      <DependentUpon>UserManager.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\WorkflowApprover.ascx.cs">
-      <DependentUpon>WorkflowApprover.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Controls\WorkflowApprover.ascx.designer.cs">
-      <DependentUpon>WorkflowApprover.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\WorkflowBuilderPanel.ascx.cs">
-      <DependentUpon>WorkflowBuilderPanel.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Controls\WorkflowBuilderPanel.ascx.designer.cs">
-      <DependentUpon>WorkflowBuilderPanel.ascx</DependentUpon>
     </Compile>
     <Compile Include="AjaxCalls.aspx.cs">
       <DependentUpon>AjaxCalls.aspx</DependentUpon>
@@ -389,7 +358,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AccessTeam.aspx" />
-    <Content Include="Controls\WorkflowLargeGroup.ascx" />
     <Content Include="Controls\HeaderStandalone.ascx" />
     <Content Include="Default.aspx" />
     <Content Include="EmailTemplate\aimAcknowledge.html" />
@@ -447,7 +415,6 @@
     <Content Include="Web_QA.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Data\" />
     <Folder Include="Properties\" />
     <Folder Include="SupportFiles\" />
   </ItemGroup>

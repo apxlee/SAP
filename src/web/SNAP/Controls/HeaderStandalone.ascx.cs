@@ -50,14 +50,14 @@ namespace Apollo.AIM.SNAP.Web.Controls
                         userIds = SnapSession.CurrentUser.DistributionGroup !=
                             null ? new string[] { SnapSession.CurrentUser.DistributionGroup, SnapSession.CurrentUser.LoginId }
                             : new string[] { SnapSession.CurrentUser.LoginId };
-                        PendingApprovals = MyRequest.ApprovalCount(userIds);
+                        PendingApprovals = Database.ApprovalCount(userIds);
 						_userNameHeader.Text = SnapSession.CurrentUser.FullName + "&nbsp;(Approving Manager)&nbsp;|&nbsp;";
 						break;
 
 					case Role.AccessTeam:
 						linkButtons.AddRange(new List<string> { "RequestForm", "MyRequests", "AccessTeam", "Search", "Support" });
 						linksContainerWidth = "600";
-						PendingAccessTeam = MyRequest.AccessTeamCount();
+						PendingAccessTeam = Database.AccessTeamCount();
 						_userNameHeader.Text = SnapSession.CurrentUser.FullName + "&nbsp;(Access Team)&nbsp;|&nbsp;";
 						break;
 
@@ -68,8 +68,8 @@ namespace Apollo.AIM.SNAP.Web.Controls
                         userIds = SnapSession.CurrentUser.DistributionGroup !=
                             null ? new string[] { SnapSession.CurrentUser.DistributionGroup, SnapSession.CurrentUser.LoginId }
                             : new string[] { SnapSession.CurrentUser.LoginId };
-                        PendingApprovals = MyRequest.ApprovalCount(userIds);
-						PendingAccessTeam = MyRequest.AccessTeamCount();
+                        PendingApprovals = Database.ApprovalCount(userIds);
+						PendingAccessTeam = Database.AccessTeamCount();
 						_userNameHeader.Text = SnapSession.CurrentUser.FullName + "&nbsp;(Super User)&nbsp;|&nbsp;";
 						break;
 

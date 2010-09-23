@@ -131,36 +131,36 @@ namespace Apollo.AIM.SNAP.Web.Common
             return table;
         }
 
-        public static int AccessTeamCount()
-        {
-            using (var db = new SNAPDatabaseDataContext())
-            {
-                int result = db.SNAP_Requests
-                             .Where(o => o.statusEnum == 0 || o.statusEnum == 1 || o.statusEnum == 2)
-                             .Select(s => s.statusEnum)
-                             .Count();
+		//public static int AccessTeamCount()
+		//{
+		//    using (var db = new SNAPDatabaseDataContext())
+		//    {
+		//        int result = db.SNAP_Requests
+		//                     .Where(o => o.statusEnum == 0 || o.statusEnum == 1 || o.statusEnum == 2)
+		//                     .Select(s => s.statusEnum)
+		//                     .Count();
 
-                return result;
-            } 
-        }
+		//        return result;
+		//    } 
+		//}
 
-        public static int ApprovalCount(string[] userIds)
-        {
-            using (var db = new SNAPDatabaseDataContext())
-            {
-                int result = (from sr in db.SNAP_Requests
-                            join sw in db.SNAP_Workflows on sr.pkId equals sw.requestId
-                            join sws in db.SNAP_Workflow_States on sw.pkId equals sws.workflowId
-                            join sa in db.SNAP_Actors on sw.actorId equals sa.pkId
-                            where userIds.Contains(sa.userId)
-                            && sws.workflowStatusEnum == 7
-                            && sws.completedDate == null
-                            && sr.statusEnum == 2
-                            select new {sr.pkId}).GroupBy(p=> p.pkId).Count();
+		//public static int ApprovalCount(string[] userIds)
+		//{
+		//    using (var db = new SNAPDatabaseDataContext())
+		//    {
+		//        int result = (from sr in db.SNAP_Requests
+		//                    join sw in db.SNAP_Workflows on sr.pkId equals sw.requestId
+		//                    join sws in db.SNAP_Workflow_States on sw.pkId equals sws.workflowId
+		//                    join sa in db.SNAP_Actors on sw.actorId equals sa.pkId
+		//                    where userIds.Contains(sa.userId)
+		//                    && sws.workflowStatusEnum == 7
+		//                    && sws.completedDate == null
+		//                    && sr.statusEnum == 2
+		//                    select new {sr.pkId}).GroupBy(p=> p.pkId).Count();
 
-                return result;
-            }
-        }
+		//        return result;
+		//    }
+		//}
 
         /* TODO method for Access Team Filter Counts
         public static List<int> AccessFilterCount()
