@@ -1103,7 +1103,7 @@ function BuilderActions(obj, requestId, state) {
         data: postData,
         dataType: "json",
         success: function(msg) {
-            if (msg.d) {
+            if (msg.d.Success) {
                 switch (state) {
                     case "3":
                         $('#_indicatorDiv').hide();
@@ -1139,8 +1139,11 @@ function BuilderActions(obj, requestId, state) {
                 if (state == 5) {
                     $('#_indicatorDiv').hide();
                     $('#_closeMessageDiv').show();
-                    $('div.messageBox').children("h2").html("Ticket Creation Failed");
-                    $('div.messageBox').children("p").html("Please try again or create the ticket manually (add the ticket number within the comments section).");
+                    //$('div.messageBox').children("h2").html("Ticket Creation Failed");
+                    //$('div.messageBox').children("p").html("Please try again or create the ticket manually (add the ticket number within the comments section).");
+                    $('div.messageBox').children("h2").html(msg.d.Title);
+                    $('div.messageBox').children("p").html(msg.d.Message);
+
                     $("#closed_completed_" + requestId).removeAttr("disabled");
                 }
                 else {

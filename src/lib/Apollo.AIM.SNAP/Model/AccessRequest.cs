@@ -600,25 +600,35 @@ namespace Apollo.AIM.SNAP.Model
 						string updatedDescription = string.Format("Supplemental Access Process Request Id: {0}\r\nAffected End User Id: {1}\r\nRequested By: {2}\r\n-------------------------------------------------------\r\n{3}"
 							, req.pkId, req.userId, req.submittedBy, requestDescription);
 
-                        changeRequest.CategoryName = "Server.Systems.Privileged Access";
-                        changeRequest.Submitter.Get("svc_Cap");
-                        changeRequest.AffectedUser.Get(Regex.Replace(req.userId, @"^a\.", ""));  // remove a. acct
-                        changeRequest.Attributes["description"] = updatedDescription;
-                        changeRequest.Create();
+                        if (requestDescription.Length > 50)
+                        {
+                            resp = new WebMethodResponse(false, "Ticket Creation Error", "Request Content Too Long. Please split the request");
+                        }
+                        else
+                        {
 
-                        req.ticketNumber = changeRequest.Number;
-                        var handler = changeRequest.Handle.Split(':')[1]; // chg:12345
-                        var sdlink = ConfigurationManager.AppSettings["SDLink"] + handler;
+                            changeRequest.CategoryName = "Server.Systems.Privileged Access";
+                            changeRequest.Submitter.Get("svc_Cap");
+                            changeRequest.AffectedUser.Get(Regex.Replace(req.userId, @"^a\.", "")); // remove a. acct
+                            changeRequest.Attributes["description"] = updatedDescription;
+                            changeRequest.Create();
 
-						addAccessTeamComment(accessTeamWF
-							, string.Format("Due Date: {0} | Service Desk Ticket: <a target=\"_blank\" href=\"{2}\">{1}</a>"
-								, Convert.ToDateTime(dueDate).ToString("MMM d, yyyy")
-								, req.ticketNumber
-								, sdlink)
-							, CommentsType.Ticket_Created);
-                        
-						db.SubmitChanges();
-                        resp = new WebMethodResponse(true, "Ticket Creation", "Success");
+                            req.ticketNumber = changeRequest.Number;
+                            var handler = changeRequest.Handle.Split(':')[1]; // chg:12345
+                            var sdlink = ConfigurationManager.AppSettings["SDLink"] + handler;
+
+                            addAccessTeamComment(accessTeamWF
+                                                 ,
+                                                 string.Format(
+                                                     "Due Date: {0} | Service Desk Ticket: <a target=\"_blank\" href=\"{2}\">{1}</a>"
+                                                     , Convert.ToDateTime(dueDate).ToString("MMM d, yyyy")
+                                                     , req.ticketNumber
+                                                     , sdlink)
+                                                 , CommentsType.Ticket_Created);
+
+                            db.SubmitChanges();
+                            resp = new WebMethodResponse(true, "Ticket Creation", "Success");
+                        }
                     }
                     else
                     {
