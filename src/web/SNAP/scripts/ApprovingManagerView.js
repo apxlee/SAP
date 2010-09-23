@@ -63,7 +63,7 @@ function CreateRequestDetails(details, requestId) {
     $.each(data.Details, function(index, value){
         var newField = $("#_requestFormField").html();
         newField = newField.replace("__fieldLabel", value.Label + ":")
-        .replace("__fieldText", value.Text);
+        .replace("__fieldText",value.Text.replace(/(\r\n|[\r\n])/g, "<br />"));
         newForm = newForm + newField
     });
 
@@ -73,7 +73,7 @@ function CreateRequestDetails(details, requestId) {
         var newComments = "";
         $.each(data.Comments, function(index, value) {
             var newComment = $("#_requestComment").html();
-            newComment = newComment.replace("__commentLabel", value.CreatedDate + " for " + value.Audience).replace("__commentText", value.Text);
+            newComment = newComment.replace("__commentLabel", value.CreatedDate + " for " + value.Audience).replace("__commentText", value.Text.replace(/(\r\n|[\r\n])/g, "<br />"));
             newComments = newComments + newComment
         });
 
