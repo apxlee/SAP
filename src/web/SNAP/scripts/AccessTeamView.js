@@ -246,7 +246,7 @@ function CreateRequestDetails(details, requestId) {
     .replace("<!--__requestDetailsSection-->", newRequestDetails));
     
     if ($("#__overallRequestStatus_" + requestId).html() != "Closed") { GetBuilder(requestId); }
-    else { GetTracking(requestId); }
+    else { GetTracking(null,null,requestId); }
     
 }
 function GetBuilder(requestId) {

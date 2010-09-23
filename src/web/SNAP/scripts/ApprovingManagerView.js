@@ -88,7 +88,7 @@ function CreateRequestDetails(details, requestId) {
     .replace("<!--__requestDetailsSection-->", newRequestDetails));
     
     if ($("#__workflowStatus_" + requestId).val() == 7) { CreateApproverActions(requestId); }
-    else { GetTracking(requestId); }
+    else { GetTracking(null,null,requestId); }
 
 }
 function CreateApproverActions(requestId) {

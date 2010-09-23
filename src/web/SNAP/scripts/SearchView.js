@@ -35,8 +35,8 @@ function CreateBlades(requests) {
         .replace("__lastUpdatedDate_ID", "__lastUpdatedDate_" + data.RequestId)
         .replace("__requestId_TEXT", data.RequestId)
         .replace("__requestId_ID", "__requestId_" + data.RequestId)
-        .replace("__toggleIconContainer", "__toggleIconContainer_" + data.RequestId)
-        .replace("__toggledContentContainer", "__toggledContentContainer_" + data.RequestId)
+        .replace("__toggleIconContainer_ID", "__toggleIconContainer_" + data.RequestId)
+        .replace("__toggledContentContainer_ID", "__toggledContentContainer_" + data.RequestId)
         .replace("__snapRequestId", data.RequestId)
         .replace("__workflowStatus_ID", "__workflowStatus_" + data.RequestId)
         .replace("__workflowStatus_TEXT", data.WorkflowStatus)
@@ -44,7 +44,7 @@ function CreateBlades(requests) {
         .replace("__legend_ID", "__legend_" + data.RequestId);
         
         $("#_searchResultsContainer").append($(newRequestBlade));
-        
+
         $("#__toggleIconContainer_" + data.RequestId).hover(function() {
             $(this).addClass("csm_toggle_show_hover");
         },
