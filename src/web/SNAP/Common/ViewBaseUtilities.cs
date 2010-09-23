@@ -154,35 +154,35 @@ namespace Apollo.AIM.SNAP.Web.Common
 		//    return requestTable;
 		//}
 
-		public static void SetGroupMembership()  // Used by Controls/HeaderStandalone.ascx
-        {
-            try
-            {
-                using (var db = new SNAPDatabaseDataContext())
-                {
-                    var result = (from sr in db.SNAP_Requests
-                                     join sw in db.SNAP_Workflows on sr.pkId equals sw.requestId
-                                     join sws in db.SNAP_Workflow_States on sw.pkId equals sws.workflowId
-                                     join sa in db.SNAP_Actors on sw.actorId equals sa.pkId
-                                     where sa.isActive == true
-                                     && sa.isGroup == true
-                                     && SnapSession.CurrentUser.MemberOf.Contains(sa.userId)
-                                     && sws.workflowStatusEnum == 7
-                                     && sws.completedDate == null
-                                     && sr.statusEnum == 2
-                                     select new { sa.userId });
+		//public static void SetGroupMembership()  // Used by Controls/HeaderStandalone.ascx
+		//{
+		//    try
+		//    {
+		//        using (var db = new SNAPDatabaseDataContext())
+		//        {
+		//            var result = (from sr in db.SNAP_Requests
+		//                             join sw in db.SNAP_Workflows on sr.pkId equals sw.requestId
+		//                             join sws in db.SNAP_Workflow_States on sw.pkId equals sws.workflowId
+		//                             join sa in db.SNAP_Actors on sw.actorId equals sa.pkId
+		//                             where sa.isActive == true
+		//                             && sa.isGroup == true
+		//                             && SnapSession.CurrentUser.MemberOf.Contains(sa.userId)
+		//                             && sws.workflowStatusEnum == 7
+		//                             && sws.completedDate == null
+		//                             && sr.statusEnum == 2
+		//                             select new { sa.userId });
 
-                    if (result.Count() > 0)
-                    {
-                        SnapSession.CurrentUser.DistributionGroup = result.First().userId;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error("ViewBasedUtilities - SetGroupMembership, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
-            }
-        }
+		//            if (result.Count() > 0)
+		//            {
+		//                SnapSession.CurrentUser.DistributionGroup = result.First().userId;
+		//            }
+		//        }
+		//    }
+		//    catch (Exception ex)
+		//    {
+		//        Logger.Error("ViewBasedUtilities - SetGroupMembership, Message:" + ex.Message + ", StackTrace: " + ex.StackTrace);
+		//    }
+		//}
 
 		//private static MasterRequestBlade BuildMasterBlade(DataRow request, Page page, RequestState RequestState, List<AccessGroup> AvailableGroups,bool IsPendingApproval, bool IsLastRequest)
 		//{

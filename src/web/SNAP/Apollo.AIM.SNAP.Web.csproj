@@ -231,6 +231,7 @@
     </Compile>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Common\Constants.cs" />
+    <Compile Include="Common\Database.cs" />
     <Compile Include="Common\Enumerations.cs" />
     <Compile Include="Common\Request.cs">
       <SubType>Code</SubType>
@@ -241,7 +242,6 @@
     <Compile Include="Common\SnapSession.cs" />
     <Compile Include="Common\SnapUser.cs" />
     <Compile Include="Common\UI.cs" />
-    <Compile Include="Common\ViewBaseUtilities.cs" />
     <Compile Include="Common\WebUtilities.cs" />
     <Compile Include="Controls\WorkflowLargeGroup.ascx.cs">
       <DependentUpon>WorkflowLargeGroup.ascx</DependentUpon>
@@ -447,6 +447,7 @@
     <Content Include="Web_QA.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Data\" />
     <Folder Include="Properties\" />
     <Folder Include="SupportFiles\" />
   </ItemGroup>

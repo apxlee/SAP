@@ -303,6 +303,7 @@ namespace Apollo.AIM.SNAP.Web.Common
             public string WorkflowComments { get; set; }
         }
 
+		// TODO: remove this class, not used because comment Html is built in code-behind
         [DataContract]
         public class WorkflowComments
         {

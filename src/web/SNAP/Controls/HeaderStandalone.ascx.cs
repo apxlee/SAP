@@ -46,7 +46,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 					case Role.ApprovingManager:
 						linkButtons.AddRange(new List<string> { "RequestForm", "MyRequests", "MyApprovals", "Search", "Support" });
 						linksContainerWidth = "600";
-                        ViewBaseUtilities.SetGroupMembership();
+                        Database.SetGroupMembership();
                         userIds = SnapSession.CurrentUser.DistributionGroup !=
                             null ? new string[] { SnapSession.CurrentUser.DistributionGroup, SnapSession.CurrentUser.LoginId }
                             : new string[] { SnapSession.CurrentUser.LoginId };
@@ -64,7 +64,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 					case Role.SuperUser:
 						linkButtons.AddRange(new List<string> { "RequestForm", "MyRequests", "MyApprovals", "AccessTeam", "Search", "Support" });
 						linksContainerWidth = "763";
-                        ViewBaseUtilities.SetGroupMembership();
+                        Database.SetGroupMembership();
                         userIds = SnapSession.CurrentUser.DistributionGroup !=
                             null ? new string[] { SnapSession.CurrentUser.DistributionGroup, SnapSession.CurrentUser.LoginId }
                             : new string[] { SnapSession.CurrentUser.LoginId };
