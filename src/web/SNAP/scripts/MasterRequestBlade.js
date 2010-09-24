@@ -307,6 +307,13 @@ function BuildTrackingSection(trackingObject, builderGroups, builderButtons, req
     .replace("<!--__requestTracking-->", trackingSectionHtml));
     
     BindEvents(builderGroups, builderButtons, requestId);
+    DisplayRequestChangeLink();
+}
+
+function DisplayRequestChangeLink() {
+	// This  is to hide 'Edit Request Form' link unless currently logged-in user is also AEU
+	var hiddenSpanId = '_' + $("input[id*='_hiddenCurrentUserId']").attr("value") + '_request_link';
+	$("span[id*=" + hiddenSpanId + "]").removeClass("csm_hidden_span");
 }
 
 function IsActorGroupInTrackingData(trackingObject, actorGroupEnum) {
