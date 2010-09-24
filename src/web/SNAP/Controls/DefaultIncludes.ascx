@@ -13,15 +13,15 @@
 <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>jquery.json-2.2.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 
-	$(document).ready(
+//	$(document).ready(
 
-		// This function is to hide 'Edit Request Form' link unless currently logged-in user is also AEU
-		function() {
-			var hiddenSpanId = '_' + $("input[id*='_hiddenCurrentUserId']").attr("value") + '_request_link';
-			$("span[id*=" + hiddenSpanId + "]").removeClass("csm_hidden_span");
-		}
+//		// This function is to hide 'Edit Request Form' link unless currently logged-in user is also AEU
+//		function() {
+//			var hiddenSpanId = '_' + $("input[id*='_hiddenCurrentUserId']").attr("value") + '_request_link';
+//			$("span[id*=" + hiddenSpanId + "]").removeClass("csm_hidden_span");
+//		}
 
-		);
+//		);
 </script>
 
 <script type='html/template' id='_requestBlade'>
