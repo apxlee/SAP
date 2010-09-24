@@ -106,30 +106,30 @@ namespace Apollo.AIM.SNAP.Web.Common
 		//    }
 		//}
 
-        public static DataTable GetChangeComments(int requestId)
-        {
-            DataTable table = new DataTable();
-            table.Columns.Add("ActorDisplayName", typeof(string));
-            table.Columns.Add("Comment", typeof(string));
-			table.Columns.Add("CommentDate", typeof(string));
+		//public static DataTable GetChangeComments(int requestId)
+		//{
+		//    DataTable table = new DataTable();
+		//    table.Columns.Add("ActorDisplayName", typeof(string));
+		//    table.Columns.Add("Comment", typeof(string));
+		//    table.Columns.Add("CommentDate", typeof(string));
 
-            using(var db = new SNAPDatabaseDataContext())
-            {
-                var changeComments = (from sr in db.SNAP_Requests
-                                      join sw in db.SNAP_Workflows on sr.pkId equals sw.requestId
-                                      join swc in db.SNAP_Workflow_Comments on sw.pkId equals swc.workflowId
-                                      join sa in db.SNAP_Actors on sw.actorId equals sa.pkId
-                                      where sr.pkId == requestId
-                                      && swc.commentTypeEnum == 3
-                                      select new { sa.displayName, swc.commentText, swc.createdDate });
-                foreach (var comment in changeComments)
-                {
-                    table.Rows.Add(comment.displayName, comment.commentText, comment.createdDate);
-                }
-            }
+		//    using(var db = new SNAPDatabaseDataContext())
+		//    {
+		//        var changeComments = (from sr in db.SNAP_Requests
+		//                              join sw in db.SNAP_Workflows on sr.pkId equals sw.requestId
+		//                              join swc in db.SNAP_Workflow_Comments on sw.pkId equals swc.workflowId
+		//                              join sa in db.SNAP_Actors on sw.actorId equals sa.pkId
+		//                              where sr.pkId == requestId
+		//                              && swc.commentTypeEnum == 3
+		//                              select new { sa.displayName, swc.commentText, swc.createdDate });
+		//        foreach (var comment in changeComments)
+		//        {
+		//            table.Rows.Add(comment.displayName, comment.commentText, comment.createdDate);
+		//        }
+		//    }
            
-            return table;
-        }
+		//    return table;
+		//}
 
 		//public static int AccessTeamCount()
 		//{

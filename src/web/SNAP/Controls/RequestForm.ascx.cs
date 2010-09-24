@@ -13,7 +13,7 @@ using Apollo.AIM.SNAP.Web.Common;
 using Apollo.AIM.SNAP.Model;
 using Apollo.CA.Logging;
 using System.Threading;
-using MyRequest = Apollo.AIM.SNAP.Web.Common.Request;
+//using MyRequest = Apollo.AIM.SNAP.Web.Common.Request;
 
 namespace Apollo.AIM.SNAP.Web.Controls
 {
@@ -225,7 +225,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
         private void LoadChangeComments()
         {
-            DataTable changeComments = MyRequest.GetChangeComments(Convert.ToInt32(SnapSession.SelectedRequestId));
+            DataTable changeComments = Database.GetChangeComments(Convert.ToInt32(SnapSession.SelectedRequestId));
 
             foreach (DataRow comment in changeComments.Rows)
             {

@@ -6,7 +6,7 @@ using System.Web.UI.WebControls;
 using Apollo.CA.Logging;
 using Apollo.AIM.SNAP.Model;
 using Apollo.AIM.SNAP.Web.Common;
-using MyRequest = Apollo.AIM.SNAP.Web.Common.Request;
+//using MyRequest = Apollo.AIM.SNAP.Web.Common.Request;
 
 namespace Apollo.AIM.SNAP.Web.Controls
 {
