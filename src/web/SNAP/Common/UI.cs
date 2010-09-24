@@ -971,10 +971,8 @@ namespace Apollo.AIM.SNAP.Web.Common
         {
             List<string> trackingBlades = new List<string>();
             DataTable trackingData = new DataTable();
-            FilteredTrackingData trackingClass = new FilteredTrackingData();
 
-            trackingData = trackingClass.GetAllTracking(requestId);
-            // datatable > rows > Non-Public members > list > Results View
+            trackingData = TrackingBlades.GetAllTracking(requestId);
 
             foreach (DataRow trackingRow in trackingData.Rows)
             {
@@ -982,15 +980,13 @@ namespace Apollo.AIM.SNAP.Web.Common
                 {
                     WorkflowId = Convert.ToInt32(trackingRow["workflow_pkid"].ToString()),
                     ActorName = trackingRow["workflow_actor_name"].ToString(),
-                    //WorkflowStatus = trackingRow["workflow_status"].ToString(),
                     WorkflowStatus = Convert.ToString((WorkflowState)Enum.Parse(typeof(WorkflowState), trackingRow["workflow_status"].ToString())).StripUnderscore(),
                     DueDate = WebUtilities.TestAndConvertDate(trackingRow["workflow_due_date"].ToString()),
                     CompletedDate = WebUtilities.TestAndConvertDate(trackingRow["workflow_completed_date"].ToString()),
                     ActorGroupType = Convert.ToInt32(trackingRow["actor_group_type"].ToString()),
-                    WorkflowComments = FilteredTrackingData.BuildBladeComments(Convert.ToInt32(trackingRow["workflow_pkid"]))
+					WorkflowComments = TrackingBlades.BuildBladeComments(Convert.ToInt32(trackingRow["workflow_pkid"]))
                 };
 
-                // TODO: move to utility
                 DataContractJsonSerializer serializer = new DataContractJsonSerializer(newBlade.GetType());
                 using (MemoryStream ms = new MemoryStream())
                 {
@@ -1002,6 +998,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 
             return trackingBlades;
         }
+
         #endregion
 
         #region Helper Methods

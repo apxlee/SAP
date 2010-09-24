@@ -141,18 +141,21 @@ namespace Apollo.AIM.SNAP.Web.Common
         }
      }
 
-    public class FilteredTrackingData
+    public class TrackingBlades
     {
-        private DataTable _filteredTrackingData;
-        private DataTable _unfilteredTrackingData;
+		private static DataTable _filteredTrackingData;
+		private static DataTable _unfilteredTrackingData;
 
-        public DataTable GetAllTracking(string requestId)
+        public static DataTable GetAllTracking(string requestId)
         {
-            _unfilteredTrackingData = GetAllTrackingData(requestId);
+			// Get all the raw tracking data, then build an empty DataTable and use the helper 
+			// methods below to parse the raw data into a filtered set...
+			//
+			_unfilteredTrackingData = Database.GetAllTrackingData(requestId);
+			_filteredTrackingData = Database.BuildEmptyTrackingBladeTable();
 
-            _filteredTrackingData = BuildEmptyTrackingBladeTable();
-
-            // build these backwards to force sort order
+            // Note: Build these backwards to force sort order...
+			//
             BuildTechnicalApprovers();
             BuildTeamApprovers();
             BuildManagerTracking();
@@ -163,7 +166,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 
         #region Tracking Groups
 
-        private void BuildAIMTracking()
+        private static void BuildAIMTracking()
         {
             try
             {
@@ -192,7 +195,7 @@ namespace Apollo.AIM.SNAP.Web.Common
             }
         }
 
-        private void BuildManagerTracking()
+        private static void BuildManagerTracking()
         {
             try
             {
@@ -211,7 +214,7 @@ namespace Apollo.AIM.SNAP.Web.Common
             }
         }
 
-        private void BuildTeamApprovers()
+        private static void BuildTeamApprovers()
         {
             try
             {
@@ -239,7 +242,7 @@ namespace Apollo.AIM.SNAP.Web.Common
             }
         }
 
-        private void BuildTechnicalApprovers()
+        private static void BuildTechnicalApprovers()
         {
             try
             {
@@ -271,7 +274,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 
         public static string BuildBladeComments(int WorkflowId)
         {
-            DataTable workflowCommentsTable = GetWorkflowComments(WorkflowId);
+            DataTable workflowCommentsTable = Database.GetWorkflowComments(WorkflowId);
 
             if (workflowCommentsTable.Rows.Count > 0)
             {
@@ -292,108 +295,6 @@ namespace Apollo.AIM.SNAP.Web.Common
             }
 
             return string.Empty;
-        }
-
-        public static DataTable GetWorkflowComments(int workflowId)
-        {
-            // NOTE: dataset must be ordered from first to last
-            //
-            DataTable table = new DataTable();
-            table.Columns.Add("action", typeof(string));
-            table.Columns.Add("workflow_actor", typeof(string));
-            table.Columns.Add("comment_date", typeof(string));
-            table.Columns.Add("comment", typeof(string));
-            table.Columns.Add("is_new", typeof(bool));
-
-            using (var db = new SNAPDatabaseDataContext())
-            {
-                var workflowComments = from w in db.SNAP_Workflows
-                                       join a in db.SNAP_Actors on w.actorId equals a.pkId
-                                       join wc in db.SNAP_Workflow_Comments on w.pkId equals wc.workflowId
-                                       where w.pkId == workflowId
-                                       orderby wc.pkId ascending
-                                       select new
-                                       {
-                                           commentTypeEnum = wc.commentTypeEnum,
-                                           actorName = a.displayName,
-                                           createdDate = wc.createdDate,
-                                           commentText = wc.commentText,
-                                       };
-
-                if (workflowComments != null)
-                {
-                    foreach (var comment in workflowComments)
-                    {
-                        table.Rows.Add(
-                            comment.commentTypeEnum.ToString()
-                            , (comment.actorName == "Access & Identity Management") ? "AIM" : comment.actorName
-                            , TestAndConvertDate(comment.createdDate.ToString())
-                            , comment.commentText
-                            , (comment.commentTypeEnum == (int)CommentsType.Requested_Change || comment.commentTypeEnum == (int)CommentsType.Email_Reminder) ? true : false);
-                    }
-                }
-
-                return table;
-            }
-        }
-
-        public DataTable GetAllTrackingData(string requestId)
-        {
-            DataTable unfilteredTrackingData = BuildEmptyTrackingBladeTable();
-
-            using (var db = new SNAPDatabaseDataContext())
-            {
-                var tracking = from wf in db.SNAP_Workflows
-                               where wf.requestId == Convert.ToInt32(requestId)
-                               join ws in db.SNAP_Workflow_States on wf.pkId equals ws.workflowId
-                               join a in db.SNAP_Actors on wf.actorId equals a.pkId
-                               join ag in db.SNAP_Actor_Groups on a.actor_groupId equals ag.pkId
-                               orderby ws.workflowId ascending, ws.pkId descending
-                               select new
-                               {
-                                   display_name = a.displayName,
-                                   workflow_status = ws.workflowStatusEnum,
-                                   workflow_due_date = ws.dueDate,
-                                   workflow_completed_date = ws.completedDate,
-                                   workflow_pkid = ws.workflowId,
-                                   actor_group_type = ag.actorGroupType
-                               };
-
-                foreach (var trackingRow in tracking)
-                {
-                    unfilteredTrackingData.Rows.Add
-                        (
-                            trackingRow.display_name
-                            , trackingRow.workflow_status
-                            , trackingRow.workflow_due_date
-                            , trackingRow.workflow_completed_date
-                            , trackingRow.workflow_pkid
-                            , trackingRow.actor_group_type
-                        );
-                }
-            }
-
-            return unfilteredTrackingData;
-            // datatable > rows > Non-Public members > list > Results View
-        }
-
-        private DataTable BuildEmptyTrackingBladeTable()
-        {
-            DataTable table = new DataTable();
-            table.Columns.Add("workflow_actor_name", typeof(string));
-            table.Columns.Add("workflow_status", typeof(int));
-            table.Columns.Add("workflow_due_date", typeof(string));
-            table.Columns.Add("workflow_completed_date", typeof(DateTime));
-            table.Columns.Add("workflow_pkid", typeof(int));
-            table.Columns.Add("actor_group_type", typeof(int));
-
-            return table;
-        }
-
-        public static string TestAndConvertDate(string date)
-        {
-            if (!string.IsNullOrEmpty(date.ToString())) { return Convert.ToDateTime(date).ToString("MMM d\\, yyyy"); }
-            else { return "-"; }
         }
     }
 

@@ -106,5 +106,105 @@ namespace Apollo.AIM.SNAP.Web.Common
 		}
 
 		#endregion
+
+		#region Tracking Blades
+
+		public static DataTable BuildEmptyTrackingBladeTable()
+		{
+			DataTable table = new DataTable();
+			table.Columns.Add("workflow_actor_name", typeof(string));
+			table.Columns.Add("workflow_status", typeof(int));
+			table.Columns.Add("workflow_due_date", typeof(string));
+			table.Columns.Add("workflow_completed_date", typeof(DateTime));
+			table.Columns.Add("workflow_pkid", typeof(int));
+			table.Columns.Add("actor_group_type", typeof(int));
+
+			return table;
+		}
+
+		public static DataTable GetAllTrackingData(string requestId)
+		{
+			DataTable table = BuildEmptyTrackingBladeTable();
+
+			using (var db = new SNAPDatabaseDataContext())
+			{
+				var tracking = from wf in db.SNAP_Workflows
+							   where wf.requestId == Convert.ToInt32(requestId)
+							   join ws in db.SNAP_Workflow_States on wf.pkId equals ws.workflowId
+							   join a in db.SNAP_Actors on wf.actorId equals a.pkId
+							   join ag in db.SNAP_Actor_Groups on a.actor_groupId equals ag.pkId
+							   orderby ws.workflowId ascending, ws.pkId descending
+							   select new
+							   {
+								   display_name = a.displayName,
+								   workflow_status = ws.workflowStatusEnum,
+								   workflow_due_date = ws.dueDate,
+								   workflow_completed_date = ws.completedDate,
+								   workflow_pkid = ws.workflowId,
+								   actor_group_type = ag.actorGroupType
+							   };
+
+				foreach (var trackingRow in tracking)
+				{
+					table.Rows.Add
+						(
+							trackingRow.display_name
+							, trackingRow.workflow_status
+							, trackingRow.workflow_due_date
+							, trackingRow.workflow_completed_date
+							, trackingRow.workflow_pkid
+							, trackingRow.actor_group_type
+						);
+				}
+			}
+
+			return table;
+			// datatable > rows > Non-Public members > list > Results View
+		}
+
+		public static DataTable GetWorkflowComments(int workflowId)
+		{
+			// NOTE: dataset must be ordered from first to last
+			//
+			DataTable table = new DataTable();
+			table.Columns.Add("action", typeof(string));
+			table.Columns.Add("workflow_actor", typeof(string));
+			table.Columns.Add("comment_date", typeof(string));
+			table.Columns.Add("comment", typeof(string));
+			table.Columns.Add("is_new", typeof(bool));
+
+			using (var db = new SNAPDatabaseDataContext())
+			{
+				var workflowComments = from w in db.SNAP_Workflows
+									   join a in db.SNAP_Actors on w.actorId equals a.pkId
+									   join wc in db.SNAP_Workflow_Comments on w.pkId equals wc.workflowId
+									   where w.pkId == workflowId
+									   orderby wc.pkId ascending
+									   select new
+									   {
+										   commentTypeEnum = wc.commentTypeEnum,
+										   actorName = a.displayName,
+										   createdDate = wc.createdDate,
+										   commentText = wc.commentText,
+									   };
+
+				if (workflowComments != null)
+				{
+					foreach (var comment in workflowComments)
+					{
+						table.Rows.Add(
+							comment.commentTypeEnum.ToString()
+							, (comment.actorName == "Access & Identity Management") ? "AIM" : comment.actorName
+							, WebUtilities.TestAndConvertDate(comment.createdDate.ToString())
+							, comment.commentText
+							, (comment.commentTypeEnum == (int)CommentsType.Requested_Change || comment.commentTypeEnum == (int)CommentsType.Email_Reminder) ? true : false);
+					}
+				}
+
+				return table;
+			}
+		}
+
+		#endregion
 	}
 }
