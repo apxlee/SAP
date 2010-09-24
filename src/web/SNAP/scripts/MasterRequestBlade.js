@@ -333,6 +333,10 @@ function CreateTrackingBlade(data) {
 			.replace("%%GroupTypeId%%", data.ActorGroupType)
 			.replace("%%WorkflowComments%%", data.WorkflowComments)
 			.replace("%%WorkflowCommentsStyle%%", data.WorkflowCommentsStyle)
+			
+	if (data.ActorGroupType == ActorGroupTypeEnum.Workflow_Admin) {
+		newTrackingBlade = newTrackingBlade.replace("%%AlternatingCss%%", "csm_alternating_bg");
+	}
 
     return newTrackingBlade;
 }
