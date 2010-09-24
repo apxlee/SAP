@@ -235,6 +235,7 @@
     </Compile>
     <Compile Include="Common\SnapSession.cs" />
     <Compile Include="Common\SnapUser.cs" />
+    <Compile Include="Common\TrackingBlades.cs" />
     <Compile Include="Common\UI.cs" />
     <Compile Include="Common\WebUtilities.cs" />
     <Compile Include="Controls\DefaultIncludes.ascx.cs">
