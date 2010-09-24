@@ -74,7 +74,9 @@ namespace Apollo.AIM.SNAP.Process
                 && wfState.workflowStatusEnum != (byte)WorkflowState.Change_Requested)
                 return false;
 
-            if (diff.Days >= overdueAlertMaxDay && wfState.workflowStatusEnum == (byte)WorkflowState.Pending_Approval)
+            if (diff.Days >= overdueAlertMaxDay 
+                && (wfState.workflowStatusEnum == (byte)WorkflowState.Pending_Approval
+                    || wfState.workflowStatusEnum == (byte)WorkflowState.Change_Requested))
             {
                 var accessReq = new AccessRequest(wfState.SNAP_Workflow.requestId);
                 accessReq.NoAccess(WorkflowAction.Abandon, "Max over due days - " + overdueAlertMaxDay  + " reached!");
