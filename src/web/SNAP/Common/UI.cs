@@ -1,21 +1,14 @@
 ﻿using System;
-using System.Data;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Services;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using Apollo.AIM.SNAP.Model;
-using Apollo.AIM.SNAP.CA;
-using Apollo.AIM.SNAP.Web.Common;
-using System.Text;
-using System.Text.RegularExpressions;
+using System.Data;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization;
-using System.Runtime.Serialization.Json;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization.Json;
+using System.Text;
+using Apollo.AIM.SNAP.CA;
+using Apollo.AIM.SNAP.Model;
 using Apollo.CA.Logging;
 
 namespace Apollo.AIM.SNAP.Web.Common
@@ -23,6 +16,7 @@ namespace Apollo.AIM.SNAP.Web.Common
     public class UI
     {
         #region Request Classes
+
         [DataContract]
         public class RequestBlade
         {
@@ -49,6 +43,7 @@ namespace Apollo.AIM.SNAP.Web.Common
         }
 
         #region Filter
+
         public class RequestFilter
         {
             public RequestFilter() { }
@@ -73,9 +68,11 @@ namespace Apollo.AIM.SNAP.Web.Common
             [DataMember]
             public List<int> RequestIds { get; set; }
         }
+
         #endregion
 
         #region Details
+
         [DataContract]
         public class RequestDetails
         {
@@ -136,9 +133,11 @@ namespace Apollo.AIM.SNAP.Web.Common
             [DataMember]
             public string Text { get; set; }
         }
+
         #endregion
 
         #region Builder
+
         [DataContract]
         public class Builder
         {
@@ -261,9 +260,11 @@ namespace Apollo.AIM.SNAP.Web.Common
             [DataMember]
             public bool IsDisabled { get; set; }
         }
+
         #endregion
 
         #region Tracking
+
         [DataContract]
         public class TrackingBlade
         {
@@ -303,35 +304,6 @@ namespace Apollo.AIM.SNAP.Web.Common
             public string WorkflowComments { get; set; }
         }
 
-		// TODO: remove this class, not used because comment Html is built in code-behind
-        [DataContract]
-        public class WorkflowComments
-        {
-            public WorkflowComments() { }
-            public WorkflowComments(string action, string actorName, string commentDate, string comment, bool isNew)
-            {
-                this.Action = action;
-                this.ActorName = actorName;
-                this.CommentDate = commentDate;
-                this.Comment = comment;
-                this.IsNew = isNew;
-            }
-
-            [DataMember]
-            public string Action { get; set; }
-
-            [DataMember]
-            public string ActorName { get; set; }
-
-            [DataMember]
-            public string CommentDate { get; set; }
-
-            [DataMember]
-            public string Comment { get; set; }
-
-            [DataMember]
-            public bool IsNew { get; set; }
-        }
         #endregion
 
         #endregion
@@ -339,6 +311,7 @@ namespace Apollo.AIM.SNAP.Web.Common
         private static int AccessTeamActorId = 1;
 
         #region WebMethod Calls
+
         public static List<string> GetRequests(ViewIndex view)
         {
             string userId = SnapSession.CurrentUser.LoginId;

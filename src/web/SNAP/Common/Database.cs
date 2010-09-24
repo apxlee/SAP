@@ -122,6 +122,18 @@ namespace Apollo.AIM.SNAP.Web.Common
 			return table;
 		}
 
+		public static DataTable BuildEmptyTrackingCommentsTable()
+		{
+			DataTable table = new DataTable();
+			table.Columns.Add("action", typeof(string));
+			table.Columns.Add("workflow_actor", typeof(string));
+			table.Columns.Add("comment_date", typeof(string));
+			table.Columns.Add("comment", typeof(string));
+			table.Columns.Add("is_new", typeof(bool));
+
+			return table;
+		}
+
 		public static DataTable GetAllTrackingData(string requestId)
 		{
 			DataTable table = BuildEmptyTrackingBladeTable();
@@ -164,15 +176,10 @@ namespace Apollo.AIM.SNAP.Web.Common
 
 		public static DataTable GetWorkflowComments(int workflowId)
 		{
+			DataTable table = BuildEmptyTrackingCommentsTable();
+
 			// NOTE: dataset must be ordered from first to last
 			//
-			DataTable table = new DataTable();
-			table.Columns.Add("action", typeof(string));
-			table.Columns.Add("workflow_actor", typeof(string));
-			table.Columns.Add("comment_date", typeof(string));
-			table.Columns.Add("comment", typeof(string));
-			table.Columns.Add("is_new", typeof(bool));
-
 			using (var db = new SNAPDatabaseDataContext())
 			{
 				var workflowComments = from w in db.SNAP_Workflows
