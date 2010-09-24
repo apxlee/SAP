@@ -221,12 +221,12 @@ function AnimateActions(newSection, requestId) {
         }
     });
 }
-function UpdateCount() {
-//    $("span").each(function() {
-//        if ($(this).attr("snap") == "_approvalCount") {
-//            $(this).html((parseInt($(this).html()) - 1).toString());
-//        }
-//    });
+function UpdateCount(countName) {
+    $("span").each(function() {
+        if ($(this).attr("snap") == countName) {
+            $(this).html((parseInt($(this).html()) - 1).toString());
+        }
+    });
 }
 function UpdateRequestTracking(obj, approverName, newStatus) {
     $(obj).closest("div.csm_hidden_block").children().find("span").each(

@@ -187,7 +187,7 @@ function ApproverActions(obj, requestId, action) {
                         AnimateActions("Open Requests", requestId);
                         $("#__approverActions_" + requestId).hide();
                         if ($(obj).attr("id").indexOf("_approveAndMoveNext") > -1) { OpenNext(requestId); }
-                        UpdateCount();
+                        UpdateCount("_approvalCount");
                         break;
                     case '2':
                         $('#_indicatorDiv').hide();
@@ -201,7 +201,7 @@ function ApproverActions(obj, requestId, action) {
                                 $(this).next().children().html("Change Requested");
                             }
                         });
-                        UpdateCount();
+                        UpdateCount("_approvalCount");
                         break;
                     case '1':
                         $('#_indicatorDiv').hide();
@@ -215,15 +215,13 @@ function ApproverActions(obj, requestId, action) {
                                 $(this).next().children().html("Closed");
                             }
                         });
-                        UpdateCount();
+                        UpdateCount("_approvalCount");
                         break;
                 }
             }
             else {
                 $('#_indicatorDiv').hide();
                 $('#_closeMessageDiv').show();
-                //$('div.messageBox').children("h2").html("Action Failed");
-                //$('div.messageBox').children("p").html("Please try again.");
                 $('div.messageBox').children("h2").html(msg.d.Title);
                 $('div.messageBox').children("p").html(msg.d.Message);
 
@@ -261,6 +259,5 @@ function OpenNext(requestId) {
     });
     var blade = $("#__toggleIconContainer_" + openRequest);
     blade.click();
-
 }
 //]]>

@@ -44,7 +44,7 @@ function QuickFilter(quicksearch) {
         else { $(this).closest("div.csm_content_container").hide(); $(this).closest("div.csm_content_container").next().hide(); }
     });
 }
-function GetAccessTeamFilter(requestId) {
+function GetAccessTeamFilter() {
     $.ajax({
         type: "POST",
         contentType: "application/json; character=utf-8",
@@ -568,7 +568,7 @@ function AccessTeamActions(obj, requestId, action) {
                                 $(this).next().children().html("Pending");
                             }
                         });
-                        //updateFilterCounts()
+                        GetAccessTeamFilter()
                         break;
                     case '2':
                         $('#_indicatorDiv').hide();
@@ -582,8 +582,8 @@ function AccessTeamActions(obj, requestId, action) {
                         DisableBladeActions(obj);
                         DisableBuilder(requestId);
                         AddComments(obj, "Access &amp; Identity Management", "Change Requested", comments, false);
-                        //updateFilterCounts();
-                        //updateCount();
+                        GetAccessTeamFilter();
+                        UpdateCount("_accessTeamCount");
                         break;
                     case '3':
                         $('#_indicatorDiv').hide();
@@ -595,8 +595,8 @@ function AccessTeamActions(obj, requestId, action) {
                         AnimateActions("Closed Requests", requestId);
                         HideSections(obj);
                         UpdateRequestStatus(obj);
-                        //updateFilterCounts();
-                        //updateCount();
+                        GetAccessTeamFilter();
+                        UpdateCount("_accessTeamCount");
                         break;
                     case '1':
                         $('#_indicatorDiv').hide();
@@ -608,16 +608,14 @@ function AccessTeamActions(obj, requestId, action) {
                         AnimateActions("Closed Requests", requestId);
                         HideSections(obj);
                         UpdateRequestStatus(obj);
-                        //updateFilterCounts();
-                        //updateCount();
+                        GetAccessTeamFilter();
+                        UpdateCount("_accessTeamCount");
                         break;
                 }
             }
             else {
                 $('#_indicatorDiv').hide();
                 $('#_closeMessageDiv').show();
-                //$('div.messageBox').children("h2").html("Action Failed");
-                //$('div.messageBox').children("p").html("Please try again.");
                 $('div.messageBox').children("h2").html(msg.d.Title);
                 $('div.messageBox').children("p").html(msg.d.Message);
             }
@@ -677,8 +675,6 @@ function AccessComments(obj, requestId) {
                 else {
                     $('#_indicatorDiv').hide();
                     $('#_closeMessageDiv').show();
-                    //$('div.messageBox').children("h2").html("Action Failed");
-                    //$('div.messageBox').children("p").html("Please try again.");
                     $('div.messageBox').children("h2").html(msg.d.Title);
                     $('div.messageBox').children("p").html(msg.d.Message);
 
@@ -1117,8 +1113,8 @@ function BuilderActions(obj, requestId, state) {
                         AnimateActions("Closed Requests", requestId);
                         HideSections(obj);
                         UpdateRequestStatus(obj);
-                        //UpdateFilterCounts();
-                        //UpdateCount();
+                        GetAccessTeamFilter();
+                        UpdateCount("_accessTeamCount");
                         break;
                     case "6":
                         $('#_indicatorDiv').hide();
@@ -1127,8 +1123,8 @@ function BuilderActions(obj, requestId, state) {
                         AnimateActions("Closed Requests", requestId);
                         HideSections(obj);
                         UpdateRequestStatus(obj);
-                        //UpdateFilterCounts();
-                        //UpdateCount();
+                        GetAccessTeamFilter();
+                        UpdateCount("_accessTeamCount");
                         break;
                     case "5":
                         $('#_indicatorDiv').hide();
@@ -1144,8 +1140,6 @@ function BuilderActions(obj, requestId, state) {
                 if (state == 5) {
                     $('#_indicatorDiv').hide();
                     $('#_closeMessageDiv').show();
-                    //$('div.messageBox').children("h2").html("Ticket Creation Failed");
-                    //$('div.messageBox').children("p").html("Please try again or create the ticket manually (add the ticket number within the comments section).");
                     $('div.messageBox').children("h2").html(msg.d.Title);
                     $('div.messageBox').children("p").html(msg.d.Message);
 
@@ -1187,8 +1181,6 @@ function CreateWorkflow(obj, requestId) {
                 else {
                     $('#_indicatorDiv').hide();
                     $('#_closeMessageDiv').show();
-                    //$('div.messageBox').children("h2").html("Workflow Creation Failed");
-                    //$('div.messageBox').children("p").html("The workflow creation failed.");
                     $('div.messageBox').children("h2").html(msg.d.Title);
                     $('div.messageBox').children("p").html(msg.d.Message);
 
@@ -1226,11 +1218,8 @@ function EditCreatedWorkflow(obj, requestId) {
                 else {
                     $('#_indicatorDiv').hide();
                     $('#_closeMessageDiv').show();
-                    //$('div.messageBox').children("h2").html("Workflow Updated Failed");
-                    //$('div.messageBox').children("p").html("The workflow update failed. No changes where made.");
                     $('div.messageBox').children("h2").html(msg.d.Title);
                     $('div.messageBox').children("p").html(msg.d.Message);
-
                 }
             },
 
