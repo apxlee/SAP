@@ -96,6 +96,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 									  where sr.pkId == requestId
 									  && swc.commentTypeEnum == 3
 									  select new { sa.displayName, swc.commentText, swc.createdDate });
+				
 				foreach (var comment in changeComments)
 				{
 					table.Rows.Add(comment.displayName, comment.commentText, comment.createdDate);
