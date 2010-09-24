@@ -366,4 +366,11 @@ function CreateTrackingHeader(actorGroupType) {
     return trackingHeader;
 }
 
+
+function MessageDialog(title, message) {
+    $('#_indicatorDiv').hide();
+    $('#_closeMessageDiv').show();
+    $('div.messageBox').children("h2").html(title);
+    $('div.messageBox').children("p").html(message);
+}
 // ALL VIEWS - END

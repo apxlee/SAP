@@ -289,9 +289,10 @@ function CreateBuilder(builder, requestId) {
         case "Pending_Acknowledgement":
             $("#__acknowledge_" + requestId).removeAttr("disabled");
             break;
-        case "Pending_Workflow":
+        //case "Pending_Workflow": 
+        default:
             $("#__radioCancel_" + requestId).removeAttr("disabled");
-            $("#__radioChange_" + requestId).removeAttr("disabled");
+            //$("#__radioChange_" + requestId).removeAttr("disabled");
             $("#__radioDeny_" + requestId).removeAttr("disabled");
             break;
     }
@@ -620,10 +621,7 @@ function AccessTeamActions(obj, requestId, action) {
                 }
             }
             else {
-                $('#_indicatorDiv').hide();
-                $('#_closeMessageDiv').show();
-                $('div.messageBox').children("h2").html(msg.d.Title);
-                $('div.messageBox').children("p").html(msg.d.Message);
+                MessageDialog(msg.d.Title, msg.d.Message);
             }
         }
 		,
@@ -679,10 +677,7 @@ function AccessComments(obj, requestId) {
                     }
                 }
                 else {
-                    $('#_indicatorDiv').hide();
-                    $('#_closeMessageDiv').show();
-                    $('div.messageBox').children("h2").html(msg.d.Title);
-                    $('div.messageBox').children("p").html(msg.d.Message);
+                    MessageDialog(msg.d.Title, msg.d.Message);
 
                 }
             }
@@ -1144,18 +1139,12 @@ function BuilderActions(obj, requestId, state) {
             }
             else {
                 if (state == 5) {
-                    $('#_indicatorDiv').hide();
-                    $('#_closeMessageDiv').show();
-                    $('div.messageBox').children("h2").html(msg.d.Title);
-                    $('div.messageBox').children("p").html(msg.d.Message);
+                    MessageDialog(msg.d.Title, msg.d.Message);
 
                     $("#closed_completed_" + requestId).removeAttr("disabled");
                 }
                 else {
-                    $('#_indicatorDiv').hide();
-                    $('#_closeMessageDiv').show();
-                    $('div.messageBox').children("h2").html(msg.d.Title);
-                    $('div.messageBox').children("p").html(msg.d.Message);
+                    MessageDialog(msg.d.Title, msg.d.Message);
                 }
             }
         }
@@ -1185,10 +1174,7 @@ function CreateWorkflow(obj, requestId) {
                     //$("input[id$='_submit_form']").trigger('click');
                 }
                 else {
-                    $('#_indicatorDiv').hide();
-                    $('#_closeMessageDiv').show();
-                    $('div.messageBox').children("h2").html(msg.d.Title);
-                    $('div.messageBox').children("p").html(msg.d.Message);
+                    MessageDialog(msg.d.Title, msg.d.Message);
 
                 }
             },
@@ -1222,10 +1208,7 @@ function EditCreatedWorkflow(obj, requestId) {
                     $("input[id$='_submit_form']").trigger('click');
                 }
                 else {
-                    $('#_indicatorDiv').hide();
-                    $('#_closeMessageDiv').show();
-                    $('div.messageBox').children("h2").html(msg.d.Title);
-                    $('div.messageBox').children("p").html(msg.d.Message);
+                    MessageDialog(msg.d.Title, msg.d.Message);
                 }
             },
 
