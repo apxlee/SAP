@@ -220,11 +220,7 @@ function ApproverActions(obj, requestId, action) {
                 }
             }
             else {
-                $('#_indicatorDiv').hide();
-                $('#_closeMessageDiv').show();
-                $('div.messageBox').children("h2").html(msg.d.Title);
-                $('div.messageBox').children("p").html(msg.d.Message);
-
+                MessageDialog(msg.d.Title, msg.d.Message);
             }
         }
 		,
