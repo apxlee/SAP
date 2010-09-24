@@ -270,7 +270,7 @@ namespace Apollo.AIM.SNAP.Web.Common
         {
             public TrackingBlade() { }
 
-            public TrackingBlade(int workflowId, string actorName, string workflowStatus, string dueDate, string completedDate, int actorGroupType, string workflowComments)
+            public TrackingBlade(int workflowId, string actorName, string workflowStatus, string dueDate, string completedDate, int actorGroupType, string workflowComments, string workflowCommentsStyle)
             {
                 this.WorkflowId = workflowId;
                 this.ActorName = actorName;
@@ -279,6 +279,7 @@ namespace Apollo.AIM.SNAP.Web.Common
                 this.CompletedDate = completedDate;
                 this.ActorGroupType = actorGroupType;
                 this.WorkflowComments = workflowComments;
+				this.WorkflowCommentsStyle = WorkflowCommentsStyle;
             }
 
             [DataMember]
@@ -300,8 +301,11 @@ namespace Apollo.AIM.SNAP.Web.Common
             public int ActorGroupType { get; set; }
 
             [DataMember]
-            //public List<WorkflowComments> WorkflowComments { get; set; }
             public string WorkflowComments { get; set; }
+
+			[DataMember]
+			public string WorkflowCommentsStyle { get; set; }
+
         }
 
         #endregion
@@ -949,6 +953,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 
             foreach (DataRow trackingRow in trackingData.Rows)
             {
+				string workflowComments = TrackingBlades.BuildBladeComments(Convert.ToInt32(trackingRow["workflow_pkid"]));
                 TrackingBlade newBlade = new TrackingBlade()
                 {
                     WorkflowId = Convert.ToInt32(trackingRow["workflow_pkid"].ToString()),
@@ -957,7 +962,8 @@ namespace Apollo.AIM.SNAP.Web.Common
                     DueDate = WebUtilities.TestAndConvertDate(trackingRow["workflow_due_date"].ToString()),
                     CompletedDate = WebUtilities.TestAndConvertDate(trackingRow["workflow_completed_date"].ToString()),
                     ActorGroupType = Convert.ToInt32(trackingRow["actor_group_type"].ToString()),
-					WorkflowComments = TrackingBlades.BuildBladeComments(Convert.ToInt32(trackingRow["workflow_pkid"]))
+					WorkflowComments = workflowComments,
+					WorkflowCommentsStyle = (string.IsNullOrEmpty(workflowComments)) ? "style=\"display:none;\"" : ""
                 };
 
                 DataContractJsonSerializer serializer = new DataContractJsonSerializer(newBlade.GetType());

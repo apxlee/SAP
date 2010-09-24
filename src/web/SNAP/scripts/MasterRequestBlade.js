@@ -332,6 +332,7 @@ function CreateTrackingBlade(data) {
 			.replace("%%CompletedDate%%", data.CompletedDate)
 			.replace("%%GroupTypeId%%", data.ActorGroupType)
 			.replace("%%WorkflowComments%%", data.WorkflowComments)
+			.replace("%%WorkflowCommentsStyle%%", data.WorkflowCommentsStyle)
 
     return newTrackingBlade;
 }
@@ -365,7 +366,6 @@ function CreateTrackingHeader(actorGroupType) {
     trackingHeader = trackingHeader.replace("%%HeadingLabel%%", heading);
     return trackingHeader;
 }
-
 
 function MessageDialog(title, message) {
     $('#_indicatorDiv').hide();

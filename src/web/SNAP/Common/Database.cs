@@ -176,17 +176,13 @@ namespace Apollo.AIM.SNAP.Web.Common
 
 		public static DataTable GetWorkflowComments(int workflowId)
 		{
-			DataTable table = BuildEmptyTrackingCommentsTable();
-
-			// NOTE: dataset must be ordered from first to last
-			//
 			using (var db = new SNAPDatabaseDataContext())
 			{
 				var workflowComments = from w in db.SNAP_Workflows
 									   join a in db.SNAP_Actors on w.actorId equals a.pkId
 									   join wc in db.SNAP_Workflow_Comments on w.pkId equals wc.workflowId
 									   where w.pkId == workflowId
-									   orderby wc.pkId ascending
+									   orderby wc.pkId ascending // NOTE: dataset must be ordered from first to last
 									   select new
 									   {
 										   commentTypeEnum = wc.commentTypeEnum,
@@ -197,6 +193,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 
 				if (workflowComments != null)
 				{
+					DataTable table = BuildEmptyTrackingCommentsTable();
 					foreach (var comment in workflowComments)
 					{
 						table.Rows.Add(
@@ -206,9 +203,10 @@ namespace Apollo.AIM.SNAP.Web.Common
 							, comment.commentText
 							, (comment.commentTypeEnum == (int)CommentsType.Requested_Change || comment.commentTypeEnum == (int)CommentsType.Email_Reminder) ? true : false);
 					}
+					return table;
 				}
 
-				return table;
+				return null;
 			}
 		}
 

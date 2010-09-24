@@ -410,7 +410,7 @@
             </tr>
         </table>
      </div>
-     <div ID="_workflowBladeCommentsContainer" class="csm_text_container_nodrop">%%WorkflowComments%%</div>
+     <div ID="_workflowBladeCommentsContainer" class="csm_text_container_nodrop" %%WorkflowCommentsStyle%%>%%WorkflowComments%%</div>
 </div>
 <div class="csm_clear">&nbsp;</div>
 </script>
