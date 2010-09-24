@@ -14,7 +14,7 @@
 		</div>
 	</asp:Panel>
 
-	<input type="hidden" id="__multiplePendingApprovals" value="" />
+	<input type="hidden" id="__multiplePendingApprovals" value="no" />
 
 	<h1>Pending Approval</h1>
 	<div id="_pendingApprovalsContainer"></div>

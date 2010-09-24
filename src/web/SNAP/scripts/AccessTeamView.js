@@ -246,7 +246,7 @@ function CreateRequestDetails(details, requestId) {
     .replace("<!--__requestDetailsSection-->", newRequestDetails));
     
     if ($("#__overallRequestStatus_" + requestId).html() != "Closed") { GetBuilder(requestId); }
-    else { GetTracking(null,null,requestId); }
+    else { GetTracking(null, null, requestId); }
     
 }
 function GetBuilder(requestId) {
@@ -415,11 +415,12 @@ function CreateBuilder(builder, requestId) {
 
     $("#__toggledContentContainer_" + requestId).html($("#__toggledContentContainer_" + requestId).html()
     .replace("<!--__requestComments-->", newComments));
+    
     GetTracking(data.AvailableGroups, data.AvailableButtons, requestId);
 }
 
 function BindEvents(builderGroups, builderButtons, requestId) {
-
+    
     $("#__managerEditButton_" + requestId).click(function() {
         ManagerEdit(requestId);
     });
@@ -433,37 +434,41 @@ function BindEvents(builderGroups, builderButtons, requestId) {
         }
     });
 
-    $.each(builderGroups, function(index, group) {
-        if (group.IsLargeGroup) {
-            $("#__dropdownActors_" + requestId + "_" + group.GroupId).change(function() {
-                ActorSelected(this, requestId, group.GroupId);
-            });
-            $("#__actorDisplayName_" + requestId + "_" + group.GroupId).keyup(function() {
-                ActorChanged(requestId, group.GroupId);
-            });
-            $("#__checkActor_" + requestId + "_" + group.GroupId).click(function() {
-                ActorCheck(this, requestId, group.GroupId);
-            });
-            $("#__addActor_" + requestId + "_" + group.GroupId).click(function() {
-                ActorAdd(this, requestId, group.GroupId);
-            });
-        }
-    });
-
+    if (builderGroups != null) {
+        $.each(builderGroups, function(index, group) {
+            if (group.IsLargeGroup) {
+                $("#__dropdownActors_" + requestId + "_" + group.GroupId).change(function() {
+                    ActorSelected(this, requestId, group.GroupId);
+                });
+                $("#__actorDisplayName_" + requestId + "_" + group.GroupId).keyup(function() {
+                    ActorChanged(requestId, group.GroupId);
+                });
+                $("#__checkActor_" + requestId + "_" + group.GroupId).click(function() {
+                    ActorCheck(this, requestId, group.GroupId);
+                });
+                $("#__addActor_" + requestId + "_" + group.GroupId).click(function() {
+                    ActorAdd(this, requestId, group.GroupId);
+                });
+            }
+        });
+    }
+    
     builder.find("td.listview_button").each(function() {
         $(this).children("input[type=button]").click(function() {
             RemoveActor(this);
         });
     });
-
-    $.each(builderButtons, function(index, button) {
-        var builderButton = $("#" + button.ButtonId);
-        if (!button.IsDisabled) { builderButton.removeAttr("disabled"); }
-        builderButton.click(function() {
-            ActionClicked(builderButton, requestId, button.ActionId);
+    
+    if (builderButtons != null) {
+        $.each(builderButtons, function(index, button) {
+            var builderButton = $("#" + button.ButtonId);
+            if (!button.IsDisabled) { builderButton.removeAttr("disabled"); }
+            builderButton.click(function() {
+                ActionClicked(builderButton, requestId, button.ActionId);
+            });
         });
-    });
-
+    }
+    
     $("#__radioAIM_" + requestId).click(function() {
         AudienceClick(this);
     });
@@ -511,6 +516,7 @@ function BindEvents(builderGroups, builderButtons, requestId) {
     $("#__legendToggle_" + requestId).click(function() {
         ToggleLegend(requestId);
     });
+    
     ToggleLoading(requestId);
 }
 function ChangeDenyCancelClick(obj, requestId) {

@@ -278,7 +278,7 @@ function GetTracking(builderGroups, builderButtons, requestId) {
 
 function BuildTrackingSection(trackingObject, builderGroups, builderButtons, requestId) {
     var trackingSectionHtml = "";
-
+    
     // Build sections in the following order and loop thru them
     //	
     var headingOrder = [
@@ -305,7 +305,7 @@ function BuildTrackingSection(trackingObject, builderGroups, builderButtons, req
 
     $("#__toggledContentContainer_" + requestId).html($("#__toggledContentContainer_" + requestId).html()
     .replace("<!--__requestTracking-->", trackingSectionHtml));
-
+    
     BindEvents(builderGroups, builderButtons, requestId);
 }
 
