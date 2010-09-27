@@ -179,10 +179,6 @@ function HideAll() {
 function AddComments(requestId, approverName, action, comments, includeDate) {
     var newcomment = "";
     comments = comments.replace(/(\r\n|[\r\n])/g, "<br />");
-    alert(approverName);
-    alert(requestId);
-    alert(action);
-    alert(comments);
     $("#__requestTrackingSection_" + requestId).find("span").each(function() {
         if ($(this).attr("snap") == "_actorDisplayName") {
             if ($(this).html() == approverName) {
