@@ -568,25 +568,17 @@ function AccessTeamActions(obj, requestId, action) {
                         $("#create_workflow_" + requestId).removeAttr("disabled");
                         AddComments(requestId, "Access &amp; Identity Management", "Acknowledged", "", true);
                         EditBuilder($("#closed_cancelled_" + requestId), requestId);
-                        $(obj).closest("div.csm_content_container").find("tr.csm_stacked_heading_label").children().each(function() {
-                            if ($(this).next().children().html() == "Open") {
-                                $(this).next().children().html("Pending");
-                            }
-                        });
+                        $("#__overallRequestStatus_" + requestId).html("Pending");
                         GetAccessTeamFilter()
                         break;
                     case '2':
                         $('#_indicatorDiv').hide();
-                        $(obj).closest("div.csm_content_container").find("tr.csm_stacked_heading_label").children().each(function() {
-                            if ($(this).next().children().html() == "Pending") {
-                                $(this).next().children().html("Change Requested");
-                            }
-                        });
                         ActionMessage("Change Requested", "You have just requested a change.");
                         UpdateRequestTracking(requestId, "Access &amp; Identity Management", "Change Requested");
                         DisableBladeActions(obj);
                         DisableBuilder(requestId);
                         AddComments(requestId, "Access &amp; Identity Management", "Change Requested", comments, false);
+                        $("#__overallRequestStatus_" + requestId).html("Change Requested");
                         GetAccessTeamFilter();
                         UpdateCount("_accessTeamCount");
                         break;
@@ -599,7 +591,7 @@ function AccessTeamActions(obj, requestId, action) {
                         AddComments(requestId, "Access &amp; Identity Management", "Closed Cancelled", comments, false);
                         AnimateActions("Closed Requests", requestId);
                         HideSections(obj);
-                        UpdateRequestStatus(obj);
+                        $("#__overallRequestStatus_" + requestId).html("Closed");
                         GetAccessTeamFilter();
                         UpdateCount("_accessTeamCount");
                         break;
@@ -612,7 +604,7 @@ function AccessTeamActions(obj, requestId, action) {
                         AddComments(requestId, "Access &amp; Identity Management", "Closed Denied", comments, false);
                         AnimateActions("Closed Requests", requestId);
                         HideSections(obj);
-                        UpdateRequestStatus(obj);
+                        $("#__overallRequestStatus_" + requestId).html("Closed");
                         GetAccessTeamFilter();
                         UpdateCount("_accessTeamCount");
                         break;
@@ -1156,7 +1148,7 @@ function BuilderActions(obj, requestId, state) {
                         UpdateRequestTracking(requestId, "Access &amp; Identity Management", "Closed Cancelled");
                         AnimateActions("Closed Requests", requestId);
                         HideSections(obj);
-                        UpdateRequestStatus(obj);
+                        $("#__overallRequestStatus_" + requestId).html("Closed");
                         GetAccessTeamFilter();
                         UpdateCount("_accessTeamCount");
                         break;
@@ -1166,7 +1158,7 @@ function BuilderActions(obj, requestId, state) {
                         UpdateRequestTracking(requestId, "Access &amp; Identity Management", "Closed Completed");
                         AnimateActions("Closed Requests", requestId);
                         HideSections(obj);
-                        UpdateRequestStatus(obj);
+                        $("#__overallRequestStatus_" + requestId).html("Closed");
                         GetAccessTeamFilter();
                         UpdateCount("_accessTeamCount");
                         break;
@@ -1292,13 +1284,6 @@ function HideSections(obj) {
 function DisableBladeActions(obj) {
     $(obj).closest("div.csm_content_container").find("input").each(function() {
         $(this).attr("disabled", "disabled");
-    });
-}
-function UpdateRequestStatus(obj) {
-    $(obj).closest("div.csm_content_container").find("tr.csm_stacked_heading_label").children().each(function() {
-        if ($(this).next().children().html() == "Open" || $(this).next().children().html() == "Pending" || $(this).next().children().html() == "Change Requested") {
-            $(this).next().children().html("Closed");
-        }
     });
 }
 
