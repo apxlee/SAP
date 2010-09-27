@@ -12,50 +12,5 @@ namespace Apollo.AIM.SNAP.Web {
     
     
     public partial class MyApprovals {
-        
-        /// <summary>
-        /// _statusChangedMessage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel _statusChangedMessage;
-        
-        /// <summary>
-        /// _requestIdChanged control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label _requestIdChanged;
-        
-        /// <summary>
-        /// _nullDataMessage_PendingApprovals control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel _nullDataMessage_PendingApprovals;
-        
-        /// <summary>
-        /// _nullDataMessage_OpenRequests control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel _nullDataMessage_OpenRequests;
-        
-        /// <summary>
-        /// _nullDataMessage_ClosedRequests control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel _nullDataMessage_ClosedRequests;
     }
 }
