@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Security.Cryptography;
+using System.Threading;
 using Apollo.AIM.SNAP.Web.Common;
 
 namespace Apollo.AIM.SNAP.Web
@@ -26,6 +28,21 @@ namespace Apollo.AIM.SNAP.Web
 							+ "Please select one of the links in the header to continue.</p>";
 						break;
 				}
+			}
+            else
+			{
+
+                //http://weblogs.asp.net/scottgu/archive/2010/09/18/important-asp-net-security-vulnerability.aspx
+
+                byte[] delay = new byte[1];
+                RandomNumberGenerator prng = new RNGCryptoServiceProvider();
+
+                prng.GetBytes(delay);
+                Thread.Sleep((int)delay[0]);
+
+                IDisposable disposable = prng as IDisposable;
+                if (disposable != null) { disposable.Dispose(); }
+
 			}
 
 		}
