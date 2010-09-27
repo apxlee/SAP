@@ -148,7 +148,7 @@ namespace Apollo.AIM.SNAP.Test
 
         }
 
-
+        /*
         private void output(Dictionary<string, object> data)
         {
             var reqDetails = (List<usp_open_my_request_detailsResult>)data["reqDetails"];
@@ -187,6 +187,8 @@ namespace Apollo.AIM.SNAP.Test
             
             
         }
+         */
+
         [Test]
         public void ShouldReturnNoRequestData()
         {
@@ -587,6 +589,7 @@ namespace Apollo.AIM.SNAP.Test
         }
 
 
+        /*
         [Test]
         public void EXEC_usp_open_request_tab()
         {
@@ -685,6 +688,9 @@ namespace Apollo.AIM.SNAP.Test
             }
         }
 
+         */
+
+        /*
         [Test]
         public void EXEC_usp_open_my_request_workflow_details()
         {
@@ -729,7 +735,9 @@ namespace Apollo.AIM.SNAP.Test
                 Console.WriteLine(test.actor_groupId);
             }
         }
+        */
 
+        /*
         [Test]
         public void EXEC_usp_open_my_request_workflow_comments()
         {
@@ -754,7 +762,9 @@ namespace Apollo.AIM.SNAP.Test
                 Console.WriteLine(test.commentText);
             }
         }
+        */
 
+        /*
         [Test]
         public void EXEC_usp_open_my_request_details()
         {
@@ -789,7 +799,9 @@ namespace Apollo.AIM.SNAP.Test
                 Console.WriteLine(test.createdDate);
             }
         }
+         */
 
+        /*
         [Test]
         public void EXEC_usp_open_my_request_comments()
         {
@@ -812,5 +824,6 @@ namespace Apollo.AIM.SNAP.Test
                 Console.WriteLine(test.commentText);
             }
         }
+         */
     }
 }
