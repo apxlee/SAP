@@ -176,32 +176,34 @@ function HideAll() {
 			        );
     });
 }
-function AddComments(obj, approverName, action, comments, includeDate) {
+function AddComments(requestId, approverName, action, comments, includeDate) {
     var newcomment = "";
     comments = comments.replace(/(\r\n|[\r\n])/g, "<br />");
-    $(obj).closest("div.csm_hidden_block").children().find("span").each(
-        function() {
-            if ($(this).attr("snap") == "_actorDisplayName") {
-                if ($(this).html() == approverName) {
-                    var commentsContainer = $(this).closest("div.csm_data_row").parent().find("div.csm_text_container_nodrop");
-                    if (commentsContainer.html() == null) {
-                        newcomment = "<div class='csm_text_container_nodrop'><p class='csm_error_text'><u>"
-                        + action + " by AIM on " + curr_date + "</u>" + comments;
-                        if (includeDate) { newcomment += "<br />Due Date: " + $(this).parent().next().next().children().html(); }
-                        newcomment += "</p></div>";
-                        $(newcomment).appendTo($(this).closest("div.csm_data_row").parent());
-                    }
-                    else {
-                        newcomment = "<p class='csm_error_text'><u>"
-                        + action + " by AIM on " + curr_date + "</u>" + comments;
-                        if (includeDate) { newcomment += "<br />Due Date: " + $(this).parent().next().next().children().html(); }
-                        newcomment += "</p>";
-                        $(newcomment).appendTo(commentsContainer);
-                    }
-
+    alert(approverName);
+    alert(requestId);
+    alert(action);
+    alert(comments);
+    $("#__requestTrackingSection_" + requestId).find("span").each(function() {
+        if ($(this).attr("snap") == "_actorDisplayName") {
+            if ($(this).html() == approverName) {
+                var commentsContainer = $(this).closest("div.csm_data_row").parent().find("div.csm_text_container_nodrop");
+                if (commentsContainer.html() == null) {
+                    newcomment = "<div class='csm_text_container_nodrop'><p class='csm_error_text'><u>"
+                    + action + " by AIM on " + curr_date + "</u>" + comments;
+                    if (includeDate) { newcomment += "<br />Due Date: " + $(this).parent().next().next().children().html(); }
+                    newcomment += "</p></div>";
+                    $(newcomment).appendTo($(this).closest("div.csm_data_row").parent());
+                }
+                else {
+                    newcomment = "<p class='csm_error_text'><u>"
+                    + action + " by AIM on " + curr_date + "</u>" + comments;
+                    if (includeDate) { newcomment += "<br />Due Date: " + $(this).parent().next().next().children().html(); }
+                    newcomment += "</p>";
+                    $(newcomment).appendTo(commentsContainer);
                 }
             }
-        });
+        }
+    });
 }
 function AnimateActions(newSection, requestId) {
     var blade = $("#__requestContainer_" + requestId);
@@ -228,16 +230,15 @@ function UpdateCount(countName) {
         }
     });
 }
-function UpdateRequestTracking(obj, approverName, newStatus) {
-    $(obj).closest("div.csm_hidden_block").children().find("span").each(
-        function() {
-            if ($(this).attr("snap") == "_actorDisplayName") {
-                if ($(this).html() == approverName) {
-                    $(this).parent().next().children().html(newStatus);
-                    $(this).parent().next().next().next().children().html("<span>" + curr_date + "</span>");
-                }
+function UpdateRequestTracking(requestId, approverName, newStatus) {
+    $("#__requestTrackingSection_" + requestId).find("span").each(function() {
+        if ($(this).attr("snap") == "_actorDisplayName") {
+            if ($(this).html() == approverName) {
+                $(this).parent().next().children().html(newStatus);
+                $(this).parent().next().next().next().children().html("<span>" + curr_date + "</span>");
             }
-        });
+        }
+    });
 }
 function Comment(requestId, action, comments) {
     this.requestId = requestId;
@@ -303,8 +304,10 @@ function BuildTrackingSection(trackingObject, builderGroups, builderButtons, req
         }
     }
 
-    $("#__toggledContentContainer_" + requestId).html($("#__toggledContentContainer_" + requestId).html()
-    .replace("<!--__requestTracking-->", trackingSectionHtml));
+    //$("#__toggledContentContainer_" + requestId).html($("#__toggledContentContainer_" + requestId).html()
+    //.replace("<!--__requestTracking-->", trackingSectionHtml));
+
+    $("#__requestTrackingSection_" + requestId).append(trackingSectionHtml);
     
     BindEvents(builderGroups, builderButtons, requestId);
     DisplayRequestChangeLink();

@@ -41,7 +41,8 @@ function CreateBlades(requests) {
         .replace("__workflowStatus_ID", "__workflowStatus_" + data.RequestId)
         .replace("__workflowStatus_TEXT", data.WorkflowStatus)
         .replace("__legendToggle_ID", "__legendToggle_" + data.RequestId)
-        .replace("__legend_ID", "__legend_" + data.RequestId);
+        .replace("__legend_ID", "__legend_" + data.RequestId)
+        .replace("__requestTrackingSection_ID", "__requestTrackingSection_" + data.RequestId);
         
         $("#_searchResultsContainer").append($(newRequestBlade));
 
@@ -98,8 +99,8 @@ function CreateRequestDetails(details, requestId) {
     
     $("#__toggledContentContainer_" + requestId).html($("#__toggledContentContainer_" + requestId).html()
     .replace("<!--__requestDetailsSection-->", newRequestDetails));
-    
-    GetTracking(null,null,requestId);
+
+    GetTracking(null, null, requestId);
 }
 function BindEvents(builderGroups, builderButtons, requestId) {
     $("#__legendToggle_" + requestId).click(function() {

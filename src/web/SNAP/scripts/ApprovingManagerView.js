@@ -19,7 +19,8 @@ function CreateBlades(requests) {
         .replace("__workflowStatus_ID", "__workflowStatus_" + data.RequestId)
         .replace("__workflowStatus_TEXT", data.WorkflowStatus)
         .replace("__legendToggle_ID", "__legendToggle_" + data.RequestId)
-        .replace("__legend_ID", "__legend_" + data.RequestId);
+        .replace("__legend_ID", "__legend_" + data.RequestId)
+        .replace("__requestTrackingSection_ID", "__requestTrackingSection_" + data.RequestId);
 
         if (data.RequestStatus != "Closed") {
             if (data.WorkflowStatus == 7) {
@@ -170,20 +171,19 @@ function ApproverActions(obj, requestId, action) {
     }
     comments = "<br />" + textarea.val();
     var newAction = new Comment(requestId, action, textarea.val());
-    $.ajax({
-        type: "POST",
-        contentType: "application/json; character=utf-8",
-        url: "AjaxCalls.aspx/ApproverActions",
-        data: newAction.toJSON,
-        dataType: "json",
-        success: function(msg) {
-            if (msg.d.Success) {
-
+//    $.ajax({
+//        type: "POST",
+//        contentType: "application/json; character=utf-8",
+//        url: "AjaxCalls.aspx/ApproverActions",
+//        data: newAction.toJSON,
+//        dataType: "json",
+//        success: function(msg) {
+//            if (msg.d.Success) {
                 switch (action) {
                     case '0':
                         $('#_indicatorDiv').hide();
                         ActionMessage("Approved", "You have successfully approved this request.");
-                        //updateRequestTracking(obj, approverName, "Approved");
+                        UpdateRequestTracking(requestId, approverName, "Approved");
                         AnimateActions("Open Requests", requestId);
                         $("#__approverActions_" + requestId).hide();
                         if ($(obj).attr("id").indexOf("_approveAndMoveNext") > -1) { OpenNext(requestId); }
@@ -192,8 +192,8 @@ function ApproverActions(obj, requestId, action) {
                     case '2':
                         $('#_indicatorDiv').hide();
                         ActionMessage("Change Requested", "You have just requested a change.");
-                        //updateRequestTracking(obj, approverName, "Change Requested");
-                        AddComments(obj, approverName, "Change Requested", comments, false);
+                        UpdateRequestTracking(requestId, approverName, "Change Requested");
+                        AddComments(requestId, approverName, "Change Requested", comments, false);
                         AnimateActions("Open Requests", requestId);
                         $("#__approverActions_" + requestId).hide();
                         $(obj).closest("div.csm_content_container").find("tr.csm_stacked_heading_label").children().each(function() {
@@ -207,8 +207,8 @@ function ApproverActions(obj, requestId, action) {
                         $('#_indicatorDiv').hide();
                         ActionMessage("Closed Denied", "You have just denied this request.");
                         $("#__approverActions_" + requestId).hide();
-                        //updateRequestTracking(obj, approverName, "Closed Denied");
-                        AddComments(obj, approverName, "Closed Denied", comments, false);
+                        UpdateRequestTracking(requestId, approverName, "Closed Denied");
+                        AddComments(requestId, approverName, "Closed Denied", comments, false);
                         AnimateActions("Closed Requests", requestId);
                         $(obj).closest("div.csm_content_container").find("tr.csm_stacked_heading_label").children().each(function() {
                             if ($(this).next().children().html() == "Pending") {
@@ -218,18 +218,18 @@ function ApproverActions(obj, requestId, action) {
                         UpdateCount("_approvalCount");
                         break;
                 }
-            }
-            else {
-                MessageDialog(msg.d.Title, msg.d.Message);
-            }
-        }
-		,
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            alert("ApproverAction Error: " + XMLHttpRequest);
-            alert("ApproverAction Error: " + textStatus);
-            alert("ApproverAction Error: " + errorThrown);
-        }
-    });
+//            }
+//            else {
+//                MessageDialog(msg.d.Title, msg.d.Message);
+//            }
+//        }
+//		,
+//        error: function(XMLHttpRequest, textStatus, errorThrown) {
+//            alert("ApproverAction Error: " + XMLHttpRequest);
+//            alert("ApproverAction Error: " + textStatus);
+//            alert("ApproverAction Error: " + errorThrown);
+//        }
+//    });
 }
 function OpenNext(requestId) {
     var requestIds = [];

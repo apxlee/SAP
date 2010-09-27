@@ -187,7 +187,8 @@ function CreateBlades(requests) {
         .replace("__toggledContentContainer_ID", "__toggledContentContainer_" + data.RequestId)
         .replace("__snapRequestId", data.RequestId)
         .replace("__legendToggle_ID", "__legendToggle_" + data.RequestId)
-        .replace("__legend_ID", "__legend_" + data.RequestId);
+        .replace("__legend_ID", "__legend_" + data.RequestId)
+        .replace("__requestTrackingSection_ID", "__requestTrackingSection_" + data.RequestId);
 
         if (data.RequestStatus != "Closed") { $("#_openRequestsContainer").append($(newRequestBlade)); }
         else { $("#_closedRequestsContainer").append($(newRequestBlade)); }
@@ -289,11 +290,13 @@ function CreateBuilder(builder, requestId) {
         case "Pending_Acknowledgement":
             $("#__acknowledge_" + requestId).removeAttr("disabled");
             break;
-        //case "Pending_Workflow": 
+        case "Pending_Workflow": 
+            $("#__radioCancel_" + requestId).removeAttr("disabled");
+            $("#__radioChange_" + requestId).removeAttr("disabled");
+            $("#__radioDeny_" + requestId).removeAttr("disabled");
+            break;
         default:
             $("#__radioCancel_" + requestId).removeAttr("disabled");
-            //$("#__radioChange_" + requestId).removeAttr("disabled");
-            $("#__radioDeny_" + requestId).removeAttr("disabled");
             break;
     }
 
@@ -427,14 +430,9 @@ function BindEvents(builderGroups, builderButtons, requestId) {
     });
 
     var builder = $("#__workflowBuilder_" + requestId);
-    builder.find("input[type=checkbox]").each(function() {
-        if ($(this).attr("id").indexOf("_requiredCheck") < 0) {
-            $(this).click(function() {
-                ApproverGroupChecked(this, requestId);
-            });
-        }
-    });
 
+    BindApproverGroupCheckboxes(requestId);
+    
     if (builderGroups != null) {
         $.each(builderGroups, function(index, group) {
             if (group.IsLargeGroup) {
@@ -455,8 +453,8 @@ function BindEvents(builderGroups, builderButtons, requestId) {
     }
     
     builder.find("td.listview_button").each(function() {
-        $(this).children("input[type=button]").click(function() {
-            RemoveActor(this);
+    $(this).children("input[type=button]").click(function() {
+            RemoveActor(this, requestId);
         });
     });
     
@@ -562,13 +560,13 @@ function AccessTeamActions(obj, requestId, action) {
                     case '4':
                         $('#_indicatorDiv').hide();
                         ActionMessage("Acknowledged", "You have just acknowledged this request, you may now create its workflow.");
-                        //UpdateRequestTracking(obj, "Access &amp; Identity Management", "Pending Workflow", false);
+                        UpdateRequestTracking(requestId, "Access &amp; Identity Management", "Pending Workflow");
                         $(obj).attr("disabled", "disabled");
                         $(obj).closest("tr").next().children("td.csm_input_form_control_column").find("input").each(function() {
                             $(this).removeAttr("disabled");
                         });
                         $("#create_workflow_" + requestId).removeAttr("disabled");
-                        AddComments(obj, "Access &amp; Identity Management", "Acknowledged", "", true);
+                        AddComments(requestId, "Access &amp; Identity Management", "Acknowledged", "", true);
                         EditBuilder($("#closed_cancelled_" + requestId), requestId);
                         $(obj).closest("div.csm_content_container").find("tr.csm_stacked_heading_label").children().each(function() {
                             if ($(this).next().children().html() == "Open") {
@@ -585,20 +583,20 @@ function AccessTeamActions(obj, requestId, action) {
                             }
                         });
                         ActionMessage("Change Requested", "You have just requested a change.");
-                        //UpdateRequestTracking(obj, "Access &amp; Identity Management", "Change Requested", true);
+                        UpdateRequestTracking(requestId, "Access &amp; Identity Management", "Change Requested");
                         DisableBladeActions(obj);
                         DisableBuilder(requestId);
-                        AddComments(obj, "Access &amp; Identity Management", "Change Requested", comments, false);
+                        AddComments(requestId, "Access &amp; Identity Management", "Change Requested", comments, false);
                         GetAccessTeamFilter();
                         UpdateCount("_accessTeamCount");
                         break;
                     case '3':
                         $('#_indicatorDiv').hide();
                         ActionMessage("Closed Cancelled", "You have just closed this request with this cancellation.");
-                        //updateRequestTracking(obj, "Access &amp; Identity Management", "Closed Cancelled", true);
+                        UpdateRequestTracking(requestId, "Access &amp; Identity Management", "Closed Cancelled");
                         DisableBladeActions(obj);
                         DisableBuilder(requestId);
-                        AddComments(obj, "Access &amp; Identity Management", "Closed Cancelled", comments, false);
+                        AddComments(requestId, "Access &amp; Identity Management", "Closed Cancelled", comments, false);
                         AnimateActions("Closed Requests", requestId);
                         HideSections(obj);
                         UpdateRequestStatus(obj);
@@ -608,10 +606,10 @@ function AccessTeamActions(obj, requestId, action) {
                     case '1':
                         $('#_indicatorDiv').hide();
                         ActionMessage("Closed Denied", "You have just closed this request with this denial.");
-                        //UpdateRequestTracking(obj, "Access &amp; Identity Management", "Closed Denied", true);
+                        UpdateRequestTracking(requestId, "Access &amp; Identity Management", "Closed Denied");
                         DisableBladeActions(obj);
                         DisableBuilder(requestId);
-                        AddComments(obj, "Access &amp; Identity Management", "Closed Denied", comments, false);
+                        AddComments(requestId, "Access &amp; Identity Management", "Closed Denied", comments, false);
                         AnimateActions("Closed Requests", requestId);
                         HideSections(obj);
                         UpdateRequestStatus(obj);
@@ -701,6 +699,7 @@ function DisableBuilder(requestId) {
     builder.find("input[type=text]").attr("disabled", "disabled");
     builder.find("input[type=button]").attr("disabled", "disabled");
     builder.find("select").attr("disabled", "disabled");
+    $("#closed_cancelled_" + requestId).removeAttr("disabled");
     $("#__selectedActors_" + requestId).val("");
     editLink.removeClass("oospa_edit_icon");
     editLink.addClass("oospa_edit_icon_disabled");
@@ -896,7 +895,7 @@ function CheckForDuplicateApprovers(approver, requestId, source) {
         if (source == "manager") {
             if ($.trim(nameArray[0]) == approver) {
                 duplicate = true;
-                RemoveActor($(this));
+                RemoveActor(this, requestId);
             }
         }
         else {
@@ -991,58 +990,94 @@ function OpenDialog(name) {
     });
 
 }
-function ApproverGroupChecked(obj, requestId) {
+function BindApproverGroupCheckboxes(requestId) {
+    var selectedActors = $("#__selectedActors_" + requestId);
+    var builder = $("#__workflowBuilder_" + requestId);
+
+    builder.find("input[type=checkbox]").each(function(index, checkbox) {
+        if ($(checkbox).is(":checked")) {
+            $(checkbox).closest("table").find("input[type=radio]").each(function(index, radio) {
+                if ($(radio).is(":checked")) {
+                    selectedActors.val(selectedActors.val() + "[" + $(this).val() + "]");
+                }
+            });
+        }
+
+        $(checkbox).click(function() {
+            ApproverGroupChecked(this,requestId);
+        });
+    });     
+}
+function ApproverGroupChecked(checkbox, requestId) {
+    var selectedActors = $("#__selectedActors_" + requestId);
+    var builder = $("#__workflowBuilder_" + requestId);
+    var isDuplicate = false;
     var nameArray = new Array();
     var approver;
-    var isChecked = false;
-    var builder = $("#__workflowBuilder_" + requestId);
-    if ($(obj).is(":checked")) {
-        builder.find("input[type=checkbox]").each(function() {
-            if ($(this).is(":checked")) {
-                if ($(obj).attr("id") == $(this).attr("id")) {
-                    $(this).closest("table").find("input[type=radio]").each(function() {
-                        $(this).removeAttr("disabled");
-                        if ($(this).is(":checked")) {
-                            nameArray = $(this).next().html().split("(");
-                        }
-                    });
-                    approver = $.trim(nameArray[0]);
-                    if (CheckForDuplicateApprovers(approver, requestId, "approver")) {
-                        ActionMessage("Duplicate Selection", approver + " has already be added to this workflow.");
-                        $(obj).removeAttr("checked");
-                        $(obj).closest("table").find("input[type=radio]").each(function() {
-                            $(this).attr("disabled", "disabled");
-                        });
-                    }
-                    else {
-                        isChecked = true;
-                    }
+    
+    if ($(checkbox).is(":checked")) {
+        $(checkbox).closest("table").find("input[type=radio]").each(function(index, radio) {
+            $(radio).removeAttr("disabled");
+            $(radio).change(function() {
+                ApproverGroupRadioChanged(radio, requestId);
+            });
+            if ($(radio).is(":checked")) {
+                nameArray = $(radio).next().html().split("(");
+                approver = $.trim(nameArray[0]);
+                isDuplicate = CheckForDuplicateApprovers(approver, requestId, "approver")
+                if (isDuplicate) {
+                    ActionMessage("Duplicate Selection", approver + " has already be added to this workflow.");
+                    $(checkbox).removeAttr("checked");
                 }
                 else {
-                    $(this).closest("table").find("input[type=radio]").each(function() {
-                        $(this).removeAttr("disabled");
-                    });
+                    selectedActors.val(selectedActors.val() + "[" + $(radio).val() + "]");
                 }
             }
         });
     }
     else {
-        $(obj).closest("table").find("input[type=radio]").each(function() {
-            $(this).attr("disabled", "disabled");
+        $(checkbox).closest("table").find("input[type=radio]").each(function(index, radio) {
+            $(radio).attr("disabled","disabled");
+            $(radio).unbind("change");
+            if ($(radio).is(":checked")) {
+                selectedActors.val(selectedActors.val().replace("[" + $(radio).val() + "]", ""));
+            }
         });
     }
-
-    $(obj).closest("table").find("input[type=radio]").each(function() {
-        if ($(this).is(":checked")) {
-            if (isChecked) {
-                $("#__selectedActors_" + requestId).val($("#__selectedActors_" + requestId).val() + "[" + $(this).val() + "]");
-            }
-            else {
-                $("#__selectedActors_" + requestId).val($("#__selectedActors_" + requestId).val().replace("[" + $(this).val() + "]", ""));
-            }
-        }
-    });
+    if (isDuplicate) {
+        $(checkbox).closest("table").find("input[type=radio]").each(function(index, radio) {
+            $(radio).attr("disabled", "disabled");
+        });
+    }
 }
+
+function ApproverGroupRadioChanged(radioClicked, requestId) {
+    var selectedActors = $("#__selectedActors_" + requestId);
+    var isDuplicate = false;
+    var nameArray = new Array();
+    var approver;
+
+    nameArray = $(radioClicked).next().html().split("(");
+    approver = $.trim(nameArray[0]);
+    isDuplicate = CheckForDuplicateApprovers(approver, requestId, "approver");
+    
+    if (isDuplicate) {
+        ActionMessage("Duplicate Selection", approver + " has already be added to this workflow.");
+        $(radioClicked).closest("table").find("input[type=radio]").each(function(index, radio) {
+            if (selectedActors.val().indexOf("[" + $(radio).val() + "]") > 0) {
+                $(radio).attr("checked", "checked");
+            }
+        });
+        $(radioClicked).attr("disabled", "disabled");
+    }
+    else {
+        $(radioClicked).closest("table").find("input[type=radio]").each(function(index, radio) {
+            selectedActors.val(selectedActors.val().replace("[" + $(radio).val() + "]", ""));
+        });
+        selectedActors.val(selectedActors.val() + "[" + $(radioClicked).val() + "]");
+    }
+}
+
 function ActionClicked(obj, requestId, state) {
     switch ($(obj).val()) {
         case "Closed Cancelled":
@@ -1073,12 +1108,20 @@ function ActionClicked(obj, requestId, state) {
 }
 function EditBuilder(obj, requestId) {
     var builder = $("#__workflowBuilder_" + requestId);
-    builder.find("input[type=checkbox]").each(function() {
-        if ($(this).attr("id").indexOf("_requiredCheck") < 0) {
-            $(this).removeAttr("disabled");
-            ApproverGroupChecked(this, requestId);
+    builder.find("input[type=checkbox]").each(function(index, checkbox) {
+        if ($(checkbox).attr("id").indexOf("_requiredCheck") < 0) {
+            $(checkbox).removeAttr("disabled");
+            if ($(checkbox).is(":checked")) {
+                $(checkbox).closest("table").find("input[type=radio]").each(function(index, radio) {
+                    $(radio).removeAttr("disabled");
+                    $(radio).change(function() {
+                        ApproverGroupRadioChanged(radio, requestId);
+                    });
+                });
+            }
         }
     });
+    
     builder.find("input[type=text]").removeAttr("disabled");
     builder.find("input[type=button]").each(function() {
         $(this).removeAttr("disabled");
@@ -1110,7 +1153,7 @@ function BuilderActions(obj, requestId, state) {
                     case "3":
                         $('#_indicatorDiv').hide();
                         ActionMessage("Closed Cancelled", "You have just cancelled this request.");
-                        //UpdateRequestTracking(obj, "Access &amp; Identity Management", "Closed Cancelled", true);
+                        UpdateRequestTracking(requestId, "Access &amp; Identity Management", "Closed Cancelled");
                         AnimateActions("Closed Requests", requestId);
                         HideSections(obj);
                         UpdateRequestStatus(obj);
@@ -1120,7 +1163,7 @@ function BuilderActions(obj, requestId, state) {
                     case "6":
                         $('#_indicatorDiv').hide();
                         ActionMessage("Closed Completed", "You have just completed this request.");
-                        //UpdateRequestTracking(obj, "Access &amp; Identity Management", "Closed Completed", true);
+                        UpdateRequestTracking(requestId, "Access &amp; Identity Management", "Closed Completed");
                         AnimateActions("Closed Requests", requestId);
                         HideSections(obj);
                         UpdateRequestStatus(obj);
@@ -1130,7 +1173,7 @@ function BuilderActions(obj, requestId, state) {
                     case "5":
                         $('#_indicatorDiv').hide();
                         ActionMessage("Pending Provisioning", "A ticket has been created to provision the access for this request.");
-                        //UpdateRequestTracking(obj, "Access &amp; Identity Management", "Pending Provisioning", false);
+                        UpdateRequestTracking(requestId, "Access &amp; Identity Management", "Pending Provisioning");
                         $("#closed_completed_" + requestId).removeAttr("disabled");
                         $("#create_ticket_" + requestId).attr("disabled", "disabled");
                         $("input[id$='_submit_form']").trigger('click');
@@ -1169,9 +1212,21 @@ function CreateWorkflow(obj, requestId) {
                 if (msg.d.Success) {
                     $('#_indicatorDiv').hide();
                     ActionMessage("Workflow Created", "The workflow has been created for this request.");
-                    //UpdateRequestTracking(obj, "Access &amp; Identity Management", "In Workflow", false);
                     DisableBuilder(requestId);
-                    //$("input[id$='_submit_form']").trigger('click');
+                    $("#create_workflow_" + requestId).hide();                  
+                    
+                    var continueButton = $("#closed_cancelled_" + requestId).clone().val("Continue Workflow").attr("id", "continue_workflow_" + requestId).attr("disabled","disabled");
+                    continueButton.insertAfter($("#closed_cancelled_" + requestId));
+                    
+                    var editButton = $("#closed_cancelled_" + requestId).clone().val("Edit Workflow").attr("id", "edit_workflow_" + requestId);
+                    editButton.insertAfter($("#closed_cancelled_" + requestId));
+                    
+                    var space = "<b>&nbsp;</b>";
+                    $(space).insertAfter($("#closed_cancelled_" + requestId));
+                    $(space).insertAfter($("#edit_workflow_" + requestId));
+                    
+                    $("#__requestTrackingSection_" + requestId).html("");
+                    GetTracking(null, null, requestId);
                 }
                 else {
                     MessageDialog(msg.d.Title, msg.d.Message);
@@ -1205,7 +1260,9 @@ function EditCreatedWorkflow(obj, requestId) {
                     $('#_indicatorDiv').hide();
                     ActionMessage("Workflow Updated", "The workflow has been updated for this request.");
                     DisableBuilder(requestId);
-                    $("input[id$='_submit_form']").trigger('click');
+                    $("#edit_workflow_" + requestId).removeAttr("disabled");
+                    $("#__requestTrackingSection_" + requestId).html("");
+                    GetTracking(null, null, requestId);
                 }
                 else {
                     MessageDialog(msg.d.Title, msg.d.Message);
@@ -1359,7 +1416,7 @@ function UpdateActorList(requestId, groupId, actorId) {
     var tableTr = $('<tr />').attr('class', 'listview_tr');
     var tableButton = $('<td />').attr('class', 'listview_button');
     var removeButton = $("<input type='button'>")
-    removeButton.bind('click', function() { RemoveActor(this); });
+    removeButton.bind('click', function() { RemoveActor(this, requestId); });
     removeButton.val("Remove");
 
     if (actorDisplayName.closest("tr").next().find("tr").html() == null) {
@@ -1387,16 +1444,16 @@ function UpdateActorList(requestId, groupId, actorId) {
     });
 
 }
-function RemoveActor(obj) {
+function RemoveActor(obj, requestId) {
     var actorDisplayName = $(obj).closest("tr.listview_tr").children();
     var actorActorId = $(obj).closest("tr.listview_tr").children().next();
     var actorOption = $("<option value='" + actorActorId.html() + "'>");
     actorOption.html(actorDisplayName.html());
     actorOption.appendTo($(obj).closest("table.oospa_workflow_builder_row").find("select"));
 
-    var selectedActors = $(obj).closest("table.csm_input_form_container").next("div.csm_input_buttons_container").children().first();
+    var selectedActors = $("#__selectedActors_" + requestId);
     selectedActors.val(selectedActors.val().replace("[" + actorActorId.html() + "]", ""));
-
+    
     //finally remove row
     $(obj).closest("tr.listview_tr").remove();
 }

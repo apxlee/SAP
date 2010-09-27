@@ -18,7 +18,8 @@ function CreateBlades(requests) {
         .replace("__workflowStatus_ID", "__workflowStatus_" + data.RequestId)
         .replace("__workflowStatus_TEXT", data.WorkflowStatus)
         .replace("__legendToggle_ID", "__legendToggle_" + data.RequestId)
-        .replace("__legend_ID", "__legend_" + data.RequestId);
+        .replace("__legend_ID", "__legend_" + data.RequestId)
+        .replace("__requestTrackingSection_ID", "__requestTrackingSection_" + data.RequestId);
 
         if (data.RequestStatus != "Closed") { $("#_openRequestsContainer").append($(newRequestBlade)); }
         else { $("#_closedRequestsContainer").append($(newRequestBlade)); }

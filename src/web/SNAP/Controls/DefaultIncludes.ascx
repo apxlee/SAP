@@ -95,7 +95,8 @@
 						<p class="legendPadding"><strong>Closed Complete:</strong>&nbsp;A workflow has gained all approvals and access has been provisioned with<br />Service Desk ticket reference.</p>					
 					</div>
 				</div>
-				<!--__requestTracking-->
+				<div id="__requestTrackingSection_ID">
+				</div>
             </div>
         </div>
     </div>

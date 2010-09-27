@@ -903,16 +903,14 @@ namespace Apollo.AIM.SNAP.Web.Common
                     currentBuilder.IsDisabled = true;
                     break;
                 case WorkflowState.In_Workflow:
+                case WorkflowState.Pending_Approval:
+                case WorkflowState.Change_Requested:
                     availableButtons.Add(new BuilderButton("closed_cancelled_" + requestId, "Closed Cancelled", "3", false));
                     currentBuilder.IsDisabled = true;
                     break;
                 case WorkflowState.Pending_Acknowledgement:
                     availableButtons.Add(new BuilderButton("closed_cancelled_" + requestId, "Closed Cancelled", "3", true));
                     availableButtons.Add(new BuilderButton("create_workflow_" + requestId, "Create Workflow", "", true));
-                    currentBuilder.IsDisabled = true;
-                    break;
-                case WorkflowState.Pending_Approval:
-                    availableButtons.Add(new BuilderButton("closed_cancelled_" + requestId, "Closed Cancelled", "3", false));
                     currentBuilder.IsDisabled = true;
                     break;
                 case WorkflowState.Pending_Provisioning:
