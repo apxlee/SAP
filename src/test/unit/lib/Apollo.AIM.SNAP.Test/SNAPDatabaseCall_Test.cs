@@ -589,7 +589,7 @@ namespace Apollo.AIM.SNAP.Test
         }
 
 
-        /*
+        
         [Test]
         public void EXEC_usp_open_request_tab()
         {
@@ -649,6 +649,8 @@ namespace Apollo.AIM.SNAP.Test
                 Console.WriteLine(test.modifiedDate);
                 Console.WriteLine(test.createdDate);
             }
+
+            /*
             usp_open_request_detailsResult t2 = new usp_open_request_detailsResult();
             t2.requestId = 0;
             t2.userId = "test";
@@ -686,9 +688,10 @@ namespace Apollo.AIM.SNAP.Test
                 Console.WriteLine(test.modifiedDate);
                 Console.WriteLine(test.createdDate);
             }
+             */
         }
 
-         */
+        
 
         /*
         [Test]
