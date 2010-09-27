@@ -197,6 +197,7 @@ function AddComments(requestId, approverName, action, comments, includeDate) {
                     newcomment += "</p>";
                     $(newcomment).appendTo(commentsContainer);
                 }
+                $(commentsContainer).show();
             }
         }
     });
@@ -299,9 +300,6 @@ function BuildTrackingSection(trackingObject, builderGroups, builderButtons, req
             });
         }
     }
-
-    //$("#__toggledContentContainer_" + requestId).html($("#__toggledContentContainer_" + requestId).html()
-    //.replace("<!--__requestTracking-->", trackingSectionHtml));
 
     $("#__requestTrackingSection_" + requestId).append(trackingSectionHtml);
     

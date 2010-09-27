@@ -101,7 +101,7 @@ function CreateApproverActions(requestId) {
     .replace("__radioApproverChange_ID", "__radioApproverChange_" + requestId)
     .replace("__radioApproverDeny_ID", "__radioApproverDeny_" + requestId)
     .replace("__changeDenyComment_ID", "__changeDenyComment_" + requestId)
-    .replace("__approverRequestChang_ID", "__approverRequestChang_" + requestId)
+    .replace("__approverRequestChange_ID", "__approverRequestChange_" + requestId)
     .replace("__approverDeny_ID", "__approverDeny_" + requestId);
 
     $("#__toggledContentContainer_" + requestId).html($("#__toggledContentContainer_" + requestId).html()
@@ -159,7 +159,7 @@ function ChangeDenyClick(obj) {
 function ApproverActions(obj, requestId, action) {
     var comments = "";
     var textarea = $("#__changeDenyComment_" + requestId);
-    var approverName = $("#__currentUserDisplayName").val()
+    var approverName = $("input[id*='_hiddenCurrentUserFullName']").val();
     ProcessingMessage("Updating Request", "");
     switch (action) {
         case '2':
@@ -171,14 +171,14 @@ function ApproverActions(obj, requestId, action) {
     }
     comments = "<br />" + textarea.val();
     var newAction = new Comment(requestId, action, textarea.val());
-//    $.ajax({
-//        type: "POST",
-//        contentType: "application/json; character=utf-8",
-//        url: "AjaxCalls.aspx/ApproverActions",
-//        data: newAction.toJSON,
-//        dataType: "json",
-//        success: function(msg) {
-//            if (msg.d.Success) {
+    $.ajax({
+        type: "POST",
+        contentType: "application/json; character=utf-8",
+        url: "AjaxCalls.aspx/ApproverActions",
+        data: newAction.toJSON,
+        dataType: "json",
+        success: function(msg) {
+            if (msg.d.Success) {
                 switch (action) {
                     case '0':
                         $('#_indicatorDiv').hide();
@@ -196,40 +196,32 @@ function ApproverActions(obj, requestId, action) {
                         AddComments(requestId, approverName, "Change Requested", comments, false);
                         AnimateActions("Open Requests", requestId);
                         $("#__approverActions_" + requestId).hide();
-                        $(obj).closest("div.csm_content_container").find("tr.csm_stacked_heading_label").children().each(function() {
-                            if ($(this).next().children().html() == "Pending") {
-                                $(this).next().children().html("Change Requested");
-                            }
-                        });
+                        $("#__overallRequestStatus_" + requestId).html("Change Requested");
                         UpdateCount("_approvalCount");
                         break;
                     case '1':
                         $('#_indicatorDiv').hide();
                         ActionMessage("Closed Denied", "You have just denied this request.");
-                        $("#__approverActions_" + requestId).hide();
                         UpdateRequestTracking(requestId, approverName, "Closed Denied");
                         AddComments(requestId, approverName, "Closed Denied", comments, false);
                         AnimateActions("Closed Requests", requestId);
-                        $(obj).closest("div.csm_content_container").find("tr.csm_stacked_heading_label").children().each(function() {
-                            if ($(this).next().children().html() == "Pending") {
-                                $(this).next().children().html("Closed");
-                            }
-                        });
+                        $("#__approverActions_" + requestId).hide();
+                        $("#__overallRequestStatus_" + requestId).html("Closed");
                         UpdateCount("_approvalCount");
                         break;
                 }
-//            }
-//            else {
-//                MessageDialog(msg.d.Title, msg.d.Message);
-//            }
-//        }
-//		,
-//        error: function(XMLHttpRequest, textStatus, errorThrown) {
-//            alert("ApproverAction Error: " + XMLHttpRequest);
-//            alert("ApproverAction Error: " + textStatus);
-//            alert("ApproverAction Error: " + errorThrown);
-//        }
-//    });
+            }
+            else {
+                MessageDialog(msg.d.Title, msg.d.Message);
+            }
+        }
+		,
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert("ApproverAction Error: " + XMLHttpRequest);
+            alert("ApproverAction Error: " + textStatus);
+            alert("ApproverAction Error: " + errorThrown);
+        }
+    });
 }
 function OpenNext(requestId) {
     var requestIds = [];
