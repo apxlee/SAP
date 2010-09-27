@@ -59,6 +59,15 @@ namespace Apollo.AIM.SNAP.Web {
         protected global::System.Web.UI.HtmlControls.HtmlInputHidden _hiddenCurrentUserFullName;
         
         /// <summary>
+        /// _hiddenSelectedRequestId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputHidden _hiddenSelectedRequestId;
+        
+        /// <summary>
         /// _includes control.
         /// </summary>
         /// <remarks>

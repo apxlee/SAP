@@ -49,9 +49,11 @@ namespace Apollo.AIM.SNAP.Web.Common
 				try
 				{
 					HtmlInputHidden hiddenUserId = (HtmlInputHidden)WebUtilities.FindControlRecursive(Page, "_hiddenCurrentUserId");
-                    HtmlInputHidden hiddenUserFullName = (HtmlInputHidden)WebUtilities.FindControlRecursive(Page, "_hiddenCurrentUserFullName");   
+                    HtmlInputHidden hiddenUserFullName = (HtmlInputHidden)WebUtilities.FindControlRecursive(Page, "_hiddenCurrentUserFullName");
+					HtmlInputHidden hiddenSelectedRequestId = (HtmlInputHidden)WebUtilities.FindControlRecursive(Page, "_hiddenSelectedRequestId");   
 					hiddenUserId.Value = SnapSession.CurrentUser.LoginId;
                     hiddenUserFullName.Value = SnapSession.CurrentUser.FullName;
+					hiddenSelectedRequestId.Value = SnapSession.SelectedRequestId;
 				}
 				catch (Exception ex) 
                 {
@@ -85,3 +87,5 @@ namespace Apollo.AIM.SNAP.Web.Common
 		}				
 	}
 }
+
+

@@ -9,7 +9,7 @@
 
 	<div id="_statusChangedMessage" class="csm_content_container" style="display:none;">
 		<div class="csm_text_container">
-			<p class="csm_error_text"><strong>Request Status Changed</strong><br />The Access Request %%requestIdChanged%% has had its status changed.  
+			<p class="csm_error_text"><strong>Request Status Changed</strong><br />The Access Request %%SELECTED_REQUEST_ID%% has had its status changed.  
 			At this time, you cannot perform Approver Actions.<br />See Request Tracking for details.</p>
 		</div>
 	</div>
