@@ -148,43 +148,7 @@ namespace Apollo.AIM.SNAP.Test
 
         }
 
-        [Test]
-        public void ShouldReturnAllRequests()
-        {
-            using (var db = new SNAPDatabaseDataContext())
-            {
-                var t1 = DateTime.Now;
-                Console.WriteLine("Access Team Requests:") ;
-                db.GetAllRequests("pxlee", "accessteam");
-                
-                Console.WriteLine("\tOpen Requests:");
-                output(db.OpenRquests);
-                Console.WriteLine("\tClose Requests:");
-                output(db.CloseRquests);
 
-                Console.WriteLine("\n======");
-                Console.WriteLine("My Requests:");
-                db.GetAllRequests("pxlee", "my");
-                Console.WriteLine("\tOpen Requests:");
-                output(db.OpenRquests);
-                Console.WriteLine("\tClose Requests:");
-                output(db.CloseRquests);
-
-                Console.WriteLine("\n======");
-                Console.WriteLine("Approval Requests:");
-                db.GetAllRequests("pxlee", "approval");
-                Console.WriteLine("\tOpen Requests:");
-                output(db.OpenRquests);
-                Console.WriteLine("\tClose Requests:");
-                output(db.CloseRquests);
-                 
-                var t2 = DateTime.Now;
-                Console.WriteLine("Duration: " + (t2-t1).Duration());
-
-            }    
-
-        }
-        
         private void output(Dictionary<string, object> data)
         {
             var reqDetails = (List<usp_open_my_request_detailsResult>)data["reqDetails"];
@@ -622,58 +586,7 @@ namespace Apollo.AIM.SNAP.Test
             }
         }
 
-        [Test]
-        public void EXEC_usp_search_requests()
-        {
-            using (var db = new SNAPDatabaseDataContext())
-            {
-                IMultipleResults test = db.usp_search_requests("pxlee");
-                Assert.IsTrue(test.GetResult<usp_search_requestsResult>().Count() > 0);
-                if (test.GetResult<usp_requestsResult>().Count() > 0)
-                {
-                    foreach (usp_search_requestsResult result in test.GetResult<usp_search_requestsResult>())
-                    {
-                        Console.WriteLine(result.userId);
-                        Console.WriteLine(result.userDisplayName);
-                        Console.WriteLine(result.userTitle);
-                        Console.WriteLine(result.submittedBy);
-                        Console.WriteLine(result.managerUserId);
-                        Console.WriteLine(result.managerDisplayName);
-                        Console.WriteLine(result.statusEnum);
-                        Console.WriteLine(result.isChanged);
-                        Console.WriteLine(result.ticketNumber);
-                        Console.WriteLine(result.lastModifiedDate);
-                    }
-                }
-            }
-        }
-
-        [Test]
-        public void EXEC_usp_requests()
-        {
-            using (var db = new SNAPDatabaseDataContext())
-            {
-                IMultipleResults test = db.usp_requests("pxlee","my");
-                Assert.IsTrue(test.GetResult<usp_requestsResult>().Count() > 0);
-                if (test.GetResult<usp_requestsResult>().Count() > 0)
-                {
-                    foreach (usp_requestsResult result in test.GetResult<usp_requestsResult>())
-                    {
-                        Console.WriteLine(result.userId);
-                        Console.WriteLine(result.userDisplayName);
-                        Console.WriteLine(result.userTitle);
-                        Console.WriteLine(result.submittedBy);
-                        Console.WriteLine(result.managerUserId);
-                        Console.WriteLine(result.managerDisplayName);
-                        Console.WriteLine(result.statusEnum);
-                        Console.WriteLine(result.isChanged);
-                        Console.WriteLine(result.ticketNumber);
-                        Console.WriteLine(result.lastModifiedDate);
-                    }
-                }
-            }
-        }
-
+        /*
         [Test]
         public void EXEC_usp_requests_details()
         {
@@ -717,6 +630,7 @@ namespace Apollo.AIM.SNAP.Test
                 Console.WriteLine(test.createdDate);
             }
         }
+        */
 
         [Test]
         public void EXEC_usp_open_request_tab()
