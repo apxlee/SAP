@@ -29,14 +29,14 @@ namespace Apollo.AIM.SNAP.Model
 		{
 
             get { return Initialized ? _SLAConfig[ConfigLabels.AccessTeamAckInMinute] : string.Empty; }
-            set { _SLAConfig[ConfigLabels.AccessTeamAckInMinute] = value; }
+            //set { _SLAConfig[ConfigLabels.AccessTeamAckInMinute] = value; }
 		}
 
 
         public string AccessTeamCreateWorkflowInDays
         {
             get { return Initialized ? _SLAConfig[ConfigLabels.AccessTeamCreateWorkflowInDays] : string.Empty; }
-            set { _SLAConfig[ConfigLabels.AccessTeamCreateWorkflowInDays] = value; }
+            //set { _SLAConfig[ConfigLabels.AccessTeamCreateWorkflowInDays] = value; }
         }
 
 
@@ -44,21 +44,21 @@ namespace Apollo.AIM.SNAP.Model
         {
 
             get { return Initialized ? _SLAConfig[ConfigLabels.ManagerApprovalInDays] : string.Empty; }
-            set { _SLAConfig[ConfigLabels.ManagerApprovalInDays] = value; }
+            //set { _SLAConfig[ConfigLabels.ManagerApprovalInDays] = value; }
         }
 
         public string TeamApprovalInDays
         {
 
             get { return Initialized ? _SLAConfig[ConfigLabels.TeamApprovalInDays] : string.Empty; }
-            set { _SLAConfig[ConfigLabels.TeamApprovalInDays] = value; }
+            //set { _SLAConfig[ConfigLabels.TeamApprovalInDays] = value; }
         }
 
         public string TechnicalApprovalInDays
         {
 
             get { return Initialized ? _SLAConfig[ConfigLabels.TechnicalApprovalInDays] : string.Empty; }
-            set { _SLAConfig[ConfigLabels.TechnicalApprovalInDays] = value; }
+            //set { _SLAConfig[ConfigLabels.TechnicalApprovalInDays] = value; }
         }
 
         #endregion
