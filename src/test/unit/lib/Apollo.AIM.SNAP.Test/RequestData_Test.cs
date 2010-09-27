@@ -153,6 +153,32 @@ namespace Apollo.AIM.SNAP.Test
 
         }
 
+    [Test]
+    public void ShouldUpdateRequestDat()
+    {
+        var newData = new List<RequestData>()
+                              {
+                                    new RequestData() {FormId = "1", UserText = "Test 1"},
+                                    new RequestData() {FormId = "2", UserText = "Test 2"},
+                              };
+
+        var orgData = new List<usp_open_request_tabResult>()
+                              {
+                                  new usp_open_request_tabResult()
+                                      {
+                                          fieldId = 1,
+                                          fieldText = "Test 11"
+                                      },
+                                  new usp_open_request_tabResult()
+                                      {
+                                          fieldId = 2,
+                                          fieldText = "Test 22"
+                                      }
+                              };
+
+        RequestData.UpdateRequestData(newData, orgData);
+    
+    }
 
     }
 }
