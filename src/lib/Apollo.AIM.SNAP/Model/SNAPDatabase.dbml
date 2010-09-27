@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Database Name="its_snap" Class="SNAPDatabaseDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=DWAXCAPB006;Initial Catalog=its_snap;Integrated Security=True" SettingsObjectName="Apollo.AIM.SNAP.Properties.Settings" SettingsPropertyName="Apollo_AIM_SNAPConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="AppSettings" ConnectionString="Data Source=DWAXCAPB006;Initial Catalog=Apollo.AIM.SNAP;Integrated Security=True" SettingsObjectName="Apollo.AIM.SNAP.Properties.Settings" SettingsPropertyName="Apollo_AIM_SNAPConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.SNAP_Access_Details_Form" Member="SNAP_Access_Details_Forms">
     <Type Name="SNAP_Access_Details_Form">
       <Column Name="pkId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -158,61 +158,6 @@
     <Parameter Name="managerUserId" Type="System.String" DbType="NVarChar(10)" />
     <Parameter Name="managerDisplayName" Type="System.String" DbType="NVarChar(100)" />
     <Return Type="System.Int32" />
-  </Function>
-  <Function Name="dbo.usp_search_requests" Method="usp_search_requests">
-    <Parameter Name="search" Type="System.String" DbType="NVarChar(100)" />
-    <ElementType Name="usp_search_requestsResult">
-      <Column Name="pkId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="submittedBy" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="userId" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="userDisplayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="userTitle" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="managerUserId" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="managerDisplayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="ticketNumber" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="isChanged" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="statusEnum" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
-      <Column Name="createdDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
-      <Column Name="lastModifiedDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
-    </ElementType>
-  </Function>
-  <Function Name="dbo.usp_requests" Method="usp_requests">
-    <Parameter Name="userId" Type="System.String" DbType="NVarChar(128)" />
-    <Parameter Name="role" Type="System.String" DbType="NVarChar(10)" />
-    <ElementType Name="usp_requestsResult">
-      <Column Name="pkId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="submittedBy" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="userId" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="userDisplayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="userTitle" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="managerUserId" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="managerDisplayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="ticketNumber" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="isChanged" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="statusEnum" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
-      <Column Name="createdDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
-      <Column Name="lastModifiedDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
-    </ElementType>
-  </Function>
-  <Function Name="dbo.usp_request_details" Method="usp_request_details">
-    <Parameter Name="requestId" Type="System.Int32" DbType="Int" />
-    <ElementType Name="usp_request_detailsResult">
-      <Column Name="requestId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="submittedBy" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="userId" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="userDisplayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="userTitle" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="managerUserId" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="managerDisplayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="fieldId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="fieldLabel" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="fieldText" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="modifiedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="ticketNumber" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="isChanged" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="statusEnum" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
-      <Column Name="createdDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
-    </ElementType>
   </Function>
   <Function Name="dbo.usp_open_request_tab" Method="usp_open_request_tab">
     <Parameter Name="userId" Type="System.String" DbType="NVarChar(128)" />

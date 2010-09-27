@@ -586,51 +586,6 @@ namespace Apollo.AIM.SNAP.Test
             }
         }
 
-        /*
-        [Test]
-        public void EXEC_usp_requests_details()
-        {
-            usp_request_detailsResult t = new usp_request_detailsResult();
-            t.requestId = 0;
-            t.userId = "test";
-            t.userDisplayName = "test";
-            t.userTitle = "test";
-            t.submittedBy = "test";
-            t.managerUserId = "test";
-            t.managerDisplayName = "test";
-            t.statusEnum = 0;
-            t.isChanged = false;
-            t.ticketNumber = "test";
-            t.fieldId = 0;
-            t.fieldLabel = "test";
-            t.fieldText = "ttest";
-            t.modifiedDate = DateTime.Now;
-            t.createdDate = DateTime.Now;
-
-            using (var db = new SNAPDatabaseDataContext())
-            {
-                var req = db.SNAP_Requests.Single(x => x.submittedBy == "UnitTester");
-
-                usp_request_detailsResult test = db.usp_request_details(req.pkId).First();
-                Assert.IsTrue(test.requestId > 0);
-                Console.WriteLine(test.requestId);
-                Console.WriteLine(test.userId);
-                Console.WriteLine(test.userDisplayName);
-                Console.WriteLine(test.userTitle);
-                Console.WriteLine(test.submittedBy);
-                Console.WriteLine(test.managerUserId);
-                Console.WriteLine(test.managerDisplayName);
-                Console.WriteLine(test.statusEnum);
-                Console.WriteLine(test.isChanged);
-                Console.WriteLine(test.ticketNumber);
-                Console.WriteLine(test.fieldId);
-                Console.WriteLine(test.fieldLabel);
-                Console.WriteLine(test.fieldText);
-                Console.WriteLine(test.modifiedDate);
-                Console.WriteLine(test.createdDate);
-            }
-        }
-        */
 
         [Test]
         public void EXEC_usp_open_request_tab()
