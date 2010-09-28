@@ -6,8 +6,6 @@
 <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>ApprovingManagerView.js" type="text/javascript"></script>
 
 <div class="csm_container_center_700">
-
-	<asp:Label ID="testJ" runat="server" Visible="false">HERE</asp:Label>
 	
 	<asp:Panel ID="_statusChangedMessage" runat="server" CssClass="csm_content_container" Visible="false">
 		<div class="csm_text_container">
