@@ -13,6 +13,12 @@ namespace Apollo.AIM.SNAP.Web
 		protected void Page_Load(object sender, EventArgs e)
 		{
 			WebUtilities.RoleCheck(WebUtilities.GetPageName(Page));
+
+			if (!Database.IsPendingApproval(SnapSession.SelectedRequestId, SnapSession.CurrentUser.LoginId))
+			{
+				_badStatusRequestId.Text = SnapSession.SelectedRequestId;
+				_statusChangedMessage.Visible = true;
+			}
 		}
 	}
 }

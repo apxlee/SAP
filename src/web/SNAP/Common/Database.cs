@@ -212,5 +212,35 @@ namespace Apollo.AIM.SNAP.Web.Common
 		}
 
 		#endregion
+
+		#region Generic Request Info
+
+		public static bool IsPendingApproval(string requestId, string approvingManagerId)
+		{
+			using (var db = new SNAPDatabaseDataContext())
+			{
+				int[] requestStatusEnums = new int[] { (int)RequestState.Open, (int)RequestState.Pending };
+
+				var result = from r in db.SNAP_Requests
+							 join w in db.SNAP_Workflows on r.pkId equals w.requestId
+							 join ws in db.SNAP_Workflow_States on w.pkId equals ws.workflowId
+							 join a in db.SNAP_Actors on w.actorId equals a.pkId
+							 where r.pkId == Convert.ToInt32(requestId)
+							 where a.userId == approvingManagerId
+							 where ws.workflowStatusEnum == (int)WorkflowState.Pending_Approval
+							 where requestStatusEnums.Contains(r.statusEnum)
+							 select r;
+
+				if (result.Count() > 0)
+				{
+					return true;
+				}
+			}
+			
+			return false;
+		}
+
+		#endregion
+
 	}
 }

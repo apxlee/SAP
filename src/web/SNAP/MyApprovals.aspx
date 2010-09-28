@@ -7,12 +7,14 @@
 
 <div class="csm_container_center_700">
 
-	<div id="_statusChangedMessage" class="csm_content_container" style="display:none;">
+	<asp:Label ID="testJ" runat="server" Visible="false">HERE</asp:Label>
+	
+	<asp:Panel ID="_statusChangedMessage" runat="server" CssClass="csm_content_container" Visible="false">
 		<div class="csm_text_container">
-			<p class="csm_error_text"><strong>Request Status Changed</strong><br />The Access Request %%SELECTED_REQUEST_ID%% has had its status changed.  
+			<p class="csm_error_text"><strong>Request Status Changed</strong><br />The Access Request <asp:Label ID="_badStatusRequestId" runat="server">you have requested</asp:Label> has had its status changed.  
 			At this time, you cannot perform Approver Actions.<br />See Request Tracking for details.</p>
 		</div>
-	</div>
+	</asp:Panel>
 
 	<input type="hidden" id="__multiplePendingApprovals" value="no" />
 

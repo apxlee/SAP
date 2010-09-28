@@ -12,5 +12,32 @@ namespace Apollo.AIM.SNAP.Web {
     
     
     public partial class MyApprovals {
+        
+        /// <summary>
+        /// testJ control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label testJ;
+        
+        /// <summary>
+        /// _statusChangedMessage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel _statusChangedMessage;
+        
+        /// <summary>
+        /// _badStatusRequestId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label _badStatusRequestId;
     }
 }
