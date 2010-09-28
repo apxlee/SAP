@@ -18,6 +18,7 @@ namespace Apollo.AIM.SNAP.Web
 			{
 				_badStatusRequestId.Text = SnapSession.SelectedRequestId;
 				_statusChangedMessage.Visible = true;
+				SnapSession.SelectedRequestId = string.Empty;
 			}
 		}
 	}

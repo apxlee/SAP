@@ -18,9 +18,16 @@
 		</div>
 		
 		<fieldset><!-- use fieldset for standards & compliance -->
+
+  		<asp:Panel ID="_statusChangedMessage" runat="server" CssClass="csm_text_container" Visible="false">
+			<!--<div class="csm_text_container">-->
+				<p class="csm_error_text"><strong>Request Status Changed</strong><br />The Access Request <asp:Label ID="_badStatusRequestId" runat="server">you have requested</asp:Label> has had 
+				its status changed, or you are not listed as the Affected End User or Submitter. At this time, you cannot edit the request. Please refer to the Request Tracking in "My Requests" or "Search" for details.</p>
+			<!--</div>-->
+		</asp:Panel>
         
         <div id="_formValidationTop" class="csm_input_validation_summary"></div>
-        
+
         <asp:Label ID="_changeComments" runat="server" CssClass="request_form_change_comments" />
  		
 		<div class="csm_input_buttons_container">
