@@ -441,9 +441,6 @@ namespace Apollo.AIM.SNAP.Web.Common
                                  };
 
 
-                        var openApprovals2 = openApprovals.ToList().OrderByDescending(o => o.LastModified);
-
-
                         var closedApprovals = from r in db.SNAP_Requests
                                  join w in db.SNAP_Workflows on r.pkId equals w.requestId
                                  join a in db.SNAP_Actors on w.actorId equals a.pkId
