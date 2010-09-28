@@ -415,9 +415,10 @@ namespace Apollo.AIM.SNAP.Web.Common
                                      RequestStatus = Convert.ToString((RequestState)Enum.Parse(typeof(RequestState)
                                      , grp.Key.statusEnum.ToString())).StripUnderscore(),
                                      WorkflowStatus = grp.Key.workflowStatusEnum,
-                                     LastModified = grp.Key.lastModifiedDate.ToShortDateString(),
+                                     LastModified = string.Format("{0:MM/dd/yyyy}", grp.Key.lastModifiedDate),
                                      RequestId = grp.Key.pkId
                                  };
+
 
                         var openApprovals = from r in db.SNAP_Requests
                                  join w in db.SNAP_Workflows on r.pkId equals w.requestId
@@ -435,9 +436,13 @@ namespace Apollo.AIM.SNAP.Web.Common
                                      RequestStatus = Convert.ToString((RequestState)Enum.Parse(typeof(RequestState)
                                      , grp.Key.statusEnum.ToString())).StripUnderscore(),
                                      WorkflowStatus = grp.Key.workflowStatusEnum,
-                                     LastModified = grp.Key.lastModifiedDate.ToShortDateString(),
+                                     LastModified = string.Format("{0:MM/dd/yyyy}", grp.Key.lastModifiedDate),
                                      RequestId = grp.Key.pkId
                                  };
+
+
+                        var openApprovals2 = openApprovals.ToList().OrderByDescending(o => o.LastModified);
+
 
                         var closedApprovals = from r in db.SNAP_Requests
                                  join w in db.SNAP_Workflows on r.pkId equals w.requestId
@@ -452,19 +457,20 @@ namespace Apollo.AIM.SNAP.Web.Common
                                      RequestStatus = Convert.ToString((RequestState)Enum.Parse(typeof(RequestState)
                                      , grp.Key.statusEnum.ToString())).StripUnderscore(),
                                      WorkflowStatus = String.Empty,
-                                     LastModified = grp.Key.lastModifiedDate.ToShortDateString(),
+                                     LastModified = string.Format("{0:MM/dd/yyyy}", grp.Key.lastModifiedDate),
                                      RequestId = grp.Key.pkId
                                  };
 
+
                         if (pendingApprovals != null)
                         {
-                            foreach (var request in pendingApprovals)
+                            foreach (var request in pendingApprovals.ToList().OrderByDescending(o => o.LastModified))
                             {
                                 RequestBlade newRequest = new RequestBlade();
                                 newRequest.DisplayName = request.DisplayName;
                                 newRequest.RequestStatus = request.RequestStatus.ToString();
                                 newRequest.WorkflowStatus = request.WorkflowStatus.ToString();
-                                newRequest.LastModified = request.LastModified;
+                                newRequest.LastModified = WebUtilities.TestAndConvertDate(request.LastModified);
                                 newRequest.RequestId = request.RequestId.ToString();
                                 DataContractJsonSerializer serializer = new DataContractJsonSerializer(newRequest.GetType());
                                 using (MemoryStream ms = new MemoryStream())
@@ -477,13 +483,13 @@ namespace Apollo.AIM.SNAP.Web.Common
                         }
                         if (openApprovals != null)
                         {
-                            foreach (var request in openApprovals)
+                            foreach (var request in openApprovals.ToList().OrderByDescending(o => o.LastModified))
                             {
                                 RequestBlade newRequest = new RequestBlade();
                                 newRequest.DisplayName = request.DisplayName;
                                 newRequest.RequestStatus = request.RequestStatus.ToString();
                                 newRequest.WorkflowStatus = request.WorkflowStatus.ToString();
-                                newRequest.LastModified = request.LastModified;
+                                newRequest.LastModified = WebUtilities.TestAndConvertDate(request.LastModified);
                                 newRequest.RequestId = request.RequestId.ToString();
                                 DataContractJsonSerializer serializer = new DataContractJsonSerializer(newRequest.GetType());
                                 using (MemoryStream ms = new MemoryStream())
@@ -496,13 +502,13 @@ namespace Apollo.AIM.SNAP.Web.Common
                         }
                         if (closedApprovals != null)
                         {
-                            foreach (var request in closedApprovals)
+                            foreach (var request in closedApprovals.ToList().OrderByDescending(o => o.LastModified))
                             {
                                 RequestBlade newRequest = new RequestBlade();
                                 newRequest.DisplayName = request.DisplayName;
                                 newRequest.RequestStatus = request.RequestStatus.ToString();
                                 newRequest.WorkflowStatus = request.WorkflowStatus.ToString();
-                                newRequest.LastModified = request.LastModified;
+                                newRequest.LastModified = WebUtilities.TestAndConvertDate(request.LastModified);
                                 newRequest.RequestId = request.RequestId.ToString();
                                 DataContractJsonSerializer serializer = new DataContractJsonSerializer(newRequest.GetType());
                                 using (MemoryStream ms = new MemoryStream())
