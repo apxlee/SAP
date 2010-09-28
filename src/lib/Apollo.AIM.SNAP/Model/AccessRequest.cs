@@ -1189,6 +1189,7 @@ namespace Apollo.AIM.SNAP.Model
             }
         }
 
+        /*
         public static List<AccessGroup> GetAvailableGroups()
         {
             List<AccessGroup> groupList = new List<AccessGroup>();
@@ -1256,6 +1257,7 @@ namespace Apollo.AIM.SNAP.Model
 
             return groupList;
         }
+        */
 
         public static int GetActorIdByUserId(ActorGroupType actorGroupType, string userId)
         {
@@ -1344,6 +1346,7 @@ namespace Apollo.AIM.SNAP.Model
             db.SubmitChanges();
         }
 
+        /*
         public static List<AccessApprover> GetRequestApprovers(int requestId)
         {
             List<AccessApprover> approverList = new List<AccessApprover>();
@@ -1374,6 +1377,7 @@ namespace Apollo.AIM.SNAP.Model
 
             return approverList;
         }
+        */
 
         public static int GetWorkflowId(int actorId, int requestId)
         {
