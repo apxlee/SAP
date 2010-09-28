@@ -65,6 +65,7 @@ namespace Apollo.AIM.SNAP.Model
             return result;
         }
 
+        
         public static void UpdateRequestData(List<RequestData> newRequestList, List<usp_open_request_tabResult> requestData)
         {
             var result = UpdatedRequestDataList(newRequestList, requestData);
@@ -88,5 +89,6 @@ namespace Apollo.AIM.SNAP.Model
                 }
             }
         }
+        
     }
 }

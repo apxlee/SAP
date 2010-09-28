@@ -1189,75 +1189,6 @@ namespace Apollo.AIM.SNAP.Model
             }
         }
 
-        /*
-        public static List<AccessGroup> GetAvailableGroups()
-        {
-            List<AccessGroup> groupList = new List<AccessGroup>();
-
-            using (var db = new SNAPDatabaseDataContext())
-            {
-                var query = from sa in db.SNAP_Actors
-                            join sag in db.SNAP_Actor_Groups on sa.actor_groupId equals sag.pkId
-                            where sa.isActive == true && sag.isActive == true && sag.actorGroupType < 2
-                            orderby sag.actorGroupType, sag.groupName ascending
-                            select new
-                            {
-                                ActorId = sa.pkId,
-                                UserId = sa.userId,
-                                DisplayName = sa.displayName,
-                                IsDefault = sa.isDefault,
-                                IsLargeGroup = sag.isLargeGroup,
-                                GroupId = sag.pkId,
-                                GroupName = sag.groupName,
-                                Description = sag.description,
-                                ActorGroupType = sag.actorGroupType
-                            };
-                foreach (var approver in query)
-                {
-                    List<AccessApprover> approverList = new List<AccessApprover>();
-                    AccessApprover newApprover = new AccessApprover();
-                    newApprover.ActorId = approver.ActorId;
-                    newApprover.UserId = approver.UserId;
-                    newApprover.DisplayName = approver.DisplayName;
-                    newApprover.IsDefault = approver.IsDefault;
-                    newApprover.ActorGroupType = (ActorGroupType)approver.ActorGroupType;
-
-                    AccessGroup accessGroup = groupList.Find(delegate(AccessGroup _grp)
-                    {
-                        if (_grp.GroupId == approver.GroupId)
-                        {
-                            // group exists
-                            return true;
-                        }
-                            // group doesn't exist
-                            return false;
-                    });
-
-                    if (accessGroup != null)
-                    {
-                        approverList = accessGroup.AvailableApprovers;
-                        approverList.Add(newApprover);
-                        accessGroup.AvailableApprovers = approverList;
-                    }
-                    else
-                    {
-                        
-                        AccessGroup newGroup = new AccessGroup();
-                        approverList.Add(newApprover);
-                        newGroup.GroupId = approver.GroupId;
-                        newGroup.GroupName = approver.GroupName;
-                        newGroup.Description = approver.Description;
-                        newGroup.ActorGroupType = (ActorGroupType)approver.ActorGroupType;
-                        newGroup.IsLargeGroup = (bool)approver.IsLargeGroup;
-                        newGroup.AvailableApprovers = approverList;
-                        groupList.Add(newGroup);
-                    }
-                }
-            }
-
-            return groupList;
-        }
-        */
 
         public static int GetActorIdByUserId(ActorGroupType actorGroupType, string userId)
         {
@@ -1346,38 +1277,6 @@ namespace Apollo.AIM.SNAP.Model
             db.SubmitChanges();
         }
 
-        /*
-        public static List<AccessApprover> GetRequestApprovers(int requestId)
-        {
-            List<AccessApprover> approverList = new List<AccessApprover>();
-
-            using (var db = new SNAPDatabaseDataContext())
-            {
-                var query = from a in db.SNAP_Actors
-                            join sw in db.SNAP_Workflows on a.pkId equals sw.actorId
-                            join sws in db.SNAP_Workflow_States on sw.pkId equals sws.workflowId
-                            where sw.requestId == requestId
-                            group sw by new { a.userId, sw.requestId, sw.actorId } into wfGroup
-                            select new
-                            {
-                                ActorId = wfGroup.Key.actorId,
-                                UserId = wfGroup.Key.userId,
-                                WorkflowId = wfGroup.Max(sw => sw.pkId) 
-                            };
-
-                foreach (var approver in query)
-                {
-                    AccessApprover newApprover = new AccessApprover();
-                    newApprover.ActorId = approver.ActorId;
-                    newApprover.UserId = approver.UserId;
-                    newApprover.WorkflowState = (WorkflowState)GetWorkflowState(approver.WorkflowId);
-                    approverList.Add(newApprover);
-                }
-            }
-
-            return approverList;
-        }
-        */
 
         public static int GetWorkflowId(int actorId, int requestId)
         {
