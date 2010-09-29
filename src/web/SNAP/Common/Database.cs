@@ -81,20 +81,29 @@ namespace Apollo.AIM.SNAP.Web.Common
 
         #region Request Blades
 
-        public static List<string> GetRequests(string condition, string userId, List<int> openEnums, DateTime closedDateLimit, ViewIndex view)
+        public static List<string> GetRequests(string condition, string userId, ViewIndex view)
         {
             try
             {
                 List<string> requestList = new List<string>();
-                string closedString = "(statusEnum==" + (int)RequestState.Closed + "&&lastModifiedDate >= DateTime(" + closedDateLimit.Year + "," + closedDateLimit.Month + "," + closedDateLimit.Day + "))";
-                string openString = "(";
+
+                List<int> openEnums = new List<int>();
+                openEnums.Add((int)RequestState.Open);
+                openEnums.Add((int)RequestState.Pending);
+                openEnums.Add((int)RequestState.Change_Requested);
+                DateTime closedDateLimit = new DateTime();
+                closedDateLimit = DateTime.Now.AddDays(-30);
+                string dateTime = closedDateLimit.Year + "," + closedDateLimit.Month + "," + closedDateLimit.Day;
+                string closedString = string.Format("statusEnum=={0}&&lastModifiedDate >= DateTime({1})", (int)RequestState.Closed, dateTime); ;
+                
+                string openString = "";
                 foreach(int value in openEnums)
                 {
                     openString = openString + "statusEnum==" + value + "||";
                 }
                 openString = openString.Substring(0, openString.Length - 2);
-                openString = openString + ")";
-                string requestCondition = openString + "||" + closedString;
+                string requestCondition = string.Format("({0})||({1})",openString,closedString);
+
                 using (var db = new SNAPDatabaseDataContext())
                 {
                     switch (view)
@@ -106,7 +115,7 @@ namespace Apollo.AIM.SNAP.Web.Common
                                 if (group != ""){groupNames = groupNames + "userId==\"" + group + "\"||";}
                             }
                             groupNames = groupNames.Substring(0, groupNames.Length - 2);
-                            string actorCondition = "(userId==\"" + userId + "\"||("+ groupNames +" && isGroup == true))";
+                            string actorCondition = string.Format("(userId==\"{0}\"||({1}&&isGroup==true))",userId,groupNames);
                             var approvals = from r in (db.SNAP_Requests.
                                 OrderBy("lastModifiedDate desc").Where(requestCondition))
                                            join w in db.SNAP_Workflows on r.pkId equals w.requestId

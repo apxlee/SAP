@@ -319,22 +319,16 @@ namespace Apollo.AIM.SNAP.Web.Common
         public static List<string> GetRequestBlades(ViewIndex view, string search)
         {
             string userId = SnapSession.CurrentUser.LoginId;
-            List<int> openEnums = new List<int>();
-            openEnums.Add((int)RequestState.Open);
-            openEnums.Add((int)RequestState.Pending);
-            openEnums.Add((int)RequestState.Change_Requested);
-            DateTime closedDateLimit = new DateTime();
-            closedDateLimit = DateTime.Now.AddDays(-30);
             string condition = "";
             List<string> requestList = new List<string>();
 
             switch (view)
             {
                 case ViewIndex.my_requests:
-                    condition = "(userId==\"clschwim\"||submittedBy==\"clschwim\")";
+                    condition = string.Format("(userId==\"{0}\"||submittedBy==\"{0}\")",userId);
                     break;
                 case ViewIndex.my_approvals:
-                    condition = "(workflowStatusEnum==" + (int)WorkflowState.Approved + ")||(workflowStatusEnum==" + (int)WorkflowState.Approved + " && completedDate==null)";
+                    condition = string.Format("(workflowStatusEnum=={0})||(workflowStatusEnum=={0}&&completedDate==null)",(int)WorkflowState.Approved);
                     break;
                 case ViewIndex.access_team:
                     condition = "pkId>0";
@@ -344,7 +338,7 @@ namespace Apollo.AIM.SNAP.Web.Common
                     break;
             }
 
-            requestList.AddRange(Database.GetRequests(condition, userId, openEnums, closedDateLimit, view));
+            requestList.AddRange(Database.GetRequests(condition, userId, view));
             return requestList;
         }
 
