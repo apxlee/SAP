@@ -14,12 +14,12 @@ namespace Apollo.AIM.SNAP.Web
 		{
 			WebUtilities.RoleCheck(WebUtilities.GetPageName(Page));
 
-			if (!Database.IsPendingApproval(SnapSession.SelectedRequestId, SnapSession.CurrentUser.LoginId))
-			{
-				_badStatusRequestId.Text = SnapSession.SelectedRequestId;
-				_statusChangedMessage.Visible = true;
-				SnapSession.SelectedRequestId = string.Empty;
-			}
+            //if (!Database.IsPendingApproval(SnapSession.SelectedRequestId, SnapSession.CurrentUser.LoginId))
+            //{
+            //    _badStatusRequestId.Text = SnapSession.SelectedRequestId;
+            //    _statusChangedMessage.Visible = true;
+            //    SnapSession.SelectedRequestId = string.Empty;
+            //}
 		}
 	}
 }

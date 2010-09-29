@@ -21,8 +21,8 @@ var ViewIndexEnum = {
 		Support: 6	
 		}
 
-function GetRequests(viewIndex) {
-    var postData = "{\"view\":\"" + viewIndex + "\"}";
+function GetRequests(viewIndex, search) {
+    var postData = "{\"view\":\"" + viewIndex + "\",\"search\":\"" + search + "\"}";
     $.ajax({
         type: "POST",
         contentType: "application/json; character=utf-8",
@@ -41,26 +41,26 @@ function GetRequests(viewIndex) {
         }
     });
 }
-function GetSearchRequests(searchString) {
-    var postData = "{\"searchString\":\"" + searchString + "\"}";
-    $.ajax({
-        type: "POST",
-        contentType: "application/json; character=utf-8",
-        url: "ajax/AjaxUI.aspx/GetSearchRequests",
-        data: postData,
-        dataType: "json",
-        success: function(msg) {
-            if (msg.d.length > 0) {
-                CreateBlades(msg.d);
-            }
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            alert("GetRequests Error: " + XMLHttpRequest);
-            alert("GetRequests Error: " + textStatus);
-            alert("GetRequests Error: " + errorThrown);
-        }
-    });
-}
+//function GetSearchRequests(searchString) {
+//    var postData = "{\"searchString\":\"" + searchString + "\"}";
+//    $.ajax({
+//        type: "POST",
+//        contentType: "application/json; character=utf-8",
+//        url: "ajax/AjaxUI.aspx/GetSearchRequests",
+//        data: postData,
+//        dataType: "json",
+//        success: function(msg) {
+//            if (msg.d.length > 0) {
+//                CreateBlades(msg.d);
+//            }
+//        },
+//        error: function(XMLHttpRequest, textStatus, errorThrown) {
+//            alert("GetRequests Error: " + XMLHttpRequest);
+//            alert("GetRequests Error: " + textStatus);
+//            alert("GetRequests Error: " + errorThrown);
+//        }
+//    });
+//}
 function GetDetails(requestId) {
     var postData = "{\"requestId\":\"" + requestId + "\"}";
     $.ajax({

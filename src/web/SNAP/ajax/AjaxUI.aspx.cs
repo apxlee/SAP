@@ -19,16 +19,17 @@ namespace Apollo.AIM.SNAP.Web.ajax
 
         #region WebMethods
         [WebMethod]
-        public static List<string> GetRequests(ViewIndex view)
+        public static List<string> GetRequests(ViewIndex view, string search)
         {
-            return UI.GetRequests(view);
+            return UI.GetRequestBlades(view, search);
         }
 
-        [WebMethod]
-        public static List<string> GetSearchRequests(string searchString)
-        {
-            return UI.GetSearchRequests(searchString);
-        }
+        //TODO: REMOVE
+        //[WebMethod]
+        //public static List<string> GetSearchRequests(string searchString)
+        //{
+        //    return UI.GetSearchRequests(searchString);
+        //}
 
         [WebMethod]
         public static string GetAccessTeamFilter()

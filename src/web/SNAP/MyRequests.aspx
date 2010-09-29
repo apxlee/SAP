@@ -25,7 +25,7 @@
 
 <script type="text/javascript">
 
-    try { GetRequests(ViewIndexEnum.My_Requests); }
+    try { GetRequests(ViewIndexEnum.My_Requests, ""); }
     catch (err) {}
     
 	try { pageTracker._trackPageview("UserView"); }

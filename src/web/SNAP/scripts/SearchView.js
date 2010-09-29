@@ -9,7 +9,7 @@
 function ValidateInput() {
     $(document).ready(function() {
         var searchInput = $("#__searchInput");
-        if (searchInput.val() > "") { $("#_searchResultsContainer").html(""); GetSearchRequests(searchInput.val()); }
+        if (searchInput.val() > "") { $("#_searchResultsContainer").html(""); GetRequests(ViewIndexEnum.Search,searchInput.val()); }
         else { ActionMessage("No input", "Input criteria is required for a successful search."); return false; }
     });
 }

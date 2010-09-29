@@ -41,7 +41,7 @@
 
 <script type="text/javascript">
 
-    try { GetRequests(ViewIndexEnum.Access_Team); }
+    try { GetRequests(ViewIndexEnum.Access_Team, ""); }
     catch (err) { }
 
 	try { pageTracker._trackPageview("AccessTeamView"); }

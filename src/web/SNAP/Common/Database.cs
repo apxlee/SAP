@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Linq.Dynamic;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -78,9 +79,118 @@ namespace Apollo.AIM.SNAP.Web.Common
 
 		#endregion
 
-		#region Request Form
+        #region Request Blades
 
-		public static DataTable GetChangeComments(int requestId)
+        public static List<string> GetRequests(string condition, string userId, List<int> openEnums, DateTime closedDateLimit, ViewIndex view)
+        {
+            try
+            {
+                List<string> requestList = new List<string>();
+                string closedString = "(statusEnum==" + (int)RequestState.Closed + "&&lastModifiedDate >= DateTime(" + closedDateLimit.Year + "," + closedDateLimit.Month + "," + closedDateLimit.Day + "))";
+                string openString = "(";
+                foreach(int value in openEnums)
+                {
+                    openString = openString + "statusEnum==" + value + "||";
+                }
+                openString = openString.Substring(0, openString.Length - 2);
+                openString = openString + ")";
+                string requestCondition = openString + "||" + closedString;
+                using (var db = new SNAPDatabaseDataContext())
+                {
+                    switch (view)
+                    {
+                        case ViewIndex.my_approvals:
+                            string groupNames = "";
+                            foreach(string group in SnapSession.CurrentUser.MemberOf)
+                            {
+                                if (group != ""){groupNames = groupNames + "userId==\"" + group + "\"||";}
+                            }
+                            groupNames = groupNames.Substring(0, groupNames.Length - 2);
+                            string actorCondition = "(userId==\"" + userId + "\"||("+ groupNames +" && isGroup == true))";
+                            var approvals = from r in (db.SNAP_Requests.
+                                OrderBy("lastModifiedDate desc").Where(requestCondition))
+                                           join w in db.SNAP_Workflows on r.pkId equals w.requestId
+                                           join ws in (db.SNAP_Workflow_States.Where(condition)) on w.pkId equals ws.workflowId
+                                           join a in (db.SNAP_Actors.Where(actorCondition)) on w.actorId equals a.pkId
+                                           group r by new { r.pkId, r.userDisplayName, r.statusEnum, r.lastModifiedDate, ws.workflowStatusEnum } into grp
+                                           select new
+                                           {
+                                               DisplayName = grp.Key.userDisplayName,
+                                               RequestStatus = grp.Key.statusEnum,
+                                               LastModified = grp.Key.lastModifiedDate,
+                                               RequestId = grp.Key.pkId,
+                                               WorkflowStatus = grp.Key.workflowStatusEnum
+                                           };
+                            if (approvals != null)
+                            {
+                                foreach (var request in approvals)
+                                {
+                                    UI.RequestBlade newRequest = new UI.RequestBlade();
+                                    newRequest.DisplayName = request.DisplayName.StripTitleFromUserName();
+                                    newRequest.RequestStatus = Convert.ToString((RequestState)Enum.Parse(typeof(RequestState), request.RequestStatus.ToString())).StripUnderscore();
+                                    newRequest.WorkflowStatus = request.WorkflowStatus.ToString();
+                                    newRequest.LastModified = WebUtilities.TestAndConvertDate(request.LastModified.ToString());
+                                    newRequest.RequestId = request.RequestId.ToString();
+                                    requestList.Add(newRequest.ToJSONString());
+                                }
+                            }
+                            break;
+                        case ViewIndex.my_requests:
+                        case ViewIndex.access_team:
+                            var requests = db.SNAP_Requests.
+                                Where(condition + "&&" + requestCondition).
+                                OrderBy("lastModifiedDate desc").ToList();
+
+                            if (requests != null)
+                            {
+                                foreach (var request in requests)
+                                {
+                                    UI.RequestBlade newRequest = new UI.RequestBlade();
+                                    newRequest.DisplayName = request.userDisplayName.StripTitleFromUserName();
+                                    newRequest.RequestStatus = Convert.ToString((RequestState)Enum.Parse(typeof(RequestState), request.statusEnum.ToString())).StripUnderscore();
+                                    newRequest.WorkflowStatus = String.Empty;
+                                    newRequest.LastModified = WebUtilities.TestAndConvertDate(request.lastModifiedDate.ToString());
+                                    newRequest.RequestId = request.pkId.ToString();
+                                    requestList.Add(newRequest.ToJSONString());
+                                }
+                            }
+                        break;
+                        case ViewIndex.search:
+                        var search = db.SNAP_Requests.Where(r => r.userId.Contains(condition) 
+                            || r.userDisplayName.Contains(condition)
+                            || r.pkId.ToString().Contains(condition)).OrderByDescending(l => l.lastModifiedDate);
+
+                        if (search != null)
+                        {
+                            foreach (var request in search)
+                            {
+                                UI.RequestBlade newRequest = new UI.RequestBlade();
+                                newRequest.DisplayName = request.userDisplayName.StripTitleFromUserName();
+                                newRequest.RequestStatus = Convert.ToString((RequestState)Enum.Parse(typeof(RequestState), request.statusEnum.ToString())).StripUnderscore();
+                                newRequest.WorkflowStatus = String.Empty;
+                                newRequest.LastModified = WebUtilities.TestAndConvertDate(request.lastModifiedDate.ToString());
+                                newRequest.RequestId = request.pkId.ToString();
+                                requestList.Add(newRequest.ToJSONString());
+                            }
+                        }
+                        break;
+                    }
+                    
+                    return requestList;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("GetRequests \r\nMessage: " + ex.Message + "\r\nStackTrace: " + ex.StackTrace);
+                return null;
+            }
+        }
+
+        #endregion
+
+        #region Request Form
+
+        public static DataTable GetChangeComments(int requestId)
 		{
 			DataTable table = new DataTable();
 			table.Columns.Add("ActorDisplayName", typeof(string));
@@ -215,30 +325,30 @@ namespace Apollo.AIM.SNAP.Web.Common
 
 		#region Generic Request Info
 
-		public static bool IsPendingApproval(string requestId, string approvingManagerId)
-		{
-			using (var db = new SNAPDatabaseDataContext())
-			{
-				int[] requestStatusEnums = new int[] { (int)RequestState.Open, (int)RequestState.Pending };
+        public static bool IsPendingApproval(string requestId, string approvingManagerId)
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                int[] requestStatusEnums = new int[] { (int)RequestState.Open, (int)RequestState.Pending };
 
-				var result = from r in db.SNAP_Requests
-							 join w in db.SNAP_Workflows on r.pkId equals w.requestId
-							 join ws in db.SNAP_Workflow_States on w.pkId equals ws.workflowId
-							 join a in db.SNAP_Actors on w.actorId equals a.pkId
-							 where r.pkId == Convert.ToInt32(requestId)
-							 where a.userId == approvingManagerId
-							 where ws.workflowStatusEnum == (int)WorkflowState.Pending_Approval
-							 where requestStatusEnums.Contains(r.statusEnum)
-							 select r;
+                var result = from r in db.SNAP_Requests
+                             join w in db.SNAP_Workflows on r.pkId equals w.requestId
+                             join ws in db.SNAP_Workflow_States on w.pkId equals ws.workflowId
+                             join a in db.SNAP_Actors on w.actorId equals a.pkId
+                             where r.pkId == Convert.ToInt32(requestId)
+                             where a.userId == approvingManagerId
+                             where ws.workflowStatusEnum == (int)WorkflowState.Pending_Approval
+                             where requestStatusEnums.Contains(r.statusEnum)
+                             select r;
 
-				if (result.Count() > 0)
-				{
-					return true;
-				}
-			}
-			
-			return false;
-		}
+                if (result.Count() > 0)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
 		#endregion
 	}
