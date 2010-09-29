@@ -316,7 +316,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 
         #region WebMethod Calls
 
-        public static List<string> GetRequestBlades(ViewIndex view)
+        public static List<string> GetRequestBlades(ViewIndex view, string search)
         {
             string userId = SnapSession.CurrentUser.LoginId;
             List<int> openEnums = new List<int>();
@@ -325,32 +325,37 @@ namespace Apollo.AIM.SNAP.Web.Common
             openEnums.Add((int)RequestState.Change_Requested);
             DateTime closedDateLimit = new DateTime();
             closedDateLimit = DateTime.Now.AddDays(-30);
-
+            string condition = "";
             List<string> requestList = new List<string>();
 
             switch (view)
             {
                 case ViewIndex.my_requests:
-                    requestList.AddRange(Database.GetRequests("(userId==\"clschwim\"||submittedBy==\"clschwim\")"));
+                    condition = "(userId==\"clschwim\"||submittedBy==\"clschwim\")";
                     break;
                 case ViewIndex.my_approvals:
-
+                    condition = "(workflowStatusEnum==" + (int)WorkflowState.Approved + ")||(workflowStatusEnum==" + (int)WorkflowState.Approved + " && completedDate==null)";
                     break;
                 case ViewIndex.access_team:
-
+                    condition = "pkId>0";
+                    break;
+                case ViewIndex.search:
+                    condition = search;
                     break;
             }
 
+            requestList.AddRange(Database.GetRequests(condition, userId, openEnums, closedDateLimit, view));
             return requestList;
         }
 
+        //TODO: REMOVE
         //public static List<string> GetRequest(ViewIndex view)
         //{
         //    string userId = SnapSession.CurrentUser.LoginId;
-        //    List<int> openEnums = new List<int>();
-        //    openEnums.Add((int)RequestState.Open);
-        //    openEnums.Add((int)RequestState.Pending);
-        //    openEnums.Add((int)RequestState.Change_Requested);
+            //List<int> openEnums = new List<int>();
+            //openEnums.Add((int)RequestState.Open);
+            //openEnums.Add((int)RequestState.Pending);
+            //openEnums.Add((int)RequestState.Change_Requested);
         //    DateTime closedDateLimit = new DateTime();
         //    closedDateLimit = DateTime.Now.AddDays(-30);
 
@@ -612,48 +617,48 @@ namespace Apollo.AIM.SNAP.Web.Common
         //    return requestList;
         //}
 
-        public static List<string> GetSearchRequests(string searchString)
-        {
-            List<string> requestList = new List<string>();
-            using (var db = new SNAPDatabaseDataContext())
-            {
-                var searchResults = from r in db.SNAP_Requests
-                                      where r.userId.Contains(searchString)
-                                      || r.userDisplayName.Contains(searchString)
-                                      || r.pkId.ToString() == searchString
-                                      orderby r.lastModifiedDate descending
-                                         select new
-                                         {
-                                             DisplayName = r.userDisplayName.StripTitleFromUserName(),
-                                             RequestStatus = Convert.ToString((RequestState)Enum.Parse(typeof(RequestState)
-                                             , r.statusEnum.ToString())).StripUnderscore(),
-                                             WorkflowStatus = String.Empty,
-                                             LastModified = WebUtilities.TestAndConvertDate(r.lastModifiedDate.ToString()),
-                                             RequestId = r.pkId
-                                         };
-                if (searchResults != null)
-                {
-                    foreach (var request in searchResults)
-                    {
-                        RequestBlade newRequest = new RequestBlade();
-                        newRequest.DisplayName = request.DisplayName;
-                        newRequest.RequestStatus = request.RequestStatus.ToString();
-                        newRequest.WorkflowStatus = request.WorkflowStatus.ToString();
-                        newRequest.LastModified = request.LastModified;
-                        newRequest.RequestId = request.RequestId.ToString();
-                        DataContractJsonSerializer serializer = new DataContractJsonSerializer(newRequest.GetType());
-                        using (MemoryStream ms = new MemoryStream())
-                        {
-                            serializer.WriteObject(ms, newRequest);
-                            string retVal = Encoding.Default.GetString(ms.ToArray());
-                            requestList.Add(retVal);
-                        }
-                    }
-                }
+        //public static List<string> GetSearchRequests(string searchString)
+        //{
+        //    List<string> requestList = new List<string>();
+        //    using (var db = new SNAPDatabaseDataContext())
+        //    {
+        //        var searchResults = from r in db.SNAP_Requests
+        //                              where r.userId.Contains(searchString)
+        //                              || r.userDisplayName.Contains(searchString)
+        //                              || r.pkId.ToString() == searchString
+        //                              orderby r.lastModifiedDate descending
+        //                                 select new
+        //                                 {
+        //                                     DisplayName = r.userDisplayName.StripTitleFromUserName(),
+        //                                     RequestStatus = Convert.ToString((RequestState)Enum.Parse(typeof(RequestState)
+        //                                     , r.statusEnum.ToString())).StripUnderscore(),
+        //                                     WorkflowStatus = String.Empty,
+        //                                     LastModified = WebUtilities.TestAndConvertDate(r.lastModifiedDate.ToString()),
+        //                                     RequestId = r.pkId
+        //                                 };
+        //        if (searchResults != null)
+        //        {
+        //            foreach (var request in searchResults)
+        //            {
+        //                RequestBlade newRequest = new RequestBlade();
+        //                newRequest.DisplayName = request.DisplayName;
+        //                newRequest.RequestStatus = request.RequestStatus.ToString();
+        //                newRequest.WorkflowStatus = request.WorkflowStatus.ToString();
+        //                newRequest.LastModified = request.LastModified;
+        //                newRequest.RequestId = request.RequestId.ToString();
+        //                DataContractJsonSerializer serializer = new DataContractJsonSerializer(newRequest.GetType());
+        //                using (MemoryStream ms = new MemoryStream())
+        //                {
+        //                    serializer.WriteObject(ms, newRequest);
+        //                    string retVal = Encoding.Default.GetString(ms.ToArray());
+        //                    requestList.Add(retVal);
+        //                }
+        //            }
+        //        }
 
-            }
-            return requestList;
-        }
+        //    }
+        //    return requestList;
+        //}
 
         public static string GetAccessTeamFilter()
         {
