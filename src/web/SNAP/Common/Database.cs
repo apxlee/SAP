@@ -164,13 +164,13 @@ namespace Apollo.AIM.SNAP.Web.Common
                         {
                             foreach (var request in search)
                             {
-                                UI.RequestBlade newRequest = new UI.RequestBlade();
-                                newRequest.DisplayName = request.userDisplayName.StripTitleFromUserName();
-                                newRequest.RequestStatus = Convert.ToString((RequestState)Enum.Parse(typeof(RequestState), request.statusEnum.ToString())).StripUnderscore();
-                                newRequest.WorkflowStatus = String.Empty;
-                                newRequest.LastModified = WebUtilities.TestAndConvertDate(request.lastModifiedDate.ToString());
-                                newRequest.RequestId = request.pkId.ToString();
-                                requestList.Add(newRequest.ToJSONString());
+                                UI.RequestBlade newResult = new UI.RequestBlade();
+                                newResult.DisplayName = request.userDisplayName.StripTitleFromUserName();
+                                newResult.RequestStatus = Convert.ToString((RequestState)Enum.Parse(typeof(RequestState), request.statusEnum.ToString())).StripUnderscore();
+                                newResult.WorkflowStatus = String.Empty;
+                                newResult.LastModified = WebUtilities.TestAndConvertDate(request.lastModifiedDate.ToString());
+                                newResult.RequestId = request.pkId.ToString();
+                                requestList.Add(newResult.ToJSONString());
                             }
                         }
                         break;
