@@ -175,7 +175,6 @@ namespace Apollo.AIM.SNAP.Web.Common
                         }
                         break;
                     }
-                    
                     return requestList;
                 }
             }
