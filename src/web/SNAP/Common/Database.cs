@@ -86,22 +86,11 @@ namespace Apollo.AIM.SNAP.Web.Common
             try
             {
                 List<string> requestList = new List<string>();
-
-                List<int> openEnums = new List<int>();
-                openEnums.Add((int)RequestState.Open);
-                openEnums.Add((int)RequestState.Pending);
-                openEnums.Add((int)RequestState.Change_Requested);
                 DateTime closedDateLimit = new DateTime();
                 closedDateLimit = DateTime.Now.AddDays(-30);
                 string dateTime = closedDateLimit.Year + "," + closedDateLimit.Month + "," + closedDateLimit.Day;
                 string closedString = string.Format("statusEnum=={0}&&lastModifiedDate >= DateTime({1})", (int)RequestState.Closed, dateTime); ;
-                
-                string openString = "";
-                foreach(int value in openEnums)
-                {
-                    openString = openString + "statusEnum==" + value + "||";
-                }
-                openString = openString.Substring(0, openString.Length - 2);
+                string openString = string.Format("statusEnum=={0}||statusEnum=={1}||statusEnum=={2}", (int)RequestState.Open, (int)RequestState.Pending, (int)RequestState.Change_Requested);
                 string requestCondition = string.Format("({0})||({1})",openString,closedString);
 
                 using (var db = new SNAPDatabaseDataContext())
@@ -112,16 +101,16 @@ namespace Apollo.AIM.SNAP.Web.Common
                             string groupNames = "";
                             foreach(string group in SnapSession.CurrentUser.MemberOf)
                             {
-                                if (group != ""){groupNames = groupNames + "userId==\"" + group + "\"||";}
+                                if (group != ""){groupNames += "userId==\"" + group + "\"||";}
                             }
                             groupNames = groupNames.Substring(0, groupNames.Length - 2);
                             string actorCondition = string.Format("(userId==\"{0}\"||({1}&&isGroup==true))",userId,groupNames);
-                            var approvals = from r in (db.SNAP_Requests.
-                                OrderBy("lastModifiedDate desc").Where(requestCondition))
+                            var approvals = from r in (db.SNAP_Requests.Where(requestCondition))
                                            join w in db.SNAP_Workflows on r.pkId equals w.requestId
                                            join ws in (db.SNAP_Workflow_States.Where(condition)) on w.pkId equals ws.workflowId
                                            join a in (db.SNAP_Actors.Where(actorCondition)) on w.actorId equals a.pkId
                                            group r by new { r.pkId, r.userDisplayName, r.statusEnum, r.lastModifiedDate, ws.workflowStatusEnum } into grp
+                                           orderby grp.Key.lastModifiedDate descending
                                            select new
                                            {
                                                DisplayName = grp.Key.userDisplayName,
@@ -148,7 +137,7 @@ namespace Apollo.AIM.SNAP.Web.Common
                         case ViewIndex.access_team:
                             var requests = db.SNAP_Requests.
                                 Where(condition + "&&" + requestCondition).
-                                OrderBy("lastModifiedDate desc").ToList();
+                                OrderByDescending(r => r.lastModifiedDate).ToList();
 
                             if (requests != null)
                             {

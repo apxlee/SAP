@@ -320,8 +320,6 @@ namespace Apollo.AIM.SNAP.Web.Common
         {
             string userId = SnapSession.CurrentUser.LoginId;
             string condition = "";
-            List<string> requestList = new List<string>();
-
             switch (view)
             {
                 case ViewIndex.my_requests:
@@ -338,9 +336,7 @@ namespace Apollo.AIM.SNAP.Web.Common
                     condition = search;
                     break;
             }
-
-            requestList.AddRange(Database.GetRequests(condition, userId, view));
-            return requestList;
+            return Database.GetRequests(condition, userId, view);
         }
 
         //TODO: REMOVE
