@@ -81,7 +81,6 @@ namespace Apollo.AIM.SNAP.Web.Common
 
         #region Request Blades
 
-        //public static List<string> GetRequests(string condition, string userId, ViewIndex view)
         public static List<UI.RequestBlade> GetRequests(string condition, string userId, ViewIndex view)
         {
             try
@@ -120,6 +119,7 @@ namespace Apollo.AIM.SNAP.Web.Common
                                                RequestId = grp.Key.pkId,
                                                WorkflowStatus = grp.Key.workflowStatusEnum
                                            };
+
                             if (approvals != null)
                             {
                                 foreach (var request in approvals)

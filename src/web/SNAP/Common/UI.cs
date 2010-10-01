@@ -326,8 +326,8 @@ namespace Apollo.AIM.SNAP.Web.Common
                     condition = string.Format("(userId==\"{0}\"||submittedBy==\"{0}\")",userId);
                     break;
                 case ViewIndex.my_approvals:
-                    condition = string.Format("(workflowStatusEnum=={0}&&completedDate==null)||(workflowStatusEnum=={1})||(workflowStatusEnum=={2}&&completedDate==null)", 
-                        (int)WorkflowState.Pending_Approval, (int)WorkflowState.Approved, (int)WorkflowState.Not_Active);
+                    condition = string.Format("(workflowStatusEnum=={0}&&completedDate==null)||(workflowStatusEnum=={1})||(workflowStatusEnum=={2}&&completedDate==null)||(workflowStatusEnum=={3}&&completedDate!=null)",
+                        (int)WorkflowState.Pending_Approval, (int)WorkflowState.Approved, (int)WorkflowState.Not_Active, (int)WorkflowState.Closed_Denied);
                     break;
                 case ViewIndex.access_team:
                     condition = "pkId>0";
