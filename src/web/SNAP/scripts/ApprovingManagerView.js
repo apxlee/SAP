@@ -247,6 +247,16 @@ function ApproverActions(obj, requestId, action) {
             alert("ApproverAction Error: " + errorThrown);
         }
     });
+                
+    $("span").each(function() {
+        if ($(this).attr("snap") == "_approvalCount") {
+            if ($(this).html() == 0) {
+                var newNullPending = $("#_nullDataMessage").html().replace("__nullDataMessage_ID", "__nullDataMessage_PendingRequests")
+                .replace("__message_TEXT", "There are no requests Pending Approval at this time.");
+                $("#_pendingApprovalsContainer").append($(newNullPending).hide().show(2000));
+            }
+        }
+    });
 }
 function OpenNext(requestId) {
     var requestIds = [];

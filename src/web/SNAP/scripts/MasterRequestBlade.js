@@ -119,7 +119,7 @@ function ToggleDetails(requestId) {
 			          $(this).removeClass("csm_toggle_show_hover");
 			      }
 			    );
-        }
+        }   
     }
 }
 function ProcessingMessage(header, message) {
@@ -184,18 +184,19 @@ function AnimateActions(newSection, requestId) {
     var blade = $("#__requestContainer_" + requestId);
     var emptyDiv = "<div class='csm_clear'></div>";
     var toggle = $("#__toggleIconContainer_" + requestId);
-
-    $(blade).closest("div.csm_container_center_700").find("h1").each(
-    function() {
-        var section = $(this);
-        if ($(this).html() == newSection) {
-            blade.fadeOut(1000, function() {
-                if ($(section).next().attr("snap") == "_nullDataMessage") { $(section).next().remove(); }
-                $(this).insertAfter(section);
-                ToggleDetails(requestId);
-                $(this).fadeIn(1000);
-            });
+    ToggleDetails(requestId);
+    blade.fadeOut(1000, function() {
+        switch (newSection) {
+            case "Open Requests":
+                $("#__nullDataMessage_OpenRequests").remove();
+                $("#_openRequestsContainer").append($(this));
+                break;
+            case "Closed Requests":
+                $("#__nullDataMessage_ClosedRequests").remove();
+                $("#_closedRequestsContainer").append($(this));
+                break;
         }
+        $(this).fadeIn(1000);
     });
 }
 function UpdateCount(countName) {

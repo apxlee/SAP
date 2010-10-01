@@ -587,7 +587,7 @@ function AccessTeamActions(obj, requestId, action) {
                         AddComments(requestId, "Access &amp; Identity Management", "Acknowledged", "", true);
                         EditBuilder($("#closed_cancelled_" + requestId), requestId);
                         $("#__overallRequestStatus_" + requestId).html("Pending");
-                        GetAccessTeamFilter()
+                        GetAccessTeamFilter();
                         break;
                     case '2':
                         $('#_indicatorDiv').hide();
@@ -626,7 +626,7 @@ function AccessTeamActions(obj, requestId, action) {
                         GetAccessTeamFilter();
                         UpdateCount("_accessTeamCount");
                         break;
-                }
+                }                
             }
             else {
                 MessageDialog(msg.d.Title, msg.d.Message);
@@ -1208,6 +1208,16 @@ function BuilderActions(obj, requestId, state) {
             alert("GetNames Error: " + errorThrown);
         }
     });
+
+    $("span").each(function() {
+        if ($(this).attr("snap") == "_accessTeamCount") {
+            if ($(this).html() == 0) {
+                var newNullOpen = $("#_nullDataMessage").html().replace("__nullDataMessage_ID", "__nullDataMessage_OpenRequests")
+                .replace("__message_TEXT", "There are no Open Requests at this time.");
+                $("#_openRequestsContainer").append($(newNullOpen).hide().show(2000));
+            }
+        }
+    });
 }
 function CreateWorkflow(obj, requestId) {
     if ($("#__managerUserId_" + requestId).val() > "") {
@@ -1234,9 +1244,16 @@ function CreateWorkflow(obj, requestId) {
                     var space = "<b>&nbsp;</b>";
                     $(space).insertAfter($("#closed_cancelled_" + requestId));
                     $(space).insertAfter($("#edit_workflow_" + requestId));
+
+                    if (!$("#access_filter_container").hasClass("filter_view_all")) {
+                        $("#__requestContainer_" + requestId).fadeOut(1000);
+                        ToggleDetails(requestId);
+                    }
                     
                     $("#__requestTrackingSection_" + requestId).html("");
                     GetTracking(null, null, requestId);
+                    
+                    GetAccessTeamFilter();
                 }
                 else {
                     MessageDialog(msg.d.Title, msg.d.Message);

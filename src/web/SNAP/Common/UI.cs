@@ -742,7 +742,7 @@ namespace Apollo.AIM.SNAP.Web.Common
                 var query = from sa in db.SNAP_Actors
                             join sag in db.SNAP_Actor_Groups on sa.actor_groupId equals sag.pkId
                             where sa.isActive == true && sag.isActive == true && sag.actorGroupType < 2
-                            orderby sag.actorGroupType, sag.groupName descending
+                            orderby sag.actorGroupType, sag.groupName ascending
                             select new
                             {
                                 ActorId = sa.pkId,
