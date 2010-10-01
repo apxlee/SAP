@@ -26,7 +26,7 @@
 	<form runat="server" id="_defaultForm">
 	<input id="_hiddenCurrentUserId" type="hidden" runat="server" value="" />
 	<input id="_hiddenCurrentUserFullName" type="hidden" runat="server" value="" />
-	<input id="_hiddenSelectedRequestId" type="hidden" runat="server" value="" />
+	<input id="_hiddenSelectedRequestId" type="hidden" runat="server" value="" enableviewstate="false" />
 	
 	<uc:DefaultIncludes id="_includes" runat="server" />
 	

@@ -17,7 +17,7 @@ namespace Apollo.AIM.SNAP.Web
 		protected void Page_Load(object sender, EventArgs e)
 		{
 			Session.Add("MakeSticky", "true"); // TODO REMOVE
-		    this._password.Text = "Password1";
+		    //this._password.Text = "Password1";
 
 			if (!string.IsNullOrEmpty(SnapSession.RequestedPage)) // TODO: don't preselect if requested page was error
 			{
@@ -28,7 +28,6 @@ namespace Apollo.AIM.SNAP.Web
 				_followLinkMessage.Visible = true;
 			}
 		}
-
 
 		private void DisplayMessage(string message, bool isError)
 		{

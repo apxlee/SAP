@@ -32,7 +32,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 				if (!string.IsNullOrEmpty(Request.QueryString[QueryStringConstants.REQUEST_ID]))
 				{ SnapSession.SelectedRequestId = Request.QueryString[QueryStringConstants.REQUEST_ID]; }
 			}
-			else { SnapSession.SelectedRequestId = string.Empty; }
+			//else { SnapSession.SelectedRequestId = string.Empty; }
 			
 			if (!SnapSession.IsUserCreated)
 			{
