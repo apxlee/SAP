@@ -19,7 +19,7 @@ namespace Apollo.AIM.SNAP.Web.ajax
 
         #region WebMethods
         [WebMethod]
-        public static List<string> GetRequests(ViewIndex view, string search)
+        public static List<UI.RequestBlade> GetRequests(ViewIndex view, string search)
         {
             return UI.GetRequestBlades(view, search);
         }

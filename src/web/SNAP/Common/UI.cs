@@ -316,7 +316,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 
         #region WebMethod Calls
 
-        public static List<string> GetRequestBlades(ViewIndex view, string search)
+        public static List<UI.RequestBlade> GetRequestBlades(ViewIndex view, string search)
         {
             string userId = SnapSession.CurrentUser.LoginId;
             string condition = "";

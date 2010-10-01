@@ -81,11 +81,12 @@ namespace Apollo.AIM.SNAP.Web.Common
 
         #region Request Blades
 
-        public static List<string> GetRequests(string condition, string userId, ViewIndex view)
+        //public static List<string> GetRequests(string condition, string userId, ViewIndex view)
+        public static List<UI.RequestBlade> GetRequests(string condition, string userId, ViewIndex view)
         {
             try
             {
-                List<string> requestList = new List<string>();
+                var requestList = new List<UI.RequestBlade>();
                 DateTime closedDateLimit = new DateTime();
                 closedDateLimit = DateTime.Now.AddDays(-30);
                 string dateTime = closedDateLimit.Year + "," + closedDateLimit.Month + "," + closedDateLimit.Day;
@@ -129,7 +130,7 @@ namespace Apollo.AIM.SNAP.Web.Common
                                     newRequest.WorkflowStatus = request.WorkflowStatus.ToString();
                                     newRequest.LastModified = WebUtilities.TestAndConvertDate(request.LastModified.ToString());
                                     newRequest.RequestId = request.RequestId.ToString();
-                                    requestList.Add(newRequest.ToJSONString());
+                                    requestList.Add(newRequest);
                                 }
                             }
                             break;
@@ -149,7 +150,7 @@ namespace Apollo.AIM.SNAP.Web.Common
                                     newRequest.WorkflowStatus = String.Empty;
                                     newRequest.LastModified = WebUtilities.TestAndConvertDate(request.lastModifiedDate.ToString());
                                     newRequest.RequestId = request.pkId.ToString();
-                                    requestList.Add(newRequest.ToJSONString());
+                                    requestList.Add(newRequest);
                                 }
                             }
                         break;
@@ -168,7 +169,7 @@ namespace Apollo.AIM.SNAP.Web.Common
                                 newResult.WorkflowStatus = String.Empty;
                                 newResult.LastModified = WebUtilities.TestAndConvertDate(request.lastModifiedDate.ToString());
                                 newResult.RequestId = request.pkId.ToString();
-                                requestList.Add(newResult.ToJSONString());
+                                requestList.Add(newResult);
                             }
                         }
                         break;

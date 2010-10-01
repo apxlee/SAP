@@ -175,7 +175,7 @@ function CreateBlades(requests) {
     var closedCount = 0;
     if (requests.length > 0) {
         $.each(requests, function(index, value) {
-            var data = jQuery.parseJSON(value);
+            var data = value;
             var newRequestBlade = $("#_requestBlade").html();
             newRequestBlade = newRequestBlade.replace("__requestContainer_ID", "__requestContainer_" + data.RequestId)
         .replace("__affectedEndUserName_TEXT", data.DisplayName)
