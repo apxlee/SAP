@@ -11,18 +11,6 @@
 <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>jquery-ui-1.7.2.custom.min.js" type="text/javascript"></script>
 <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>jquery.hotkeys-0.7.9.min.js" type="text/javascript"></script>
 <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>jquery.json-2.2.min.js" type="text/javascript"></script>
-<script type="text/javascript">
-
-//	$(document).ready(
-
-//		// This function is to hide 'Edit Request Form' link unless currently logged-in user is also AEU
-//		function() {
-//			var hiddenSpanId = '_' + $("input[id*='_hiddenCurrentUserId']").attr("value") + '_request_link';
-//			$("span[id*=" + hiddenSpanId + "]").removeClass("csm_hidden_span");
-//		}
-
-//		);
-</script>
 
 <script type='html/template' id='_nullDataMessage'>
     <div id="__nullDataMessage_ID" class="csm_content_container">

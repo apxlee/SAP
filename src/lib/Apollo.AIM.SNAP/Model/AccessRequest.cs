@@ -209,8 +209,7 @@ namespace Apollo.AIM.SNAP.Model
                                                 WorkflowState.Change_Requested);
 
 					comment = comment.Replace("<br />", string.Empty); //Convert.ToDateTime(DateTime.Now).ToString("MMM d, yyyy") + "&nbsp;-&nbsp;");
-					comment += string.Format("<span id='_{2}_request_link' class='request_form_no_show csm_hidden_span'><br /><a href='{0}.aspx?requestId={1}'>Edit Request Form</a></span>", PageNames.REQUEST_FORM, _id, req.userId);
-
+					//comment += string.Format("<span id='_{2}_request_link' requestId='{1}' class='request_form_no_show csm_hidden_span'><br /><a href='{0}.aspx?requestId={1}'>Edit Request Form</a></span>", PageNames.REQUEST_FORM, _id, req.userId);
 
                     if (result)
                     {
@@ -617,14 +616,13 @@ namespace Apollo.AIM.SNAP.Model
                             var handler = changeRequest.Handle.Split(':')[1]; // chg:12345
                             var sdlink = ConfigurationManager.AppSettings["SDLink"] + handler;
 
-                            addAccessTeamComment(accessTeamWF
-                                                 ,
-                                                 string.Format(
-                                                     "Due Date: {0} | Service Desk Ticket: <a target=\"_blank\" href=\"{2}\">{1}</a>"
-                                                     , Convert.ToDateTime(dueDate).ToString("MMM d, yyyy")
-                                                     , req.ticketNumber
-                                                     , sdlink)
-                                                 , CommentsType.Ticket_Created);
+                            addAccessTeamComment(
+								accessTeamWF
+								, string.Format("Due Date: {0} | Service Desk Ticket: <a target=\"_blank\" href=\"{2}\">{1}</a>"
+									, Convert.ToDateTime(dueDate).ToString("MMM d, yyyy")
+                                    , req.ticketNumber
+                                    , sdlink)
+                                , CommentsType.Ticket_Created);
 
                             db.SubmitChanges();
                             resp = new WebMethodResponse(true, "Ticket Creation", "Success");
@@ -1503,7 +1501,7 @@ namespace Apollo.AIM.SNAP.Model
             }
 
 			comment = comment.Replace("<br />", string.Empty); //Convert.ToDateTime(DateTime.Now).ToString("MMM d, yyyy") + "&nbsp;-&nbsp;");
-			comment += string.Format("<span id='_{2}_request_link' class='request_form_no_show csm_hidden_span'><br /><a href='{0}.aspx?requestId={1}'>Edit Request Form</a></span>", PageNames.REQUEST_FORM, req.pkId, req.userId);
+			//comment += string.Format("<span id='_{2}_request_link' requestId='{1}' class='request_form_no_show csm_hidden_span'><br /><a href='{0}.aspx?requestId={1}'>Edit Request Form</a></span>", PageNames.REQUEST_FORM, req.pkId, req.userId);
 
 			//if (result)
 			//{

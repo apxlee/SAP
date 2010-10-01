@@ -234,11 +234,12 @@ namespace Apollo.AIM.SNAP.Web.Common
 		public static DataTable BuildEmptyTrackingCommentsTable()
 		{
 			DataTable table = new DataTable();
-			table.Columns.Add("action", typeof(string));
+			table.Columns.Add("comment_type", typeof(int));
 			table.Columns.Add("workflow_actor", typeof(string));
 			table.Columns.Add("comment_date", typeof(string));
 			table.Columns.Add("comment", typeof(string));
-			table.Columns.Add("is_new", typeof(bool));
+			table.Columns.Add("is_alert", typeof(bool));
+			table.Columns.Add("request_id", typeof(string));
 
 			return table;
 		}
@@ -298,6 +299,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 										   actorName = a.displayName,
 										   createdDate = wc.createdDate,
 										   commentText = wc.commentText,
+										   requestId = w.requestId
 									   };
 
 				if (workflowComments != null)
@@ -306,17 +308,24 @@ namespace Apollo.AIM.SNAP.Web.Common
 					foreach (var comment in workflowComments)
 					{
 						table.Rows.Add(
-							comment.commentTypeEnum.ToString()
-							, (comment.actorName == "Access & Identity Management") ? "AIM" : comment.actorName
+							comment.commentTypeEnum
+							, (comment.actorName == "Access & Identity Management") ? "AIM" : comment.actorName // TODO: move this to trackingBlades.cs?
 							, WebUtilities.TestAndConvertDate(comment.createdDate.ToString())
 							, comment.commentText
-							, (comment.commentTypeEnum == (int)CommentsType.Requested_Change || comment.commentTypeEnum == (int)CommentsType.Email_Reminder) ? true : false);
+							, (comment.commentTypeEnum == (int)CommentsType.Requested_Change || comment.commentTypeEnum == (int)CommentsType.Email_Reminder) ? true : false
+							, comment.requestId
+							);
 					}
 					return table;
 				}
 
 				return null;
 			}
+		}
+
+		public static bool IsRequestFormEditable(string requestId, string requestingUserId)
+		{
+			return true;
 		}
 
 		#endregion

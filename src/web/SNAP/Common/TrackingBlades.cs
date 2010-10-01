@@ -149,18 +149,32 @@ namespace Apollo.AIM.SNAP.Web.Common
 				foreach (DataRow comment in workflowCommentsTable.Rows)
 				{
 					string actionActorName = string.Empty;
-					if (comment["action"].ToString() == CommentsType.Email_Reminder.ToString()
-						|| comment["action"].ToString() == CommentsType.Requested_Change.ToString())
+					if ( (int)comment["comment_type"] == (int)CommentsType.Email_Reminder
+						|| (int)comment["comment_type"] == (int)CommentsType.Requested_Change )  // TODO: make sure manager name shows instead of AIM if appropriate
 					{ actionActorName = "AIM"; }
 					else { actionActorName = comment["workflow_actor"].ToString(); }
 
-					// TODO: move string to config file?
+					// If comment is Requested_Change, then determine if 'Edit Request Form' link is appended...
+					//
+					string adjustedComment = comment["comment"].ToString().Replace("\n", "<br />");
+					if ( (int)comment["comment_type"] == (int)CommentsType.Requested_Change )
+					{
+						// Edit Request Form link is only available to AEU or SUBMITTER...
+						//
+						if (Database.IsRequestFormEditable(comment["request_id"].ToString(), SnapSession.CurrentUser.LoginId))
+						{
+							adjustedComment += string.Format("<span><br /><a href=\"{0}.aspx?requestId={1}\">[IMAGE] Edit Request Form</a></span>"
+								, PageNames.REQUEST_FORM, comment["request_id"]);
+						}
+					}
+
 					workflowComments.AppendFormat("<p{0}><u>{1} by {2} on {3}</u><br />{4}</p>"
-						, (bool)comment["is_new"] ? " class=\"csm_error_text\"" : string.Empty
-						, Convert.ToString((CommentsType)Enum.Parse(typeof(CommentsType), comment["action"].ToString())).StripUnderscore()
+						, (bool)comment["is_alert"] ? " class=\"csm_error_text\"" : string.Empty
+						, Convert.ToString((CommentsType)Enum.Parse(typeof(CommentsType), comment["comment_type"].ToString())).StripUnderscore()
 						, actionActorName
 						, Convert.ToDateTime(comment["comment_date"]).ToString("MMM d\\, yyyy")
-						, comment["comment"].ToString().Replace("\n", "<br />"));
+						, adjustedComment
+						);
 				}
 
 				return workflowComments.ToString();
