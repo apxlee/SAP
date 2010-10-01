@@ -24,6 +24,13 @@
 //		);
 </script>
 
+<script type='html/template' id='_nullDataMessage'>
+    <div id="__nullDataMessage_ID" class="csm_content_container">
+		<div class="csm_text_container">
+			<p>__message_TEXT</p>
+		</div>
+	</div>
+</script>
 <script type='html/template' id='_requestBlade'>
     <div class="csm_content_container" id="__requestContainer_ID"> 
 	    <!-- BEGIN FLOATING HEADING --> 

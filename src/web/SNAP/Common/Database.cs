@@ -136,7 +136,7 @@ namespace Apollo.AIM.SNAP.Web.Common
                         case ViewIndex.my_requests:
                         case ViewIndex.access_team:
                             var requests = db.SNAP_Requests.
-                                Where(condition + "&&" + requestCondition).
+                                Where(condition + "&&(" + requestCondition + ")").
                                 OrderByDescending(r => r.lastModifiedDate).ToList();
 
                             if (requests != null)

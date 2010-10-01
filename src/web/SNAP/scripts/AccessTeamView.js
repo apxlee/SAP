@@ -171,10 +171,13 @@ function FilterClick(obj) {
     $("div[id='access_filter_container']").attr("class", $(obj).attr('id'));
 }
 function CreateBlades(requests) {
-    $.each(requests, function(index, value) {
-        var data = jQuery.parseJSON(value);
-        var newRequestBlade = $("#_requestBlade").html();
-        newRequestBlade = newRequestBlade.replace("__requestContainer_ID","__requestContainer_" + data.RequestId)
+    var openCount = 0;
+    var closedCount = 0;
+    if (requests.length > 0) {
+        $.each(requests, function(index, value) {
+            var data = jQuery.parseJSON(value);
+            var newRequestBlade = $("#_requestBlade").html();
+            newRequestBlade = newRequestBlade.replace("__requestContainer_ID", "__requestContainer_" + data.RequestId)
         .replace("__affectedEndUserName_TEXT", data.DisplayName)
         .replace("__affectedEndUserName_ID", "__affectedEndUserName_" + data.RequestId)
         .replace("__overallRequestStatus_TEXT", data.RequestStatus)
@@ -190,19 +193,34 @@ function CreateBlades(requests) {
         .replace("__legend_ID", "__legend_" + data.RequestId)
         .replace("__requestTrackingSection_ID", "__requestTrackingSection_" + data.RequestId);
 
-        if (data.RequestStatus != "Closed") { $("#_openRequestsContainer").append($(newRequestBlade)); }
-        else { $("#_closedRequestsContainer").append($(newRequestBlade)); }
-        $("#__toggleIconContainer_" + data.RequestId).hover(function() {
-            $(this).addClass("csm_toggle_show_hover");
-        },
+            if (data.RequestStatus != "Closed") { $("#_openRequestsContainer").append($(newRequestBlade)); openCount++; }
+            else { $("#_closedRequestsContainer").append($(newRequestBlade)); closedCount++ }
+            $("#__toggleIconContainer_" + data.RequestId).hover(function() {
+                $(this).addClass("csm_toggle_show_hover");
+            },
 		    function() {
 		        $(this).removeClass("csm_toggle_show_hover");
 		    }
 	    );
-	    $("#__toggleIconContainer_" + data.RequestId).bind('click', function() {
-	        ToggleDetails(data.RequestId);
-	    });
-    });
+            $("#__toggleIconContainer_" + data.RequestId).bind('click', function() {
+                ToggleDetails(data.RequestId);
+            });
+        });
+
+        var selectedRequestId = $("input[id*='_hiddenSelectedRequestId']");
+        if (selectedRequestId.val() != "") { ToggleDetails(selectedRequestId.val()); selectedRequestId.val(""); }
+    }
+
+    if (openCount == 0) {
+        var newNullOpen = $("#_nullDataMessage").html().replace("__nullDataMessage_ID", "__nullDataMessage_OpenRequests")
+        .replace("__message_TEXT", "There are no Open Requests at this time.");
+        $("#_openRequestsContainer").append($(newNullOpen));
+    }
+    if (closedCount == 0) {
+        var newNullClosed = $("#_nullDataMessage").html().replace("__nullDataMessage_ID", "__nullDataMessage_ClosedRequests")
+        .replace("__message_TEXT", "There are no Closed Requests at this time.");
+        $("#_closedRequestsContainer").append($(newNullClosed));
+    }
 }
 function CreateRequestDetails(details, requestId) {
     var data = jQuery.parseJSON(details);

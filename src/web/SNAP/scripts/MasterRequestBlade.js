@@ -30,9 +30,7 @@ function GetRequests(viewIndex, search) {
         data: postData,
         dataType: "json",
         success: function(msg) {
-            if (msg.d.length > 0) {
-                CreateBlades(msg.d);
-            }
+            CreateBlades(msg.d);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             alert("GetRequests Error: " + XMLHttpRequest);
@@ -41,26 +39,6 @@ function GetRequests(viewIndex, search) {
         }
     });
 }
-//function GetSearchRequests(searchString) {
-//    var postData = "{\"searchString\":\"" + searchString + "\"}";
-//    $.ajax({
-//        type: "POST",
-//        contentType: "application/json; character=utf-8",
-//        url: "ajax/AjaxUI.aspx/GetSearchRequests",
-//        data: postData,
-//        dataType: "json",
-//        success: function(msg) {
-//            if (msg.d.length > 0) {
-//                CreateBlades(msg.d);
-//            }
-//        },
-//        error: function(XMLHttpRequest, textStatus, errorThrown) {
-//            alert("GetRequests Error: " + XMLHttpRequest);
-//            alert("GetRequests Error: " + textStatus);
-//            alert("GetRequests Error: " + errorThrown);
-//        }
-//    });
-//}
 function GetDetails(requestId) {
     var postData = "{\"requestId\":\"" + requestId + "\"}";
     $.ajax({

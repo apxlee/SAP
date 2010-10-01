@@ -18,27 +18,10 @@
 
 	<h1>Pending Approval</h1>
 	<div id="_pendingApprovalsContainer"></div>
-	<div id="_nullDataMessage_PendingApprovals" snap="_nullDataMessage" class="csm_content_container"  style="display:none;">
-		<div class="csm_text_container">
-			<p>There are no requests Pending Approval at this time.</p>
-		</div>
-	</div>
-	
 	<h1>Open Requests</h1>
 	<div id="_openRequestsContainer"></div>
-	<div id="_nullDataMessage_OpenRequests" snap="_nullDataMessage" class="csm_content_container"  style="display:none;">
-		<div class="csm_text_container">
-			<p>There are no Open Requests at this time.</p>
-		</div>
-	</div>
-	
 	<h1>Closed Requests</h1>
 	<div id="_closedRequestsContainer"></div>
-	<div id="_nullDataMessage_ClosedRequests" snap="_nullDataMessage" class="csm_content_container"  style="display:none;">
-		<div class="csm_text_container">
-			<p>There are no Closed Requests at this time.</p>
-		</div>
-	</div>
 </div>
 
 <script type="text/javascript">
