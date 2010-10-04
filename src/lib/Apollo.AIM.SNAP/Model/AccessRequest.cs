@@ -562,7 +562,6 @@ namespace Apollo.AIM.SNAP.Model
         public WebMethodResponse WorkflowAck(int wid, WorkflowAction action, string comment)
         {
             WebMethodResponse resp = new WebMethodResponse();
-			comment = comment.Replace("<br />", string.Empty);
             ApprovalWorkflow wf = ApprovalWorkflow.CreateApprovalWorkflow(wid);
             if (wf == null)
                 return new WebMethodResponse(false, "Approver Workflow Failed", "Unknown approver");

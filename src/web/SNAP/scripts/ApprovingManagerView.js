@@ -199,7 +199,7 @@ function ApproverActions(obj, requestId, action) {
     $.ajax({
         type: "POST",
         contentType: "application/json; character=utf-8",
-        url: "AjaxCalls.aspx/ApproverActions",
+        url: "ajax/AjaxActions.aspx/ApproverActions",
         data: newAction.toJSON,
         dataType: "json",
         success: function(msg) {

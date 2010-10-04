@@ -569,7 +569,7 @@ function AccessTeamActions(obj, requestId, action) {
     $.ajax({
         type: "POST",
         contentType: "application/json; character=utf-8",
-        url: "AjaxCalls.aspx/AccessTeamActions",
+        url: "ajax/AjaxActions.aspx/AccessTeamActions",
         data: newAction.toJSON,
         dataType: "json",
         success: function(msg) {
@@ -659,7 +659,7 @@ function AccessComments(obj, requestId) {
         $.ajax({
             type: "POST",
             contentType: "application/json; character=utf-8",
-            url: "AjaxCalls.aspx/AccessComments",
+            url: "ajax/AjaxActions.aspx/AccessComments",
             data: newAction.toJSON,
             dataType: "json",
             success: function(msg) {
@@ -1154,7 +1154,7 @@ function BuilderActions(obj, requestId, state) {
     $.ajax({
         type: "POST",
         contentType: "application/json; character=utf-8",
-        url: "AjaxCalls.aspx/BuilderActions",
+        url: "ajax/AjaxActions.aspx/BuilderActions",
         data: postData,
         dataType: "json",
         success: function(msg) {
@@ -1225,7 +1225,7 @@ function CreateWorkflow(obj, requestId) {
         $.ajax({
             type: "POST",
             contentType: "application/json; character=utf-8",
-            url: "AjaxCalls.aspx/CreateWorkflow",
+            url: "ajax/AjaxActions.aspx/CreateWorkflow",
             data: postData,
             dataType: "json",
             success: function(msg) {
@@ -1279,7 +1279,7 @@ function EditCreatedWorkflow(obj, requestId) {
         $.ajax({
             type: "POST",
             contentType: "application/json; character=utf-8",
-            url: "AjaxCalls.aspx/EditWorkflow",
+            url: "ajax/AjaxActions.aspx/EditWorkflow",
             data: postData,
             dataType: "json",
             success: function(msg) {
