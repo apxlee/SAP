@@ -240,12 +240,6 @@ function ApproverActions(obj, requestId, action) {
                 MessageDialog(msg.d.Title, msg.d.Message);
             }
         }
-		,
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            alert("ApproverAction Error: " + XMLHttpRequest);
-            alert("ApproverAction Error: " + textStatus);
-            alert("ApproverAction Error: " + errorThrown);
-        }
     });
                 
     $("span").each(function() {

@@ -19,6 +19,7 @@ $(document).ready(function() {
         QuickFilter(quicksearchInput.val());
     });
 });
+
 function ToggleQuickSearch() {
     var quicksearch = $("#__quicksearch");
     var quicksearchInput = $("#__quicksearchInput");
@@ -54,11 +55,6 @@ function GetAccessTeamFilter() {
             if (msg.d.length > 0) {
                 UpdateFilterCounts(msg.d);
             }
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            alert("GetDetails Error: " + XMLHttpRequest);
-            alert("GetDetails Error: " + textStatus);
-            alert("GetDetails Error: " + errorThrown);
         }
     });
 }
@@ -280,11 +276,6 @@ function GetBuilder(requestId) {
             if (msg.d.length > 0) {
                 CreateBuilder(msg.d, requestId);
             }
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            alert("GetDetails Error: " + XMLHttpRequest);
-            alert("GetDetails Error: " + textStatus);
-            alert("GetDetails Error: " + errorThrown);
         }
     });
 }
@@ -632,12 +623,6 @@ function AccessTeamActions(obj, requestId, action) {
                 MessageDialog(msg.d.Title, msg.d.Message);
             }
         }
-		,
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            alert("AccessTeamAction Error: " + XMLHttpRequest);
-            alert("AccessTeamAction Error: " + textStatus);
-            alert("AccessTeamAction Error: " + errorThrown);
-        }
     });
 }
 function AudienceClick(obj) {
@@ -688,12 +673,6 @@ function AccessComments(obj, requestId) {
                     MessageDialog(msg.d.Title, msg.d.Message);
 
                 }
-            }
-		,
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                alert("Add Comment Error: " + XMLHttpRequest);
-                alert("Add Comment Error: " + textStatus);
-                alert("Add Comment Error: " + errorThrown);
             }
         });
     }
@@ -781,12 +760,6 @@ function GetNames(requestId, groupId, name, section) {
                     FillActorSelection(requestId, groupId, name, names);
                 }
             }
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            $("#_managerSelectionDiv").dialog("destroy");
-            alert("GetNames Error: " + XMLHttpRequest);
-            alert("GetNames Error: " + textStatus);
-            alert("GetNames Error: " + errorThrown);
         }
     });
 }
@@ -1193,19 +1166,12 @@ function BuilderActions(obj, requestId, state) {
             else {
                 if (state == 5) {
                     MessageDialog(msg.d.Title, msg.d.Message);
-
                     $("#closed_completed_" + requestId).removeAttr("disabled");
                 }
                 else {
                     MessageDialog(msg.d.Title, msg.d.Message);
                 }
             }
-        }
-		,
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            alert("GetNames Error: " + XMLHttpRequest);
-            alert("GetNames Error: " + textStatus);
-            alert("GetNames Error: " + errorThrown);
         }
     });
 
@@ -1257,14 +1223,7 @@ function CreateWorkflow(obj, requestId) {
                 }
                 else {
                     MessageDialog(msg.d.Title, msg.d.Message);
-
                 }
-            },
-
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                alert("GetNames Error: " + XMLHttpRequest);
-                alert("GetNames Error: " + textStatus);
-                alert("GetNames Error: " + errorThrown);
             }
         });
     }
@@ -1294,12 +1253,6 @@ function EditCreatedWorkflow(obj, requestId) {
                 else {
                     MessageDialog(msg.d.Title, msg.d.Message);
                 }
-            },
-
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                alert("GetNames Error: " + XMLHttpRequest);
-                alert("GetNames Error: " + textStatus);
-                alert("GetNames Error: " + errorThrown);
             }
         });
     }
@@ -1401,12 +1354,6 @@ function ActorAdd(obj, requestId, groupId) {
                         UpdateActorList(requestId, groupId, msg.d);
                     }
                 }
-            },
-
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                alert("AddActor Error: " + XMLHttpRequest);
-                alert("AddActor Error: " + textStatus);
-                alert("AddActor Error: " + errorThrown);
             }
         });
     }

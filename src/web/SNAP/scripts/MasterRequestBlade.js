@@ -21,6 +21,46 @@ var ViewIndexEnum = {
 		Support: 6	
 		}
 
+$().ready(function() {
+    $.ajaxSetup({
+        error: function(x, e) {
+            switch (x.status) {
+                case 0:
+                case 12007:
+                    MessageDialog("Network connection Issue.", "Please check you connection.");
+                    CloseRedirect();
+                    break;
+                case 404:
+                    MessageDialog("Requested URL not found.", "You will be redirected to the login page.");
+                    CloseRedirect();
+                    break;
+                case 500:
+                    MessageDialog("Session Timeout", "You will be redirected to the login page.");
+                    CloseRedirect();
+                    break;
+                default:
+                    if (e == 'parsererror') { MessageDialog("Application Error", "You will be redirected to the login page."); }
+                    else if (e == 'timeout') { MessageDialog("Application Timeout", "You will be redirected to the login page."); }
+                    else { MessageDialog("Uknown Error.", "You will be redirected to the login page."); }
+                    CloseRedirect();
+                    break;
+            }
+        }
+    });
+});
+
+function CloseRedirect() {
+    var closeDiv = $("#_closeMessageDiv");
+    $(closeDiv).find("input[type=button]").click(function() {
+        window.location.href = "default.aspx";
+        $(this).unbind("click");
+        $(this).click(function() {
+            $('#_actionMessageDiv').hide(); 
+            $('#_closeMessageDiv').hide();
+        });
+    });
+}
+
 function GetRequests(viewIndex, search) {
     var postData = "{\"view\":\"" + viewIndex + "\",\"search\":\"" + search + "\"}";
     $.ajax({
@@ -31,11 +71,6 @@ function GetRequests(viewIndex, search) {
         dataType: "json",
         success: function(msg) {
             CreateBlades(msg.d);
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            alert("GetRequests Error: " + XMLHttpRequest);
-            alert("GetRequests Error: " + textStatus);
-            alert("GetRequests Error: " + errorThrown);
         }
     });
 }
@@ -51,13 +86,16 @@ function GetDetails(requestId) {
         if (msg.d.length > 0) {
                 CreateRequestDetails(msg.d, requestId);
             }
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            alert("GetDetails Error: " + XMLHttpRequest);
-            alert("GetDetails Error: " + textStatus);
-            alert("GetDetails Error: " + errorThrown);
         }
     });
+}
+function ToggleRequestLoader() {
+    if($("#_requestLoaderDiv").is(":hidden")){
+        $("#_requestLoaderDiv").fadeIn();
+    }
+    else{
+       $("#_requestLoaderDiv").fadeOut();
+    }
 }
 function ToggleLoading(requestId) {
     var blade = $("#__toggleIconContainer_" + requestId);
@@ -232,7 +270,6 @@ var ActorGroupTypeEnum =
 };
 
 function GetTracking(builderGroups, builderButtons, requestId) {
-    
     var postData = "{\"requestId\":\"" + requestId + "\"}";
     $.ajax({
         type: "POST",
@@ -244,11 +281,6 @@ function GetTracking(builderGroups, builderButtons, requestId) {
         if (msg.d.length > 0) {
             BuildTrackingSection(msg.d, builderGroups, builderButtons, requestId);
             }
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            alert("GetTracking Error: " + XMLHttpRequest);
-            alert("GetTracking Error: " + textStatus);
-            alert("GetTracking Error: " + errorThrown);
         }
     });
 }
@@ -354,10 +386,13 @@ function CreateTrackingHeader(actorGroupType) {
     return trackingHeader;
 }
 
-function MessageDialog(title, message) {
-    $('#_indicatorDiv').hide();
-    $('#_closeMessageDiv').show();
-    $('div.messageBox').children("h2").html(title);
-    $('div.messageBox').children("p").html(message);
+function MessageDialog(header, message) {
+    $(document).ready(function() {
+        $('#_indicatorDiv').hide();
+        $('#_actionMessageDiv').fadeIn();
+        $('#_closeMessageDiv').show();
+        $('div.messageBox').children("h2").html(header);
+        $('div.messageBox').children("p").html(message);
+    });
 }
 // ALL VIEWS - END

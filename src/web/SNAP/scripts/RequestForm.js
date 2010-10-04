@@ -1,4 +1,38 @@
-﻿function DocReady() {
+﻿$().ready(function() {
+    $.ajaxSetup({
+        error: function(x, e) {
+            switch (x.status) {
+                case 0:
+                case 12007:
+                    MessageDialog("Network connection Issue.", "Please check you connection.");
+                    CloseRedirect();
+                    break;
+                case 404:
+                    MessageDialog("Requested URL not found.", "You will be redirected to the login page.");
+                    CloseRedirect();
+                    break;
+                case 500:
+                    MessageDialog("Session Timeout", "You will be redirected to the login page.");
+                    CloseRedirect();
+                    break;
+                default:
+                    if (e == 'parsererror') { MessageDialog("Application Error", "You will be redirected to the login page."); }
+                    else if (e == 'timeout') { MessageDialog("Application Timeout", "You will be redirected to the login page."); }
+                    else { MessageDialog("Uknown Error.", "You will be redirected to the login page."); }
+                    CloseRedirect();
+                    break;
+            }
+        }
+    });
+});
+function CloseRedirect() {
+    var closeDiv = $("#_closeMessageDiv");
+    $(closeDiv).find("input[type=button]").click(function() {
+        window.location.href = "default.aspx";
+    });
+}
+
+function DocReady() {
     userManager.Ready();
 }
 
@@ -98,13 +132,6 @@ var userManager = {
                 if (names.length > 1) {
                     userManager.FillSelection(selection, names, dialogDiv);
                 }
-            },
-
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                dialogDiv.dialog("close");
-                alert("GetNames Error: " + XMLHttpRequest);
-                alert("GetNames Error: " + textStatus);
-                alert("GetNames Error: " + errorThrown);
             }
         });
     },
@@ -121,12 +148,6 @@ var userManager = {
             success: function(msg) {
                 var userInfo = msg.d;
                 userManager.FillUserManagerInfo(flag, userInfo);
-            },
-
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                alert("GetUserManagerInfo Error: " + XMLHttpRequest);
-                alert("GetUserManagerInfo Error: " + textStatus);
-                alert("GetUserManagerInfo Error: " + errorThrown);
             }
         });
     },

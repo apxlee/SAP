@@ -422,6 +422,9 @@
         </div>
     </div>
 </div>
+<div id="_requestLoaderDiv" style="display:none;">
+    <div class="messageBox"></div>
+</div>
 <div id="_managerSelectionDiv" style="display:none"; >
     <p />
     <div style="display:none;text-align:center;padding-top:100px;" class="oospa_ajax_indicator">
