@@ -156,7 +156,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 					if ((int)comment["comment_type"] == (int)CommentsType.Requested_Change 
 						&& IsRequestFormEditable(comment, SnapSession.CurrentUser.LoginId) )
 					{
-						adjustedComment += string.Format("<span><br /><a href=\"{0}.aspx?requestId={1}\"><img src=\"/images/button_flashing_edit.gif\" alt=\"Edit Request Form\" style=\"border:0;margin:0;margin-left:-3px;padding:0;\" /></a></span>"
+						adjustedComment += string.Format("<span><br /><a href=\"{0}.aspx?requestId={1}\"><img src=\"./images/button_flashing_edit.gif\" alt=\"Edit Request Form\" style=\"border:0;margin:0;margin-left:-3px;padding:0;\" /></a></span>"
 							, PageNames.REQUEST_FORM, comment["request_id"]);
 					}
 
