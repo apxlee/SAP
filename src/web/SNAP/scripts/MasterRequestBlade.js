@@ -192,32 +192,6 @@ function HideAll() {
 			        );
     });
 }
-function AddComments(requestId, approverName, action, comments, includeDate) {
-    var newcomment = "";
-    comments = comments.replace(/(\r\n|[\r\n])/g, "<br />");
-    $("#__requestTrackingSection_" + requestId).find("span").each(function() {
-        if ($(this).attr("snap") == "_actorDisplayName") {
-            if ($(this).html() == approverName) {
-                var commentsContainer = $(this).closest("div.csm_data_row").parent().find("div.csm_text_container_nodrop");
-                if (commentsContainer.html() == null) {
-                    newcomment = "<div class='csm_text_container_nodrop'><p class='csm_error_text'><u>"
-                    + action + " by AIM on " + curr_date + "</u>" + comments;
-                    if (includeDate) { newcomment += "<br />Due Date: " + $(this).parent().next().next().children().html(); }
-                    newcomment += "</p></div>";
-                    $(newcomment).appendTo($(this).closest("div.csm_data_row").parent());
-                }
-                else {
-                    newcomment = "<p class='csm_error_text'><u>"
-                    + action + " by AIM on " + curr_date + "</u>" + comments;
-                    if (includeDate) { newcomment += "<br />Due Date: " + $(this).parent().next().next().children().html(); }
-                    newcomment += "</p>";
-                    $(newcomment).appendTo(commentsContainer);
-                }
-                $(commentsContainer).show();
-            }
-        }
-    });
-}
 function AnimateActions(newSection, requestId) {
     var blade = $("#__requestContainer_" + requestId);
     var emptyDiv = "<div class='csm_clear'></div>";
@@ -240,21 +214,28 @@ function AnimateActions(newSection, requestId) {
     });
 }
 function UpdateCount(countName) {
-    $("span").each(function() {
+    $("#csm_ribbon_container_inner").find("span").each(function() {
         if ($(this).attr("snap") == countName) {
-            $(this).html((parseInt($(this).html()) - 1).toString());
-        }
-    });
-}
-function UpdateRequestTracking(requestId, approverName, newStatus) {
-    $("#__requestTrackingSection_" + requestId).find("span").each(function() {
-        if ($(this).attr("snap") == "_actorDisplayName") {
-            if ($(this).html() == approverName) {
-                $(this).parent().next().children().html(newStatus);
-                $(this).parent().next().next().next().children().html("<span>" + curr_date + "</span>");
+            var newCount = parseInt($(this).html()) - 1;
+            $(this).html(newCount.toString());
+            if (newCount == 0) {
+                if (countName == "_approvalCount") {
+                    var newNullPending = $("#_nullDataMessage").html().replace("__nullDataMessage_ID", "__nullDataMessage_PendingRequests")
+                    .replace("__message_TEXT", "There are no requests Pending Approval at this time.");
+                    $("#_pendingApprovalsContainer").append($(newNullPending).hide().show(2000));
+                }
+                if (countName == "_accessTeamCount") {
+                    var newNullOpen = $("#_nullDataMessage").html().replace("__nullDataMessage_ID", "__nullDataMessage_OpenRequests")
+                    .replace("__message_TEXT", "There are no Open Requests at this time.");
+                    $("#_openRequestsContainer").append($(newNullOpen).hide().show(2000));
+                }
             }
         }
     });
+}
+function UpdateRequestTracking(requestId) {
+    $("#__requestTrackingSection_" + requestId).html("");
+    GetTracking(null, null, requestId, true);
 }
 function Comment(requestId, action, comments) {
     this.requestId = requestId;

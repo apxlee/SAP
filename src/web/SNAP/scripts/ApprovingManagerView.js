@@ -182,7 +182,6 @@ function ChangeDenyClick(obj) {
  
 }
 function ApproverActions(obj, requestId, action) {
-    var comments = "";
     var textarea = $("#__changeDenyComment_" + requestId);
     var approverName = $("input[id*='_hiddenCurrentUserFullName']").val();
     ProcessingMessage("Updating Request", "");
@@ -194,7 +193,6 @@ function ApproverActions(obj, requestId, action) {
             if (textarea.val() == "") { ActionMessage("Required Input", "Please specify the reason for denial."); return false; }
             break;
     }
-    comments = "<br />" + textarea.val();
     var newAction = new Comment(requestId, action, textarea.val());
     $.ajax({
         type: "POST",
@@ -208,7 +206,7 @@ function ApproverActions(obj, requestId, action) {
                     case '0':
                         $('#_indicatorDiv').hide();
                         ActionMessage("Approved", "You have successfully approved this request.");
-                        UpdateRequestTracking(requestId, approverName, "Approved");
+                        UpdateRequestTracking(requestId);
                         AnimateActions("Open Requests", requestId);
                         $("#__approverActions_" + requestId).hide();
                         if ($(obj).attr("id").indexOf("_approveAndMoveNext") > -1) { OpenNext(requestId); }
@@ -217,8 +215,7 @@ function ApproverActions(obj, requestId, action) {
                     case '2':
                         $('#_indicatorDiv').hide();
                         ActionMessage("Change Requested", "You have just requested a change.");
-                        UpdateRequestTracking(requestId, approverName, "Change Requested");
-                        AddComments(requestId, approverName, "Change Requested", comments, false);
+                        UpdateRequestTracking(requestId);
                         AnimateActions("Open Requests", requestId);
                         $("#__approverActions_" + requestId).hide();
                         $("#__overallRequestStatus_" + requestId).html("Change Requested");
@@ -227,8 +224,7 @@ function ApproverActions(obj, requestId, action) {
                     case '1':
                         $('#_indicatorDiv').hide();
                         ActionMessage("Closed Denied", "You have just denied this request.");
-                        UpdateRequestTracking(requestId, approverName, "Closed Denied");
-                        AddComments(requestId, approverName, "Closed Denied", comments, false);
+                        UpdateRequestTracking(requestId);
                         AnimateActions("Closed Requests", requestId);
                         $("#__approverActions_" + requestId).hide();
                         $("#__overallRequestStatus_" + requestId).html("Closed");
@@ -238,16 +234,6 @@ function ApproverActions(obj, requestId, action) {
             }
             else {
                 MessageDialog(msg.d.Title, msg.d.Message);
-            }
-        }
-    });
-                
-    $("span").each(function() {
-        if ($(this).attr("snap") == "_approvalCount") {
-            if ($(this).html() == 0) {
-                var newNullPending = $("#_nullDataMessage").html().replace("__nullDataMessage_ID", "__nullDataMessage_PendingRequests")
-                .replace("__message_TEXT", "There are no requests Pending Approval at this time.");
-                $("#_pendingApprovalsContainer").append($(newNullPending).hide().show(2000));
             }
         }
     });

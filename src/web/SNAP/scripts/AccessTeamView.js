@@ -569,13 +569,13 @@ function AccessTeamActions(obj, requestId, action) {
                     case '4':
                         $('#_indicatorDiv').hide();
                         ActionMessage("Acknowledged", "You have just acknowledged this request, you may now create its workflow.");
-                        UpdateRequestTracking(requestId, "Access &amp; Identity Management", "Pending Workflow");
+                        UpdateRequestTracking(requestId);
                         $(obj).attr("disabled", "disabled");
                         $(obj).closest("tr").next().children("td.csm_input_form_control_column").find("input").each(function() {
                             $(this).removeAttr("disabled");
                         });
                         $("#create_workflow_" + requestId).removeAttr("disabled");
-                        AddComments(requestId, "Access &amp; Identity Management", "Acknowledged", "", true);
+                        //AddComments(requestId, "Access &amp; Identity Management", "Acknowledged", "", true);
                         EditBuilder($("#closed_cancelled_" + requestId), requestId);
                         $("#__overallRequestStatus_" + requestId).html("Pending");
                         GetAccessTeamFilter();
@@ -583,10 +583,10 @@ function AccessTeamActions(obj, requestId, action) {
                     case '2':
                         $('#_indicatorDiv').hide();
                         ActionMessage("Change Requested", "You have just requested a change.");
-                        UpdateRequestTracking(requestId, "Access &amp; Identity Management", "Change Requested");
+                        UpdateRequestTracking(requestId);
                         DisableBladeActions(obj);
                         DisableBuilder(requestId);
-                        AddComments(requestId, "Access &amp; Identity Management", "Change Requested", comments, false);
+                        //AddComments(requestId, "Access &amp; Identity Management", "Change Requested", comments, false);
                         $("#__overallRequestStatus_" + requestId).html("Change Requested");
                         GetAccessTeamFilter();
                         UpdateCount("_accessTeamCount");
@@ -594,10 +594,10 @@ function AccessTeamActions(obj, requestId, action) {
                     case '3':
                         $('#_indicatorDiv').hide();
                         ActionMessage("Closed Cancelled", "You have just closed this request with this cancellation.");
-                        UpdateRequestTracking(requestId, "Access &amp; Identity Management", "Closed Cancelled");
+                        UpdateRequestTracking(requestId);
                         DisableBladeActions(obj);
                         DisableBuilder(requestId);
-                        AddComments(requestId, "Access &amp; Identity Management", "Closed Cancelled", comments, false);
+                        //AddComments(requestId, "Access &amp; Identity Management", "Closed Cancelled", comments, false);
                         AnimateActions("Closed Requests", requestId);
                         HideSections(obj);
                         $("#__overallRequestStatus_" + requestId).html("Closed");
@@ -607,10 +607,10 @@ function AccessTeamActions(obj, requestId, action) {
                     case '1':
                         $('#_indicatorDiv').hide();
                         ActionMessage("Closed Denied", "You have just closed this request with this denial.");
-                        UpdateRequestTracking(requestId, "Access &amp; Identity Management", "Closed Denied");
+                        UpdateRequestTracking(requestId);
                         DisableBladeActions(obj);
                         DisableBuilder(requestId);
-                        AddComments(requestId, "Access &amp; Identity Management", "Closed Denied", comments, false);
+                        //AddComments(requestId, "Access &amp; Identity Management", "Closed Denied", comments, false);
                         AnimateActions("Closed Requests", requestId);
                         HideSections(obj);
                         $("#__overallRequestStatus_" + requestId).html("Closed");
@@ -1136,7 +1136,7 @@ function BuilderActions(obj, requestId, state) {
                     case "3":
                         $('#_indicatorDiv').hide();
                         ActionMessage("Closed Cancelled", "You have just cancelled this request.");
-                        UpdateRequestTracking(requestId, "Access &amp; Identity Management", "Closed Cancelled");
+                        UpdateRequestTracking(requestId);
                         AnimateActions("Closed Requests", requestId);
                         HideSections(obj);
                         $("#__overallRequestStatus_" + requestId).html("Closed");
@@ -1146,7 +1146,7 @@ function BuilderActions(obj, requestId, state) {
                     case "6":
                         $('#_indicatorDiv').hide();
                         ActionMessage("Closed Completed", "You have just completed this request.");
-                        UpdateRequestTracking(requestId, "Access &amp; Identity Management", "Closed Completed");
+                        UpdateRequestTracking(requestId);
                         AnimateActions("Closed Requests", requestId);
                         HideSections(obj);
                         $("#__overallRequestStatus_" + requestId).html("Closed");
@@ -1156,10 +1156,9 @@ function BuilderActions(obj, requestId, state) {
                     case "5":
                         $('#_indicatorDiv').hide();
                         ActionMessage("Pending Provisioning", "A ticket has been created to provision the access for this request.");
-                        UpdateRequestTracking(requestId, "Access &amp; Identity Management", "Pending Provisioning");
+                        UpdateRequestTracking(requestId);
                         $("#closed_completed_" + requestId).removeAttr("disabled");
                         $("#create_ticket_" + requestId).attr("disabled", "disabled");
-                        $("input[id$='_submit_form']").trigger('click');
                         break;
                 }
             }
@@ -1171,16 +1170,6 @@ function BuilderActions(obj, requestId, state) {
                 else {
                     MessageDialog(msg.d.Title, msg.d.Message);
                 }
-            }
-        }
-    });
-
-    $("span").each(function() {
-        if ($(this).attr("snap") == "_accessTeamCount") {
-            if ($(this).html() == 0) {
-                var newNullOpen = $("#_nullDataMessage").html().replace("__nullDataMessage_ID", "__nullDataMessage_OpenRequests")
-                .replace("__message_TEXT", "There are no Open Requests at this time.");
-                $("#_openRequestsContainer").append($(newNullOpen).hide().show(2000));
             }
         }
     });
@@ -1200,7 +1189,9 @@ function CreateWorkflow(obj, requestId) {
                     ActionMessage("Workflow Created", "The workflow has been created for this request.");
                     DisableBuilder(requestId);
                     $("#create_workflow_" + requestId).hide();
-
+                    $("#__radioChange_" + requestId).attr("disabled", "disabled");
+                    $("#__radioDeny_" + requestId).attr("disabled", "disabled");
+                    
                     var continueButton = $("#closed_cancelled_" + requestId).clone().val("Continue Workflow").attr("id", "continue_workflow_" + requestId).attr("disabled", "disabled");
                     continueButton.insertAfter($("#closed_cancelled_" + requestId));
                     $(continueButton).click(function() {
@@ -1221,11 +1212,8 @@ function CreateWorkflow(obj, requestId) {
                         ToggleDetails(requestId);
                         $("#__requestContainer_" + requestId).fadeOut(1000);
                     }
-
-                    $("#__requestTrackingSection_" + requestId).html("");
-                    GetTracking(null, null, requestId, true);
+                    UpdateRequestTracking(requestId);
                     GetAccessTeamFilter();
-
                 }
                 else {
                     MessageDialog(msg.d.Title, msg.d.Message);
