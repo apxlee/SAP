@@ -598,7 +598,7 @@ namespace Apollo.AIM.SNAP.Model
 						string updatedDescription = string.Format("Supplemental Access Process Request Id: {0}\r\nAffected End User Id: {1}\r\nRequested By: {2}\r\n-------------------------------------------------------\r\n{3}"
 							, req.pkId, req.userId, req.submittedBy, requestDescription);
 
-                        if (requestDescription.Length > 50)
+                        if (requestDescription.Length > 5000)
                         {
                             resp = new WebMethodResponse(false, "Ticket Creation Error", "Request Content Too Long. Please split the request");
                         }
@@ -662,6 +662,10 @@ namespace Apollo.AIM.SNAP.Model
                     var accessTeamWF = req.SNAP_Workflows.Single(x => x.actorId == AccessTeamActorId);
                     var result = reqStateTransition(req, RequestState.Pending, RequestState.Closed,
                                                     accessTeamWF, WorkflowState.Pending_Provisioning,
+                                                    WorkflowState.Closed_Completed)
+                                 ||
+                                 reqStateTransition(req, RequestState.Pending, RequestState.Closed,
+                                                    accessTeamWF, WorkflowState.Approved,
                                                     WorkflowState.Closed_Completed);
 
                     if (result)
@@ -675,25 +679,6 @@ namespace Apollo.AIM.SNAP.Model
                     {
                         resp = new WebMethodResponse(false, "Finalization Error", SeeDetailsReqTracking);
                     }
-
-                    /*
-                    else
-                    {
-                        result = reqStateTransition(req, RequestState.Pending, RequestState.Closed,
-                                                accessTeamWF, WorkflowState.Approved,
-                                                WorkflowState.Closed_Completed);
-                        if (result)
-                        {
-                            Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy, req.userDisplayName, _id, req.submittedBy, WorkflowState.Closed_Completed, null);
-                            db.SubmitChanges();
-                            resp = new WebMethodResponse(true, "Finalization", "Success");
-                        }
-                        else
-                        {
-                            resp = new WebMethodResponse(false, "Finalization Error", SeeDetailsReqTracking);
-                        }
-                    }
-                     */
                 }
             }
             catch (Exception ex)
