@@ -88,6 +88,7 @@
 						<p class="legendPadding"><strong>Closed Cancelled:</strong>&nbsp;A workflow is no longer active because of a technical cancellation or change to policy.</p>
 						<p class="legendPadding"><strong>Closed Denied:</strong>&nbsp;A workflow is no longer active because an approver denied the request with reasons<br />specificed in the comments.</p>
 						<p class="legendPadding"><strong>Closed Complete:</strong>&nbsp;A workflow has gained all approvals and access has been provisioned with<br />Service Desk ticket reference.</p>					
+						<p class="legendPadding"><strong>Closed Abandoned:</strong>&nbsp;A workflow has expired because of inactivity.</p>
 					</div>
 				</div>
 				<div id="__requestTrackingSection_ID">
