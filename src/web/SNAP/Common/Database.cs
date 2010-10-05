@@ -240,6 +240,8 @@ namespace Apollo.AIM.SNAP.Web.Common
 			table.Columns.Add("comment", typeof(string));
 			table.Columns.Add("is_alert", typeof(bool));
 			table.Columns.Add("request_id", typeof(string));
+			table.Columns.Add("submitted_by", typeof(string));
+			table.Columns.Add("affected_end_user", typeof(string));
 
 			return table;
 		}
@@ -291,6 +293,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 				var workflowComments = from w in db.SNAP_Workflows
 									   join a in db.SNAP_Actors on w.actorId equals a.pkId
 									   join wc in db.SNAP_Workflow_Comments on w.pkId equals wc.workflowId
+									   join r in db.SNAP_Requests on w.requestId equals r.pkId  // NOTE: need submittedBy and AEU for Change_Requested status comments
 									   where w.pkId == workflowId
 									   orderby wc.pkId ascending // NOTE: dataset must be ordered from first to last
 									   select new
@@ -299,7 +302,9 @@ namespace Apollo.AIM.SNAP.Web.Common
 										   actorName = a.displayName,
 										   createdDate = wc.createdDate,
 										   commentText = wc.commentText,
-										   requestId = w.requestId
+										   requestId = w.requestId,
+										   submittedBy = r.submittedBy,
+										   affectedEndUser = r.userId
 									   };
 
 				if (workflowComments != null)
@@ -314,6 +319,8 @@ namespace Apollo.AIM.SNAP.Web.Common
 							, comment.commentText
 							, (comment.commentTypeEnum == (int)CommentsType.Requested_Change || comment.commentTypeEnum == (int)CommentsType.Email_Reminder) ? true : false
 							, comment.requestId
+							, comment.submittedBy
+							, comment.affectedEndUser
 							);
 					}
 					return table;
@@ -321,11 +328,6 @@ namespace Apollo.AIM.SNAP.Web.Common
 
 				return null;
 			}
-		}
-
-		public static bool IsRequestFormEditable(string requestId, string requestingUserId)
-		{
-			return true;
 		}
 
 		#endregion

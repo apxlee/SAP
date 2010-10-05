@@ -149,23 +149,15 @@ namespace Apollo.AIM.SNAP.Web.Common
 				foreach (DataRow comment in workflowCommentsTable.Rows)
 				{
 					string actionActorName = string.Empty;
-					if ( (int)comment["comment_type"] == (int)CommentsType.Email_Reminder
-						|| (int)comment["comment_type"] == (int)CommentsType.Requested_Change )  // TODO: make sure manager name shows instead of AIM if appropriate
-					{ actionActorName = "AIM"; }
+					if ( (int)comment["comment_type"] == (int)CommentsType.Email_Reminder ){ actionActorName = "AIM"; }
 					else { actionActorName = comment["workflow_actor"].ToString(); }
 
-					// If comment is Requested_Change, then determine if 'Edit Request Form' link is appended...
-					//
 					string adjustedComment = comment["comment"].ToString().Replace("\n", "<br />");
-					if ( (int)comment["comment_type"] == (int)CommentsType.Requested_Change )
+					if ((int)comment["comment_type"] == (int)CommentsType.Requested_Change 
+						&& IsRequestFormEditable(comment, SnapSession.CurrentUser.LoginId) )
 					{
-						// Edit Request Form link is only available to AEU or SUBMITTER...
-						//
-						if (Database.IsRequestFormEditable(comment["request_id"].ToString(), SnapSession.CurrentUser.LoginId))
-						{
-							adjustedComment += string.Format("<span><br /><a href=\"{0}.aspx?requestId={1}\">[IMAGE] Edit Request Form</a></span>"
-								, PageNames.REQUEST_FORM, comment["request_id"]);
-						}
+						adjustedComment += string.Format("<span><br /><a href=\"{0}.aspx?requestId={1}\"><img src=\"../images/button_flashing_edit.gif\" alt=\"Edit Request Form\" style=\"border:0;margin:0;margin-left:-3px;padding:0;\" /></a></span>"
+							, PageNames.REQUEST_FORM, comment["request_id"]);
 					}
 
 					workflowComments.AppendFormat("<p{0}><u>{1} by {2} on {3}</u><br />{4}</p>"
@@ -181,6 +173,18 @@ namespace Apollo.AIM.SNAP.Web.Common
 			}
 
 			return string.Empty;
+		}
+
+		private static bool IsRequestFormEditable(DataRow comment, string loggedInUser)
+		{
+			// Edit Request Form link is only available to AEU or SUBMITTER...
+			//
+			if ( (comment["affected_end_user"].ToString() == loggedInUser) || (comment["submitted_by"].ToString() == loggedInUser) )
+			{
+				return true;
+			}
+			
+			return false;
 		}
 	}
 }
