@@ -95,7 +95,7 @@ function CreateRequestDetails(details, requestId) {
     $("#__toggledContentContainer_" + requestId).html($("#__toggledContentContainer_" + requestId).html()
     .replace("<!--__requestDetailsSection-->", newRequestDetails));
 
-    GetTracking(null,null,requestId);
+    GetTracking(null,null,requestId, false);
 }
 function BindEvents(builderGroups, builderButtons, requestId) {
     $("#__legendToggle_" + requestId).click(function() {

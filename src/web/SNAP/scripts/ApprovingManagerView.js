@@ -112,9 +112,9 @@ function CreateRequestDetails(details, requestId) {
 
     $("#__toggledContentContainer_" + requestId).html($("#__toggledContentContainer_" + requestId).html()
     .replace("<!--__requestDetailsSection-->", newRequestDetails));
-    
+
     if ($("#__workflowStatus_" + requestId).val() == 7) { CreateApproverActions(requestId); }
-    else { GetTracking(null,null,requestId); }
+    else { GetTracking(null,null,requestId,false); }
 
 }
 function CreateApproverActions(requestId) {
@@ -134,7 +134,7 @@ function CreateApproverActions(requestId) {
     
     if ($("#__multiplePendingApprovals").val() == "no") { $("#__approveAndMoveNext_" + requestId).hide(); }
 
-    GetTracking(null, null, requestId);
+    GetTracking(null, null, requestId,false);
 
 }
 function BindEvents(builderGroups, builderButtons, requestId) {

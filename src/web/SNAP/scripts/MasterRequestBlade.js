@@ -227,11 +227,13 @@ function AnimateActions(newSection, requestId) {
         switch (newSection) {
             case "Open Requests":
                 $("#__nullDataMessage_OpenRequests").remove();
-                $("#_openRequestsContainer").append($(this));
+                if ($("#_openRequestsContainer").children().first().html() == null) { $("#_openRequestsContainer").append($(this)); }
+                else { $(this).insertBefore($("#_openRequestsContainer").children().first()); }
                 break;
             case "Closed Requests":
                 $("#__nullDataMessage_ClosedRequests").remove();
-                $("#_closedRequestsContainer").append($(this));
+                if ($("#_closedRequestsContainer").children().first().html() == null) { $("#_closedRequestsContainer").append($(this)); }
+                else { $(this).insertBefore($("#_closedRequestsContainer").children().first()); }
                 break;
         }
         $(this).fadeIn(1000);
@@ -269,7 +271,7 @@ var ActorGroupTypeEnum =
     Workflow_Admin: 3
 };
 
-function GetTracking(builderGroups, builderButtons, requestId) {
+function GetTracking(builderGroups, builderButtons, requestId, isRebuild) {
     var postData = "{\"requestId\":\"" + requestId + "\"}";
     $.ajax({
         type: "POST",
@@ -278,14 +280,14 @@ function GetTracking(builderGroups, builderButtons, requestId) {
         data: postData,
         dataType: "json",
         success: function(msg) {
-        if (msg.d.length > 0) {
-            BuildTrackingSection(msg.d, builderGroups, builderButtons, requestId);
+            if (msg.d.length > 0) {
+                BuildTrackingSection(msg.d, builderGroups, builderButtons, requestId, isRebuild);
             }
         }
     });
 }
 
-function BuildTrackingSection(trackingObject, builderGroups, builderButtons, requestId) {
+function BuildTrackingSection(trackingObject, builderGroups, builderButtons, requestId, isRebuild) {
     var trackingSectionHtml = "";
     
     // Build sections in the following order and loop thru them
@@ -313,8 +315,9 @@ function BuildTrackingSection(trackingObject, builderGroups, builderButtons, req
     }
 
     $("#__requestTrackingSection_" + requestId).append(trackingSectionHtml);
-    
-    BindEvents(builderGroups, builderButtons, requestId);
+    if (!isRebuild) {
+        BindEvents(builderGroups, builderButtons, requestId);
+    }
     //DisplayRequestChangeLink();
 }
 

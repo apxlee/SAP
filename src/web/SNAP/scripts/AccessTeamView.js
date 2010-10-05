@@ -259,9 +259,9 @@ function CreateRequestDetails(details, requestId) {
 
     $("#__toggledContentContainer_" + requestId).html($("#__toggledContentContainer_" + requestId).html()
     .replace("<!--__requestDetailsSection-->", newRequestDetails));
-    
+
     if ($("#__overallRequestStatus_" + requestId).html() != "Closed") { GetBuilder(requestId); }
-    else { GetTracking(null, null, requestId); }
+    else { GetTracking(null, null, requestId, false); }
     
 }
 function GetBuilder(requestId) {
@@ -429,7 +429,7 @@ function CreateBuilder(builder, requestId) {
     $("#__toggledContentContainer_" + requestId).html($("#__toggledContentContainer_" + requestId).html()
     .replace("<!--__requestComments-->", newComments));
     
-    GetTracking(data.AvailableGroups, data.AvailableButtons, requestId);
+    GetTracking(data.AvailableGroups, data.AvailableButtons, requestId, false);
 }
 
 function BindEvents(builderGroups, builderButtons, requestId) {
@@ -1199,27 +1199,33 @@ function CreateWorkflow(obj, requestId) {
                     $('#_indicatorDiv').hide();
                     ActionMessage("Workflow Created", "The workflow has been created for this request.");
                     DisableBuilder(requestId);
-                    $("#create_workflow_" + requestId).hide();                  
-                    
-                    var continueButton = $("#closed_cancelled_" + requestId).clone().val("Continue Workflow").attr("id", "continue_workflow_" + requestId).attr("disabled","disabled");
+                    $("#create_workflow_" + requestId).hide();
+
+                    var continueButton = $("#closed_cancelled_" + requestId).clone().val("Continue Workflow").attr("id", "continue_workflow_" + requestId).attr("disabled", "disabled");
                     continueButton.insertAfter($("#closed_cancelled_" + requestId));
-                    
+                    $(continueButton).click(function() {
+                        EditCreatedWorkflow($(this), requestId);
+                    });
+
                     var editButton = $("#closed_cancelled_" + requestId).clone().val("Edit Workflow").attr("id", "edit_workflow_" + requestId);
                     editButton.insertAfter($("#closed_cancelled_" + requestId));
-                    
+                    $(editButton).click(function() {
+                        EditBuilder($(this), requestId);
+                    });
+
                     var space = "<b>&nbsp;</b>";
                     $(space).insertAfter($("#closed_cancelled_" + requestId));
                     $(space).insertAfter($("#edit_workflow_" + requestId));
 
                     if (!$("#access_filter_container").hasClass("filter_view_all")) {
-                        $("#__requestContainer_" + requestId).fadeOut(1000);
                         ToggleDetails(requestId);
+                        $("#__requestContainer_" + requestId).fadeOut(1000);
                     }
-                    
+
                     $("#__requestTrackingSection_" + requestId).html("");
-                    GetTracking(null, null, requestId);
-                    
+                    GetTracking(null, null, requestId, true);
                     GetAccessTeamFilter();
+
                 }
                 else {
                     MessageDialog(msg.d.Title, msg.d.Message);
@@ -1247,8 +1253,9 @@ function EditCreatedWorkflow(obj, requestId) {
                     ActionMessage("Workflow Updated", "The workflow has been updated for this request.");
                     DisableBuilder(requestId);
                     $("#edit_workflow_" + requestId).removeAttr("disabled");
+            
                     $("#__requestTrackingSection_" + requestId).html("");
-                    GetTracking(null, null, requestId);
+                    GetTracking(null, null, requestId, true);
                 }
                 else {
                     MessageDialog(msg.d.Title, msg.d.Message);
