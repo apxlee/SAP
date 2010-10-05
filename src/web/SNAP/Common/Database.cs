@@ -242,6 +242,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 			table.Columns.Add("request_id", typeof(string));
 			table.Columns.Add("submitted_by", typeof(string));
 			table.Columns.Add("affected_end_user", typeof(string));
+			table.Columns.Add("request_status_enum", typeof(int));
 
 			return table;
 		}
@@ -293,7 +294,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 				var workflowComments = from w in db.SNAP_Workflows
 									   join a in db.SNAP_Actors on w.actorId equals a.pkId
 									   join wc in db.SNAP_Workflow_Comments on w.pkId equals wc.workflowId
-									   join r in db.SNAP_Requests on w.requestId equals r.pkId  // NOTE: need submittedBy and AEU for Change_Requested status comments
+									   join r in db.SNAP_Requests on w.requestId equals r.pkId  // NOTE: need submittedBy, AEU and statusEnum for Change_Requested status comments
 									   where w.pkId == workflowId
 									   orderby wc.pkId ascending // NOTE: dataset must be ordered from first to last
 									   select new
@@ -304,7 +305,8 @@ namespace Apollo.AIM.SNAP.Web.Common
 										   commentText = wc.commentText,
 										   requestId = w.requestId,
 										   submittedBy = r.submittedBy,
-										   affectedEndUser = r.userId
+										   affectedEndUser = r.userId,
+										   requestStatusEnum = r.statusEnum
 									   };
 
 				if (workflowComments != null)
@@ -321,6 +323,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 							, comment.requestId
 							, comment.submittedBy
 							, comment.affectedEndUser
+							, comment.requestStatusEnum
 							);
 					}
 					return table;

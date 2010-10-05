@@ -179,7 +179,8 @@ namespace Apollo.AIM.SNAP.Web.Common
 		{
 			// Edit Request Form link is only available to AEU or SUBMITTER...
 			//
-			if ( (comment["affected_end_user"].ToString() == loggedInUser) || (comment["submitted_by"].ToString() == loggedInUser) )
+			if ( ((int)comment["request_status_enum"] == (int)RequestState.Change_Requested) 
+				&& ((comment["affected_end_user"].ToString() == loggedInUser) || (comment["submitted_by"].ToString() == loggedInUser)) )
 			{
 				return true;
 			}
