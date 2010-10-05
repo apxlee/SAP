@@ -179,19 +179,22 @@ function ActionMessage(header, message) {
     });
 }
 function HideAll() {
-    $("div.csm_toggle_container").each(function() {
-        $(this).parent().parent().next().nextAll().slideUp("fast");
-        $(this).addClass("csm_toggle_show");
-        $(this).removeClass("csm_toggle_hide");
-        $(this).removeClass("csm_toggle_hide_hover");
-        $(this).unbind('mouseenter mouseleave')
-        $(this).hover(function() {
-            $(this).addClass("csm_toggle_show_hover");
-        },
-			          function() {
-			              $(this).removeClass("csm_toggle_show_hover");
-			          }
-			        );
+    $("div[id*='__toggledContentContainer_']").each(function() {
+        if (!$(this).hasClass("csm_hidden_block")) {
+            $(this).addClass("csm_hidden_block");
+            var blade = $(this).closest("div.csm_content_container").find("div.csm_toggle_container");
+            blade.addClass("csm_toggle_show");
+            blade.removeClass("csm_toggle_hide");
+            blade.removeClass("csm_toggle_hide_hover");
+            blade.unbind('mouseenter mouseleave')
+            blade.hover(function() {
+                $(this).addClass("csm_toggle_show_hover");
+            },
+			      function() {
+			          $(this).removeClass("csm_toggle_show_hover");
+			      }
+			    );
+        }
     });
 }
 function AnimateActions(newSection, requestId) {
