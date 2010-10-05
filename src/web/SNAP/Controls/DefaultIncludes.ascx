@@ -424,7 +424,10 @@
     </div>
 </div>
 <div id="_requestLoaderDiv" style="display:none;">
-    <div class="messageBox"></div>
+    <div class="messageBox">
+        <div id="preloader_load" class="preloader preloader_load_ANIM">&nbsp;</div>
+        <div id="preloader_build" class="preloader preloader_build_EMPTY">&nbsp;</div>
+    </div>
 </div>
 <div id="_managerSelectionDiv" style="display:none"; >
     <p />

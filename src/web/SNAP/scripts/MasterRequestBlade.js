@@ -48,7 +48,6 @@ $().ready(function() {
         }
     });
 });
-
 function CloseRedirect() {
     var closeDiv = $("#_closeMessageDiv");
     $(closeDiv).find("input[type=button]").click(function() {
@@ -60,7 +59,6 @@ function CloseRedirect() {
         });
     });
 }
-
 function GetRequests(viewIndex, search) {
     var postData = "{\"view\":\"" + viewIndex + "\",\"search\":\"" + search + "\"}";
     $.ajax({
@@ -89,14 +87,18 @@ function GetDetails(requestId) {
         }
     });
 }
-function ToggleRequestLoader() {
-    if($("#_requestLoaderDiv").is(":hidden")){
-        $("#_requestLoaderDiv").fadeIn();
-    }
-    else{
-       $("#_requestLoaderDiv").fadeOut();
-    }
-}
+//function ToggleRequestLoader() {
+//    if ($("#_requestLoaderDiv").is(":hidden")) {
+//        $("#preloader_load").removeClass("preloader_load_FULL");
+//        $("#preloader_load").addClass("preloader_load_ANIM");
+//        $("#preloader_build").removeClass("preloader_build_ANIM");
+//        $("#preloader_build").addClass("preloader_build_EMPTY");
+//        $("#_requestLoaderDiv").fadeIn();
+//    }
+//    else {
+//        $("#_requestLoaderDiv").delay(2000).fadeOut();   
+//    }
+//}
 function ToggleLoading(requestId) {
     var blade = $("#__toggleIconContainer_" + requestId);
     if (blade.hasClass("csm_toggle_loading")) {

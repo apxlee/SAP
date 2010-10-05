@@ -25,13 +25,11 @@
 </div>
 
 <script type="text/javascript">
-
     try { GetRequests(ViewIndexEnum.My_Approvals,""); }
-    catch (err) { }
+    catch (err) {}
 	
 	try { pageTracker._trackPageview("ApprovingManagerView"); }
 	catch (err) {}
-
 </script>
 
 </asp:Content>

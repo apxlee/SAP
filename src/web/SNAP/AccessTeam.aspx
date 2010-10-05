@@ -28,13 +28,11 @@
 </div>
 
 <script type="text/javascript">
-
     try { GetRequests(ViewIndexEnum.Access_Team, ""); }
-    catch (err) { }
+    catch (err) {}
 
 	try { pageTracker._trackPageview("AccessTeamView"); }
 	catch (err) {}
-
 </script>
 
 </asp:Content>

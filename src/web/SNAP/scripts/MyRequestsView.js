@@ -52,6 +52,8 @@ function CreateBlades(requests) {
         .replace("__message_TEXT", "There are no Closed Requests at this time.");
         $("#_closedRequestsContainer").append($(newNullClosed));
     }
+
+    //ToggleRequestLoader();
 }
 function CreateRequestDetails(details, requestId) {
     var data = jQuery.parseJSON(details);

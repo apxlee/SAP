@@ -205,6 +205,8 @@ function CreateBlades(requests) {
 
         var selectedRequestId = $("input[id*='_hiddenSelectedRequestId']");
         if (selectedRequestId.val() != "") { ToggleDetails(selectedRequestId.val()); selectedRequestId.val(""); }
+
+        //ToggleRequestLoader();
     }
 
     if (openCount == 0) {

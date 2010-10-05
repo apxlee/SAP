@@ -400,7 +400,12 @@
     <Content Include="ajax\AjaxPersons.aspx" />
     <Content Include="ajax\AjaxUI.aspx" />
     <Content Include="ajax\AjaxUtilities.aspx" />
+    <Content Include="images\button_flashing_edit.gif" />
     <Content Include="images\button_loading.gif" />
+    <Content Include="images\load_buildingANIM.gif" />
+    <Content Include="images\load_buildingEMPTY.gif" />
+    <Content Include="images\load_loadingANIM.gif" />
+    <Content Include="images\load_loadingFULL.gif" />
     <Content Include="scripts\jquery.hotkeys-0.7.9.min.js" />
     <Content Include="scripts\jquery.json-2.2.min.js" />
     <Content Include="scripts\MyRequestsView.js" />

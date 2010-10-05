@@ -1011,6 +1011,19 @@ div.modal_li
 	line-height: 1.5em;
 	padding:10px 50px 5px 50px;
 }
+.preloader
+{
+    background-repeat: no-repeat;
+    position:relative;
+    top:61px;
+    left:63px;
+    height:46px;
+    width:225px;
+}
+.preloader_load_ANIM{background-image: url('../images/load_loadingANIM.gif');}
+.preloader_load_FULL{background-image: url('../images/load_loadingFULL.gif');}
+.preloader_build_EMPTY{background-image: url('../images/load_buildingEMPTY.gif');}
+.preloader_build_ANIM{background-image: url('../images/load_buildingANIM.gif');}
 .listview_table
 {
     width:70%;
