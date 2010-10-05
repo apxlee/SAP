@@ -109,7 +109,7 @@ var userManager = {
         $.ajax({
             type: "POST",
             contentType: "application/json; character=utf-8",
-            url: "AjaxCalls.aspx/GetNames",
+            url: "ajax/AjaxPersons.aspx/GetNames",
             data: postData,
             dataType: "json",
             success: function(msg) {
@@ -142,7 +142,7 @@ var userManager = {
         $.ajax({
             type: "POST",
             contentType: "application/json; character=utf-8",
-            url: "AjaxCalls.aspx/GetUserManagerInfoByFullName",
+            url: "ajax/AjaxPersons.aspx/GetUserManagerInfoByFullName",
             data: postData,
             dataType: "json",
             success: function(msg) {

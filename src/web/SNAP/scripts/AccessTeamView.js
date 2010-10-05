@@ -728,7 +728,7 @@ function GetNames(requestId, groupId, name, section) {
     $.ajax({
         type: "POST",
         contentType: "application/json; character=utf-8",
-        url: "AjaxCalls.aspx/GetNames",
+        url: "ajax/AjaxPersons.aspx/GetNames",
         data: postData,
         dataType: "json",
         success: function(msg) {
@@ -1332,7 +1332,7 @@ function ActorAdd(obj, requestId, groupId) {
         $.ajax({
             type: "POST",
             contentType: "application/json; character=utf-8",
-            url: "AjaxCalls.aspx/GetActorId",
+            url: "ajax/AjaxPersons.aspx/GetActorId",
             data: postData,
             dataType: "json",
             success: function(msg) {
