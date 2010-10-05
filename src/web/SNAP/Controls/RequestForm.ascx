@@ -1,9 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="RequestForm.ascx.cs" Inherits="Apollo.AIM.SNAP.Web.Controls.RequestForm" %>
 <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>RequestForm.js" type="text/javascript"></script>
 <script type="text/javascript"> $(document).ready(DocReady);</script>
-<style type="text/css" media="screen">
-	span.request_form_no_show {display:none;visibility:hidden;}
-</style>
 <div class="csm_container_center_700">
     
 	<div class="csm_content_container">
@@ -17,13 +14,11 @@
 			</p>
 		</div>
 		
-		<fieldset><!-- use fieldset for standards & compliance -->
+		<fieldset>
 
   		<asp:Panel ID="_statusChangedMessage" runat="server" CssClass="csm_text_container" Visible="false">
-			<!--<div class="csm_text_container">-->
-				<p class="csm_error_text"><strong>Request Status Changed</strong><br />The Access Request <asp:Label ID="_badStatusRequestId" runat="server">you have requested</asp:Label> has had 
-				its status changed, or you are not listed as the Affected End User or Submitter. At this time, you cannot edit the request. Please refer to the Request Tracking in "My Requests" or "Search" for details.</p>
-			<!--</div>-->
+			<p class="csm_error_text"><strong>Request Status Changed</strong><br />The Access Request <asp:Label ID="_badStatusRequestId" runat="server">you have requested</asp:Label> has had 
+			its status changed, or you are not listed as the Affected End User or Submitter. At this time, you cannot edit the request. Please refer to the Request Tracking in "My Requests" or "Search" for details.</p>
 		</asp:Panel>
         
         <div id="_formValidationTop" class="csm_input_validation_summary"></div>
