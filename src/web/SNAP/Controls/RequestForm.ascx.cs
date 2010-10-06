@@ -108,15 +108,12 @@ namespace Apollo.AIM.SNAP.Web.Controls
                 this._requestForm.Controls.Add(requestFormSection);
             }
 
-
             if (_requestFormData.Count == 0 && !string.IsNullOrEmpty(SnapSession.SelectedRequestId))
             {
-                //_changeComments.Text = "Request Status Changed! At this time, you cannot perform modification or Not Your Request. ";
 				_statusChangedMessage.Visible = true;
 				_badStatusRequestId.Text = SnapSession.SelectedRequestId;
                 SnapSession.SelectedRequestId = string.Empty;
             }
-
         }
 
         protected void _submitForm_Click(object sender, EventArgs e)
