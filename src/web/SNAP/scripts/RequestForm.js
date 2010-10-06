@@ -211,7 +211,7 @@ var userManager = {
         userManager.textAreas.each(function() {
             $(this).val($(this).val().replace(/(<([^>]+)>)/ig, "").replace(/\\/g, "/").replace(/\'/g, "\""));
         });
-        
+
         //check dynamic fields
         userManager.labels.each(function() {
             if ($(this).hasClass("csm_input_required_field")) {
@@ -336,9 +336,16 @@ var userManager = {
     },
 
     ManagerNameSelected: function() {
+
+    // *** Quick Fix: we need to add more selection criteria to select the mangager...not sure why...it appears 
+    //     there is an extra selection dialog created!!!    
+        var x = $(".ui-dialog #_managerSelectionDiv" + " #" + userManager.mgrSelection.attr('id') + ' option:selected').text();
+
         userManager.AssignSelectedName(userManager.mgrName,
-                            $('#' + userManager.mgrSelection.attr('id') + ' :selected').text(),
+                            //$('#' + userManager.mgrSelection.attr('id') + ' option:selected').text(),
+                            x,
                             userManager.mgrSelection);
+
         userManager.GetUserManagerInfo("manager", userManager.mgrName);
         userManager.mgrSelectionDiv.dialog('close');
     },
