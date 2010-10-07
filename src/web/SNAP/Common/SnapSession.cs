@@ -70,7 +70,9 @@ namespace Apollo.AIM.SNAP.Web.Common
 				currentPage.Session[SessionVariables.IS_REQUEST_PREPOPULATED] = value;
 			}
 		}
-		
+
+        public static bool UseSelectedRequestId { get; set; }
+
 		public static string SelectedRequestId
 		{
 			get
