@@ -1,16 +1,8 @@
-﻿$(document).ready(function() {
-    var searchInput = $("#__searchInput");
-    var searchButton = $("#__searchButton");
-    searchInput.keypress(function() {
-        return ClickButton(event, searchButton);
-    });
-    searchInput.focus();
-});
-function ValidateInput() {
+﻿function ValidateInput() {
     $(document).ready(function() {
         var searchInput = $("#__searchInput");
         if (searchInput.val() > "") { $("#_searchResultsContainer").html(""); GetRequests(ViewIndexEnum.Search,searchInput.val()); }
-        else { ActionMessage("No input", "Input criteria is required for a successful search."); return false; }
+        else { ActionMessage("No input", "Input criteria is required for a successful search."); }
     });
 }
 function ClickButton(e, button) {
@@ -18,15 +10,15 @@ function ClickButton(e, button) {
         var evt = e ? e : window.event;
         if (evt.keyCode == 13) {
             ValidateInput();
-            return false;
         }
     });
 }
 function CreateBlades(requests) {
-    $.each(requests, function(index, value) {
-        var data = value;
-        var newRequestBlade = $("#_requestBlade").html();
-        newRequestBlade = newRequestBlade.replace("__requestContainer_ID", "__requestContainer_" + data.RequestId)
+    if (requests.length > 0) {
+        $.each(requests, function(index, value) {
+            var data = value;
+            var newRequestBlade = $("#_requestBlade").html();
+            newRequestBlade = newRequestBlade.replace("__requestContainer_ID", "__requestContainer_" + data.RequestId)
         .replace("__affectedEndUserName_TEXT", data.DisplayName)
         .replace("__affectedEndUserName_ID", "__affectedEndUserName_" + data.RequestId)
         .replace("__overallRequestStatus_TEXT", data.RequestStatus)
@@ -43,20 +35,27 @@ function CreateBlades(requests) {
         .replace("__legendToggle_ID", "__legendToggle_" + data.RequestId)
         .replace("__legend_ID", "__legend_" + data.RequestId)
         .replace("__requestTrackingSection_ID", "__requestTrackingSection_" + data.RequestId);
-        
-        $("#_searchResultsContainer").append($(newRequestBlade));
 
-        $("#__toggleIconContainer_" + data.RequestId).hover(function() {
-            $(this).addClass("csm_toggle_show_hover");
-        },
+            $("#_searchResultsContainer").append($(newRequestBlade));
+
+            $("#__toggleIconContainer_" + data.RequestId).hover(function() {
+                $(this).addClass("csm_toggle_show_hover");
+            },
 		    function() {
 		        $(this).removeClass("csm_toggle_show_hover");
 		    }
 	    );
-        $("#__toggleIconContainer_" + data.RequestId).bind('click', function() {
-            ToggleDetails(data.RequestId);
+            $("#__toggleIconContainer_" + data.RequestId).bind('click', function() {
+                ToggleDetails(data.RequestId);
+            });
         });
-    });
+    }
+    else {
+        var newNullResults = $("#_nullDataMessage").html().replace("__nullDataMessage_ID", "__nullDataMessage_SearchRequests")
+        .replace("__message_TEXT", "There are no Search Results.");
+        $("#_searchResultsContainer").append($(newNullResults));
+        $("#__searchInput").focus();
+    }
 }
 function CreateRequestDetails(details, requestId) {
     var data = jQuery.parseJSON(details);

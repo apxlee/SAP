@@ -25,16 +25,11 @@
 				</tr>
 		</table>
 		<div class="csm_input_buttons_container" style="margin-right:6px;">
-			<input type="button" id="__searchButton" value="Search" class="csm_html_button" onclick="return ValidateInput();" />
+			<input type="submit" id="__searchButton" value="Search" class="csm_html_button" onclick="ValidateInput(); return false;" />
 		</div>
 	</div>
 	<h1>Search Results</h1>
 	<div id="_searchResultsContainer"></div>
-	<div id="_nullDataMessage_SearchRequests" class="csm_content_container" style="display:none;">
-		<div class="csm_text_container">
-			<p>There are no Search Results.</p>
-		</div>
-	</div>
 </div>
 
 <script type="text/javascript">
