@@ -696,9 +696,16 @@ namespace Apollo.AIM.SNAP.Web.Common
             try
             {
                 ADUserDetail userDetail = Apollo.AIM.SNAP.CA.DirectoryServices.GetUserByLoginName(userId);
-                if (mgrUserId != userDetail.Manager.LoginName)
+                if (userDetail.Manager != null)
                 {
-                    return userDetail.ManagerName;
+                    if (mgrUserId != userDetail.Manager.LoginName)
+                    {
+                        return userDetail.ManagerName;
+                    }
+                }
+                else
+                {
+                    return "Not Found";
                 }
             }
             catch (Exception ex)

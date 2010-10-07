@@ -223,7 +223,7 @@ function CreateBlades(requests) {
 function CreateRequestDetails(details, requestId) {
     var data = jQuery.parseJSON(details);
     var ADManagaer = "";
-    if (data.ADManager != "") { ADManagaer = "[Active Directory: " + data.ADManager + "]"; }
+    if (data.ADManager != null) { ADManagaer = "[Active Directory: " + data.ADManager + "]"; }
     var newRequestDetails = $("#_requestDetails").html();
     newRequestDetails = newRequestDetails.replace("__affectedEndUserTitle_TEXT", data.Title)
     .replace("__affectedEndUserTitle_ID", "__affectedEndUserTitle_" + requestId)
