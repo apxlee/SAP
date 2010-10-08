@@ -32,14 +32,9 @@ namespace Apollo.AIM.SNAP.Web.Common
                 if (!string.IsNullOrEmpty(Request.QueryString[QueryStringConstants.REQUEST_ID]))
                 {
                     SnapSession.SelectedRequestId = Request.QueryString[QueryStringConstants.REQUEST_ID];
-                    //set bool to true if requestId in querystring
                     SnapSession.UseSelectedRequestId = true;
                 }
-                else 
-                {
-                    //set bool to false if requestId not in querystring
-                    SnapSession.UseSelectedRequestId = false; 
-                }
+                else { SnapSession.UseSelectedRequestId = false; }
 			}
 			
 			if (!SnapSession.IsUserCreated)
@@ -62,8 +57,8 @@ namespace Apollo.AIM.SNAP.Web.Common
 					HtmlInputHidden hiddenSelectedRequestId = (HtmlInputHidden)WebUtilities.FindControlRecursive(Page, "_hiddenSelectedRequestId");   
 					hiddenUserId.Value = SnapSession.CurrentUser.LoginId;
                     hiddenUserFullName.Value = SnapSession.CurrentUser.FullName;
-                    //If bool is true set selectedrequestId to hidden input which is used by javascript to open blade and set bool to false.
-                    if (SnapSession.UseSelectedRequestId) { 
+
+					if (SnapSession.UseSelectedRequestId) { 
                         hiddenSelectedRequestId.Value = SnapSession.SelectedRequestId;
                         SnapSession.UseSelectedRequestId = false;
                     }
