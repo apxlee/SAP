@@ -7,10 +7,19 @@
 		<div class="csm_grid_8">
 			<h1>Access News</h1>
 			<div class="csm_content_container">
-				<p><strong>Summer 2010</strong><br />
-				Sharepoint Paperless Privileged Access will no longer support new access requests.  Please enter new requests by accessing 
-				the "Request Form" link from the top navigation bar when it appears after login.
+				<p><strong>CAP and MyHR Blackout</strong><br />
+				Both MyHR and CAP experienced a black out recently to update to the new, feature-rich MyHR system.
 				</p>
+				
+				<p><strong>Supplemental Access Process 2.0 Release (October 2010)</strong><br /></p>
+				<ul>
+					<li>Bug fixes with a focus on speed and efficiency.</li>
+					<li>14 day inactivity automatically flags requests as abandoned to decrease on queue maintenance and "nag" communications.</li>
+					<li>Email reminders to both approvers and affected end users regarding a requested change to avoid abandoned status and minimize
+					approval process time.</li>
+					<li>Access Team enhancements to aid in increased efficiency including: hot keys for administrative functions, enhanced freedom and control
+					of select tasks; continued Google Analytics.</li>
+				</ul>
 			</div>
 			
 			<h1>Frequently Asked Questions</h1>
@@ -34,6 +43,12 @@
 				<p><strong>Question:</strong><br />How do I know when I have my access?</p>
 				<p><strong>Answer:</strong><br />You will receive an email and you will see a status of Closed Completed in your access 
 				request tracking, viewable in "My Requests".</p>
+				<hr />
+				
+				<p><strong>Question:</strong><br />Can't I email my approval?</p>
+				<p><strong>Answer:</strong><br />Not at this time, while supporting a more robust search feature will be challenged by emailed approvals, 
+				there are development efforts towards supporting external file attachments.</p>
+				
 			</div>
 			
 			<h1>Contact The Team</h1>

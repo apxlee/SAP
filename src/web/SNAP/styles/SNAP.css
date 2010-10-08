@@ -43,6 +43,17 @@ body {
 	line-height: 1.3em;
 	}
 	
+.csm_template_1 .csm_content_container ul li 
+{
+	margin: 0;
+	margin-left: 10px;
+	list-style-position: inside;
+	list-style-type: disc;
+	list-style: disc inside;
+	font-weight: normal;
+	font-size: .85em;
+	}
+	
 .csm_template_1 .csm_text_container
 , .csm_template_1 .csm_text_container_nodrop {
 	border: 1px solid #e0e0e0;
