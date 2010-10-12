@@ -473,7 +473,7 @@ namespace Apollo.AIM.SNAP.Web.Common
                               {
                                   Title = r.userTitle,
                                   Manager = r.managerDisplayName,
-                                  ADManager = (includeADManager ? CompareManagerName(r.userId, r.managerUserId) : null),
+                                  ADManager = r.managerUserId,
                                   Requestor = r.submittedBy,
                                   Label = adf.label,
                                   Text = ut.userText
@@ -493,12 +493,13 @@ namespace Apollo.AIM.SNAP.Web.Common
                 {
                     RequestDetails newDetails = new RequestDetails();
                     List<RequestFormField> newForm = new List<RequestFormField>();
-
+                    string ADManager = String.Empty;
                     foreach (var detail in details)
                     {
+                        if (ADManager == String.Empty) { ADManager = (includeADManager ? CompareManagerName(SnapSession.CurrentUser.LoginId, detail.ADManager) : null); }
                         newDetails.Title = detail.Title;
                         newDetails.Manager = detail.Manager;
-                        newDetails.ADManager = detail.ADManager;
+                        newDetails.ADManager = ADManager;
                         newDetails.Requestor = detail.Requestor;
 
                         RequestFormField newField = new RequestFormField();
@@ -702,6 +703,7 @@ namespace Apollo.AIM.SNAP.Web.Common
                     {
                         return userDetail.ManagerName;
                     }
+                    else { return null; }
                 }
                 else
                 {
