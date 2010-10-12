@@ -107,12 +107,15 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
                 this._requestForm.Controls.Add(requestFormSection);
             }
-
-            if (_requestFormData.Count == 0 && !string.IsNullOrEmpty(SnapSession.SelectedRequestId))
+            if (SnapSession.UseSelectedRequestId)
             {
-				_statusChangedMessage.Visible = true;
-				_badStatusRequestId.Text = SnapSession.SelectedRequestId;
-                SnapSession.SelectedRequestId = string.Empty;
+                if (_requestFormData.Count == 0 && !string.IsNullOrEmpty(SnapSession.SelectedRequestId))
+                {
+                    _statusChangedMessage.Visible = true;
+                    _badStatusRequestId.Text = SnapSession.SelectedRequestId;
+                    SnapSession.SelectedRequestId = string.Empty;
+                    SnapSession.UseSelectedRequestId = false;
+                }
             }
         }
 
@@ -136,6 +139,7 @@ namespace Apollo.AIM.SNAP.Web.Controls
                         if (requestID > 0)
                         {
                             SnapSession.SelectedRequestId = requestID.ToString();
+                            SnapSession.UseSelectedRequestId = true;
                         }
                         else
                         {
@@ -209,15 +213,18 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
         private List<usp_open_request_tabResult> loadRequestFormData()
         {
-            if (!string.IsNullOrEmpty(SnapSession.SelectedRequestId))
-			{
-                var requestId = System.Convert.ToInt32(SnapSession.SelectedRequestId);
-				var db = new SNAPDatabaseDataContext();
-				var formData = db.usp_open_request_tab(SnapSession.CurrentUser.LoginId, requestId);
-				// formData contain history of all data fields, we are only interested in the latest
+            if (SnapSession.UseSelectedRequestId)
+            {
+                if (!string.IsNullOrEmpty(SnapSession.SelectedRequestId))
+                {
+                    var requestId = System.Convert.ToInt32(SnapSession.SelectedRequestId);
+                    var db = new SNAPDatabaseDataContext();
+                    var formData = db.usp_open_request_tab(SnapSession.CurrentUser.LoginId, requestId);
+                    // formData contain history of all data fields, we are only interested in the latest
 
-				return formData.ToList();
-			}
+                    return formData.ToList();
+                }
+            }
 			
 			return new List<usp_open_request_tabResult>();
         }
