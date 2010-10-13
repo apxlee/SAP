@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using Apollo.AIM.SNAP.Web.Common;
+using Apollo.AIM.SNAP.Model;
+using Apollo.CA.Logging;
 
 namespace Apollo.AIM.SNAP.Web
 {
@@ -16,11 +13,19 @@ namespace Apollo.AIM.SNAP.Web
 
 			if (!string.IsNullOrEmpty(SnapSession.SelectedRequestId))
 			{
-				if (!Database.IsPendingApproval(SnapSession.SelectedRequestId, SnapSession.CurrentUser.LoginId))
+				try
 				{
-					_badStatusRequestId.Text = SnapSession.SelectedRequestId;
-					_statusChangedMessage.Visible = true;
-					SnapSession.SelectedRequestId = string.Empty;
+					if (!Database.IsPendingApproval(SnapSession.SelectedRequestId, SnapSession.CurrentUser.LoginId))
+					{
+						_badStatusRequestId.Text = SnapSession.SelectedRequestId;
+						_statusChangedMessage.Visible = true;
+						SnapSession.ClearSelectedRequestId();
+					}
+				}
+				catch (Exception ex)
+				{
+					Logger.Error("MyApprovals.aspx\r\nMessage: " + ex.Message + "\r\nStackTrace: " + ex.StackTrace);
+					WebUtilities.Redirect(string.Format("{0}.aspx?{1}=badRequestId", PageNames.APP_ERROR, QueryStringConstants.ERROR_REASON), true );
 				}
 			}
 		}

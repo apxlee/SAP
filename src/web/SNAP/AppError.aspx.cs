@@ -13,11 +13,17 @@ namespace Apollo.AIM.SNAP.Web
 			{
 				string reason = Request.QueryString[QueryStringConstants.ERROR_REASON];
 				
-				switch (reason)
+				switch (reason) // TODO: make these cases enum or constants
 				{
 					case "wrongRole":
 						_errorMessage.Text = "<p><strong>Unauthorized View</strong><br/>"
 							+ "It appears you are attempting to view a page that is not available to your role.<br/>"
+							+ "Please select one of the links in the header to continue.</p>";
+						break;
+
+					case "badRequestId":
+						_errorMessage.Text = "<p><strong>Bad Request Id</strong><br/>"
+							+ "It appears the Request Id you have linked to is no longer in the system.<br/>"
 							+ "Please select one of the links in the header to continue.</p>";
 						break;
 					
@@ -28,6 +34,8 @@ namespace Apollo.AIM.SNAP.Web
 							+ "Please select one of the links in the header to continue.</p>";
 						break;
 				}
+
+				SnapSession.ClearSelectedRequestId();
 			}
             else
 			{
