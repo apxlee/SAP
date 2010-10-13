@@ -24,13 +24,6 @@ namespace Apollo.AIM.SNAP.Web.ajax
             return UI.GetRequestBlades(view, search);
         }
 
-        //TODO: REMOVE
-        //[WebMethod]
-        //public static List<string> GetSearchRequests(string searchString)
-        //{
-        //    return UI.GetSearchRequests(searchString);
-        //}
-
         [WebMethod]
         public static string GetAccessTeamFilter()
         {

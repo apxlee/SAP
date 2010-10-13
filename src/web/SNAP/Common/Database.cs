@@ -105,21 +105,25 @@ namespace Apollo.AIM.SNAP.Web.Common
                             }
                             groupNames = groupNames.Substring(0, groupNames.Length - 2);
                             string actorCondition = string.Format("(userId==\"{0}\"||({1}&&isGroup==true))",userId,groupNames);
-                            var approvals = from r in (db.SNAP_Requests.Where(requestCondition))
-                                           join w in db.SNAP_Workflows on r.pkId equals w.requestId
-                                           join ws in (db.SNAP_Workflow_States.Where(condition)) on w.pkId equals ws.workflowId
-                                           join a in (db.SNAP_Actors.Where(actorCondition)) on w.actorId equals a.pkId
-                                           group r by new { r.pkId, r.userDisplayName, r.statusEnum, r.lastModifiedDate, ws.workflowStatusEnum } into grp
-                                           orderby grp.Key.lastModifiedDate descending
-                                           select new
-                                           {
-                                               DisplayName = grp.Key.userDisplayName,
-                                               RequestStatus = grp.Key.statusEnum,
-                                               LastModified = grp.Key.lastModifiedDate,
-                                               RequestId = grp.Key.pkId,
-                                               WorkflowStatus = grp.Key.workflowStatusEnum
-                                           };
-
+                            List<int> workflowIds = (from r in db.SNAP_Requests.Where(requestCondition)
+                                                     join w in db.SNAP_Workflows on r.pkId equals w.requestId
+                                                     join ws in db.SNAP_Workflow_States on w.pkId equals ws.workflowId
+                                                     join a in db.SNAP_Actors.Where(actorCondition) on w.actorId equals a.pkId
+                                                     group ws by new { ws.workflowId } into grp
+                                                     select grp.Max(s => s.pkId)).ToList();
+                            var approvals = from r in db.SNAP_Requests
+                                            join w in db.SNAP_Workflows on r.pkId equals w.requestId
+                                            join ws in db.SNAP_Workflow_States on w.pkId equals ws.workflowId
+                                            where workflowIds.Contains(ws.pkId)
+                                            orderby r.lastModifiedDate descending
+                                            select new
+                                            {
+                                                DisplayName = r.userDisplayName,
+                                                RequestStatus = r.statusEnum,
+                                                LastModified = r.lastModifiedDate,
+                                                RequestId = r.pkId,
+                                                WorkflowStatus = ws.workflowStatusEnum
+                                            };
                             if (approvals != null)
                             {
                                 foreach (var request in approvals)

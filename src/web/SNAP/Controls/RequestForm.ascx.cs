@@ -213,19 +213,17 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
         private List<usp_open_request_tabResult> loadRequestFormData()
         {
-            if (SnapSession.UseSelectedRequestId)
-            {
-                if (!string.IsNullOrEmpty(SnapSession.SelectedRequestId))
-                {
-                    var requestId = System.Convert.ToInt32(SnapSession.SelectedRequestId);
-                    var db = new SNAPDatabaseDataContext();
-                    var formData = db.usp_open_request_tab(SnapSession.CurrentUser.LoginId, requestId);
-                    // formData contain history of all data fields, we are only interested in the latest
 
-                    return formData.ToList();
-                }
+            if (!string.IsNullOrEmpty(SnapSession.SelectedRequestId))
+            {
+                var requestId = System.Convert.ToInt32(SnapSession.SelectedRequestId);
+                var db = new SNAPDatabaseDataContext();
+                var formData = db.usp_open_request_tab(SnapSession.CurrentUser.LoginId, requestId);
+                // formData contain history of all data fields, we are only interested in the latest
+
+                return formData.ToList();
             }
-			
+		
 			return new List<usp_open_request_tabResult>();
         }
 
