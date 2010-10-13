@@ -79,7 +79,7 @@ namespace Apollo.AIM.SNAP.Process
                     || wfState.workflowStatusEnum == (byte)WorkflowState.Change_Requested))
             {
                 var accessReq = new AccessRequest(wfState.SNAP_Workflow.requestId);
-                accessReq.NoAccess(WorkflowAction.Abandon, "Max over due days - " + overdueAlertMaxDay  + " reached!");
+                accessReq.NoAccess(WorkflowAction.Abandon, string.Format("Request has been abandoned for inactivity.  Maximum overdue days ({0}) for action reached.", overdueAlertMaxDay);
                 return false;
             }
 
