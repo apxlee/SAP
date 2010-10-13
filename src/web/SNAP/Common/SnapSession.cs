@@ -30,6 +30,13 @@ namespace Apollo.AIM.SNAP.Web.Common
 			currentPage.Session.Remove(SessionVariables.IS_REQUEST_PREPOPULATED);
 		}
 
+		public static void ClearSelectedRequestId()
+		{
+			Page currentPage = HttpContext.Current.Handler as Page;
+			currentPage.Session.Remove(SessionVariables.SELECTED_REQUEST_ID);
+			currentPage.Session.Remove(SessionVariables.USE_SELECTED_REQUEST_ID);
+		}
+
 		public static bool IsUserCreated 
 		{
 			get
