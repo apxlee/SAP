@@ -107,15 +107,13 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
                 this._requestForm.Controls.Add(requestFormSection);
             }
-            if (SnapSession.UseSelectedRequestId)
+
+            if (_requestFormData.Count == 0 && !string.IsNullOrEmpty(SnapSession.SelectedRequestId))
             {
-                if (_requestFormData.Count == 0 && !string.IsNullOrEmpty(SnapSession.SelectedRequestId))
-                {
-                    _statusChangedMessage.Visible = true;
-                    _badStatusRequestId.Text = SnapSession.SelectedRequestId;
-                    SnapSession.SelectedRequestId = string.Empty;
-                    SnapSession.UseSelectedRequestId = false;
-                }
+                _statusChangedMessage.Visible = true;
+                _badStatusRequestId.Text = SnapSession.SelectedRequestId;
+                SnapSession.SelectedRequestId = string.Empty;
+                SnapSession.UseSelectedRequestId = false;
             }
         }
 
