@@ -357,8 +357,8 @@ namespace Apollo.AIM.SNAP.Web.Common
 										   orderby ws.pkId descending
 										   select ws.workflowStatusEnum).ToList();
 
-				if ((workflowStatusEnum.Count() > 0) && (Convert.ToInt32(workflowStatusEnum[0]) == (int)WorkflowState.Pending_Approval))
-				//if (Convert.ToInt32(workflowStatusEnum[0]) == (int)WorkflowState.Pending_Approval)
+				if ((workflowStatusEnum.Count() > 0) 
+					&& (Convert.ToInt32(workflowStatusEnum[0]) == (int)WorkflowState.Pending_Approval))
                 {
                     return true;
                 }
