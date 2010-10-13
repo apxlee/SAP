@@ -110,11 +110,11 @@ function CreateRequestDetails(details, requestId) {
 
     newRequestDetails = newRequestDetails.replace("<!--__requestFormDetails-->", newForm);
     newRequestDetails = newRequestDetails.replace("<!--__requestCommentSection-->", newCommentSection);
-
+    
     $("#__toggledContentContainer_" + requestId).html($("#__toggledContentContainer_" + requestId).html()
     .replace("<!--__requestDetailsSection-->", newRequestDetails));
 
-    if ($("#__workflowStatus_" + requestId).val() == 7) { CreateApproverActions(requestId); }
+    if ($("#__overallRequestStatus_" + requestId).html() == "Pending" && $("#__workflowStatus_" + requestId).val() == 7) { CreateApproverActions(requestId); }
     else { GetTracking(null,null,requestId,false); }
 
 }
