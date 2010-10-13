@@ -20,5 +20,6 @@ namespace Apollo.AIM.SNAP.Web.Common
 		public const string SELECTED_REQUEST_ID = "SelectedRequestId";
 		public const string IS_REQUEST_PREPOPULATED = "IsRequestPrepopulated";
 		public const string REQUESTED_PAGE = "RequestedPage";
+		public const string USE_SELECTED_REQUEST_ID = "UseSelectedRequestId";
 	}
 }

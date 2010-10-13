@@ -71,7 +71,28 @@ namespace Apollo.AIM.SNAP.Web.Common
 			}
 		}
 
-        public static bool UseSelectedRequestId { get; set; }
+        //public static bool UseSelectedRequestId { get; set; }
+		public static bool UseSelectedRequestId
+		{
+			get
+			{
+				Page currentPage = HttpContext.Current.Handler as Page;
+
+				if (currentPage.Session[SessionVariables.USE_SELECTED_REQUEST_ID] != null)
+				{
+					return (bool)currentPage.Session[SessionVariables.USE_SELECTED_REQUEST_ID];
+				}
+				else
+				{
+					return false;
+				}
+			}
+			set
+			{
+				Page currentPage = HttpContext.Current.Handler as Page;
+				currentPage.Session[SessionVariables.USE_SELECTED_REQUEST_ID] = value;
+			}
+		}
 
 		public static string SelectedRequestId
 		{
