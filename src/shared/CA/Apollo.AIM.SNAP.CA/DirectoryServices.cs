@@ -242,23 +242,19 @@ namespace Apollo.AIM.SNAP.CA
         }
 
 
-        public static string CreateUserAccount(string ldapPath, string userName, string userPassword)
+        public static string CreateUserAccount(string userName, string userPassword)
         {
             string oGUID = string.Empty;
             try
             {
-                Console.WriteLine(_ldapconn.UserSearchBase);
-                ldapPath = _ldapconn.UserSearchBase;
 
-                string connectionPrefix = "LDAP://" + ldapPath;
+                string connectionPrefix = "LDAP://" + _ldapconn.UserSearchBase;
+
                 DirectoryEntry dirEntry = new DirectoryEntry(connectionPrefix);
-                DirectoryEntry newUser = dirEntry.Children.Add
-                    ("CN=" + userName, "user");
+                DirectoryEntry newUser = dirEntry.Children.Add("CN=" + userName, "user");
                 newUser.Properties["samAccountName"].Value = userName;
-                newUser.Properties["displayName"].Value = "bpp101";
-                int val = (int)newUser.Properties["userAccountControl"].Value;
-                Console.WriteLine("userAcctControl: " + val);
-                newUser.Properties["userAccountControl"].Value = val & ~0x2; 
+                newUser.Properties["displayName"].Value = userName;
+                newUser.Properties["userAccountControl"].Value = 0x00200; 
 
                 newUser.CommitChanges();
                 oGUID = newUser.Guid.ToString();
@@ -323,7 +319,7 @@ namespace Apollo.AIM.SNAP.CA
             */
 
 
-            Console.WriteLine(DirectoryServices.CreateUserAccount("", "bpp101", "Password1"));
+            Console.WriteLine(DirectoryServices.CreateUserAccount("bpp101", "Password1"));
              
             Console.ReadLine();
              

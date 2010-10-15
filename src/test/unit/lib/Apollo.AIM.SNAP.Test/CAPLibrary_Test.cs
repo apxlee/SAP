@@ -39,7 +39,7 @@ namespace Apollo.AIM.SNAP.Test
             q.PartNumber = "ag1003";
             q.ItemCount = "1";
             q.ItemQuantity = "1";
-            //q.SaveTicket();
+            //q.SaveTicket(); // uncomment this line to do end-end test
             Console.WriteLine("Request ID: " + q.RequestID);
 
         }
