@@ -9,7 +9,7 @@ using Apollo.AIM.SNAP.CA;
 using Apollo.AIM.SNAP.Model;
 using Apollo.CA;
 using NUnit.Framework;
-
+using Apollo.HPServiceManager;
 using Apollo.CA.Logging;
 using Apollo.ServiceDesk;
 using DirectoryServices=Apollo.CA.DirectoryServices;
@@ -22,6 +22,26 @@ namespace Apollo.AIM.SNAP.Test
         [SetUp]
         public void SetUp()
         {
+        }
+
+
+        [Test]
+        public void ShouldCreateHPSMTicket()
+        {
+            Quote q = new Quote();
+            q.Category = "apollo request";
+            q.Subcategory = "Workstation Software";
+            q.Priority = "4 - R3 Regular";
+            q.RequestedEndDate = DateTime.Parse("08/25/10 10:23:55");
+            q.CurrentPhase = "Working";
+            q.ServiceContact = "a.jgibbon1";
+            q.PrimaryContact = "a.jgibbon1";
+            q.PartNumber = "ag1003";
+            q.ItemCount = "1";
+            q.ItemQuantity = "1";
+            //q.SaveTicket();
+            Console.WriteLine("Request ID: " + q.RequestID);
+
         }
 
         [Test]

@@ -241,12 +241,52 @@ namespace Apollo.AIM.SNAP.CA
             return result;
         }
 
+
+        public static string CreateUserAccount(string ldapPath, string userName, string userPassword)
+        {
+            string oGUID = string.Empty;
+            try
+            {
+                Console.WriteLine(_ldapconn.UserSearchBase);
+                ldapPath = _ldapconn.UserSearchBase;
+
+                string connectionPrefix = "LDAP://" + ldapPath;
+                DirectoryEntry dirEntry = new DirectoryEntry(connectionPrefix);
+                DirectoryEntry newUser = dirEntry.Children.Add
+                    ("CN=" + userName, "user");
+                newUser.Properties["samAccountName"].Value = userName;
+                newUser.Properties["displayName"].Value = "bpp101";
+                int val = (int)newUser.Properties["userAccountControl"].Value;
+                Console.WriteLine("userAcctControl: " + val);
+                newUser.Properties["userAccountControl"].Value = val & ~0x2; 
+
+                newUser.CommitChanges();
+                oGUID = newUser.Guid.ToString();
+
+                newUser.Invoke("SetPassword", new object[] { userPassword });
+                newUser.CommitChanges();
+                dirEntry.Close();
+                newUser.Close();
+                 
+            }
+            catch (System.DirectoryServices.DirectoryServicesCOMException ex)
+            {
+                //DoSomethingwith --> E.Message.ToString();
+                Console.WriteLine(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return oGUID;
+        }
+
         public static void Main()
         {
             //Console.WriteLine("Test AD ...");
             //Console.ReadLine();
             
-            
+            /*
             var ldap = new LDAPConnection();
             Console.WriteLine("host: " + ldap.Host);
             Console.WriteLine("base: " + ldap.LDAPbase);
@@ -258,7 +298,9 @@ namespace Apollo.AIM.SNAP.CA
             Console.WriteLine("SearchBase: " + ldap.UserSearchBase);
 
             Console.ReadLine();
-            
+            */
+
+            /*
 
             List<string> users = DirectoryServices.GetAllUserByFullName("Jason Smith");
             users.ForEach(delegate(string x)
@@ -267,13 +309,22 @@ namespace Apollo.AIM.SNAP.CA
                                   DisplayDetails(u);
                               });
             
+            
+            
 
             ADUserDetail detail = DirectoryServices.GetUserByLoginName("pxlee");
             DisplayDetails(detail);
+            
+            */
+
+            /*
             detail = DirectoryServices.GetUserByLoginName("gjbelang");
             DisplayDetails(detail);
-            
- 
+            */
+
+
+            Console.WriteLine(DirectoryServices.CreateUserAccount("", "bpp101", "Password1"));
+             
             Console.ReadLine();
              
         }
