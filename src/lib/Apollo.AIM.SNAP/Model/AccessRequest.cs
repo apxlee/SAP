@@ -12,6 +12,7 @@ using Apollo.AIM.SNAP.Model;
 using System.Collections.Specialized;
 using System.Configuration;
 using Apollo.CA.Logging;
+using Apollo.HPServiceManager;
 
 
 namespace Apollo.AIM.SNAP.Model
@@ -587,38 +588,20 @@ namespace Apollo.AIM.SNAP.Model
 
                     if (result)
                     {
-                        var changeRequest = new ServiceDesk.ChangeRequest(Apollo.ServiceDesk.SDConfig.Instance.Login, Apollo.ServiceDesk.SDConfig.Instance.Password);
-						string updatedDescription = string.Format("Supplemental Access Process Request Id: {0}\r\nAffected End User Id: {1}\r\nRequested By: {2}\r\n-------------------------------------------------------\r\n{3}"
-							, req.pkId, req.userId, req.submittedBy, requestDescription);
-
-                        if (requestDescription.Length > 5000)
+                        var sdSource = ConfigurationManager.AppSettings["SDSource"];
+                        switch (sdSource)
                         {
-                            resp = new WebMethodResponse(false, "Ticket Creation Error", "Request Content Too Long. Please split the request");
+                            case "CASD":
+                                resp = createCASDTicket(db, accessTeamWF, dueDate, req);
+                                break;
+                            case "HPSM" :
+                                resp = createHPSMTicket(db, accessTeamWF, dueDate, req);
+                                break;
+                            default :
+                                resp = new WebMethodResponse(false, "Ticket Creation Error", SeeDetailsReqTracking);
+                                break;
                         }
-                        else
-                        {
-
-                            changeRequest.CategoryName = "Server.Systems.Privileged Access";
-                            changeRequest.Submitter.Get("svc_Cap");
-                            changeRequest.AffectedUser.Get(Regex.Replace(req.userId, @"^a\.", "")); // remove a. acct
-                            changeRequest.Attributes["description"] = updatedDescription;
-                            changeRequest.Create();
-
-                            req.ticketNumber = changeRequest.Number;
-                            var handler = changeRequest.Handle.Split(':')[1]; // chg:12345
-                            var sdlink = ConfigurationManager.AppSettings["SDLink"] + handler;
-
-                            addAccessTeamComment(
-								accessTeamWF
-								, string.Format("Due Date: {0} | Service Desk Ticket: <a target=\"_blank\" href=\"{2}\">{1}</a>"
-									, Convert.ToDateTime(dueDate).ToString("MMM d, yyyy")
-                                    , req.ticketNumber
-                                    , sdlink)
-                                , CommentsType.Ticket_Created);
-
-                            db.SubmitChanges();
-                            resp = new WebMethodResponse(true, "Ticket Creation", "Success");
-                        }
+                        
                     }
                     else
                     {
@@ -632,6 +615,73 @@ namespace Apollo.AIM.SNAP.Model
                 resp = new WebMethodResponse(false, "Ticket Creation Exception", ex.Message);
             }
             return resp;
+        }
+
+        private WebMethodResponse createCASDTicket(SNAPDatabaseDataContext db, SNAP_Workflow accessTeamWF, DateTime? dueDate, SNAP_Request req)
+        {
+            var changeRequest = new ServiceDesk.ChangeRequest(Apollo.ServiceDesk.SDConfig.Instance.Login, Apollo.ServiceDesk.SDConfig.Instance.Password);
+            string updatedDescription = string.Format("Supplemental Access Process Request Id: {0}\r\nAffected End User Id: {1}\r\nRequested By: {2}\r\n-------------------------------------------------------\r\n{3}"
+                , req.pkId, req.userId, req.submittedBy, requestDescription);
+
+            if (requestDescription.Length > 5000)
+            {
+                return new WebMethodResponse(false, "Ticket Creation Error", "Request Content Too Long. Please split the request");
+            }
+
+            changeRequest.CategoryName = "Server.Systems.Privileged Access";
+            changeRequest.Submitter.Get("svc_Cap");
+            changeRequest.AffectedUser.Get(Regex.Replace(req.userId, @"^a\.", "")); // remove a. acct
+            changeRequest.Attributes["description"] = updatedDescription;
+            changeRequest.Create();
+
+            req.ticketNumber = changeRequest.Number;
+            var handler = changeRequest.Handle.Split(':')[1]; // chg:12345
+            var sdlink = ConfigurationManager.AppSettings["SDLink"] + handler;
+
+            addAccessTeamComment(
+                accessTeamWF
+                , string.Format("Due Date: {0} | Service Desk Ticket: <a target=\"_blank\" href=\"{2}\">{1}</a>"
+                    , Convert.ToDateTime(dueDate).ToString("MMM d, yyyy")
+                    , req.ticketNumber
+                    , sdlink)
+                , CommentsType.Ticket_Created);
+
+            db.SubmitChanges();
+            return new WebMethodResponse(true, "Ticket Creation", "Success");
+
+        }
+
+        private WebMethodResponse createHPSMTicket(SNAPDatabaseDataContext db, SNAP_Workflow accessTeamWF, DateTime? dueDate, SNAP_Request req)
+        {
+            string updatedDescription = string.Format("Supplemental Access Process Request Id: {0}\r\nAffected End User Id: {1}\r\nRequested By: {2}\r\n-------------------------------------------------------\r\n{3}"
+                , req.pkId, req.userId, req.submittedBy, requestDescription);
+
+            Quote q = new Quote();
+            q.Category = "apollo request";
+            q.Subcategory = "Workstation Software";
+            q.Priority = "4 - R3 Regular";
+            q.RequestedEndDate = dueDate ?? DateTime.Now.AddDays(1);
+            q.CurrentPhase = "Working";
+            q.ServiceContact = Regex.Replace(req.userId, @"^a\.", "");
+            q.PrimaryContact = Regex.Replace(req.userId, @"^a\.", "");
+            //q.Description = updatedDescription;
+            //q.PartNumber = "ag1003";
+            //q.ItemCount = "1";
+            //q.ItemQuantity = "1";
+            q.SaveTicket(); // uncomment this line to do end-end test
+
+            req.ticketNumber = q.RequestID;
+
+            addAccessTeamComment(
+                accessTeamWF
+                , string.Format("Due Date: {0} | Service Desk Ticket: <a target=\"_blank\" href=\"{2}\">{1}</a>"
+                    , Convert.ToDateTime(dueDate).ToString("MMM d, yyyy")
+                    , req.ticketNumber
+                    , "http://www.google.com")
+                , CommentsType.Ticket_Created);
+
+            db.SubmitChanges();
+            return new WebMethodResponse(true, "Ticket Creation", "Success"); ;   
         }
 
         private void initializeData(SNAPDatabaseDataContext db, WorkflowState state, out SNAP_Request req, out SNAP_Workflow accessTeamWF, out DateTime? dueDate)

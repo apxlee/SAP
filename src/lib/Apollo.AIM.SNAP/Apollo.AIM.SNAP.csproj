@@ -36,6 +36,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\Apollo.CA.dll</HintPath>
     </Reference>
+    <Reference Include="Apollo.HPServiceManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Apollo.HPServiceManager.dll</HintPath>
+    </Reference>
     <Reference Include="Apollo.ServiceDesk, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\Apollo.ServiceDesk.dll</HintPath>
