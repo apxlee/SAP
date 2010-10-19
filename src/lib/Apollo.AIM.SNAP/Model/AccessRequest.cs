@@ -658,26 +658,28 @@ namespace Apollo.AIM.SNAP.Model
 
             Quote q = new Quote();
             q.Category = "apollo request";
-            q.Subcategory = "Workstation Software";
+            q.Subcategory = "Employee Management Support Service";
             q.Priority = "4 - R3 Regular";
             q.RequestedEndDate = dueDate ?? DateTime.Now.AddDays(1);
             q.CurrentPhase = "Working";
             q.ServiceContact = Regex.Replace(req.userId, @"^a\.", "");
-            q.PrimaryContact = Regex.Replace(req.userId, @"^a\.", "");
-            //q.Description = updatedDescription;
-            //q.PartNumber = "ag1003";
-            //q.ItemCount = "1";
-            //q.ItemQuantity = "1";
+            q.PrimaryContact = Regex.Replace(req.submittedBy, @"^a\.", "");
+            q.Description = new List<string>() {updatedDescription};
+            q.PartNumber = "ag1144"; //Server Privileged Access - Add, modify, or remove
+            q.ItemCount = "1";
+            q.ItemQuantity = "1";
             q.SaveTicket(); // uncomment this line to do end-end test
 
             req.ticketNumber = q.RequestID;
+
+            var hpsmlink = ConfigurationManager.AppSettings["HPSMLink"];
 
             addAccessTeamComment(
                 accessTeamWF
                 , string.Format("Due Date: {0} | Service Desk Ticket: <a target=\"_blank\" href=\"{2}\">{1}</a>"
                     , Convert.ToDateTime(dueDate).ToString("MMM d, yyyy")
                     , req.ticketNumber
-                    , "http://www.google.com")
+                    , hpsmlink)
                 , CommentsType.Ticket_Created);
 
             db.SubmitChanges();
