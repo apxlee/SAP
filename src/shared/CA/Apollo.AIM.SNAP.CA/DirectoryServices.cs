@@ -250,16 +250,18 @@ namespace Apollo.AIM.SNAP.CA
 
                 string connectionPrefix = "LDAP://" + _ldapconn.UserSearchBase;
 
+                ActiveDs.ADS_USER_FLAG passwordExpired = ActiveDs.ADS_USER_FLAG.ADS_UF_PASSWORD_EXPIRED;
+
                 DirectoryEntry dirEntry = new DirectoryEntry(connectionPrefix);
                 DirectoryEntry newUser = dirEntry.Children.Add("CN=" + userName, "user");
                 newUser.Properties["samAccountName"].Value = userName;
                 newUser.Properties["displayName"].Value = userName;
-                newUser.Properties["userAccountControl"].Value = 0x00200; 
+                newUser.Properties["userAccountControl"].Value = passwordExpired;
 
                 newUser.CommitChanges();
                 oGUID = newUser.Guid.ToString();
 
-                newUser.Invoke("SetPassword", new object[] { userPassword });
+                newUser.Invoke("SetPassword", new object[] { userPassword });      
                 newUser.CommitChanges();
                 dirEntry.Close();
                 newUser.Close();
