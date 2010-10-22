@@ -456,7 +456,7 @@ namespace Apollo.AIM.SNAP.Web.Common
                               where a.requestId == requestId
                               group a by new { a.access_details_formId } into grp
                               select new { ID = grp.Max(s => s.pkId) };
-
+                              
                 List<int> currentTextIds = new List<int>();
 
                 foreach (var id in textIds)
@@ -468,13 +468,14 @@ namespace Apollo.AIM.SNAP.Web.Common
                               join ut in db.SNAP_Access_User_Texts on r.pkId equals ut.requestId
                               join adf in db.SNAP_Access_Details_Forms on ut.access_details_formId equals adf.pkId
                               where r.pkId == requestId && adf.isActive == true && currentTextIds.Contains(ut.pkId)
-                              orderby adf.pkId descending
+                              orderby adf.pkId ascending
                               select new
                               {
                                   Title = r.userTitle,
                                   Manager = r.managerDisplayName,
                                   ADManager = r.managerUserId,
                                   Requestor = r.submittedBy,
+                                  UserId = r.userId,
                                   Label = adf.label,
                                   Text = ut.userText
                               };
@@ -496,7 +497,7 @@ namespace Apollo.AIM.SNAP.Web.Common
                     string ADManager = String.Empty;
                     foreach (var detail in details)
                     {
-                        if (ADManager == String.Empty) { ADManager = (includeADManager ? CompareManagerName(SnapSession.CurrentUser.LoginId, detail.ADManager) : null); }
+                        if (ADManager == String.Empty) { ADManager = (includeADManager ? CompareManagerName(detail.UserId, detail.ADManager) : null); }
                         newDetails.Title = detail.Title;
                         newDetails.Manager = detail.Manager;
                         newDetails.ADManager = ADManager;
