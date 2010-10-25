@@ -588,8 +588,7 @@ namespace Apollo.AIM.SNAP.Model
 
                     if (result)
                     {
-                        //var sdSource = ConfigurationManager.AppSettings["SDSource"];
-                        var sdSource = "CASD";
+                        var sdSource = ConfigurationManager.AppSettings["SDSource"];
                         switch (sdSource)
                         {
                             case "CASD":
