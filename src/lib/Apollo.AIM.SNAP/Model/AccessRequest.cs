@@ -27,10 +27,13 @@ namespace Apollo.AIM.SNAP.Model
         private int _id;
         private static int AccessTeamActorId = 1;
 
+        private List<int> deletedActors, addedActors;
+
         public AccessRequest(int i)
         {
             _id = i;
-
+            deletedActors = new List<int>();
+            addedActors = new List<int>();
         }
 
         #region public methods
@@ -394,8 +397,8 @@ namespace Apollo.AIM.SNAP.Model
                                 //addAccessTeamComment(accessTeamWF, "Workflow editted @" + DateTime.Now, CommentsType.Access_Notes_AccessTeam);
                                 db.SubmitChanges();
 
-                                // in case we are removing the last approver who has not approved yet
-                                ApprovalWorkflow.CompleteRequestApprovalCheck(_id);
+                                // in case we are removing the last approver who has not approved yet, or removing special approver
+                                editWorkflowCompletionCheck(_id, db);
                                 resp = new WebMethodResponse(true, "Workflow Change", "Success");
                                 
                             }
@@ -473,6 +476,40 @@ namespace Apollo.AIM.SNAP.Model
             }
         }
 
+        private void editWorkflowCompletionCheck(int _id, SNAPDatabaseDataContext db)
+        {
+            
+            // assuming only on special approval
+            // dropping specail approver out of the approval chain, and the manager has alread approved, move on to tech approval
+            foreach (var i in deletedActors)
+            {
+                var act = db.SNAP_Actors.Single(a => a.pkId == i);
+                {
+                    if (act.SNAP_Actor_Group.actorGroupType == (byte) ActorApprovalType.Team_Approver)
+                    {
+                        var wfs = FindApprovalTypeWF(db, (byte) ActorApprovalType.Team_Approver);
+                        if (wfs.Count == 0 && managerApprovalDone(db)) // no team/special approver
+                        {
+                            var techApprovers = FindApprovalTypeWF(db, (byte) ActorApprovalType.Technical_Approver);
+                            emailApproverForAction(techApprovers);
+                            db.SubmitChanges();
+                            break;
+                        }
+                    }
+                }
+            }
+
+            ApprovalWorkflow.CompleteRequestApprovalCheck(_id);
+        }
+
+        private bool managerApprovalDone(SNAPDatabaseDataContext db)
+        {
+            var wfs = FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
+            if (wfs[0].SNAP_Workflow_States.Count(s=>s.workflowStatusEnum == (byte)WorkflowState.Approved) == 1)
+                return true;
+
+            return false;
+        }
 
         private bool mustHaveManagerInWorkflow(SNAPDatabaseDataContext db,  List<int> actorIds)
         {
@@ -941,15 +978,74 @@ namespace Apollo.AIM.SNAP.Model
 
         private List<int> editApprovalWorkFlow(SNAPDatabaseDataContext db, List<int> actorIds)
         {
+        /*
             var newAddedActorIds = new List<int>();
             var req = db.SNAP_Requests.Single(x => x.pkId == _id);
 
             var toDeleteActorList = getToDeletedActorList(req, actorIds);
+            deletedActors = toDeleteActorList;
 
             // we need to remove old approvers who are not in the new list
             if (req.SNAP_Workflows.Count > 1)
             {
                 foreach (var i in toDeleteActorList)
+                {
+                    var wf = req.SNAP_Workflows.Single(w => w.actorId == i);
+
+                    // only remove pending approval and not active wf
+                    if ((wf.SNAP_Workflow_States.Where(s => s.completedDate == null
+                        && s.notifyDate != null
+                        && (s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval)).Count() == 1)
+
+                            ||
+
+                        (wf.SNAP_Workflow_States.Where(s => s.completedDate == null
+                            && s.notifyDate == null
+                            && s.workflowStatusEnum == (byte)WorkflowState.Not_Active).Count() == 1)
+                        )
+                    {
+                        deleteActorWorkflow(db, wf);
+                    }
+                }
+            }
+
+
+            foreach (var actId in actorIds)
+            {
+                SNAP_Workflow wf;
+                if (req.SNAP_Workflows.Count(w => w.actorId == actId) == 0) // 
+                {
+                    newAddedActorIds.Add(actId);
+
+                    wf = new SNAP_Workflow() { actorId = actId };
+                    req.SNAP_Workflows.Add(wf);
+
+                    var actor = db.SNAP_Actors.Single(a => a.pkId == actId);
+                    var agt = actor.SNAP_Actor_Group.actorGroupType ?? 3; // default to accessteam if null
+
+                    ActorApprovalType t = (ActorApprovalType)agt;
+
+                    stateTransition(t, wf, WorkflowState.Not_Active, WorkflowState.Not_Active);
+                }
+            }
+
+            return newAddedActorIds;
+
+*/
+
+            addedActors.Clear();
+            deletedActors.Clear();
+
+            //var newAddedActorIds = new List<int>();
+            var req = db.SNAP_Requests.Single(x => x.pkId == _id);
+
+            //var toDeleteActorList = getToDeletedActorList(req, actorIds);
+            deletedActors = getToDeletedActorList(req, actorIds); ;
+
+            // we need to remove old approvers who are not in the new list
+            if (req.SNAP_Workflows.Count > 1)
+            {
+                foreach (var i in deletedActors)
                 {
                     var wf = req.SNAP_Workflows.Single(w => w.actorId == i);
 
@@ -976,7 +1072,7 @@ namespace Apollo.AIM.SNAP.Model
                 SNAP_Workflow wf;
                 if (req.SNAP_Workflows.Count(w => w.actorId == actId) == 0) // 
                 {
-                    newAddedActorIds.Add(actId);
+                    addedActors.Add(actId);
 
                     wf = new SNAP_Workflow() { actorId = actId };
                     req.SNAP_Workflows.Add(wf);
@@ -990,7 +1086,8 @@ namespace Apollo.AIM.SNAP.Model
                 }
             }
 
-            return newAddedActorIds;
+            return addedActors;
+ 
         }
 
 

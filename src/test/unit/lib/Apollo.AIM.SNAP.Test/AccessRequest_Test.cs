@@ -2499,7 +2499,39 @@ namespace Apollo.AIM.SNAP.Test
             }
 
         }
-        
+
+        [Test]
+        public void ShouldHandleRemoveSpecailApproverAfterManagerApproval()
+        {
+            using (var db = new SNAPDatabaseDataContext())
+            {
+                var accessReq = createTestWorkflow(db, new List<int>()
+                                                           {
+                                                               managerActorId,
+                                                               teamApprovalActorId,
+                                                               windowsServerActorId,
+                                                               databaseActorId,
+                                                           });
+
+                // get manager approval
+                var wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Manager);
+                Assert.IsTrue(wfs[0].SNAP_Workflow_States.Single(s => s.workflowStatusEnum == (byte)WorkflowState.Pending_Approval).completedDate == null);
+
+                accessReq.WorkflowAck(wfs[0].pkId, WorkflowAction.Approved);
+
+                Assert.IsTrue(accessReq.EditWorkflow(managerUserId, new List<int>()
+                                                                         {
+                                                                             windowsServerActorId,
+                                                                             databaseActorId
+                                                                         }).Success);
+
+                wfs = accessReq.FindApprovalTypeWF(db, (byte)ActorApprovalType.Technical_Approver);
+                verifyWorkflowState(wfs[0], WorkflowState.Pending_Approval);
+                verifyWorkflowState(wfs[1], WorkflowState.Pending_Approval);
+            }
+
+        }
+
         [Test]
         public void ShouldHandleRemoveInactiveApprovers()
         {
