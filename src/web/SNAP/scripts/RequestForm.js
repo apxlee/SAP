@@ -68,7 +68,7 @@ var userManager = {
     ToggleSelecction: function() {
         this.userSelection.toggle();
         this.mgrSelection.toggle();
-        this.mgrName.attr("disabled", true)
+        this.mgrName.attr("disabled", true);
     },
 
     ToolTip: function() {
@@ -83,7 +83,7 @@ var userManager = {
         $("a.tooltip").hover(function(e) {
             this.t = this.title;
             this.title = "";
-            var c = (this.t != "") ? "<br/>" + this.t : "";
+            var c = (this.t !== "") ? "<br/>" + this.t : "";
             $("body").append("<p id='tooltip'><img src='" + this.rel + "' alt='tool tip' />" + c + "</p>");
             $("#tooltip")
 			    .css("top", (e.pageY - xOffset) + "px")
@@ -103,7 +103,7 @@ var userManager = {
 
     GetNames: function(name, selection, dialogDiv) {
         var postData = "{'name':'" + name.val().replace("(", "").replace(")", "").replace(/\\/, "").replace("'", "\\'") + "'}";
-        selection.hide()
+        selection.hide();
         dialogDiv.dialog("open");
 
         $.ajax({
@@ -117,7 +117,7 @@ var userManager = {
                 var names = msg.d;
 
                 // no match                
-                if (names.length == 0) {
+                if (names.length === 0) {
                     userManager.FillErrorFields(name);
                     dialogDiv.dialog("close");
                 }
@@ -167,20 +167,24 @@ var userManager = {
 
     HandleSubmitButtonClick: function() {
         userManager.submitButton.click(function() {
-            if (userManager.SubmitHack())
+            if (userManager.SubmitHack()) {
                 return true;
-            else
+            }
+            else {
                 return false;
-        })
+            }
+        });
     },
 
     HandleSubmitButtonLowerClick: function() {
         userManager.submitButtonLower.click(function() {
-            if (userManager.SubmitHack())
+            if (userManager.SubmitHack()) {
                 return true;
-            else
+            }
+            else {
                 return false;
-        })
+            }
+        });
     },
 
 
@@ -233,8 +237,8 @@ var userManager = {
         });
 
         //check static fields
-        if (userManager.userLoginId.val() == '') { strSections = strSections + "[Affected End User,ctl00__contentPlaceHolder__requestFormControl__requestorId]"; status = false; }
-        if (userManager.mgrLoginId.val() == '') { strSections = strSections + "[Manager Name,ctl00__contentPlaceHolder__requestFormControl__managerName]"; userManager.mgrEdit.click(); status = false; }
+        if (userManager.userLoginId.val() === '') { strSections = strSections + "[Affected End User,ctl00__contentPlaceHolder__requestFormControl__requestorId]"; status = false; }
+        if (userManager.mgrLoginId.val() === '') { strSections = strSections + "[Manager Name,ctl00__contentPlaceHolder__requestFormControl__managerName]"; userManager.mgrEdit.click(); status = false; }
 
         //test validation bit
         if (!status) {
@@ -254,7 +258,7 @@ var userManager = {
                 var aryElements = val.split(",");
 
                 jQuery.each(aryElements, function(i, val) {
-                    if (i == 0) { strSection = val.replace("[", ""); }
+                    if (i === 0) { strSection = val.replace("[", ""); }
                     else {
                         var li = jQuery(document.createElement('li'));
                         var label = jQuery(document.createElement('label'));
@@ -274,11 +278,11 @@ var userManager = {
     },
 
     HandleClearButtonClick: function() {
-        userManager.clearButton.click(function() { userManager.Clear(); })
+        userManager.clearButton.click(function() { userManager.Clear(); });
     },
 
     HandleClearButtonLowerClick: function() {
-        userManager.clearButtonLower.click(function() { userManager.Clear(); })
+        userManager.clearButtonLower.click(function() { userManager.Clear(); });
     },
 
     HandleClearClick: function() {
@@ -289,18 +293,18 @@ var userManager = {
     HandleGetUserNames: function() {
         userManager.userNameCheck.click(function() {
             // this is ref to the button not usermanager, hence to call usermanager function I need to ref to qualify user manager
-            if (userManager.userLoginId.val() == "") {
+            if (userManager.userLoginId.val() === "") {
                 userManager.GetNames(userManager.userName, userManager.userSelection, userManager.userSelectionDiv);
             }
-        })
+        });
     },
     HandleGetManagerNames: function() {
         userManager.mgrNameCheck.click(function() {
             // this is ref to the button not usermanager, hence to call usermanager function I need to ref to qualify user manager
-            if (userManager.mgrLoginId.val() == "") {
+            if (userManager.mgrLoginId.val() === "") {
                 userManager.GetNames(userManager.mgrName, userManager.mgrSelection, userManager.mgrSelectionDiv);
             }
-        })
+        });
     },
 
     HandleEditManagerName: function() {
@@ -308,16 +312,16 @@ var userManager = {
             userManager.mgrName.removeAttr('disabled');
             userManager.mgrNameCheck.removeAttr('disabled');
             userManager.mgrEdit.attr("disabled", true);
-        })
+        });
     },
 
-    HandleNameSelectionChange: function() { userManager.userSelection.change(userManager.UserNameSelected) },
-    HandleManagerSelectionChange: function() { userManager.mgrSelection.change(userManager.ManagerNameSelected) },
+    HandleNameSelectionChange: function() { userManager.userSelection.change(userManager.UserNameSelected); },
+    HandleManagerSelectionChange: function() { userManager.mgrSelection.change(userManager.ManagerNameSelected); },
 
     UserNameChange: function() {
         userManager.userName.change(function() {
             userManager.userLoginId.val("");
-        })
+        });
     },
 
     UserNameSelected: function() {
@@ -332,17 +336,17 @@ var userManager = {
     MgrNameChange: function() {
         userManager.mgrName.change(function() {
             userManager.mgrLoginId.val("");
-        })
+        });
     },
 
     ManagerNameSelected: function() {
 
-    // *** Quick Fix: we need to add more selection criteria to select the mangager...not sure why...it appears 
-    //     there is an extra selection dialog created!!!    
+        // *** Quick Fix: we need to add more selection criteria to select the mangager...not sure why...it appears 
+        //     there is an extra selection dialog created!!!    
         var x = $(".ui-dialog #_managerSelectionDiv" + " #" + userManager.mgrSelection.attr('id') + ' option:selected').text();
 
         userManager.AssignSelectedName(userManager.mgrName,
-                            //$('#' + userManager.mgrSelection.attr('id') + ' option:selected').text(),
+        //$('#' + userManager.mgrSelection.attr('id') + ' option:selected').text(),
                             x,
                             userManager.mgrSelection);
 
@@ -392,16 +396,20 @@ var userManager = {
     FillSelection: function(selection, names) {
         var listItems = [];
         for (var key in names) {
-            listItems.push('<option value="' + key + '">' + names[key].Name + '</option>');
+            if (key) {
+                listItems.push('<option value="' + key + '">' + names[key].Name + '</option>');
+            }
         }
         selection.empty();
         selection.append(listItems.join(''));
 
         // don't over expand the dialog box
-        if (names.length >= 10)
+        if (names.length >= 10) {
             selection.attr('size', 10);
-        else
+        }
+        else {
             selection.attr('size', names.length);
+        }
 
         selection.parent().find('.oospa_ajax_indicator').hide();
         selection.show();
@@ -441,18 +449,18 @@ var userManager = {
 
     FillManagerInfoFromManagerSelection: function(userManagerInfo) {
         userManager.AssignManagerName(userManagerInfo.Name);
-        userManager.mgrLoginId.val(userManagerInfo.LoginId)
+        userManager.mgrLoginId.val(userManagerInfo.LoginId);
     },
 
     DialogClose: function(obj) {
         if ($(obj).attr('id').indexOf("name") > -1) {
-            if (userManager.userLoginId.val() == "") {
+            if (userManager.userLoginId.val() === "") {
                 userManager.userName.focus();
             }
         }
         else {
-            if (userManager.mgrName.attr("disabled") == false) {
-                if (userManager.mgrLoginId.val() == "") {
+            if (userManager.mgrName.attr("disabled") === false) {
+                if (userManager.mgrLoginId.val() === "") {
                     userManager.mgrName.focus();
                 }
             }
@@ -549,7 +557,7 @@ var userManager = {
         //this.Clear();
 
     }
-}
+};
 
 /*
 
