@@ -74,6 +74,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.SharePoint, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL" />
     <Reference Include="Neo, Version=1.4.0.17536, Culture=neutral, PublicKeyToken=36a32b8e5c75024d">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\Neo.dll</HintPath>
@@ -246,6 +247,7 @@
     <Compile Include="Common\SnapUser.cs" />
     <Compile Include="Common\TrackingBlades.cs" />
     <Compile Include="Common\UI.cs" />
+    <Compile Include="Common\Utilities.cs" />
     <Compile Include="Common\WebUtilities.cs" />
     <Compile Include="Controls\DefaultIncludes.ascx.cs">
       <DependentUpon>DefaultIncludes.ascx</DependentUpon>
@@ -288,6 +290,18 @@
     </Compile>
     <Compile Include="Controls\RequestFormSection.ascx.designer.cs">
       <DependentUpon>RequestFormSection.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Reports.aspx.cs">
+      <DependentUpon>Reports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports.aspx.designer.cs">
+      <DependentUpon>Reports.aspx</DependentUpon>
     </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -344,6 +358,11 @@
     </Compile>
     <Compile Include="Support.aspx.designer.cs">
       <DependentUpon>Support.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\its sharepoint lists\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -406,21 +425,54 @@
     <Content Include="ajax\AjaxPersons.aspx" />
     <Content Include="ajax\AjaxUI.aspx" />
     <Content Include="ajax\AjaxUtilities.aspx" />
+    <Content Include="images\icon_email_archive.gif" />
+    <Content Include="images\icon_email_archive.png" />
+    <Content Include="images\icon_email_zoom.jpg" />
+    <Content Include="images\icon_glass_zoom.jpg" />
+    <Content Include="Reports.aspx" />
     <Content Include="images\button_flashing_edit.gif" />
     <Content Include="images\button_loading.gif" />
     <Content Include="images\load_buildingANIM.gif" />
     <Content Include="images\load_buildingEMPTY.gif" />
     <Content Include="images\load_loadingANIM.gif" />
     <Content Include="images\load_loadingFULL.gif" />
+    <Content Include="scripts\Reports.js" />
     <Content Include="scripts\jquery.hotkeys-0.7.9.min.js" />
     <Content Include="scripts\jquery.json-2.2.min.js" />
     <Content Include="scripts\MyRequestsView.js" />
     <Content Include="styles\SNAP_IE6.css" />
     <Content Include="styles\SNAP.css" />
+    <None Include="Web References\its sharepoint lists\lists.disco" />
     <Content Include="Web_QA.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\its sharepoint lists\lists.wsdl" />
+    <None Include="Web References\its sharepoint lists\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="http://its/_vti_bin/Lists.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\its sharepoint lists\</RelPath>
+      <UpdateFromURL>http://its/_vti_bin/Lists.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>Apollo_AIM_SNAP_Web_its_sharepoint_Lists</CachedSettingsPropName>
+    </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="SupportFiles\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

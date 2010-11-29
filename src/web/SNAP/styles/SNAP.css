@@ -1102,6 +1102,20 @@ div#support_contact_logo {
 	height: 88px;
 	}
 	
+/* Reports Page */
+
+div#current_report 
+{
+	width: 668px;
+	height: 765px;
+	margin-left:5px;
+}
+
+.dialog_nodrop
+{
+    background:none;
+}
+
 /* RIBBON */
 
 span.aim_header_logout {
@@ -1240,6 +1254,10 @@ div.support #support a {background-position: -1055px -50px;}
 /* ToolTip */
 
 #tooltip{position:absolute;display:none;color:#fff;}
+
+/* Enlarge */
+
+#enlarge{position:absolute;display:none;color:#fff;}
 
 /************** END SNAP_BRAND **************/
 

@@ -411,6 +411,19 @@
 </div>
 <div class="csm_clear">&nbsp;</div>
 </script>
+<script type='html/template' id='_reportHistoryDiv'>
+<div class="csm_clear" style="height:1px;">&nbsp;</div>
+ <div class="csm_data_row csm_alternating_bg">
+    <table border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td style="width:618px;vertical-align:middle;"><a href="%%ReportLink%%">%%ReportTitle%%</a></td>
+            <td style="width:50px;">
+                <a href="#" onclick="alert(%%ReportLink%%);"><img alt="Email Report" src="images/icon_email_archive.png" /></a>
+            </td>
+        </tr>
+    </table>
+</div>
+</script>
 <div id="_actionMessageDiv" style="display:none;">
     <div class="messageBox"> 
         <h2>header</h2>
@@ -435,4 +448,20 @@
         <img alt="loading..." src="images/ajax_indicator.gif" width="16" height="16" />
     </div>
     <select style="display:none;" size="3" class="oospa_select_user" name="managerSelection" id="_managerSelection"></select>
+</div>
+<div id="_imageEnlargeDiv" style="display:none"; > 
+    <img id='_bottleneck_large' src='' alt='enlarged image' />
+</div>
+<div id="_emailerDiv" style="display:none;">
+    <div> 
+        <h2>header</h2>
+        <div id="_sendToDiv">
+            <p>Send To</p>
+            <input type="text" id="_sendToText" /> 
+        </div>
+        <div id="_sendCommentsDiv">
+            <p>Comments</p>
+            <textarea rows="2" style="width:220px;" id="_sendCommentsText"></textarea> 
+        </div>
+    </div>
 </div>

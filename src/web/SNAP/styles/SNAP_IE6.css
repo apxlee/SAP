@@ -303,6 +303,10 @@ div.support #support a {background-position: -1055px -50px;}
 
 #tooltip{position:absolute;display:none;color:#fff;}
 
+/* Enlarge */
+
+#enlarge{position:absolute;display:none;color:#fff;}
+
 /************** END SNAP_BRAND **************/
 
 /************** BEGIN ACCESS TEAM FILTER **************/

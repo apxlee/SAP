@@ -16,5 +16,6 @@ namespace Apollo.AIM.SNAP.Model
         public const string REQUEST_FORM = "RequestForm";
         public const string SEARCH = "Search";
         public const string SUPPORT = "Support";
+        public const string REPORTS = "Reports";
     }
 }
