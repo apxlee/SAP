@@ -76,7 +76,7 @@
     </Reference>
     <Reference Include="Microsoft.SharePoint, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Microsoft.SharePoint.dll</HintPath>
+      <HintPath>..\..\..\lib\Microsoft.SharePoint.dll</HintPath>
     </Reference>
     <Reference Include="Neo, Version=1.4.0.17536, Culture=neutral, PublicKeyToken=36a32b8e5c75024d">
       <SpecificVersion>False</SpecificVersion>
