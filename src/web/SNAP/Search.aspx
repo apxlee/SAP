@@ -10,7 +10,7 @@
 			<p>Search accepts <strong>User ID</strong>, <strong>Username</strong> and <strong>Request ID</strong> as search criteria. 
 			The results only return the AFFECTED END USER (or REQUEST ID) matching the criteria for requests created in this application.</p>
 			<p>Searches for requests created within the Sharepoint environment need to be made through filtering 
-			from the legacy <a href="http://apolloiandt/SiteDirectory/infraops/ITOC/Lists/Paper3/Robust%20View.aspx">Sharepoint Privileged Access</a> site.</p>
+			from the legacy <a href="http://its/dcs/aim/pa/Lists/Paper3/Robust%20View.aspx">Sharepoint Privileged Access</a> site.</p>
 		</div>
 		<table border="0" cellpadding="0" cellspacing="0" class="csm_input_form_container">
 				<tr>
