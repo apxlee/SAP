@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Apollo.AIM.SNAP")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Apollo Group, Inc")]
-[assembly: AssemblyProduct("Apollo.AIM.SNAP")]
-[assembly: AssemblyCopyright("Copyright © Apollo Group, Inc 2010")]
+//[assembly: AssemblyCompany("Apollo Group, Inc")]
+//[assembly: AssemblyProduct("Apollo.AIM.SNAP")]
+//[assembly: AssemblyCopyright("Copyright © Apollo Group, Inc 2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("2.1.0.0")]
-[assembly: AssemblyFileVersion("2.1.0.0")]
+//[assembly: AssemblyVersion("2.1.0.0")]
+//[assembly: AssemblyFileVersion("2.1.0.0")]
