@@ -135,7 +135,7 @@
 <script type='html/template' id='_requestFormField'>
     <tr> 
 	    <td style="text-align:right;width:140px;padding-right:4px;"><p>__fieldLabel</p></td> 
-	    <td style="padding:1px 10px 1px 4px;"><p>__fieldText</p></td> 
+	    <td style="padding:1px 10px 1px 4px;"><p style="width:455px;word-wrap:break-word;overflow:hidden;">__fieldText</p></td> 
 	</tr> 
 </script>
 <script type='html/template' id='_requestCommentSection'>
