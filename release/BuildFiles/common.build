@@ -174,7 +174,7 @@
       </imports>
       <attributes>
         <attribute type="AssemblyVersionAttribute" value="${version}" />
-        <attribute type="AssemblyCopyrightAttribute" value="Copyright ${datetime::get-year(datetime::now())} Apollo Group Inc." />
+        <attribute type="AssemblyCopyrightAttribute" value="Copyright 2010-${datetime::get-year(datetime::now())} Apollo Group Inc." />
         <attribute type="AssemblyCompanyAttribute" value="Apollo Group Inc." />
         <attribute type="AssemblyProductAttribute" value="Computer Access Process" />
       </attributes>
