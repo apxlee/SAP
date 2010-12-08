@@ -150,13 +150,13 @@ namespace Apollo.AIM.SNAP.Web.Common
                             {
                                 foreach (var request in requests)
                                 {
-                                    UI.RequestBlade newRequest = new UI.RequestBlade();
-                                    newRequest.DisplayName = request.userDisplayName.StripTitleFromUserName();
-                                    newRequest.RequestStatus = Convert.ToString((RequestState)Enum.Parse(typeof(RequestState), request.statusEnum.ToString())).StripUnderscore();
-                                    newRequest.WorkflowStatus = String.Empty;
-                                    newRequest.LastModified = WebUtilities.TestAndConvertDate(request.lastModifiedDate.ToString());
-                                    newRequest.RequestId = request.pkId.ToString();
-                                    requestList.Add(newRequest);
+                                    UI.RequestBlade my_requests = new UI.RequestBlade();
+                                    my_requests.DisplayName = request.userDisplayName.StripTitleFromUserName();
+                                    my_requests.RequestStatus = Convert.ToString((RequestState)Enum.Parse(typeof(RequestState), request.statusEnum.ToString())).StripUnderscore();
+                                    my_requests.WorkflowStatus = String.Empty;
+                                    my_requests.LastModified = WebUtilities.TestAndConvertDate(request.lastModifiedDate.ToString());
+                                    my_requests.RequestId = request.pkId.ToString();
+                                    requestList.Add(my_requests);
                                 }
                             }
                             break;
@@ -169,13 +169,13 @@ namespace Apollo.AIM.SNAP.Web.Common
                             {
                                 foreach (var request in accessRequests)
                                 {
-                                    UI.RequestBlade newRequest = new UI.RequestBlade();
-                                    newRequest.DisplayName = request.userDisplayName.StripTitleFromUserName();
-                                    newRequest.RequestStatus = Convert.ToString((RequestState)Enum.Parse(typeof(RequestState), request.statusEnum.ToString())).StripUnderscore();
-                                    newRequest.WorkflowStatus = String.Empty;
-                                    newRequest.LastModified = WebUtilities.TestAndConvertDate(request.lastModifiedDate.ToString());
-                                    newRequest.RequestId = request.pkId.ToString();
-                                    requestList.Add(newRequest);
+                                    UI.RequestBlade access_team = new UI.RequestBlade();
+                                    access_team.DisplayName = request.userDisplayName.StripTitleFromUserName();
+                                    access_team.RequestStatus = Convert.ToString((RequestState)Enum.Parse(typeof(RequestState), request.statusEnum.ToString())).StripUnderscore();
+                                    access_team.WorkflowStatus = String.Empty;
+                                    access_team.LastModified = WebUtilities.TestAndConvertDate(request.lastModifiedDate.ToString());
+                                    access_team.RequestId = request.pkId.ToString();
+                                    requestList.Add(access_team);
                                 }
                             }
                         break;
@@ -227,13 +227,13 @@ namespace Apollo.AIM.SNAP.Web.Common
                                 {
                                     if (RequestContainsContents(search.Contents,request.pkId))
                                     {
-                                        UI.RequestBlade newRequest = new UI.RequestBlade();
-                                        newRequest.DisplayName = request.userDisplayName.StripTitleFromUserName();
-                                        newRequest.RequestStatus = Convert.ToString((RequestState)Enum.Parse(typeof(RequestState), request.statusEnum.ToString())).StripUnderscore();
-                                        newRequest.WorkflowStatus = String.Empty;
-                                        newRequest.LastModified = WebUtilities.TestAndConvertDate(request.lastModifiedDate.ToString());
-                                        newRequest.RequestId = request.pkId.ToString();
-                                        requestList.Add(newRequest);
+                                        UI.RequestBlade search_request = new UI.RequestBlade();
+                                        search_request.DisplayName = request.userDisplayName.StripTitleFromUserName();
+                                        search_request.RequestStatus = Convert.ToString((RequestState)Enum.Parse(typeof(RequestState), request.statusEnum.ToString())).StripUnderscore();
+                                        search_request.WorkflowStatus = String.Empty;
+                                        search_request.LastModified = WebUtilities.TestAndConvertDate(request.lastModifiedDate.ToString());
+                                        search_request.RequestId = request.pkId.ToString();
+                                        requestList.Add(search_request);
                                     }
                                 }
                             }  
