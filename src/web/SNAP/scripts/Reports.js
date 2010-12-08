@@ -54,42 +54,42 @@ function EmailReport(obj) {
     });
 }
 
-function GetReportListItems() {
-    var postData = "";
-    ProcessingMessage("Retrieving Reports", "");
-    $.ajax({
-        type: "POST",
-        contentType: "application/json; character=utf-8",
-        url: "ajax/AjaxUtilities.aspx/GetReportListItems",
-        data: postData,
-        dataType: "json",
-        success: function(msg) {
-            CreateReportHistory(msg.d);
-        }
-    });
-}
-function CreateReportHistory(reportData) {
-    if (reportData.length > 0) {
-        var reportHistoryHtml = "";
-        var count = 0;
-        $.each(reportData, function(index, value) {
-            if (count == 0) {
-                $("#current_report").css("background-image", 'url(' + value.SmallImage + ')');
-                $("#_bottleneck_large").attr("src", value.LargeImage);
-            }
-            reportHistoryHtml += CreateReportBlade(value);
-            count++;
-        });
-        $("#_reportHistoryContainer").append(reportHistoryHtml);
-        ActionMessage("Done!", "");
-        $("#_emailReport").show();
-        $("#_zoomReport").show();
-    }
-}
-function CreateReportBlade(data) {
-    var newReportBlade = $("#_reportHistoryDiv").html();
-    newReportBlade = newReportBlade
-			.replace("%%ReportLink%%", data.Link)
-			.replace("%%ReportTitle%%", data.Title)
-    return newReportBlade;
-}
+//function GetReportListItems() {
+//    var postData = "";
+//    ProcessingMessage("Retrieving Reports", "");
+//    $.ajax({
+//        type: "POST",
+//        contentType: "application/json; character=utf-8",
+//        url: "ajax/AjaxUtilities.aspx/GetReportListItems",
+//        data: postData,
+//        dataType: "json",
+//        success: function(msg) {
+//            CreateReportHistory(msg.d);
+//        }
+//    });
+//}
+//function CreateReportHistory(reportData) {
+//    if (reportData.length > 0) {
+//        var reportHistoryHtml = "";
+//        var count = 0;
+//        $.each(reportData, function(index, value) {
+//            if (count == 0) {
+//                $("#current_report").css("background-image", 'url(' + value.SmallImage + ')');
+//                $("#_bottleneck_large").attr("src", value.LargeImage);
+//            }
+//            reportHistoryHtml += CreateReportBlade(value);
+//            count++;
+//        });
+//        $("#_reportHistoryContainer").append(reportHistoryHtml);
+//        ActionMessage("Done!", "");
+//        $("#_emailReport").show();
+//        $("#_zoomReport").show();
+//    }
+//}
+//function CreateReportBlade(data) {
+//    var newReportBlade = $("#_reportHistoryDiv").html();
+//    newReportBlade = newReportBlade
+//			.replace("%%ReportLink%%", data.Link)
+//			.replace("%%ReportTitle%%", data.Title)
+//    return newReportBlade;
+//}

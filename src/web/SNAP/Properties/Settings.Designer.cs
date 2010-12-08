@@ -22,15 +22,5 @@ namespace Apollo.AIM.SNAP.Web.Properties {
                 return defaultInstance;
             }
         }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://its/_vti_bin/Lists.asmx")]
-        public string Apollo_AIM_SNAP_Web_its_sharepoint_Lists {
-            get {
-                return ((string)(this["Apollo_AIM_SNAP_Web_its_sharepoint_Lists"]));
-            }
-        }
     }
 }

@@ -41,7 +41,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 			{
 				if (currentPageName != PageNames.DEFAULT_LOGIN.ToLower() 
 					&& currentPageName != PageNames.SUPPORT.ToLower()
-                    && currentPageName != PageNames.REPORTS.ToLower()
+                    //&& currentPageName != PageNames.REPORTS.ToLower()
 					&& currentPageName != PageNames.APP_ERROR.ToLower() )
 					{
 						WebUtilities.Redirect(PageNames.DEFAULT_LOGIN);

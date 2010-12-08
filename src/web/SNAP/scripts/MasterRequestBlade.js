@@ -60,7 +60,7 @@ function CloseRedirect() {
     });
 }
 function GetRequests(viewIndex, search) {
-    var postData = "{\"view\":\"" + viewIndex + "\",\"search\":\"" + search + "\"}";
+    var postData = "{\"view\":\"" + viewIndex + "\",\"search\":" + search + "}";
     $.ajax({
         type: "POST",
         contentType: "application/json; character=utf-8",
@@ -122,6 +122,8 @@ function ToggleLoading(requestId) {
 }
 function ToggleLegend(requestId) {
     $("#__legend_" + requestId).toggle();
+    if ($("#__legend_" + requestId).is(":visible")) {$("#__legendToggle_" + requestId).html("Hide Legend");}
+    else { $("#__legendToggle_" + requestId).html("Show Legend"); }
 }
 function ToggleDetails(requestId) {
     var section = $("#__toggledContentContainer_" + requestId);

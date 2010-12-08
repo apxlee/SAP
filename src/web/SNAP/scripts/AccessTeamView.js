@@ -1210,10 +1210,6 @@ function CreateWorkflow(obj, requestId) {
                     $(space).insertAfter($("#closed_cancelled_" + requestId));
                     $(space).insertAfter($("#edit_workflow_" + requestId));
 
-                    if (!$("#access_filter_container").hasClass("filter_view_all")) {
-                        ToggleDetails(requestId);
-                        $("#__requestContainer_" + requestId).fadeOut(1000);
-                    }
                     UpdateRequestTracking(requestId);
                     GetAccessTeamFilter();
                 }

@@ -30,8 +30,8 @@
 		
 	</div>
 <script type="text/javascript">
-    try { GetReportListItems(); }
-    catch (err) { }
+//    try { GetReportListItems(); }
+//    catch (err) { }
 
     try { pageTracker._trackPageview("Reports"); }
     catch (err) {}

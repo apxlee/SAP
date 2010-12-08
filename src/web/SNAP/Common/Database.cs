@@ -81,10 +81,12 @@ namespace Apollo.AIM.SNAP.Web.Common
 
         #region Request Blades
 
-        public static List<UI.RequestBlade> GetRequests(string condition, string userId, ViewIndex view)
+        public static List<UI.RequestBlade> GetRequests(ViewIndex view, UI.Search search)
         {
             try
             {
+                string userId = SnapSession.CurrentUser.LoginId;
+                string condition = "";
                 var requestList = new List<UI.RequestBlade>();
                 DateTime closedDateLimit = new DateTime();
                 closedDateLimit = DateTime.Now.AddDays(-30);
@@ -139,7 +141,7 @@ namespace Apollo.AIM.SNAP.Web.Common
                             }
                             break;
                         case ViewIndex.my_requests:
-                        case ViewIndex.access_team:
+                            condition = string.Format("(userId==\"{0}\"||submittedBy==\"{0}\")", userId);
                             var requests = db.SNAP_Requests.
                                 Where(condition + "&&(" + requestCondition + ")").
                                 OrderByDescending(r => r.lastModifiedDate).ToList();
@@ -157,25 +159,84 @@ namespace Apollo.AIM.SNAP.Web.Common
                                     requestList.Add(newRequest);
                                 }
                             }
+                            break;
+                        case ViewIndex.access_team:
+                            var accessRequests = db.SNAP_Requests.
+                                Where(requestCondition).
+                                OrderByDescending(r => r.lastModifiedDate).ToList();
+
+                            if (accessRequests != null)
+                            {
+                                foreach (var request in accessRequests)
+                                {
+                                    UI.RequestBlade newRequest = new UI.RequestBlade();
+                                    newRequest.DisplayName = request.userDisplayName.StripTitleFromUserName();
+                                    newRequest.RequestStatus = Convert.ToString((RequestState)Enum.Parse(typeof(RequestState), request.statusEnum.ToString())).StripUnderscore();
+                                    newRequest.WorkflowStatus = String.Empty;
+                                    newRequest.LastModified = WebUtilities.TestAndConvertDate(request.lastModifiedDate.ToString());
+                                    newRequest.RequestId = request.pkId.ToString();
+                                    requestList.Add(newRequest);
+                                }
+                            }
                         break;
                         case ViewIndex.search:
-                        var search = db.SNAP_Requests.Where(r => r.userId.Contains(condition) 
-                            || r.userDisplayName.Contains(condition)
-                            || r.pkId.ToString().Contains(condition)).OrderByDescending(l => l.lastModifiedDate);
-
-                        if (search != null)
-                        {
-                            foreach (var request in search)
-                            {
-                                UI.RequestBlade newResult = new UI.RequestBlade();
-                                newResult.DisplayName = request.userDisplayName.StripTitleFromUserName();
-                                newResult.RequestStatus = Convert.ToString((RequestState)Enum.Parse(typeof(RequestState), request.statusEnum.ToString())).StripUnderscore();
-                                newResult.WorkflowStatus = String.Empty;
-                                newResult.LastModified = WebUtilities.TestAndConvertDate(request.lastModifiedDate.ToString());
-                                newResult.RequestId = request.pkId.ToString();
-                                requestList.Add(newResult);
+                            string primaryCondition = "";
+                            string rangeCondition = "";
+                            List<object> values = new List<object>();
+                            int valCount = 0;
+                            if (search.Primary != string.Empty) 
+                            { 
+                                primaryCondition = "(pkId.ToString()==@0 or userId==@0 or userDisplayName==@0 or submittedBy==@0)";
+                                values.Add((object)search.Primary);
+                                condition = primaryCondition;
                             }
-                        }
+                            if (search.RangeStart != string.Empty)
+                            {
+                                DateTime rangeStart = Convert.ToDateTime(search.RangeStart);
+                                if (search.RangeEnd != string.Empty) 
+                                {
+                                    valCount = values.Count();
+                                    DateTime rangeEnd = Convert.ToDateTime(search.RangeEnd);
+                                    rangeCondition = "(createdDate>=@" + valCount.ToString() + " and createdDate<=@" + (valCount + 1).ToString() + ")";
+                                    values.Add((object)rangeStart);
+                                    values.Add((object)rangeEnd);
+                                }
+                                else 
+                                {
+                                    valCount = values.Count();
+                                    rangeCondition = "(createdDate>=@" + valCount.ToString() + ")";
+                                    values.Add((object)rangeStart);
+                                }
+                                if (condition != string.Empty) { condition += " and " + rangeCondition; }
+                                else { condition = rangeCondition; }
+                            }
+                            
+                            if (condition == string.Empty)
+                            {
+                                condition = "pkid>@0";
+                                values.Add(0);
+                            }
+                            object[] objs = values.ToArray();
+                            var searchResults = db.SNAP_Requests.
+                                    Where(condition, objs).
+                                    OrderByDescending(r => r.lastModifiedDate).ToList();
+                            
+                            if (searchResults != null)
+                            {
+                                foreach (var request in searchResults)
+                                {
+                                    if (RequestContainsContents(search.Contents,request.pkId))
+                                    {
+                                        UI.RequestBlade newRequest = new UI.RequestBlade();
+                                        newRequest.DisplayName = request.userDisplayName.StripTitleFromUserName();
+                                        newRequest.RequestStatus = Convert.ToString((RequestState)Enum.Parse(typeof(RequestState), request.statusEnum.ToString())).StripUnderscore();
+                                        newRequest.WorkflowStatus = String.Empty;
+                                        newRequest.LastModified = WebUtilities.TestAndConvertDate(request.lastModifiedDate.ToString());
+                                        newRequest.RequestId = request.pkId.ToString();
+                                        requestList.Add(newRequest);
+                                    }
+                                }
+                            }  
                         break;
                     }
                     return requestList;
@@ -365,6 +426,41 @@ namespace Apollo.AIM.SNAP.Web.Common
             }
 
             return false;
+        }
+
+        public static bool RequestContainsContents(string contents, int requestId)
+        {
+            try
+            {
+                bool found = false;
+                using (var db = new SNAPDatabaseDataContext())
+                {
+                    if (contents == string.Empty) { return true; }
+                    else
+                    {
+                        List<int> latestIds = (from aut in db.SNAP_Access_User_Texts.Where("requestId==@0", requestId)
+                                               join adf in db.SNAP_Access_Details_Forms.Where("isActive==@0", true)
+                                               on aut.access_details_formId equals adf.pkId
+                                               group aut by new { aut.access_details_formId } into grp
+                                               select grp.Max(m => m.pkId)).ToList();
+                        var formData = from aut in db.SNAP_Access_User_Texts
+                                       where latestIds.Contains(aut.pkId)
+                                       select aut.userText;
+                                       
+                        foreach (var field in formData)
+                        {
+                            if (field.Contains(contents)) { found = true; }
+                        }
+                        return found;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("RequestContainsContents \r\nMessage: " + ex.Message + "\r\nStackTrace: " + ex.StackTrace);
+                return false;
+            }
+            
         }
 
 		#endregion

@@ -27,31 +27,37 @@ namespace Apollo.AIM.SNAP.Web.Controls
 
 			if (Convert.ToBoolean(ConfigurationManager.AppSettings["SNAPMaintenanceOn"].ToString()))
 			{
-				linkButtons.AddRange(new List<string> { "Support", "Reports" });
+				linkButtons.AddRange(new List<string> { "Support" });
+                //linkButtons.AddRange(new List<string> { "Support", "Reports" });
 			}
 			else
 			{
 				switch (this.CurrentRole)
 				{
 					case Role.ApprovingManager:
-                        linkButtons.AddRange(new List<string> { "Request Form", "My Requests", "My Approvals", "Search", "Support", "Reports" });
-						break;
+                        linkButtons.AddRange(new List<string> { "Request Form", "My Requests", "My Approvals", "Search", "Support" });
+                        //linkButtons.AddRange(new List<string> { "Request Form", "My Requests", "My Approvals", "Search", "Support", "Reports" });
+                        break;
 
 					case Role.AccessTeam:
-                        linkButtons.AddRange(new List<string> { "Request Form", "My Requests", "Access Team", "Search", "Support", "Reports" });
+                        linkButtons.AddRange(new List<string> { "Request Form", "My Requests", "Access Team", "Search", "Support" });
+                        //linkButtons.AddRange(new List<string> { "Request Form", "My Requests", "Access Team", "Search", "Support", "Reports" });
 						break;
 
 					case Role.SuperUser:
-                        linkButtons.AddRange(new List<string> { "Request Form", "My Requests", "My Approvals", "AccessTeam", "Search", "Support", "Reports" });
-						break;
+                        linkButtons.AddRange(new List<string> { "Request Form", "My Requests", "My Approvals", "AccessTeam", "Search", "Support" });
+                        //linkButtons.AddRange(new List<string> { "Request Form", "My Requests", "My Approvals", "AccessTeam", "Search", "Support", "Reports" });
+                        break;
 
 					case Role.Requestor:
-                        linkButtons.AddRange(new List<string> { "Request Form", "My Requests", "Search", "Support", "Reports" });
+                        linkButtons.AddRange(new List<string> { "Request Form", "My Requests", "Search", "Support" });
+                        //linkButtons.AddRange(new List<string> { "Request Form", "My Requests", "Search", "Support", "Reports" });
 						break;
 
 					case Role.NotAuthorized:
 					default:
-                        linkButtons.AddRange(new List<string> { "Support", "Reports" });
+                        linkButtons.AddRange(new List<string> { "Support"});
+                        //linkButtons.AddRange(new List<string> { "Support", "Reports" });
 						break;
 				}
 			}

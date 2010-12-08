@@ -6,7 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Apollo.AIM.SNAP.Web.Common;
 
-using Microsoft.SharePoint;
+//using Microsoft.SharePoint;
 using System.Net;
 using System.Xml;
 

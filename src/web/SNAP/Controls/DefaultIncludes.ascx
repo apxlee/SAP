@@ -6,9 +6,9 @@
 <!--[if IE 6]>
 	<link href="styles/SNAP_IE6.css" rel="stylesheet" type="text/css" />
 <![endif]-->
-<link href="styles/jquery-ui-1.7.2.custom.css" rel="stylesheet" type="text/css" />
+<link href="styles/jquery-ui-1.7.3.custom.css" rel="stylesheet" type="text/css" />
 <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>jquery-1.4.2.min.js" type="text/javascript"></script>
-<script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>jquery-ui-1.7.2.custom.min.js" type="text/javascript"></script>
+<script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>jquery-ui-1.7.3.custom.min.js" type="text/javascript"></script>
 <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>jquery.hotkeys-0.7.9.min.js" type="text/javascript"></script>
 <script src="<%=Apollo.AIM.SNAP.Web.Common.WebUtilities.ClientScriptPath%>jquery.json-2.2.min.js" type="text/javascript"></script>
 

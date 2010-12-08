@@ -25,7 +25,7 @@
 </div>
 
 <script type="text/javascript">
-    try { GetRequests(ViewIndexEnum.My_Approvals,""); }
+    try { GetRequests(ViewIndexEnum.My_Approvals,null); }
     catch (err) {}
 	
 	try { pageTracker._trackPageview("ApprovingManagerView"); }

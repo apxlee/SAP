@@ -16,14 +16,14 @@ namespace Apollo.AIM.SNAP.Web.ajax
         {
 
         }
-        [WebMethod]
-        public static List<Utilities.ReportListItem> GetReportListItems()
-        {
-            string SitePath = ConfigurationManager.AppSettings["sharepoint.sitepath"];
-            string Domain = ConfigurationManager.AppSettings["sharepoint.domain"];
-            string UserName = ConfigurationManager.AppSettings["sharepoint.username"];
-            string Password = ConfigurationManager.AppSettings["sharepoint.password"];
-            return Utilities.GetBottleneckApproversListItems(SitePath, UserName, Password, Domain);
-        }
+        //[WebMethod]
+        //public static List<Utilities.ReportListItem> GetReportListItems()
+        //{
+        //    string SitePath = ConfigurationManager.AppSettings["sharepoint.sitepath"];
+        //    string Domain = ConfigurationManager.AppSettings["sharepoint.domain"];
+        //    string UserName = ConfigurationManager.AppSettings["sharepoint.username"];
+        //    string Password = ConfigurationManager.AppSettings["sharepoint.password"];
+        //    return Utilities.GetBottleneckApproversListItems(SitePath, UserName, Password, Domain);
+        //}
     }
 }

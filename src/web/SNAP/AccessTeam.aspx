@@ -28,7 +28,7 @@
 </div>
 
 <script type="text/javascript">
-    try { GetRequests(ViewIndexEnum.Access_Team, ""); }
+    try { GetRequests(ViewIndexEnum.Access_Team, null); }
     catch (err) {}
 
 	try { pageTracker._trackPageview("AccessTeamView"); }

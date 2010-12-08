@@ -1,9 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Apollo.AIM.SNAP.Web.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)">
   <Profiles />
-  <Settings>
-    <Setting Name="Apollo_AIM_SNAP_Web_its_sharepoint_Lists" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://its/_vti_bin/Lists.asmx</Value>
-    </Setting>
-  </Settings>
+  <Settings />
 </SettingsFile>

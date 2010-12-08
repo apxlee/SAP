@@ -310,33 +310,69 @@ namespace Apollo.AIM.SNAP.Web.Common
 
         #endregion
 
+        #region Search
+        [DataContract]
+        public class Search
+        {
+            public Search() { }
+            public Search(string primary, string contents, string rangeStart, string rangeEnd)
+            {
+                this.Primary = primary;
+                this.Contents = contents;
+                this.RangeStart = rangeStart;
+                this.RangeEnd = rangeEnd;
+            }
+
+            [DataMember]
+            public string Primary { get; set; }
+            [DataMember]
+            public string Contents { get; set; }
+            [DataMember]
+            public string RangeStart { get; set; }
+            [DataMember]
+            public string RangeEnd { get; set; }
+        }
+        #endregion
+
         #endregion
 
         private static int AccessTeamActorId = 1;
 
         #region WebMethod Calls
 
-        public static List<UI.RequestBlade> GetRequestBlades(ViewIndex view, string search)
+        public static List<UI.RequestBlade> GetRequestBlades(ViewIndex view, Search search)
         {
-            string userId = SnapSession.CurrentUser.LoginId;
-            string condition = "";
-            switch (view)
-            {
-                case ViewIndex.my_requests:
-                    condition = string.Format("(userId==\"{0}\"||submittedBy==\"{0}\")",userId);
-                    break;
-                case ViewIndex.my_approvals:
-                    condition = string.Format("(workflowStatusEnum=={0}&&completedDate==null)||(workflowStatusEnum=={1})||(workflowStatusEnum=={2})||(workflowStatusEnum=={3}&&completedDate==null)||(workflowStatusEnum=={4}&&completedDate!=null)",
-                        (int)WorkflowState.Pending_Approval,(int)WorkflowState.Change_Requested, (int)WorkflowState.Approved, (int)WorkflowState.Not_Active, (int)WorkflowState.Closed_Denied);
-                    break;
-                case ViewIndex.access_team:
-                    condition = "pkId>0";
-                    break;
-                case ViewIndex.search:
-                    condition = search;
-                    break;
-            }
-            return Database.GetRequests(condition, userId, view);
+            //string userId = SnapSession.CurrentUser.LoginId;
+            //string condition = "";
+            //switch (view)
+            //{
+            //    case ViewIndex.my_requests:
+            //        condition = string.Format("(userId==\"{0}\"||submittedBy==\"{0}\")",userId);
+            //        break;
+            //    case ViewIndex.my_approvals:
+            //condition = string.Format("(workflowStatusEnum=={0}&&completedDate==null)||(workflowStatusEnum=={1})||(workflowStatusEnum=={2})||(workflowStatusEnum=={3}&&completedDate==null)||(workflowStatusEnum=={4}&&completedDate!=null)",
+            //    (int)WorkflowState.Pending_Approval, (int)WorkflowState.Change_Requested, (int)WorkflowState.Approved, (int)WorkflowState.Not_Active, (int)WorkflowState.Closed_Denied);
+            //        break;
+            //    case ViewIndex.access_team:
+            //        condition = "pkId>0";
+            //        break;
+            //    case ViewIndex.search:
+            //        string primaryCondition = "";
+            //        string contentsCondition = "";
+            //        string rangeCondition = "";
+            //        primaryCondition = string.Format("(userId==\"{0}\"||displayName==\"{0}\"||submittedBy==\"{0}\")", search.Primary);
+                    
+            //        if (search.Contents != string.Empty)
+            //        {
+
+            //        }                    
+
+            //        condition = primaryCondition + contentsCondition + rangeCondition;
+
+            //        break;
+            //}
+            //return Database.GetRequests(condition, userId, view);
+            return Database.GetRequests(view, search);
         }
 
         public static string GetAccessTeamFilter()

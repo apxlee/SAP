@@ -1,17 +1,75 @@
-﻿function ValidateInput() {
-    $(document).ready(function() {
-        var searchInput = $("#__searchInput");
-        if (searchInput.val() > "") { $("#_searchResultsContainer").html(""); GetRequests(ViewIndexEnum.Search,searchInput.val()); }
-        else { ActionMessage("No input", "Input criteria is required for a successful search."); }
-    });
-}
-function ClickButton(e, button) {
-    $(document).ready(function() {
-        var evt = e ? e : window.event;
-        if (evt.keyCode == 13) {
-            ValidateInput();
+﻿$(document).ready(function() {
+    $("#startDatepicker").datepicker({
+        showOn: "button",
+        buttonImage: "images/calendar.gif",
+        buttonImageOnly: true,
+        maxDate: "0d",
+        changeMonth: true,
+        changeYear: true,
+        onSelect: function(dateText, inst) {
+            $("#__startDate").html(dateText);
+            $("#endDatepicker").datepicker("enable");
+            $("#endDatepicker").datepicker("option", "minDate", new Date(dateText));
+            $("#__endDate").html("");
         }
     });
+    $("#endDatepicker").datepicker({
+        showOn: "button",
+        buttonImage: "images/calendar.gif",
+        buttonImageOnly: true,
+        maxDate: "0d",
+        changeMonth: true,
+        changeYear: true,
+        onSelect: function(dateText, inst) {
+            $("#__endDate").html(dateText);
+        }
+    });
+    $("#endDatepicker").datepicker("disable");
+
+});
+function ToggleSearch() {
+    $("#__advancedSearchContainer").toggle();
+    if ($("#__advancedSearchContainer").is(":visible")) { $("#__advacnedSearchToggle").html("Hide Advanced Search"); }
+    else 
+    {
+        $("#__advacnedSearchToggle").html("Show Advanced Search");
+        $("#__searchContents").val("");
+        $("#__startDate").html("");
+        $("#__endDate").html("");
+        $("#endDatepicker").datepicker("disable");
+    }
+}
+
+function Search(primary, contents, rangeStart, rangeEnd) {
+    this.primary = primary;
+    this.contents = contents;
+    this.rangeStart = rangeStart;
+    this.rangeEnd = rangeEnd;
+    this.toJSON = $.toJSON(this);
+}
+
+function Clear() {
+    $("#__searchInput").val("");
+    $("#__searchContents").val("");
+    $("#__startDate").html("");
+    $("#__endDate").html("");
+    $("#endDatepicker").datepicker("disable");
+}
+
+function ValidateInput() {
+    var searchInput = $("#__searchInput").val();
+    var searchContents = $("#__searchContents").val();
+    var searchRangeStart = $("#__startDate").html();
+    var searchRangeEnd = $("#__endDate").html();
+    var newSearch = new Search(searchInput, searchContents, searchRangeStart, searchRangeEnd);
+    if (newSearch.primary > "" || newSearch.contents > "" || newSearch.rangeStart > "") { $("#_searchResultsContainer").html(""); GetRequests(ViewIndexEnum.Search, newSearch.toJSON); }
+    else { ActionMessage("No input", "Input criteria is required for a successful search."); }
+}
+function ClickButton(e, button) {
+    var evt = e ? e : window.event;
+    if (evt.keyCode == 13) {
+        ValidateInput();
+    }
 }
 function CreateBlades(requests) {
     if (requests.length > 0) {
@@ -19,22 +77,22 @@ function CreateBlades(requests) {
             var data = value;
             var newRequestBlade = $("#_requestBlade").html();
             newRequestBlade = newRequestBlade.replace("__requestContainer_ID", "__requestContainer_" + data.RequestId)
-        .replace("__affectedEndUserName_TEXT", data.DisplayName)
-        .replace("__affectedEndUserName_ID", "__affectedEndUserName_" + data.RequestId)
-        .replace("__overallRequestStatus_TEXT", data.RequestStatus)
-        .replace("__overallRequestStatus_ID", "__overallRequestStatus_" + data.RequestId)
-        .replace("__lastUpdatedDate_TEXT", data.LastModified)
-        .replace("__lastUpdatedDate_ID", "__lastUpdatedDate_" + data.RequestId)
-        .replace("__requestId_TEXT", data.RequestId)
-        .replace("__requestId_ID", "__requestId_" + data.RequestId)
-        .replace("__toggleIconContainer_ID", "__toggleIconContainer_" + data.RequestId)
-        .replace("__toggledContentContainer_ID", "__toggledContentContainer_" + data.RequestId)
-        .replace("__snapRequestId", data.RequestId)
-        .replace("__workflowStatus_ID", "__workflowStatus_" + data.RequestId)
-        .replace("__workflowStatus_TEXT", data.WorkflowStatus)
-        .replace("__legendToggle_ID", "__legendToggle_" + data.RequestId)
-        .replace("__legend_ID", "__legend_" + data.RequestId)
-        .replace("__requestTrackingSection_ID", "__requestTrackingSection_" + data.RequestId);
+            .replace("__affectedEndUserName_TEXT", data.DisplayName)
+            .replace("__affectedEndUserName_ID", "__affectedEndUserName_" + data.RequestId)
+            .replace("__overallRequestStatus_TEXT", data.RequestStatus)
+            .replace("__overallRequestStatus_ID", "__overallRequestStatus_" + data.RequestId)
+            .replace("__lastUpdatedDate_TEXT", data.LastModified)
+            .replace("__lastUpdatedDate_ID", "__lastUpdatedDate_" + data.RequestId)
+            .replace("__requestId_TEXT", data.RequestId)
+            .replace("__requestId_ID", "__requestId_" + data.RequestId)
+            .replace("__toggleIconContainer_ID", "__toggleIconContainer_" + data.RequestId)
+            .replace("__toggledContentContainer_ID", "__toggledContentContainer_" + data.RequestId)
+            .replace("__snapRequestId", data.RequestId)
+            .replace("__workflowStatus_ID", "__workflowStatus_" + data.RequestId)
+            .replace("__workflowStatus_TEXT", data.WorkflowStatus)
+            .replace("__legendToggle_ID", "__legendToggle_" + data.RequestId)
+            .replace("__legend_ID", "__legend_" + data.RequestId)
+            .replace("__requestTrackingSection_ID", "__requestTrackingSection_" + data.RequestId);
 
             $("#_searchResultsContainer").append($(newRequestBlade));
 
@@ -59,6 +117,7 @@ function CreateBlades(requests) {
 }
 function CreateRequestDetails(details, requestId) {
     var data = jQuery.parseJSON(details);
+    var highLight = $("#__searchContents").val();
     var ADManagaer = "";
     if (data.ADManager != null) { ADManagaer = "[Active Directory: " + data.ADManager + "]"; }
     var newRequestDetails = $("#_requestDetails").html();
@@ -70,12 +129,14 @@ function CreateRequestDetails(details, requestId) {
     .replace("__adManagerName_ID", "__adManagerName_" + requestId)
     .replace("__requestorName_TEXT", data.Requestor)
     .replace("__requestorName_ID", "__requestorName_" + requestId);
-    
+
     var newForm = "";
     $.each(data.Details, function(index, value) {
         var newField = $("#_requestFormField").html();
-        newField = newField.replace("__fieldLabel", value.Label + ":")
-        .replace("__fieldText",value.Text.replace(/(\r\n|[\r\n])/g, "<br />"));
+        var newLabel = value.Label + ":";
+        var newValue = value.Text.replace(highLight, "<font style=\"background:yellow;\">" + highLight + "</font>");
+        newValue = newValue.replace(/(\r\n|[\r\n])/g, "<br />");
+        newField = newField.replace("__fieldLabel", newLabel).replace("__fieldText", newValue);
         newForm = newForm + newField
     });
 

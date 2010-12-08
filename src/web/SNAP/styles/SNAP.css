@@ -368,6 +368,15 @@ TODO: REMOVE THIS SECTION
 	font-weight: normal;
 	cursor: pointer;
 }
+
+.csm_search_toggle {
+	font-size: .85em;
+	line-height: 1.4em;
+	text-decoration:underline;
+	color: Blue;
+	font-weight: normal;
+	cursor: pointer;
+}
 /* Floating Heading
 ----------------------------------------------------------------------------------------------------*/
 
@@ -518,7 +527,7 @@ TODO: REMOVE THIS SECTION
 	font-family: Verdana, Arial;
 	width: 98%;
 	}
-	
+		
 .csm_template_1 input.csm_text_input_short {
 	margin: 0;
 	padding: 0px;
