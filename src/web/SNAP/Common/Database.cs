@@ -186,7 +186,7 @@ namespace Apollo.AIM.SNAP.Web.Common
                             int valCount = 0;
                             if (search.Primary != string.Empty) 
                             { 
-                                primaryCondition = "(pkId.ToString()==@0 or userId==@0 or userDisplayName==@0 or submittedBy==@0)";
+                                primaryCondition = "(pkId.ToString()==@0 or userId==@0 or userDisplayName.Contains(@0) or submittedBy==@0)";
                                 values.Add((object)search.Primary);
                                 condition = primaryCondition;
                             }
