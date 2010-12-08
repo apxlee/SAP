@@ -7,9 +7,33 @@
 		<div class="csm_grid_8">
 			<h1>Access News</h1>
 			<div class="csm_content_container">
+				<p><strong>Supplemental Access Process 2.2 Release Notes (December 2010)</strong><br /></p>
+				<ul>
+					<li>Entering a long string of characters without spaces no longer causes CSS to break within page layout.</li>
+					<li>Submitter and Affected End User (AEU) should now both receive change/deny emails as user feedback.</li>
+					<li>Add Advanced Search criteria: Search by Requestor, Date Range, and Contents.</li>
+					<li>Within Access Administrator User Interface (AAUI), removing special approvers after manager's 
+					approval no longer causes workflow to hang. Active requests remain open instead of shutting after a workflow is created.</li>
+				</ul>
+				<br />
+				
+				<p><strong>Supplemental Access Process 2.1 Release Notes (November 2010)</strong></p>
+				<ul>
+					<li>Integrate with HPSM library.</li>
+				</ul>
+				<br />
+				
+				<p><strong>Supplemental Access Process 2.0.1 Release Notes (October 2010)</strong></p>
+				<ul>
+					<li>Order request details in descending order.</li>
+					<li>Refined Affected End User (AEU) Manager lookup.</li>
+				</ul>
+				<br />
+			
 				<p><strong>CAP and MyHR Blackout</strong><br />
 				Both MyHR and CAP experienced a black out recently to update to the new, feature-rich MyHR system.
 				</p>
+				<br />
 				
 				<p><strong>Supplemental Access Process 2.0 Release (October 2010)</strong><br /></p>
 				<ul>
@@ -48,7 +72,11 @@
 				<p><strong>Question:</strong><br />Can't I email my approval?</p>
 				<p><strong>Answer:</strong><br />Not at this time, while supporting a more robust search feature will be challenged by emailed approvals, 
 				there are development efforts towards supporting external file attachments.</p>
-				
+				<hr />
+
+				<p><strong>Question:</strong><br />Do access requests to QA go through the Supplemental Access Process?</p>
+				<p><strong>Answer:</strong><br />Yes. Unless there is a CAP role that accounts for the QA access, you will need to fill out 
+				a Supplemental Access request within this application.</p>
 			</div>
 			
 			<h1>Contact The Team</h1>
