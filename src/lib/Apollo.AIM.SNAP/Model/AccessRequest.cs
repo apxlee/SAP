@@ -148,6 +148,11 @@ namespace Apollo.AIM.SNAP.Model
                     {
 						comment = comment.Replace("<br />", string.Empty);
                         addAccessTeamComment(accessTeamWF, comment, commentType);
+
+						if (req.submittedBy.ToString() != req.userId.ToString())
+						{
+							Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.userId + "@apollogrp.edu", req.userDisplayName, _id, req.submittedBy, (WorkflowState)wfState, comment);
+						}
                         Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy + "@apollogrp.edu", req.userDisplayName, _id, req.submittedBy, (WorkflowState)wfState, comment);
                         db.SubmitChanges();
                         resp = new WebMethodResponse(true, "Cancel/Deny", "Success");
@@ -216,6 +221,10 @@ namespace Apollo.AIM.SNAP.Model
                     {
                         addAccessTeamComment(accessTeamWF, comment, CommentsType.Requested_Change);
 						// NOTE: don't send AIM extra email when AIM is the one making the change.
+						if (req.submittedBy.ToString() != req.userId.ToString())
+						{
+							Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.userId + "@apollogrp.edu", req.userDisplayName, _id, req.submittedBy, WorkflowState.Change_Requested, comment);
+						}
 						Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy + "@apollogrp.edu", req.userDisplayName, _id, req.submittedBy, WorkflowState.Change_Requested, comment);
                         db.SubmitChanges();
                         resp = new WebMethodResponse(true, "Request Change", "Success");
@@ -752,6 +761,10 @@ namespace Apollo.AIM.SNAP.Model
 
                     if (result)
                     {
+						if (req.submittedBy.ToString() != req.userId.ToString())
+						{
+							Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.userId + "@apollogrp.edu", req.userDisplayName, _id, req.submittedBy, WorkflowState.Closed_Completed, null);
+						}
 						Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy + "@apollogrp.edu", req.userDisplayName, _id, req.submittedBy, WorkflowState.Closed_Completed, null);
                         db.SubmitChanges();
                         resp = new WebMethodResponse(true, "Finalization", "Success");
@@ -1641,6 +1654,10 @@ namespace Apollo.AIM.SNAP.Model
                 createdDate = DateTime.Now
             });
 
+			if (req.submittedBy.ToString() != req.userId.ToString())
+			{
+				Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.userId + "@apollogrp.edu", req.userDisplayName, req.pkId, req.submittedBy, WorkflowState.Change_Requested, comment);
+			}
 			Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy + "@apollogrp.edu", req.userDisplayName, req.pkId, req.submittedBy, WorkflowState.Change_Requested, comment);
 			Email.SendTaskEmail(EmailTaskType.UpdateRequester, ConfigurationManager.AppSettings["AIM-DG"], "AIM for " + req.userDisplayName, req.pkId, req.submittedBy, WorkflowState.Change_Requested, comment);
             
@@ -1685,6 +1702,10 @@ namespace Apollo.AIM.SNAP.Model
                     req.statusEnum = (byte)RequestState.Closed;
 					
 					comment = comment.Replace("<br />", string.Empty);
+					if (req.submittedBy.ToString() != req.userId.ToString())
+					{
+						Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.userId + "@apollogrp.edu", req.userDisplayName, req.pkId, req.submittedBy, WorkflowState.Closed_Denied, comment);
+					}
 					Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy + "@apollogrp.edu", req.userDisplayName, req.pkId, req.submittedBy, WorkflowState.Closed_Denied, comment);
 					Email.SendTaskEmail(EmailTaskType.UpdateRequester, ConfigurationManager.AppSettings["AIM-DG"], "AIM for " + req.userDisplayName, req.pkId, req.submittedBy, WorkflowState.Closed_Denied, comment);
                     break;
