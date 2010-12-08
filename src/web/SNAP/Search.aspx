@@ -8,7 +8,7 @@
 	<div class="csm_content_container">	
 		<div class="csm_text_container csm_bottom5">
 			<p>Search accepts <strong>User ID</strong> for Requestor, or <strong>User ID</strong> and <strong>Display Name</strong> for the Affected End User (AEU), as well as <strong>Request ID</strong> as search criteria.
-			<p><strong>Advanced Search</strong> now supports both Content Search (for Access Details and Justification) and Date Range.</p>
+			<p><strong>Advanced Search</strong> supports both Content Search (for Access Details and Justification) and Date Range.</p>
 			<p>Searches for requests created within the Sharepoint environment need to be made through filtering 
 			from the legacy <a href="http://its/dcs/aim/pa/Lists/Paper3/Robust%20View.aspx">Sharepoint Privileged Access</a> site.</p>
 		</div>
