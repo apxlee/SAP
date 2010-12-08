@@ -577,7 +577,6 @@ function AccessTeamActions(obj, requestId, action) {
                             $(this).removeAttr("disabled");
                         });
                         $("#create_workflow_" + requestId).removeAttr("disabled");
-                        //AddComments(requestId, "Access &amp; Identity Management", "Acknowledged", "", true);
                         EditBuilder($("#closed_cancelled_" + requestId), requestId);
                         $("#__overallRequestStatus_" + requestId).html("Pending");
                         GetAccessTeamFilter();
@@ -588,7 +587,6 @@ function AccessTeamActions(obj, requestId, action) {
                         UpdateRequestTracking(requestId);
                         DisableBladeActions(obj);
                         DisableBuilder(requestId);
-                        //AddComments(requestId, "Access &amp; Identity Management", "Change Requested", comments, false);
                         $("#__overallRequestStatus_" + requestId).html("Change Requested");
                         GetAccessTeamFilter();
                         UpdateCount("_accessTeamCount");
@@ -599,7 +597,6 @@ function AccessTeamActions(obj, requestId, action) {
                         UpdateRequestTracking(requestId);
                         DisableBladeActions(obj);
                         DisableBuilder(requestId);
-                        //AddComments(requestId, "Access &amp; Identity Management", "Closed Cancelled", comments, false);
                         AnimateActions("Closed Requests", requestId);
                         HideSections(obj);
                         $("#__overallRequestStatus_" + requestId).html("Closed");
@@ -612,7 +609,6 @@ function AccessTeamActions(obj, requestId, action) {
                         UpdateRequestTracking(requestId);
                         DisableBladeActions(obj);
                         DisableBuilder(requestId);
-                        //AddComments(requestId, "Access &amp; Identity Management", "Closed Denied", comments, false);
                         AnimateActions("Closed Requests", requestId);
                         HideSections(obj);
                         $("#__overallRequestStatus_" + requestId).html("Closed");
@@ -691,7 +687,6 @@ function DisableBuilder(requestId) {
     builder.find("input[type=button]").attr("disabled", "disabled");
     builder.find("select").attr("disabled", "disabled");
     $("#closed_cancelled_" + requestId).removeAttr("disabled");
-    $("#__selectedActors_" + requestId).val("");
     editLink.removeClass("oospa_edit_icon");
     editLink.addClass("oospa_edit_icon_disabled");
     editLink.unbind("click");
