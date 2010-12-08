@@ -197,9 +197,9 @@ namespace Apollo.AIM.SNAP.Web.Common
                                 {
                                     valCount = values.Count();
                                     DateTime rangeEnd = Convert.ToDateTime(search.RangeEnd);
-                                    rangeCondition = "(createdDate>=@" + valCount.ToString() + " and createdDate<=@" + (valCount + 1).ToString() + ")";
+                                    rangeCondition = "(createdDate>=@" + valCount.ToString() + " and createdDate<@" + (valCount + 1).ToString() + ")";
                                     values.Add((object)rangeStart);
-                                    values.Add((object)rangeEnd);
+                                    values.Add((object)rangeEnd.AddDays(1));
                                 }
                                 else 
                                 {
