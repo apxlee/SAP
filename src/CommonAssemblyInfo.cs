@@ -12,7 +12,7 @@ using System.Reflection;
 //------------------------------------------------------------------------------
 
 [assembly: AssemblyVersionAttribute("2.2.0")]
-[assembly: AssemblyCopyrightAttribute("Copyright 2011 Apollo Group Inc.")]
+[assembly: AssemblyCopyrightAttribute("Copyright 2010-2011 Apollo Group Inc.")]
 [assembly: AssemblyCompanyAttribute("Apollo Group Inc.")]
 [assembly: AssemblyProductAttribute("Supplemental/Computer Access Process")]
 
