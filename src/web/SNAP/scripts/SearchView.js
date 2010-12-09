@@ -125,7 +125,7 @@ function CreateBlades(requests) {
 }
 function CreateRequestDetails(details, requestId) {
     var data = jQuery.parseJSON(details);
-    var highLight = $("#__searchContents").val().split(/,| /);
+    var highLight = $("#__searchContents").val().replace(/(\r\n|[\r\n])/g, " ").split(/,| /);
     var ADManagaer = "";
     if (data.ADManager != null) { ADManagaer = "[Active Directory: " + data.ADManager + "]"; }
     var newRequestDetails = $("#_requestDetails").html();

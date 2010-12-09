@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Dynamic;
 using System.Web;
 using System.Web.UI;
+using System.Text.RegularExpressions;
 using System.Web.UI.WebControls;
 using Apollo.AIM.SNAP.Model;
 using Apollo.AIM.SNAP.Web.Controls;
@@ -437,6 +438,8 @@ namespace Apollo.AIM.SNAP.Web.Common
                     if (contents == string.Empty) { return true; }
                     else
                     {
+                        Regex regex = new Regex(@"(\r\n|\r|\n)+");
+                        contents = regex.Replace(contents, " ");
                         List<string> wordsToMatch = contents.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',' }, 
                             StringSplitOptions.RemoveEmptyEntries).ToList<string>();
 
@@ -453,9 +456,12 @@ namespace Apollo.AIM.SNAP.Web.Common
                         {
                             string[] wordsInField = field.ToLower().Split(new char[] { '.', '?', '!', ' ', ';', ':', ',' }, StringSplitOptions.RemoveEmptyEntries);
 
-                            foreach (string word in wordsToMatch)
+                            foreach (string wordInField in wordsInField)
                             {
-                                if (wordsInField.Contains(word.ToLower())) { return true; }
+                                foreach (string wordToMatch in wordsToMatch)
+                                {
+                                    if (wordInField.Contains(wordToMatch.ToLower())) { return true; }
+                                }
                             }
                         }
                         return false;
