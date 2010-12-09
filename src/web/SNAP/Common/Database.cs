@@ -432,12 +432,14 @@ namespace Apollo.AIM.SNAP.Web.Common
         {
             try
             {
-                bool found = false;
                 using (var db = new SNAPDatabaseDataContext())
                 {
                     if (contents == string.Empty) { return true; }
                     else
                     {
+                        List<string> wordsToMatch = contents.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',' }, 
+                            StringSplitOptions.RemoveEmptyEntries).ToList<string>();
+
                         List<int> latestIds = (from aut in db.SNAP_Access_User_Texts.Where("requestId==@0", requestId)
                                                join adf in db.SNAP_Access_Details_Forms.Where("isActive==@0", true)
                                                on aut.access_details_formId equals adf.pkId
@@ -449,9 +451,14 @@ namespace Apollo.AIM.SNAP.Web.Common
                                        
                         foreach (var field in formData)
                         {
-                            if (field.Contains(contents)) { found = true; }
+                            string[] wordsInField = field.ToLower().Split(new char[] { '.', '?', '!', ' ', ';', ':', ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+                            foreach (string word in wordsToMatch)
+                            {
+                                if (wordsInField.Contains(word.ToLower())) { return true; }
+                            }
                         }
-                        return found;
+                        return false;
                     }
                 }
             }

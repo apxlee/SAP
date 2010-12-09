@@ -62,7 +62,11 @@ function ValidateInput() {
     var searchRangeStart = $("#__startDate").html();
     var searchRangeEnd = $("#__endDate").html();
     var newSearch = new Search(searchInput, searchContents, searchRangeStart, searchRangeEnd);
-    if (newSearch.primary > "" || newSearch.contents > "" || newSearch.rangeStart > "") { $("#_searchResultsContainer").html(""); GetRequests(ViewIndexEnum.Search, newSearch.toJSON); }
+    if (newSearch.primary > "" || newSearch.contents > "" || newSearch.rangeStart > "") {
+        $("#_searchResultsContainer").html("");
+        ProcessingMessage("Searching Requests", "");
+        GetRequests(ViewIndexEnum.Search, newSearch.toJSON); 
+        }
     else { ActionMessage("No input", "Input criteria is required for a successful search."); }
 }
 function ClickButton(e, button) {
@@ -114,10 +118,11 @@ function CreateBlades(requests) {
         $("#_searchResultsContainer").append($(newNullResults));
         $("#__searchInput").focus();
     }
+    ActionMessage("Done!", "");
 }
 function CreateRequestDetails(details, requestId) {
     var data = jQuery.parseJSON(details);
-    var highLight = $("#__searchContents").val();
+    var highLight = $("#__searchContents").val().split(/,| /);
     var ADManagaer = "";
     if (data.ADManager != null) { ADManagaer = "[Active Directory: " + data.ADManager + "]"; }
     var newRequestDetails = $("#_requestDetails").html();
@@ -134,7 +139,20 @@ function CreateRequestDetails(details, requestId) {
     $.each(data.Details, function(index, value) {
         var newField = $("#_requestFormField").html();
         var newLabel = value.Label + ":";
-        var newValue = value.Text.replace(highLight, "<font style=\"background:yellow;\">" + highLight + "</font>");
+        var newValue = value.Text;
+        $.each(highLight, function(index, word) {
+            if (word != "") {
+                var reL = new RegExp(word.toLowerCase(), "g");
+                var reU = new RegExp(word.toUpperCase(), "g");
+                var firstL = word.substring(0, 1).toUpperCase();
+                var leftOver = word.substring(1, word.length).toLowerCase();
+                var reF = new RegExp(firstL + leftOver, "g");
+                newValue = newValue.replace(reL, "<font style=\"background:yellow;\">" + word.toLowerCase() + "</font>");
+                newValue = newValue.replace(reU, "<font style=\"background:yellow;\">" + word.toUpperCase() + "</font>");
+                newValue = newValue.replace(reF, "<font style=\"background:yellow;\">" + firstL + leftOver + "</font>");
+            }
+            
+        });
         newValue = newValue.replace(/(\r\n|[\r\n])/g, "<br />");
         newField = newField.replace("__fieldLabel", newLabel).replace("__fieldText", newValue);
         newForm = newForm + newField
