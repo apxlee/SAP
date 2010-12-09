@@ -64,11 +64,13 @@ function ValidateInput() {
     var newSearch = new Search(searchInput, searchContents, searchRangeStart, searchRangeEnd);
     if (newSearch.primary > "" || newSearch.contents > "" || newSearch.rangeStart > "") {
         $("#_searchResultsContainer").html("");
+        $("#__searchButton").attr("disabled", "disabled");
         ProcessingMessage("Searching Requests", "");
-        GetRequests(ViewIndexEnum.Search, newSearch.toJSON); 
+        var t = setTimeout('GetRequests(' + ViewIndexEnum.Search + ',\'' + newSearch.toJSON + '\')', 1000); 
         }
     else { ActionMessage("No input", "Input criteria is required for a successful search."); }
 }
+
 function ClickButton(e, button) {
     var evt = e ? e : window.event;
     if (evt.keyCode == 13) {
@@ -119,6 +121,7 @@ function CreateBlades(requests) {
         $("#__searchInput").focus();
     }
     ActionMessage("Done!", "");
+    $("#__searchButton").removeAttr("disabled");
 }
 function CreateRequestDetails(details, requestId) {
     var data = jQuery.parseJSON(details);
