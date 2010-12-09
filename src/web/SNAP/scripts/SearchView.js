@@ -120,6 +120,7 @@ function CreateBlades(requests) {
         $("#_searchResultsContainer").append($(newNullResults));
         $("#__searchInput").focus();
     }
+    $('#_indicatorDiv').hide();
     ActionMessage("Done!", "");
     $("#__searchButton").removeAttr("disabled");
 }
