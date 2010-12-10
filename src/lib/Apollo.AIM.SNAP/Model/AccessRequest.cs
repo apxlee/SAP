@@ -14,7 +14,6 @@ using System.Configuration;
 using Apollo.CA.Logging;
 using Apollo.HPServiceManager;
 
-// Test 321
 namespace Apollo.AIM.SNAP.Model
 {
 
