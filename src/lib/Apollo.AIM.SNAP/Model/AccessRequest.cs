@@ -152,7 +152,7 @@ namespace Apollo.AIM.SNAP.Model
 						{
 							Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.userId + "@apollogrp.edu", req.userDisplayName, _id, req.submittedBy, (WorkflowState)wfState, comment);
 						}
-                        Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy + "@apollogrp.edu", req.userDisplayName, _id, req.submittedBy, (WorkflowState)wfState, comment);
+						Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy + "@apollogrp.edu", Utilities.GetFullNameByLoginId(req.submittedBy), _id, req.submittedBy, (WorkflowState)wfState, comment);
                         db.SubmitChanges();
                         resp = new WebMethodResponse(true, "Cancel/Deny", "Success");
                     }
@@ -226,7 +226,6 @@ namespace Apollo.AIM.SNAP.Model
 						}
 
 						Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy + "@apollogrp.edu", Utilities.GetFullNameByLoginId(req.submittedBy), _id, req.submittedBy, WorkflowState.Change_Requested, comment);
-						//Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy + "@apollogrp.edu", req.userDisplayName, _id, req.submittedBy, WorkflowState.Change_Requested, comment);
 						
                         db.SubmitChanges();
                         resp = new WebMethodResponse(true, "Request Change", "Success");
@@ -767,7 +766,7 @@ namespace Apollo.AIM.SNAP.Model
 						{
 							Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.userId + "@apollogrp.edu", req.userDisplayName, _id, req.submittedBy, WorkflowState.Closed_Completed, null);
 						}
-						Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy + "@apollogrp.edu", req.userDisplayName, _id, req.submittedBy, WorkflowState.Closed_Completed, null);
+						Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy + "@apollogrp.edu", Utilities.GetFullNameByLoginId(req.submittedBy), _id, req.submittedBy, WorkflowState.Closed_Completed, null);
                         db.SubmitChanges();
                         resp = new WebMethodResponse(true, "Finalization", "Success");
                     }
@@ -1709,7 +1708,7 @@ namespace Apollo.AIM.SNAP.Model
 					{
 						Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.userId + "@apollogrp.edu", req.userDisplayName, req.pkId, req.submittedBy, WorkflowState.Closed_Denied, comment);
 					}
-					Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy + "@apollogrp.edu", req.userDisplayName, req.pkId, req.submittedBy, WorkflowState.Closed_Denied, comment);
+					Email.SendTaskEmail(EmailTaskType.UpdateRequester, req.submittedBy + "@apollogrp.edu", Utilities.GetFullNameByLoginId(req.submittedBy), req.pkId, req.submittedBy, WorkflowState.Closed_Denied, comment);
 					Email.SendTaskEmail(EmailTaskType.UpdateRequester, ConfigurationManager.AppSettings["AIM-DG"], "AIM for " + req.userDisplayName, req.pkId, req.submittedBy, WorkflowState.Closed_Denied, comment);
                     break;
                 }
