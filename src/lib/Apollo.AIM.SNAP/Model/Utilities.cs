@@ -9,6 +9,7 @@ using Apollo.CA.Logging;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Web.Script.Serialization;
+using Apollo.AIM.SNAP.CA;
 
 namespace Apollo.AIM.SNAP.Model
 {
@@ -42,6 +43,25 @@ namespace Apollo.AIM.SNAP.Model
 					return string.Empty;
 				}
 			}
+		}
+
+		public static string GetFullNameByLoginId(string LoginId)
+		{
+			string fullName = string.Empty;
+
+			try
+			{
+				ADUserDetail userDetail = CA.DirectoryServices.GetUserByLoginName(LoginId);
+
+				if (String.IsNullOrEmpty(userDetail.FirstName) || String.IsNullOrEmpty(userDetail.LastName)) { fullName = "NOT FOUND"; }
+				else { fullName = userDetail.FirstName + " " + userDetail.LastName; }
+			}
+			catch (Exception ex)
+			{
+				Logger.Error("Utilities > GetFullNameByLoginId\r\nMessage: " + ex.Message + "\r\nStackTrace: " + ex.StackTrace);
+			}
+
+			return fullName;
 		}
 
 	}
