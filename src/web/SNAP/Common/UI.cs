@@ -388,12 +388,16 @@ namespace Apollo.AIM.SNAP.Web.Common
 
             Filter PendingAcknowledgementFilter = new Filter();
             Filter PendingWorkflowFilter = new Filter();
+            Filter PendingTicketFilter = new Filter();
             Filter PendingProvisioningFilter = new Filter();
+            Filter ChangeRequestedFilter = new Filter();
             Filter InWorkflowFilter = new Filter();
 
             List<int> PendingAcknowledgementList = new List<int>();
             List<int> PendingWorkflowList = new List<int>();
+            List<int> PendingTicketList = new List<int>();
             List<int> PendingProvisioningList = new List<int>();
+            List<int> ChangeRequestedList = new List<int>();
             List<int> InWorkflowList = new List<int>();
 
             using (var db = new SNAPDatabaseDataContext())
@@ -405,10 +409,11 @@ namespace Apollo.AIM.SNAP.Web.Common
                                  where a.pkId == AccessTeamActorId
                                  && openEnums.Contains(r.statusEnum)
                                  && ws.completedDate == null
-                                 group r by new { r.pkId, ws.workflowStatusEnum } into grp
+                                 group r by new { r.pkId, r.ticketNumber, ws.workflowStatusEnum } into grp
                                  select new
                                   {
                                       requestId = grp.Key.pkId,
+                                      ticketNumber = grp.Key.ticketNumber,
                                       workflowStatusEnum = grp.Key.workflowStatusEnum
                                   };
                 if(filterCounts != null)
@@ -425,25 +430,35 @@ namespace Apollo.AIM.SNAP.Web.Common
                                 break;
                             case (int)WorkflowState.Approved:
                             case (int)WorkflowState.Pending_Provisioning:
-                                PendingProvisioningList.Add(row.requestId);
+                                if (row.ticketNumber == null) { PendingTicketList.Add(row.requestId); }
+                                else { PendingProvisioningList.Add(row.requestId); }
                                 break;
                             case (int)WorkflowState.Workflow_Created:
                                 InWorkflowList.Add(row.requestId);
                                 break;
+                            case (int)WorkflowState.Change_Requested:
+                                ChangeRequestedList.Add(row.requestId);
+                                break;
                         }
                     }
 
-                    PendingAcknowledgementFilter.FilterName = "Pending Acknowledgement";
+                    PendingAcknowledgementFilter.FilterName = "Ack";
                     PendingAcknowledgementFilter.RequestIds = PendingAcknowledgementList;
-                    PendingWorkflowFilter.FilterName = "Pending Workflow";
+                    PendingWorkflowFilter.FilterName = "WrkFl";
                     PendingWorkflowFilter.RequestIds = PendingWorkflowList;
-                    PendingProvisioningFilter.FilterName = "Pending Provisioning";
+                    PendingTicketFilter.FilterName = "Tkt";
+                    PendingTicketFilter.RequestIds = PendingTicketList;
+                    PendingProvisioningFilter.FilterName = "Prov";
                     PendingProvisioningFilter.RequestIds = PendingProvisioningList;
-                    InWorkflowFilter.FilterName = "In Workflow";
+                    ChangeRequestedFilter.FilterName = "Chng Req";
+                    ChangeRequestedFilter.RequestIds = ChangeRequestedList;
+                    InWorkflowFilter.FilterName = "In WrkFl";
                     InWorkflowFilter.RequestIds = InWorkflowList;
                     newFilters.Add(PendingAcknowledgementFilter);
                     newFilters.Add(PendingWorkflowFilter);
+                    newFilters.Add(PendingTicketFilter);
                     newFilters.Add(PendingProvisioningFilter);
+                    newFilters.Add(ChangeRequestedFilter);
                     newFilters.Add(InWorkflowFilter);
                     newFilter.Filters = newFilters;
 

@@ -1314,6 +1314,7 @@ ul#access_filter_inner li
 	padding-top: 6px;
 	margin-left: 0px;
 	margin-right: 0px;
+	text-align: center;
 	}
 	
 ul#access_filter_inner li.disabled_text span {color:#D45766; cursor:default;}
@@ -1326,7 +1327,9 @@ ul#access_filter_inner span.inline_counter {
 
 #filter_pending_acknowledgement
 , #filter_pending_workflow
+, #filter_pending_ticket
 , #filter_pending_provisioning
+, #filter_change_requested
 , #filter_in_workflow
 , #filter_view_all {
 	cursor: pointer;
@@ -1336,38 +1339,47 @@ ul#access_filter_inner span.inline_counter {
 	
 #filter_pending_acknowledgement.active_carrot
 , #filter_pending_workflow.active_carrot
+, #filter_pending_ticket.active_carrot
 , #filter_pending_provisioning.active_carrot
+, #filter_change_requested.active_carrot
 , #filter_in_workflow.active_carrot
 , #filter_view_all.active_carrot {
 	background: url('../images/icon_access_filter_active.png') no-repeat;}
 
 #filter_pending_acknowledgement.hover_carrot
 , #filter_pending_workflow.hover_carrot
+, #filter_pending_ticket.hover_carrot
 , #filter_pending_provisioning.hover_carrot
+, #filter_change_requested.hover_carrot
 , #filter_in_workflow.hover_carrot
 , #filter_view_all.hover_carrot {
 	background: url('../images/icon_access_filter_hover.png') no-repeat;}
 
 	
-/* YOU ARE HERE */
+/* YOU ARE HERE */C
 
-#filter_pending_acknowledgement {width:146px;background-position: 57px 60px;}
-#filter_pending_workflow {width:88px;background-position: 34px 60px;}
-#filter_pending_provisioning {width:110px;background-position: 40px 60px;}
-#filter_in_workflow {width:104px;background-position: 40px 60px;}
-#filter_view_all {width:50px;background-position: 29px 60px;}
+#filter_pending_acknowledgement {width:65px;background-position: 20px 60px;}
+#filter_pending_workflow {width:60px;background-position: 20px 60px;}
+#filter_pending_ticket {width:50px;background-position: 20px 60px;}
+#filter_pending_provisioning {width:70px;background-position: 20px 60px;}
+#filter_change_requested {width:100px;background-position: 20px 60px;}
+#filter_in_workflow {width:85px;background-position: 20px 60px;}
+#filter_view_all {width:65px;background-position: 20px 60px;}
 
-div.filter_pending_acknowledgement #filter_pending_acknowledgement {background-position: 60px 30px;}
-div.filter_pending_workflow #filter_pending_workflow {background-position: 37px 30px;}
-div.filter_pending_provisioning #filter_pending_provisioning {background-position: 44px 30px;}
-div.filter_in_workflow #filter_in_workflow {background-position: 41px 30px;}
-div.filter_view_all #filter_view_all {background-position: 19px 30px;}
+div.filter_pending_acknowledgement #filter_pending_acknowledgement {background-position: 25px 30px;}
+div.filter_pending_workflow #filter_pending_workflow {background-position: 22px 30px;}
+div.filter_pending_ticket #filter_pending_ticket {background-position: 15px 30px;}
+div.filter_pending_provisioning #filter_pending_provisioning {background-position: 27px 30px;}
+div.filter_change_requested #filter_change_requested {background-position: 41px 30px;}
+div.filter_in_workflow #filter_in_workflow {background-position: 35px 30px;}
+div.filter_view_all #filter_view_all {background-position: 25px 30px;}
 
 /************** END ACCESS TEAM FILTER **************/
 
 #aim_IE6_nag {display:none; visibility:hidden;}
 
-div.quicksearch_container
+/************** START QUICK SEARCH**************/
+/*div.quicksearch_container
 {
     position:relative;
     top:-77px;
@@ -1400,3 +1412,14 @@ input.quicksearch_input {
 	font-family: Verdana, Arial;
 	width: 25%;
 	}
+*/
+/************** END QUICK SEARCH **************/
+
+/************** START EDIT FORM IN BLADE **************/
+
+p.hover
+{
+    background-color:#c8e1f7;
+}
+
+/************** END EDIT FORM IN BLADE **************/

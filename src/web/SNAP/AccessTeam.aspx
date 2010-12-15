@@ -12,13 +12,14 @@
 		<div id="access_filter_outer">
 			<ul id="access_filter_inner">
 				<li style="width:57px;"><span>Pending:</span></li>
-				<li id="filter_pending_acknowledgement" class="active_carrot" snap="Pending Acknowledgement"><span>Acknowledgement (<span class="inline_counter" id="filter_pending_acknowledgement_count">00</span>)</span></li>
-				<li id="filter_pending_workflow" class="active_carrot" snap="Pending Workflow"><span>Workflow (<span class="inline_counter"  id="filter_pending_workflow_count">00</span>)</span></li>
-				<li id="filter_pending_provisioning" class="active_carrot" snap="Pending Provisioning"><span>Provisioning (<span class="inline_counter"  id="filter_pending_provisioning_count">00</span>)</span></li>
+				<li id="filter_pending_acknowledgement" class="active_carrot" title="Pending Acknowledgement"><span>Ack (<span class="inline_counter" id="filter_pending_acknowledgement_count">00</span>)</span></li>
+				<li id="filter_pending_workflow" class="active_carrot" title="Pending Workflow"><span>Wrkfl (<span class="inline_counter" id="filter_pending_workflow_count">00</span>)</span></li>
+				<li id="filter_pending_ticket" class="active_carrot" title="Pending Ticket"><span>Tkt (<span class="inline_counter" id="filter_pending_ticket_count">00</span>)</span></li>
+				<li id="filter_pending_provisioning" class="active_carrot" title="Pending Provisioning"><span>Prov (<span class="inline_counter" id="filter_pending_provisioning_count">00</span>)</span></li>
 				<li style="width:4px;padding-left:2px;margin-right:4px;font-weight:bold;"><span>|</span></li>
-				<li id="filter_in_workflow" class="active_carrot" snap="In Workflow"><span>In Workflow (<span class="inline_counter"  id="filter_in_workflow_count">00</span>)</span></li>
-				<li style="width:4px;padding-left:2px;margin-right:4px;font-weight:bold;"><span>|</span></li>
-				<li id="filter_view_all" onmouseover="FilterHover(this);" onmouseout="FilterHover(this);" onclick="FilterClick(this);" class="active_carrot" snap="All"><span>View All</span></li>
+				<li id="filter_change_requested" class="active_carrot" title="Change Requested"><span>Chng Req (<span class="inline_counter" id="filter_change_requested_count">00</span>)</span></li>
+				<li id="filter_in_workflow" class="active_carrot" title="In Workflow"><span>In Wrkfl (<span class="inline_counter" id="filter_in_workflow_count">00</span>)</span></li>
+				<li id="filter_view_all" onmouseover="FilterHover(this);" onmouseout="FilterHover(this);" onclick="FilterClick(this);" class="active_carrot" title="View All"><span>All</span></li>
 			</ul>
 		</div>
 	</div>	

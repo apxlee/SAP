@@ -135,8 +135,11 @@
 <script type='html/template' id='_requestFormField'>
     <tr> 
 	    <td style="text-align:right;width:140px;padding-right:4px;"><p>__fieldLabel</p></td> 
-	    <td style="padding:1px 10px 1px 4px;"><p style="width:455px;word-wrap:break-word;overflow:hidden;">__fieldText</p></td> 
+	    <td style="padding:1px 10px 1px 4px;"><p snap="editable" style="padding:2px;width:455px;word-wrap:break-word;overflow:hidden;">__fieldText&nbsp;</p></td> 
 	</tr> 
+</script>
+<script type='html/template' id='__editFormField'>
+    <textarea id="__formField" cols="80" class="csm_textarea_short"></textarea>
 </script>
 <script type='html/template' id='_requestCommentSection'>
     <tr style="line-height:1.2em;color:Red;">

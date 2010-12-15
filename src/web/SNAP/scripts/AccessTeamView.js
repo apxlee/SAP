@@ -63,32 +63,48 @@ function UpdateFilterCounts(filter) {
     var ackIds = "";
     var wrkCount = 0;
     var wrkIds = "";
+    var tktCount = 0;
+    var tktIds = "";
     var prvCount = 0;
     var prvIds = "";
+    var crCount = 0;
+    var crIds = "";
     var inCount = 0;
     var inIds = "";
     var data = jQuery.parseJSON(filter);
     $.each(data.Filters, function(index, value) {
         switch (value.FilterName) {
-            case "Pending Acknowledgement":
+            case "Ack":
                 ackCount = value.RequestIds.length;
                 $.each(value.RequestIds, function(index, requestId) {
                     ackIds = ackIds + "[" + requestId + "]";
                 });
                 break;
-            case "Pending Workflow":
+            case "WrkFl":
                 wrkCount = value.RequestIds.length;
                 $.each(value.RequestIds, function(index, requestId) {
                     wrkIds = wrkIds + "[" + requestId + "]";
                 });
                 break;
-            case "Pending Provisioning":
+            case "Tkt":
+                tktCount = value.RequestIds.length;
+                $.each(value.RequestIds, function(index, requestId) {
+                    tktIds = tktIds + "[" + requestId + "]";
+                });
+                break;    
+            case "Prov":
                 prvCount = value.RequestIds.length;
                 $.each(value.RequestIds, function(index, requestId) {
                     prvIds = prvIds + "[" + requestId + "]";
                 });
                 break;
-            case "In Workflow":
+            case "Chng Req":
+                crCount = value.RequestIds.length;
+                $.each(value.RequestIds, function(index, requestId) {
+                    crIds = crIds + "[" + requestId + "]";
+                });
+                break;
+            case "In WrkFl":
                 inCount = value.RequestIds.length;
                 $.each(value.RequestIds, function(index, requestId) {
                     inIds = inIds + "[" + requestId + "]";
@@ -106,11 +122,21 @@ function UpdateFilterCounts(filter) {
     if (wrkCount > 0) { BindFilter($("#filter_pending_workflow")); }
     else { UnbindFilter($("#filter_pending_workflow")); }
 
+    $("#filter_pending_ticket_count").html(tktCount);
+    $("#filter_pending_ticket").attr("requestIds", tktIds);
+    if (tktCount > 0) { BindFilter($("#filter_pending_ticket")); }
+    else { UnbindFilter($("#filter_pending_ticket")); }
+    
     $("#filter_pending_provisioning_count").html(prvCount);
     $("#filter_pending_provisioning").attr("requestIds", prvIds);
     if (prvCount > 0) { BindFilter($("#filter_pending_provisioning")); }
     else { UnbindFilter($("#filter_pending_provisioning")); }
 
+    $("#filter_change_requested_count").html(crCount);
+    $("#filter_change_requested").attr("requestIds", crIds);
+    if (crCount > 0) { BindFilter($("#filter_change_requested")); }
+    else { UnbindFilter($("#filter_change_requested")); }
+    
     $("#filter_in_workflow_count").html(inCount);
     $("#filter_in_workflow").attr("requestIds", inIds);
     if (inCount > 0) { BindFilter($("#filter_in_workflow")); }
@@ -143,12 +169,12 @@ function FilterHover(obj) {
     }
 }
 function FilterClick(obj) {
-    var filter = $(obj).attr("snap");
+    var filter = $(obj).attr("title");
     var requestIds = $(obj).attr("requestIds");
 
     $("#_openRequestsContainer").find("div.csm_content_container").each(function() {
         var blade = this;
-        if (filter == "All") { $(blade).show(); $(blade).next().show(); }
+        if (filter == "View All") { $(blade).show(); $(blade).next().show(); }
         else { $(blade).hide(); $(blade).next().hide(); }
     });
     if (requestIds > "") {
@@ -526,7 +552,28 @@ function BindEvents(builderGroups, builderButtons, requestId) {
     $("#__legendToggle_" + requestId).click(function() {
         ToggleLegend(requestId);
     });
-    
+
+//    $("p").each(function() {
+//        if ($(this).attr("snap") == "editable") {
+//            $(this).hover(function() {
+//                $(this).addClass("hover");
+//                $(this).click(function() {
+//                    $("#__formField_" + requestId).remove();
+//                    var newField = $("#__editFormField");
+//                    newField = newField.html().replace("__formField", "__formField_" + requestId);
+//                    $(this).parent().append(newField);
+//                    $("#__formField_" + requestId).val($(this).html());
+//                    $(this).hide();
+//                });
+//            },
+//	            function() {
+//	                $(this).removeClass("hover");
+//	                $(this).unbind("click");
+//	            }
+//	        );
+//        }
+//    });
+
     ToggleLoading(requestId);
 }
 function ChangeDenyCancelClick(obj, requestId) {
