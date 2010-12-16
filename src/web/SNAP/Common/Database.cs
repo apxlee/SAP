@@ -74,7 +74,7 @@ namespace Apollo.AIM.SNAP.Web.Common
 			}
 			catch (Exception ex)
 			{
-				Logger.Error("SetGroupMembership \r\nMessage: " + ex.Message + "\r\nStackTrace: " + ex.StackTrace);
+				Logger.Error("SetGroupMembership \r\nMessage: " + ex.Message + "\r\nSnapSession.CurrentUser: " + SnapSession.CurrentUser.LoginId);
 			}
 		}
 
