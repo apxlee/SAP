@@ -11,7 +11,7 @@ using System.Reflection;
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: AssemblyVersionAttribute("2.2.0")]
+[assembly: AssemblyVersionAttribute("2.3.0")]
 [assembly: AssemblyCopyrightAttribute("Copyright 2010-2011 Apollo Group Inc.")]
 [assembly: AssemblyCompanyAttribute("Apollo Group Inc.")]
 [assembly: AssemblyProductAttribute("Computer Access Process")]

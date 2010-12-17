@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apollo.AIM.SNAP.Web", "src\web\SNAP\Apollo.AIM.SNAP.Web.csproj", "{5AB65A15-CF1E-40AE-B0B7-6000B447EA8C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apollo.AIM.SNAP.CA", "src\shared\CA\Apollo.AIM.SNAP.CA\Apollo.AIM.SNAP.CA.csproj", "{6F4A3CB1-6A8B-4B22-8E23-695E359962BB}"

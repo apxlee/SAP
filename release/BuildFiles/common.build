@@ -102,7 +102,7 @@
       <assemblyfolders refid="asmfolders"/>
     </solution>
   </target>
-
+<!--
   <target name="common.build.msbuild" description="Generic build using MSBuild">
     <echo>
       Building MSBuild SLN...
@@ -114,6 +114,30 @@
       <property name="Configuration" value="${configuration}"/>
     </msbuild>
   </target>
+-->
+
+
+  <target name="common.build.msbuild" description="Generic build using MSBuild">
+    <echo>
+      Building MSBuild SLN...
+      Solution: ${sln.file}
+      Configuration: ${configuration}
+    </echo>
+    <property name="nant.settings.currentframework" value="net-4.0"/>
+    <!--<msbuild project="${build.dir}${sln.file}">
+      <property name="Configuration" value="${configuration}"/>
+    </msbuild>-->
+    <exec program="c:\windows\microsoft.net\framework\v4.0.30319\msbuild.exe">
+	    <arg line='"${build.dir}${sln.file}"' />
+	    <arg line="/property:Configuration=${configuration}"/>
+	    <arg value="/target:Rebuild" />
+	    <arg value="/verbosity:normal"/>
+	    <arg value="/nologo"/>
+      <arg line='/logger:"c:\program files\cruisecontrol.net\server\thoughtworks.cruisecontrol.msbuild.dll"'
+           if="${file::exists('c:\program files\cruisecontrol.net\server\thoughtworks.cruisecontrol.msbuild.dll')}"/>
+    </exec>
+  </target>
+
 
   <target name="checkout" description="checkout the source from the SVN repository." depends="clean.build, getsvnpath" >
     <mkdir dir="${build.dir}" failonerror="true"/>
