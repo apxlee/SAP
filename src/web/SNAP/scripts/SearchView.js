@@ -25,8 +25,19 @@
         }
     });
     $("#endDatepicker").datepicker("disable");
-
 });
+
+// SNAP-16: Link into search page, automatically searches for requestId passed in query string
+//
+$(document).ready(function () {
+    var selectedRequestId = $("input[id*='_hiddenSelectedRequestId']");
+    if (selectedRequestId.val() != "") 
+    {
+        $("#__searchInput").val(selectedRequestId.val()).delay(200);
+        ValidateInput();
+    }
+});
+
 function ToggleSearch() {
     $("#__advancedSearchContainer").toggle();
     if ($("#__advancedSearchContainer").is(":visible")) { $("#__advacnedSearchToggle").html("Hide Advanced Search"); }

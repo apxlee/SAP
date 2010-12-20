@@ -41,9 +41,7 @@
 		<div class="snap_container_center_844">
 			
 			<asp:ContentPlaceHolder ID="_contentPlaceHolder" runat="server"></asp:ContentPlaceHolder>
-
 			<div class="csm_clear">&nbsp;</div>
-			<!-- END MUTLIVIEW CONTROL -->				
 		
 		</div>
 		</asp:Panel>
