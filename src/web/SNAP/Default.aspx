@@ -85,10 +85,10 @@
 								<tr>
 									<td><div id="_loginCheck3" class="aim_checkbox_unchecked" value="role_default" runat="server"></div></td>
 									<td>
-										<h2>I am managing my tasks and approvals, updating a requested change,<br />or checking my status.</h2>
+										<h2>I am managing my tasks and approvals, updating a requested change,<br />checking my status, or following a link.</h2>
 										<p><asp:Label ID="_followLinkMessage" runat="server" Visible="false"><em>The application has determined you are 
 										following an email link to Request Id:&nbsp;<asp:Label ID="_followLinkRequestId" runat="server"></asp:Label>.</em>&nbsp;</asp:Label>
-										You will be taken to 'My Requests', 'My Approvals' or the request form automatically based on your role.</p>
+										You will be taken to 'My Requests', 'My Approvals', Search or the Request Form automatically based on your role.</p>
 									</td>
 								</tr>
 							</table>

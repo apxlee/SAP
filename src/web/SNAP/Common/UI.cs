@@ -7,6 +7,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using Apollo.AIM.SNAP;
 using Apollo.AIM.SNAP.CA;
 using Apollo.AIM.SNAP.Model;
 using Apollo.CA.Logging;
@@ -73,32 +74,35 @@ namespace Apollo.AIM.SNAP.Web.Common
 
         #region Details
 
-        [DataContract]
-        public class RequestDetails
-        {
-            public RequestDetails() { }
-            public RequestDetails(string title, string manager, string admanager, string requestor, List<RequestFormField> details, List<RequestComments> comments)
-            {
-                this.Title = title;
-                this.Manager = manager;
-                this.ADManager = admanager;
-                this.Requestor = requestor;
-                this.Details = details;
-                this.Comments = comments;
-            }
-            [DataMember]
-            public string Title { get; set; }
-            [DataMember]
-            public string Manager { get; set; }
-            [DataMember]
-            public string ADManager { get; set; }
-            [DataMember]
-            public string Requestor { get; set; }
-            [DataMember]
-            public List<RequestFormField> Details { get; set; }
-            [DataMember]
-            public List<RequestComments> Comments { get; set; }
-        }
+		[DataContract]
+		public class RequestDetails
+		{
+			public RequestDetails() { }
+			//public RequestDetails(string title, string manager, string admanager, string requestor, List<RequestFormField> details, List<RequestComments> comments, string searchLinkUrl)
+			//{
+			//    this.Title = title;
+			//    this.Manager = manager;
+			//    this.ADManager = admanager;
+			//    this.Requestor = requestor;
+			//    this.Details = details;
+			//    this.Comments = comments;
+			//    this.SearchLinkUrl = searchLinkUrl;
+			//}
+			[DataMember]
+			public string Title { get; set; }
+			[DataMember]
+			public string Manager { get; set; }
+			[DataMember]
+			public string ADManager { get; set; }
+			[DataMember]
+			public string Requestor { get; set; }
+			[DataMember]
+			public List<RequestFormField> Details { get; set; }
+			[DataMember]
+			public List<RequestComments> Comments { get; set; }
+			[DataMember]
+			public string SearchLinkUrl { get; set; }
+		}
 
         [DataContract]
         public class RequestFormField
@@ -553,6 +557,7 @@ namespace Apollo.AIM.SNAP.Web.Common
                         newDetails.Manager = detail.Manager;
                         newDetails.ADManager = ADManager;
                         newDetails.Requestor = detail.Requestor;
+						newDetails.SearchLinkUrl= Model.Utilities.WebRootUrl + Model.PageNames.SEARCH + ".aspx?requestId=" +  requestId.ToString();
 
                         RequestFormField newField = new RequestFormField();
                         newField.Label = detail.Label;
